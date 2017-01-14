@@ -1,17 +1,16 @@
 {
   "name": "ufps-training-center-frontend",
-  "description": "Aplicación cliente para el UFPS Training Center.",
+  "description": "An Aurelia client application.",
   "version": "0.1.0",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/GersonLazaro/UFPS-Training-Center-Frontend"
+    "type": "???",
+    "url": "???"
   },
+  "license": "MIT",
   "dependencies": {
-    "aurelia-animator-css": "^1.0.0",
     "aurelia-bootstrapper": "^1.0.0",
+    "aurelia-animator-css": "^1.0.0",
     "bluebird": "^3.4.1",
-    "bootstrap": "^3.3.7",
-    "jquery": "^2.2.4",
     "requirejs": "^2.3.2",
     "text": "github:requirejs/text#latest"
   },
