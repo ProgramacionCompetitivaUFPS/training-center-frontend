@@ -1,0 +1,167 @@
+html,
+body {
+  height: 100%;
+}
+
+.ufps-container-sign {
+  min-height: 100%;
+  background-color: #E74C3C;
+}
+
+.ufps-container-sign .ufps-logo-sign {
+  margin-top: 40px;
+  height: 120px;
+}
+
+.ufps-form-sign {
+  margin-top: 30px;
+}
+
+.ufps-container-sign h1 {
+  font-size: 24px;
+}
+
+.ufps-container-sign h1,
+.ufps-container-sign label {
+  color: #FFF;
+}
+
+.ufps-container-sign .ufps-sign-input, .ufps-navbar-input {
+  box-shadow: 0 0 10px #C0392B;
+  border: none;
+  height: 45px;
+  border-radius: 2px;
+  font-size: 16px;
+  transition: all .3s ease;
+}
+
+.ufps-navbar-input {
+  box-shadow: none;
+}
+.ufps-input-navbar-addon {
+  background-color: #FFF;
+  border: none;
+  cursor: pointer;
+}
+
+.ufps-navbar-input:focus {
+  box-shadow: none;
+}
+
+.ufps-container-sign .ufps-btn-sign {
+  width: 100%;
+  height: 45px;
+  border: 1px solid #ECF0F1;
+  color: #FFF;
+  font-size: 16px;
+  border-radius: 2px;
+  background-color: transparent;
+  margin-top: 20px;
+  transition: all .3s ease;
+}
+
+.ufps-container-sign .ufps-btn-sign:hover,
+.ufps-container-sign .ufps-btn-sign:active,
+.ufps-container-sign .ufps-btn-sign:hover:active,
+.ufps-container-sign .ufps-btn-sign:focus {
+  background-color: #FFF;
+  color: #C0392B;
+  box-shadow: 0 0 10px #C0392B;
+}
+
+.ufps-container-sign .ufps-btn-sign:focus {
+  outline: 0;
+  background-color: #FFF;
+  border: 1px solid #BDC3C7;
+}
+
+.ufps-sign-links {
+  margin-top: 20px;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ufps-sign-links a {
+  color: #FFF;
+  cursor: pointer;
+}
+
+.ufps-sign-about {
+  margin-top: 40px;
+}
+
+.ufps-sign-about p {
+  color: #FFF;
+  font-size: 14px;
+}
+
+.ufps-navbar {
+  background-color: #344958;
+  border-radius: 0;
+  border: none;
+  height: 65px;
+}
+
+.ufps-brand {
+  height: 65px;
+  padding: 5px 15px 5px 15px;
+}
+
+.ufps-brand img {
+  height: 55px;
+}
+
+.ufps-btn-nav a {
+  height: 65px;
+  padding-left: 18px!important;
+  padding-right: 18px!important;
+  line-height: 35px!important;
+  font-size: 16px;
+  color: #BDC3C7;
+  transition: all .3s ease;
+}
+
+.ufps-btn-nav.active a {
+  border-bottom: 6px solid #E74C3C;
+  color: #FFF;
+}
+
+.ufps-btn-nav a:hover {
+  background-color: transparent!important;
+  color: #FFF!important;
+}
+
+.ufps-btn-nav.dropdown.open > a{
+  background-color: transparent;
+  color: #FFF!important;
+}
+
+.ufps-dropdown-menu {
+  border: none;
+  border-radius: 0;
+}
+
+.ufps-dropdown-menu>li>a {
+  height: 40px;
+}
+
+.ufps-dropdown-menu>li>a:hover {
+  background-color: #E74C3C!important;
+}
+
+.ufps-navbar-search {
+  margin-top: 2px;
+}
+
+.ufps-avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 2px;
+}
+
+.ufps-dropdown-user a{
+  padding-top: 5px!important;
+  padding-bottom: 5px!important;
+}
