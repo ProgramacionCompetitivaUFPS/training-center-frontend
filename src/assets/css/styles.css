@@ -13,6 +13,11 @@ body {
   height: 120px;
 }
 
+.ufps-container-sign .ufps-logo-sign-in {
+  margin-top: 20px;
+  height: 80px;
+}
+
 .ufps-form-sign {
   margin-top: 30px;
 }
@@ -22,11 +27,13 @@ body {
 }
 
 .ufps-container-sign h1,
-.ufps-container-sign label {
+.ufps-container-sign label,
+.ufps-container-sign p {
   color: #FFF;
 }
 
-.ufps-container-sign .ufps-sign-input, .ufps-navbar-input {
+.ufps-container-sign .ufps-sign-input,
+.ufps-navbar-input {
   box-shadow: 0 0 10px #C0392B;
   border: none;
   height: 45px;
@@ -38,6 +45,7 @@ body {
 .ufps-navbar-input {
   box-shadow: none;
 }
+
 .ufps-input-navbar-addon {
   background-color: #FFF;
   border: none;
@@ -83,7 +91,7 @@ body {
   padding-right: 0;
 }
 
-.ufps-sign-links a {
+.ufps-sign-links, .ufps-sign-links a {
   color: #FFF;
   cursor: pointer;
 }
@@ -133,7 +141,7 @@ body {
   color: #FFF!important;
 }
 
-.ufps-btn-nav.dropdown.open > a{
+.ufps-btn-nav.dropdown.open>a {
   background-color: transparent;
   color: #FFF!important;
 }
@@ -161,7 +169,109 @@ body {
   border-radius: 2px;
 }
 
-.ufps-dropdown-user a{
+.ufps-dropdown-user a {
   padding-top: 5px!important;
   padding-bottom: 5px!important;
+}
+
+
+/*INLINE FORM*/
+
+
+/* form starting stylings ------------------------------- */
+
+.ufps-form-inline {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.ufps-form-inline input {
+  font-size: 14px;
+  padding: 5px 10px 7px 5px;
+  background: transparent;
+  display: block;
+  width: 100%;
+  border: none;
+  color: #FFF;
+  border-bottom: 1px solid #FFF;
+}
+
+.ufps-form-inline input:focus {
+  outline: none;
+}
+
+
+/* LABEL ======================================= */
+
+.ufps-form-inline label {
+  color: #FFF;
+  font-size: 14px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+
+/* active state */
+
+.ufps-form-inline input:focus~label,
+.ufps-form-inline input:valid~label {
+  top: -14px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFF;
+}
+
+
+/* BOTTOM BARS ================================= */
+
+.ufps-form-inline .ufps-form-bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.ufps-form-inline .ufps-form-bar:before,
+.ufps-form-inline .ufps-form-bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #FFF;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+.ufps-form-inline .ufps-form-bar:before {
+  left: 50%;
+}
+
+.ufps-form-inline .ufps-form-bar:after {
+  right: 50%;
+}
+
+
+/* active state */
+
+.ufps-form-inline input:focus~.ufps-form-bar:before,
+.ufps-form-inline input:focus~.ufps-form-bar:after {
+  width: 50%;
+}
+
+#nprogress .bar { 
+  background: #c0392b!important;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px #c0392b, 0 0 5px #c0392b!important;
+}
+#nprogress .spinner-icon {
+  border-top-color: #c0392b!important;
+  border-left-color: #c0392b!important;
 }

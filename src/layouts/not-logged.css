@@ -1,0 +1,15 @@
+html,
+body {
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  body {
+    background-image: url(src/assets/img/bg-pc.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #34495E;
+  }
+}
