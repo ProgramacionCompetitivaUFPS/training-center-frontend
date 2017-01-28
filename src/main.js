@@ -1,4 +1,5 @@
 import environment from './environment'
+import 'fetch'
 
 // Configure Bluebird Promises.
 Promise.config({

@@ -45,7 +45,10 @@
     "elements": "src/resources/elements",
     "attributes": "src/resources/attributes",
     "valueConverters": "src/resources/value-converters",
-    "bindingBehaviors": "src/resources/binding-behaviors"
+    "bindingBehaviors": "src/resources/binding-behaviors",
+    "models": "src/models",
+    "services": "src/services",
+    "config": "src/config"
   },
   "testFramework": {
     "id": "jasmine",
@@ -127,6 +130,11 @@
             "main": "aurelia-testing",
             "env": "dev"
           },
+          {
+            "name": "aurelia-fetch-client",
+            "path": "../node_modules/aurelia-fetch-client/dist/amd",
+            "main": "aurelia-fetch-client"
+          },
           "jquery",
           {
             "name": "bootstrap",
@@ -145,8 +153,12 @@
             "resources": [
               "nprogress.css"
             ]
+          },
+          {
+            "name": "fetch",
+            "path": "../node_modules/whatwg-fetch",
+            "main": "fetch"
           }
-
         ]
       }
     ]

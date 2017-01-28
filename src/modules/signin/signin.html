@@ -5,34 +5,34 @@
     </div>
     <div class="col-xs-10 col-xs-offset-1 text-center">
       <h1>Regístrate</h1>
-      <form action="" class="text-left ufps-form-sign">
+      <form submit.delegate = "signin()" class="text-left ufps-form-sign">
         <div class="form-group ufps-form-inline">
-          <input type="text" class="ufps-form-text" id="name" required>
+          <input type="text" class="ufps-form-text" id="name" value.bind="user.name" required>
           <label for="name">Nombre</label>
           <span class="ufps-form-bar"></span>
         </div>
         <div class="form-group ufps-form-inline">
-          <input type="text" class="ufps-form-text" id="nickname" required>
+          <input type="text" class="ufps-form-text" id="nickname"  value.bind="user.username" required>
           <label for="nickname">Username</label>
           <span class="ufps-form-bar"></span>
         </div>
         <div class="form-group ufps-form-inline">
-          <input type="number" class="ufps-form-text" id="code" required>
+          <input type="number" class="ufps-form-text" id="code"  value.bind="user.code" required>
           <label for="code">Código</label>
           <span class="ufps-form-bar"></span>
         </div>
         <div class="form-group ufps-form-inline">
-          <input type="email" class="ufps-form-text" id="email" required>
+          <input type="email" class="ufps-form-text" id="email"  value.bind="user.email" required>
           <label for="email">Correo Electrónico</label>
           <span class="ufps-form-bar"></span>
         </div>
         <div class="form-group ufps-form-inline">
-          <input type="password" class="ufps-form-text" id="password" required>
+          <input type="password" class="ufps-form-text" id="password"  value.bind="user.password" required>
           <label for="password">Contraseña</label>
           <span class="ufps-form-bar"></span>
         </div>
         <div class="form-group ufps-form-inline">
-          <input type="password" class="ufps-form-text" id="password2" required>
+          <input type="password" class="ufps-form-text" id="password2"  value.bind="user.repassword" required>
           <label for="password2">Repite la contraseña</label>
           <span class="ufps-form-bar"></span>
         </div>
@@ -40,7 +40,7 @@
       </form>
 
       <div class="col-xs-12 text-center ufps-sign-links">
-        <a href="#">¿Ya tienes una cuenta? ¡Inicia Sesión!</a>
+        <a route-href="route: login">¿Ya tienes una cuenta? ¡Inicia Sesión!</a>
       </div>
     </div>
   </div>
