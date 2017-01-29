@@ -1,7 +1,6 @@
 import { Redirect } from 'aurelia-router'
 import { Auth, Http } from 'services/services'
 
-
 export class App {
   static inject () {
     return [Http]

@@ -2,7 +2,6 @@ import { API } from 'config/config'
 import { Http } from 'services/http'
 import { Jwt } from 'services/jwt'
 
-
 export class Auth {
 
   static inject () {
