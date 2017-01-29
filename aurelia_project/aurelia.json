@@ -147,6 +147,22 @@
             ]
           },
           {
+            "name": "aurelia-notify",
+            "path": "../node_modules/aurelia-notify/dist/amd",
+            "main": "index",
+            "resources": [
+              "aurelia-notify.js",
+              "bs-notification.html",
+              "bs-notification.js",
+              "lifecycle.js",
+              "notification-controller.js",
+              "notification-level.js",
+              "notification-renderer.js",
+              "notification-service.js",
+              "style.css"
+            ]
+          },
+          {
             "name": "nprogress",
             "path": "../node_modules/nprogress",
             "main": "nprogress",

@@ -91,7 +91,8 @@ body {
   padding-right: 0;
 }
 
-.ufps-sign-links, .ufps-sign-links a {
+.ufps-sign-links,
+.ufps-sign-links a {
   color: #FFF;
   cursor: pointer;
 }
@@ -265,13 +266,45 @@ body {
   width: 50%;
 }
 
-#nprogress .bar { 
+#nprogress .bar {
   background: #c0392b!important;
+  box-shadow: 0 0 10px rgba(192,57,43,.5);
+  height: 4px!important;
 }
+
 #nprogress .peg {
   box-shadow: 0 0 10px #c0392b, 0 0 5px #c0392b!important;
 }
+
 #nprogress .spinner-icon {
   border-top-color: #c0392b!important;
   border-left-color: #c0392b!important;
+}
+
+.alert {
+  position: absolute;
+  bottom: 50px;
+  left: 50px;
+  width: 500px;
+  border: none;
+  border-radius: 1px;
+}
+.alert-success {
+  color: #FFF;
+  background-color: #4CAF50;
+}
+
+.alert-danger {
+  background-color: #f44336;
+  color: #FFF;
+}
+
+.alert-info {
+  background-color: #2196F3;
+  color: #FFF;
+}
+
+.alert-warning {
+  background-color: #ff9800;
+  color: #FFF;
 }

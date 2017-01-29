@@ -1,12 +1,16 @@
 import { Redirect } from 'aurelia-router'
-import { Auth } from 'services/auth'
+import { Auth, Http } from 'services/services'
 
 
 export class App {
+  static inject () {
+    return [Http]
+  }
+  constructor (httpService) {
+    this.httpService = httpService
+  }
   configureRouter (config, router) {
     config.title = 'UFPS Training Center'
-    config.options.pushState = true
-    config.options.root = '/'
     config.addPipelineStep('authorize', AuthorizeStep)
     config.map([
       // Login
@@ -45,7 +49,7 @@ export class App {
       // Reset Password
       {
         name: 'reset-password',
-        route: 'cambiar-password',
+        route: 'cambiar-password/:token',
         moduleId: './modules/recovery/reset-password',
         title: 'Recuperar Contraseña',
         layoutView: './layouts/not-logged.html',

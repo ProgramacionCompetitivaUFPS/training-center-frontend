@@ -1,8 +1,8 @@
-import { CONFIG } from 'config/config'
+import { API } from 'config/config'
 
 export class Jwt {
   constructor () {
-    this.token = window.localStorage.getItem(CONFIG.tokenName)
+    this.token = window.localStorage.getItem(API.tokenName)
     if (this.tokenExists()) {
       this.data = JSON.parse(window.atob(this.token.split('.')[1]))
     } else {
@@ -11,19 +11,19 @@ export class Jwt {
   }
 
   save (token) {
-    window.localStorage.setItem(CONFIG.tokenName, JSON.stringify(token))
-    this.token = window.localStorage.getItem(CONFIG.tokenName)
+    window.localStorage.setItem(API.tokenName, JSON.stringify(token))
+    this.token = window.localStorage.getItem(API.tokenName)
     this.data = JSON.parse(window.atob(this.token.split('.')[1]))
   }
 
   remove () {
-    window.localStorage.removeItem(CONFIG.tokenName)
+    window.localStorage.removeItem(API.tokenName)
     this.token = null
     this.data = null
   }
 
   tokenExists () {
-    return window.localStorage.getItem(CONFIG.tokenName) !== null
+    return window.localStorage.getItem(API.tokenName) !== null
   }
 
   getUsername () {
