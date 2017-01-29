@@ -9,6 +9,11 @@ Promise.config({
   }
 })
 
+/**
+ * Configura el framework aurelia para inicializar la aplicación
+ * @export
+ * @param {any} aurelia - Core del framework
+ */
 export function configure (aurelia) {
   aurelia.use
     .standardConfiguration()

@@ -2,26 +2,48 @@ import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
 import { UserLogIn } from 'models/models'
-import { Alert, Auth, Jwt } from 'services/services'
+import { Alert, Auth } from 'services/services'
 
+/**
+ * Login (Module)
+ * Módulo de la aplicación para realizar el inicio de sesión
+ * Accesible vía /#/iniciar-sesion/
+ * @export
+ * @class Login
+ */
 export class Login {
+  /**
+   * Método que realiza inyección de las dependencias necesarias en el módulo.
+   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
+   * @static
+   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
+   * Servicio de autenticación (Auth), y enrutamiento (Router)
+   */
   static inject () {
-    return [Auth, Jwt, Router, Alert]
+    return [Alert, Auth, Router]
   }
-  constructor (authorizationService, jwtService, router, alertService) {
+  /**
+   * Crea una instancia de Login.
+   * @param {service} alertService - Servicio de notificaciones en pantalla
+   * @param {service} authorizationService - Servicio de autenticación y registro
+   * @param {service} router - Servicio de enrutamiento
+   */
+  constructor (alertService, authorizationService, router) {
     this.authorizationService = authorizationService
-    this.jwtService = jwtService
     this.router = router
     this.alertService = alertService
     this.user = new UserLogIn()
   }
+  /**
+   * Valida los datos e intenta iniciar sesión
+   */
   login () {
     if (this.user.email !== '' && this.user.password !== '') {
       this.authorizationService.auth(this.user)
       .then((data) => {
-        this.jwtService.save(data.token)
+        this.authorizationService.login(data.token)
         this.router.navigate('')
-      })
+      }) // Si el inicio es valido, guarda el token y redirige al inicio
       .catch(error => {
         switch (error.status) {
           case 401:

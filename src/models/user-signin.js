@@ -1,16 +1,20 @@
+
 /**
- * Modelo que define los usuarios que utilizan la aplicación
- * @class User
+ * UserSignIn
+ * Modelo de usuario para el registro en la aplicación
+ * @export
+ * @class UserSignIn
  */
 export class UserSignIn {
   /**
-   * Crea una instancia del tipo usuario, al iniciar sesión o registrarse.
-   * @param {string} [email=null]
-   * @param {string} [password=null]
-   * @param {string} [confirmPassword=null]
-   * @param {string} [name=null]
-   * @param {string} [username=null]
-   * @param {number} [code=null]
+   * Crea una instancia del tipo usuario, al registrarse.
+   * @param {string} [email=null] - Correo electrónico del nuevo usuario
+   * @param {string} [password=null] - Contraseña del nuevo usuario
+   * @param {string} [confirmPassword=null] - Verificación de contraseña
+   * @param {string} [name=null] - Nombre del usuario
+   * @param {string} [username=null] - Username del usuario
+   * @param {number} [code=null] - Código del usuario
+   * @param {number} [type=null] - Tipo de usuario (0 => estudiante, 1=> coach, 2=> admin)
    */
   constructor (email = null, password = null, confirmPassword = null, name = null, username = null, code = null, type = null) {
     this.email = email

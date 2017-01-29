@@ -1,7 +1,12 @@
+/*Normalización*/
+
 html,
 body {
   height: 100%;
 }
+
+
+/*Estilos not-logged*/
 
 .ufps-container-sign {
   min-height: 100%;
@@ -106,6 +111,85 @@ body {
   font-size: 14px;
 }
 
+
+/*Formulario de registro*/
+
+.ufps-form-inline {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.ufps-form-inline input {
+  font-size: 14px;
+  padding: 5px 10px 7px 5px;
+  background: transparent;
+  display: block;
+  width: 100%;
+  border: none;
+  color: #FFF;
+  border-bottom: 1px solid #FFF;
+}
+
+.ufps-form-inline input:focus {
+  outline: none;
+}
+
+.ufps-form-inline label {
+  color: #FFF;
+  font-size: 14px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+.ufps-form-inline input:focus~label,
+.ufps-form-inline input:valid~label {
+  top: -14px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFF;
+}
+
+.ufps-form-inline .ufps-form-bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.ufps-form-inline .ufps-form-bar:before,
+.ufps-form-inline .ufps-form-bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #FFF;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+.ufps-form-inline .ufps-form-bar:before {
+  left: 50%;
+}
+
+.ufps-form-inline .ufps-form-bar:after {
+  right: 50%;
+}
+
+.ufps-form-inline input:focus~.ufps-form-bar:before,
+.ufps-form-inline input:focus~.ufps-form-bar:after {
+  width: 50%;
+}
+
+
+/*Navbar*/
+
 .ufps-navbar {
   background-color: #344958;
   border-radius: 0;
@@ -176,95 +260,7 @@ body {
 }
 
 
-/*INLINE FORM*/
-
-
-/* form starting stylings ------------------------------- */
-
-.ufps-form-inline {
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.ufps-form-inline input {
-  font-size: 14px;
-  padding: 5px 10px 7px 5px;
-  background: transparent;
-  display: block;
-  width: 100%;
-  border: none;
-  color: #FFF;
-  border-bottom: 1px solid #FFF;
-}
-
-.ufps-form-inline input:focus {
-  outline: none;
-}
-
-
-/* LABEL ======================================= */
-
-.ufps-form-inline label {
-  color: #FFF;
-  font-size: 14px;
-  font-weight: normal;
-  position: absolute;
-  pointer-events: none;
-  left: 5px;
-  top: 10px;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
-}
-
-
-/* active state */
-
-.ufps-form-inline input:focus~label,
-.ufps-form-inline input:valid~label {
-  top: -14px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #FFF;
-}
-
-
-/* BOTTOM BARS ================================= */
-
-.ufps-form-inline .ufps-form-bar {
-  position: relative;
-  display: block;
-  width: 100%;
-}
-
-.ufps-form-inline .ufps-form-bar:before,
-.ufps-form-inline .ufps-form-bar:after {
-  content: '';
-  height: 2px;
-  width: 0;
-  bottom: 1px;
-  position: absolute;
-  background: #FFF;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
-}
-
-.ufps-form-inline .ufps-form-bar:before {
-  left: 50%;
-}
-
-.ufps-form-inline .ufps-form-bar:after {
-  right: 50%;
-}
-
-
-/* active state */
-
-.ufps-form-inline input:focus~.ufps-form-bar:before,
-.ufps-form-inline input:focus~.ufps-form-bar:after {
-  width: 50%;
-}
+/*Barra de progreso*/
 
 #nprogress .bar {
   background: #c0392b!important;
@@ -281,6 +277,9 @@ body {
   border-left-color: #c0392b!important;
 }
 
+
+/*Notificaciones*/
+
 .alert {
   position: absolute;
   z-index: 100;
@@ -291,7 +290,7 @@ body {
   width: 40%;
   color: #444;
   padding: 10px;
-  opacity:.7;
+  opacity: .7;
   text-align: center;
   background-color: #fff;
   border: none;
@@ -302,10 +301,10 @@ body {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   transition: all .4s ease;
 }
+
 .alert:hover {
   opacity: 1;
 }
-
 
 .alert-success {
   background-color: #18bc9c;
