@@ -161,4 +161,29 @@ export class Auth {
   isVisitor () {
     return this.jwtService.getUserType() === 'visitor'
   }
+
+  /**
+   * Recibe el token de recuperación de contraseña, verifica que sea valido
+   * y retorna el email contenido en el token.
+   * @param {string} token - token recibido
+   * @returns {string}  email de usuario
+   * @throws {error} invalid token - Token falso o erroneo
+   * @throws {error} expired token - Token vencido
+   */
+  validateResetToken (token) {
+    let info = JSON.parse(window.atob(this.token.split('.')[1]))
+    let startDate = info.iat
+    let endDate = info.exp
+    if (info === undefined || info === null || startDate === undefined || startDate === null || endDate === undefined || endDate === null) {
+      throw new Error('invalid token')
+    }
+    let actualDate = new Date().getTime()
+    if (actualDate < startDate) {
+      throw new Error('invalid token')
+    } else if (actualDate + 1000 >= endDate) {
+      throw new Error('expired token')
+    } else {
+      return info.email
+    }
+  }
 }

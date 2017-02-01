@@ -46,6 +46,10 @@ export let MESSAGES = {
     text: 'Link invalido. Verifique el enlace enviado a su correo, e inténtelo de nuevo',
     type: 'error'
   },
+  recoveryExpiredToken: {
+    text: 'Su link de recuperación se ha vencido. Solicite un nuevo link para recuperar su contraseña, y uselo en máximo una hora',
+    type: 'error'
+  },
   recoveryDifferentPasswords: {
     text: 'Las contraseñas no coinciden',
     type: 'warning'

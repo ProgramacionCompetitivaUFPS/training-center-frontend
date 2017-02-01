@@ -90,4 +90,5 @@ export class Jwt {
       return 'visitor'
     }
   }
+
 }

@@ -44,24 +44,20 @@ export class ResetPassword {
   activate (params, routeConfig) {
     this.routeConfig = routeConfig
     this.user.token = params.token
-    this.authorizationService.validateReset(this.user.token)
-      .then(data => {
-        this.tokenValid = true
-        this.user.email = data.email
-      })
-      .catch(error => {
-        switch (error.status) {
-          case 400:
-            this.alertService.showMessage(MESSAGES.recoveryInvalidToken)
-            this.router.navigate('iniciar-sesion')
-            break
-          case 500:
-            this.alertService.showMessage(MESSAGES.serverError)
-            break
-          default:
-            this.alertService.showMessage(MESSAGES.unknownError)
-        }
-      })
+    try {
+      this.user.email = this.authorizationService.validateResetToken(this.user.token)
+      this.tokenValid = true
+    } catch (error) {
+      switch (error.message) {
+        case 'invalid token':
+          this.alertService.showMessage(MESSAGES.recoveryInvalidToken)
+          break
+        case 'expired token':
+          this.alertService.showMessage(MESSAGES.recoveryExpiredToken)
+          break
+      }
+      this.router.navigate('recuperar-password')
+    }
   }
 
   /**

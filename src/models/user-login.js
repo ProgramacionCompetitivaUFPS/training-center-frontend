@@ -11,7 +11,7 @@ export class UserLogIn {
    * @param {string} [password=null] - Contraseña del usuario que inicia sesión
    */
   constructor (email = null, password = null) {
-    this.email = email
+    this.email = 'email'
     this.password = password
   }
 }
