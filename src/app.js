@@ -120,9 +120,6 @@ class AuthorizeStep {
    * Y la ejecuta. De no tener permisos, redirige a una nueva ruta.
    * @param {any} navigationInstruction - Instrucción de navegación recibida
    * @param {any} next - Enrutamento
-   * @returns
-   * 
-   * @memberOf AuthorizeStep
    */
   run (navigationInstruction, next) {
     if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('admin') !== -1)) {
