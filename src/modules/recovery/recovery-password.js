@@ -49,7 +49,6 @@ export class RecoveryPassword {
               this.alertService.showMessage(MESSAGES.serverError)
               break
             default:
-              console.log(error)
               this.alertService.showMessage(MESSAGES.unknownError)
           }
         })

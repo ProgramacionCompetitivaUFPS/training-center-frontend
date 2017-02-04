@@ -38,7 +38,7 @@ export class Login {
    * Valida los datos e intenta iniciar sesión
    */
   login () {
-    if (this.user.email !== '' && this.user.password !== '') {
+    if (this.user.email !== '' && this.user.password !== '' && this.user.email != null && this.user.password !== null) {
       this.authorizationService.auth(this.user)
       .then((data) => {
         this.authorizationService.login(data.token)
