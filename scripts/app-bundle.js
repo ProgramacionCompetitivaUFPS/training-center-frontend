@@ -90,26 +90,19 @@ define('app',['exports', 'aurelia-router', 'services/services'], function (expor
     AuthorizeStep.prototype.run = function run(navigationInstruction, next) {
       if (navigationInstruction.getAllInstructions().some(function (i) {
         return i.config.settings.roles.indexOf('admin') !== -1;
-      })) {
-        if (this.authService.isAdmin()) {
-          return next();
-        }
+      }) && this.authService.isAdmin()) {
+        return next();
       }
       if (navigationInstruction.getAllInstructions().some(function (i) {
         return i.config.settings.roles.indexOf('coach') !== -1;
-      })) {
-        if (this.authService.isCoach()) {
-          return next();
-        }
+      }) && this.authService.isCoach()) {
+        return next();
       }
       if (navigationInstruction.getAllInstructions().some(function (i) {
         return i.config.settings.roles.indexOf('student') !== -1;
-      })) {
-        if (this.authService.isStudent()) {
-          return next();
-        }
+      }) && this.authService.isStudent()) {
+        return next();
       }
-
       if (navigationInstruction.getAllInstructions().some(function (i) {
         return i.config.settings.roles.indexOf('visitor') !== -1;
       })) {
@@ -165,7 +158,7 @@ define('main',['exports', './environment', 'fetch'], function (exports, _environ
 
   function configure(aurelia) {
     aurelia.use.standardConfiguration().feature('resources').plugin('aurelia-notify', function (settings) {
-      settings.timeout = 700000;
+      settings.timeout = 7000;
     });
 
     if (_environment2.default.debug) {
@@ -380,8 +373,8 @@ define('models/user-reset',["exports"], function (exports) {
     this.token = token;
   };
 });
-define('models/user-signin',["exports"], function (exports) {
-  "use strict";
+define('models/user-signin',['exports'], function (exports) {
+  'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -393,25 +386,51 @@ define('models/user-signin',["exports"], function (exports) {
     }
   }
 
-  var UserSignIn = exports.UserSignIn = function UserSignIn() {
-    var email = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var password = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var confirmPassword = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-    var name = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-    var username = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
-    var code = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
-    var type = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
+  var UserSignIn = exports.UserSignIn = function () {
+    function UserSignIn() {
+      var email = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      var password = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var confirmPassword = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var name = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+      var username = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+      var code = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : null;
+      var type = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : null;
 
-    _classCallCheck(this, UserSignIn);
+      _classCallCheck(this, UserSignIn);
 
-    this.email = email;
-    this.password = password;
-    this.confirmPassword = confirmPassword;
-    this.name = name;
-    this.username = username;
-    this.code = code;
-    this.type = type;
-  };
+      this.email = email;
+      this.password = password;
+      this.confirmPassword = confirmPassword;
+      this.name = name;
+      this.username = username;
+      this.code = code;
+      this.type = type;
+    }
+
+    UserSignIn.prototype.isValid = function isValid() {
+      if (this.email === '' || this.email == null) {
+        return false;
+      }
+      if (this.password === '' || this.password == null) {
+        return false;
+      }
+      if (this.confirmPassword === '' || this.confirmPassword == null) {
+        return false;
+      }
+      if (this.name === '' || this.name == null) {
+        return false;
+      }
+      if (this.username === '' || this.username == null) {
+        return false;
+      }
+      if (this.type === '' || this.type == null) {
+        return false;
+      }
+      return true;
+    };
+
+    return UserSignIn;
+  }();
 });
 define('resources/index',['exports'], function (exports) {
   'use strict';
@@ -554,10 +573,17 @@ define('services/auth',['exports', 'config/config', 'services/http', 'services/j
     };
 
     Auth.prototype.validateResetToken = function validateResetToken(token) {
-      var info = JSON.parse(window.atob(this.token.split('.')[1]));
-      var startDate = info.iat;
-      var endDate = info.exp;
-      if (info === undefined || info === null || startDate === undefined || startDate === null || endDate === undefined || endDate === null) {
+      var info = void 0;
+      var startDate = void 0;
+      var endDate = void 0;
+      try {
+        info = JSON.parse(window.atob(token.split('.')[1]));
+        startDate = info.iat;
+        endDate = info.exp;
+      } catch (e) {
+        info = null;
+      }
+      if (info == null || startDate === undefined || endDate === undefined) {
         throw new Error('invalid token');
       }
       var actualDate = new Date().getTime();
@@ -593,7 +619,7 @@ define('services/http',['exports', 'aurelia-fetch-client', 'config/api', 'fetch'
 
       this.httpClient = new _aureliaFetchClient.HttpClient();
       this.httpClient.configure(function (config) {
-        config.useStandardConfiguration().withBaseUrl(_api.API.apiUrl);
+        config.withBaseUrl(_api.API.apiUrl);
       });
     }
 
@@ -641,7 +667,7 @@ define('services/jwt',['exports', 'config/config'], function (exports, _config) 
     }
 
     Jwt.prototype.save = function save(token) {
-      window.localStorage.setItem(_config.API.tokenName, JSON.stringify(token));
+      window.localStorage.setItem(_config.API.tokenName, token);
       this.token = window.localStorage.getItem(_config.API.tokenName);
       this.data = JSON.parse(window.atob(this.token.split('.')[1]));
     };
@@ -814,17 +840,28 @@ define('modules/login/login',['exports', 'aurelia-router', 'config/config', 'mod
     }
 
     Login.prototype.login = function login() {
-      var rta = void 0;
+      var _this = this;
+
       if (this.user.email !== '' && this.user.password !== '' && this.user.email != null && this.user.password !== null) {
         this.authorizationService.auth(this.user).then(function (data) {
-          rta = data;
+          _this.authorizationService.login(data.token);
+          _this.router.navigate('');
         }).catch(function (error) {
-          rta = error;
+          switch (error.status) {
+            case 401:
+              _this.alertService.showMessage(_config.MESSAGES.loginWrongData);
+              _this.user = new _models.UserLogIn();
+              break;
+            case 500:
+              _this.alertService.showMessage(_config.MESSAGES.serverError);
+              break;
+            default:
+              _this.alertService.showMessage(_config.MESSAGES.unknownError);
+          }
         });
       } else {
         this.alertService.showMessage(_config.MESSAGES.loginIncompleteData);
       }
-      return rta;
     };
 
     return Login;
@@ -861,9 +898,10 @@ define('modules/recovery/recovery-password',['exports', 'config/config', 'servic
       var _this = this;
 
       if (this.email !== '') {
-        this.authService.requestRecovery(this.email).then(function (data) {
+        this.authService.requestRecovery(this.email).then(function () {
           _this.alertService.showMessage(_config.MESSAGES.recoveryEmailSent);
         }).catch(function (error) {
+          console.log(error);
           switch (error.status) {
             case 400:
               _this.alertService.showMessage(_config.MESSAGES.recoveryMailDoesNotExist);
@@ -872,7 +910,6 @@ define('modules/recovery/recovery-password',['exports', 'config/config', 'servic
               _this.alertService.showMessage(_config.MESSAGES.serverError);
               break;
             default:
-              console.log(error);
               _this.alertService.showMessage(_config.MESSAGES.unknownError);
           }
         });
@@ -918,13 +955,10 @@ define('modules/recovery/reset-password',['exports', 'aurelia-router', 'config/c
         this.user.email = this.authorizationService.validateResetToken(this.user.token);
         this.tokenValid = true;
       } catch (error) {
-        switch (error.message) {
-          case 'invalid token':
-            this.alertService.showMessage(_config.MESSAGES.recoveryInvalidToken);
-            break;
-          case 'expired token':
-            this.alertService.showMessage(_config.MESSAGES.recoveryExpiredToken);
-            break;
+        if (error.message === 'invalid token') {
+          this.alertService.showMessage(_config.MESSAGES.recoveryInvalidToken);
+        } else if (error.message === 'expired token') {
+          this.alertService.showMessage(_config.MESSAGES.recoveryExpiredToken);
         }
         this.router.navigate('recuperar-password');
       }
@@ -934,7 +968,7 @@ define('modules/recovery/reset-password',['exports', 'aurelia-router', 'config/c
       var _this = this;
 
       if (this.user.password !== '' && this.user.confirmPassword === this.user.password) {
-        this.authorizationService.resetPassword(this.user).then(function (data) {
+        this.authorizationService.resetPassword(this.user).then(function () {
           _this.alertService.showMessage(_config.MESSAGES.recoveryCorrect);
           _this.router.navigate('iniciar-sesion');
         }).catch(function (error) {
@@ -993,9 +1027,9 @@ define('modules/signin/signin',['exports', 'aurelia-router', 'config/config', 'm
     Signin.prototype.signin = function signin() {
       var _this = this;
 
-      if (this.user.email != null && this.user.password != null && this.user.confirmPassword != null && this.user.name != null && this.user.username != null && this.user.type != null) {
+      if (this.user.isValid()) {
         if (this.user.password === this.user.confirmPassword) {
-          this.authorizationService.registerStudent(this.user).then(function (data) {
+          this.authorizationService.registerStudent(this.user).then(function () {
             _this.alertService.showMessage(_config.MESSAGES.signInCorrect);
             _this.router.navigate('iniciar-sesion');
           }).catch(function (error) {

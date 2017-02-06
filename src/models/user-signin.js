@@ -25,4 +25,30 @@ export class UserSignIn {
     this.code = code
     this.type = type
   }
+
+  /**
+   * Valida que el usuario sea valido (solo el código puede ser nulo)
+   * @return {boolean} true si el usuario es valido, falso si no
+   */
+  isValid () {
+    if (this.email === '' || this.email == null) {
+      return false
+    }
+    if (this.password === '' || this.password == null) {
+      return false
+    }
+    if (this.confirmPassword === '' || this.confirmPassword == null) {
+      return false
+    }
+    if (this.name === '' || this.name == null) {
+      return false
+    }
+    if (this.username === '' || this.username == null) {
+      return false
+    }
+    if (this.type === '' || this.type == null) {
+      return false
+    }
+    return true
+  }
 }

@@ -24,7 +24,7 @@ export class Jwt {
    * @param {string} token - Token a almacenar
    */
   save (token) {
-    window.localStorage.setItem(API.tokenName, JSON.stringify(token))
+    window.localStorage.setItem(API.tokenName, token)
     this.token = window.localStorage.getItem(API.tokenName)
     this.data = JSON.parse(window.atob(this.token.split('.')[1]))
   }

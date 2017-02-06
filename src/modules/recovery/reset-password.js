@@ -48,13 +48,10 @@ export class ResetPassword {
       this.user.email = this.authorizationService.validateResetToken(this.user.token)
       this.tokenValid = true
     } catch (error) {
-      switch (error.message) {
-        case 'invalid token':
-          this.alertService.showMessage(MESSAGES.recoveryInvalidToken)
-          break
-        case 'expired token':
-          this.alertService.showMessage(MESSAGES.recoveryExpiredToken)
-          break
+      if (error.message === 'invalid token') {
+        this.alertService.showMessage(MESSAGES.recoveryInvalidToken)
+      } else if (error.message === 'expired token') {
+        this.alertService.showMessage(MESSAGES.recoveryExpiredToken)
       }
       this.router.navigate('recuperar-password')
     }
@@ -66,7 +63,7 @@ export class ResetPassword {
   requestResetPassword () {
     if (this.user.password !== '' && this.user.confirmPassword === this.user.password) {
       this.authorizationService.resetPassword(this.user)
-        .then(data => {
+        .then(() => {
           this.alertService.showMessage(MESSAGES.recoveryCorrect)
           this.router.navigate('iniciar-sesion')
         }) // Si el cambio es exitoso, se redirige al inicio de sesión

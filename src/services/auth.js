@@ -171,10 +171,17 @@ export class Auth {
    * @throws {error} expired token - Token vencido
    */
   validateResetToken (token) {
-    let info = JSON.parse(window.atob(this.token.split('.')[1]))
-    let startDate = info.iat
-    let endDate = info.exp
-    if (info === undefined || info === null || startDate === undefined || startDate === null || endDate === undefined || endDate === null) {
+    let info
+    let startDate
+    let endDate
+    try {
+      info = JSON.parse(window.atob(token.split('.')[1]))
+      startDate = info.iat
+      endDate = info.exp
+    } catch (e) {
+      info = null
+    }
+    if (info == null || startDate === undefined || endDate === undefined) {
       throw new Error('invalid token')
     }
     let actualDate = new Date().getTime()

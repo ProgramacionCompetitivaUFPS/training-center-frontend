@@ -1,7 +1,7 @@
 /**
  * MESSAGES
  * Archivo con todos los mensajes de alerta, exito, error o peligro que se muestran en la aplicación.
- * IMPORTANTE: Todo nuevo mensaje que se desee agregar debe incluirse a través de este archivo.
+ * IMPORTANTE: Cualquier nuevo mensaje que se desee agregar debe incluirse a través de este archivo.
  * @exports MESSAGES - Objeto JSON con todos los mensajes
  */
 export let MESSAGES = {

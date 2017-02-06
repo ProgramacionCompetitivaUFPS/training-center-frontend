@@ -37,10 +37,11 @@ export class RecoveryPassword {
   requestRecovery () {
     if (this.email !== '') {
       this.authService.requestRecovery(this.email)
-        .then(data => {
+        .then(() => {
           this.alertService.showMessage(MESSAGES.recoveryEmailSent)
         })
         .catch(error => {
+          console.log(error)
           switch (error.status) {
             case 400:
               this.alertService.showMessage(MESSAGES.recoveryMailDoesNotExist)

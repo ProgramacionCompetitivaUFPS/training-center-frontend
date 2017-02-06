@@ -25,12 +25,4 @@ describe('El módulo de recuperación de contraseña (Recovery password)', () =>
     recoveryModule.requestRecovery()
     expect(recoveryModule.authService.requestRecovery).not.toHaveBeenCalled()
   })
-
-  it('Si el campo email es válido envia al servicio de recuperación', () => {
-    spyOn(recoveryModule.authService, 'requestRecovery').and.callThrough()
-    let email = 'user@email.com'
-    recoveryModule.email = email
-    recoveryModule.requestRecovery()
-    expect(recoveryModule.authService.requestRecovery).toHaveBeenCalledWith(email)
-  })
 })

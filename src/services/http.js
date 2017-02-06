@@ -17,7 +17,6 @@ export class Http {
     this.httpClient = new HttpClient()
     this.httpClient.configure(config => {
       config
-        .useStandardConfiguration()
         .withBaseUrl(API.apiUrl)
     })
   }

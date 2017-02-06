@@ -122,22 +122,15 @@ class AuthorizeStep {
    * @param {any} next - Enrutamento
    */
   run (navigationInstruction, next) {
-    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('admin') !== -1)) {
-      if (this.authService.isAdmin()) {
-        return next()
-      }
+    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('admin') !== -1) && this.authService.isAdmin()) {
+      return next()
     }
-    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('coach') !== -1)) {
-      if (this.authService.isCoach()) {
-        return next()
-      }
+    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('coach') !== -1) && this.authService.isCoach()) {
+      return next()
     }
-    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('student') !== -1)) {
-      if (this.authService.isStudent()) {
-        return next()
-      }
+    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('student') !== -1) && this.authService.isStudent()) {
+      return next()
     }
-
     if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('visitor') !== -1)) {
       if (!this.authService.isVisitor()) {
         return next.cancel(new Redirect(''))

@@ -39,10 +39,10 @@ export class Signin {
    * Envia al servidor los datos del nuevo usuario a registrar.
    */
   signin () {
-    if (this.user.email != null && this.user.password != null && this.user.confirmPassword != null && this.user.name != null && this.user.username != null && this.user.type != null) {
+    if (this.user.isValid()) {
       if (this.user.password === this.user.confirmPassword) {
         this.authorizationService.registerStudent(this.user)
-          .then((data) => {
+          .then(() => {
             this.alertService.showMessage(MESSAGES.signInCorrect)
             this.router.navigate('iniciar-sesion')
           }) // Si el registro es correcto se redirige al inicio de sesión
