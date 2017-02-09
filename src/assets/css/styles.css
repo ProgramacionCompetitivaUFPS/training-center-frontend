@@ -4,6 +4,9 @@ html,
 body {
   height: 100%;
 }
+.nav>li>a:focus, .nav>li>a:hover {
+      background-color: transparent!important;
+}
 
 
 /*Estilos not-logged*/
@@ -212,7 +215,7 @@ body {
   padding-right: 18px!important;
   line-height: 35px!important;
   font-size: 16px;
-  color: #BDC3C7;
+  color: #ACB2B6;
   transition: all .3s ease;
 }
 
@@ -324,4 +327,27 @@ body {
 .alert-warning {
   background-color: #ff9800;
   color: #FFF;
+}
+
+.ufps-dropdown-menu {
+  cursor: pointer;
+}
+
+.ufps-bg {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    overflow-y: auto;
+    left: 0;
+    right: 0;
+}
+@media (min-width: 768px) {
+  .ufps-bg {
+    background-image: url(src/assets/img/bg-pc.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #34495E;
+  }
 }

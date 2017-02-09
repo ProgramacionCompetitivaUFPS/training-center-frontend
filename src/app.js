@@ -82,6 +82,37 @@ export class App {
         name: 'home',
         route: '',
         moduleId: './modules/home/home',
+        layoutView: './layouts/logged.html',
+        settings: {
+          roles: ['admin', 'coach', 'student']
+        }
+      },
+      {
+        name: 'problems',
+        route: 'problemas',
+        moduleId: './modules/home/home',
+        layoutView: './layouts/logged.html',
+        nav: true,
+        settings: {
+          roles: ['admin', 'coach', 'student']
+        }
+      },
+      {
+        name: 'ranking',
+        route: 'ranking',
+        moduleId: './modules/home/home',
+        layoutView: './layouts/logged.html',
+        nav: true,
+        settings: {
+          roles: ['admin', 'coach', 'student']
+        }
+      },
+      {
+        name: 'classes',
+        route: 'clases',
+        moduleId: './modules/home/home',
+        layoutView: './layouts/logged.html',
+        nav: true,
         settings: {
           roles: ['admin', 'coach', 'student']
         }

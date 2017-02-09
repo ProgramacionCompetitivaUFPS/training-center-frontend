@@ -1,14 +1,15 @@
 <template>
-  <require from="./not-logged.css"></require>
-  <div class="col-md-4 col-md-offset-8 col-sm-7 col-sm-offset-5 ufps-container-sign">
-    <slot name="content"></slot>
-    <div class="col-sm-12 text-center ufps-sign-about hidden-xs">
-      <p>
-        UFPS Training Center - 2016
-      </p>
-      <p>
-        Universidad Francisco de Paula Santander
-      </p>
+  <div class="ufps-bg">
+    <div class="col-md-4 col-md-offset-8 col-sm-7 col-sm-offset-5 ufps-container-sign">
+      <slot name="content"></slot>
+      <div class="col-sm-12 text-center ufps-sign-about hidden-xs">
+        <p>
+          UFPS Training Center - 2016
+        </p>
+        <p>
+          Universidad Francisco de Paula Santander
+        </p>
+      </div>
     </div>
   </div>
 </template>

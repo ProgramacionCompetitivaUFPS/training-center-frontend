@@ -1,0 +1,67 @@
+<template>
+  <nav class="navbar navbar-fixed-top ufps-navbar">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand ufps-brand" href="#">
+          <img alt="UFPS Training Center" src="src/assets/img/logo-transparent.png">
+        </a>
+      </div>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="nav navbar-nav navbar-left">
+          <li class="ufps-btn-nav ${problems.isActive ? 'active' : ''}" if.bind="authService.isStudent()">
+            <a route-href="route: problems">Problemas</a>
+          </li>
+          <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${problems.isActive ? 'active' : ''}" if.bind="authService.isCoach()">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              Problemas
+            </a>
+            <ul class="dropdown-menu ufps-dropdown-menu">
+              <li><a href="#">Ver problemas</a></li>
+              <li><a href="#">Añadir problemas</a></li>
+            </ul>
+          </li>
+          <li class="ufps-btn-nav ${classes.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
+            <a route-href="route: classes">Clases</a>
+          </li>
+          <li class="ufps-btn-nav ${ranking.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
+            <a  route-href="route: ranking">Ranking</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown ufps-btn-nav ufps-dropdown-user">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <img src="src/assets/img/user.png" alt="Avatar de usuario" class="ufps-avatar">
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu ufps-dropdown-menu">
+              <li><a href="#">Mis envios</a></li>
+              <li><a href="#">Perfil</a></li>
+              <li><a href="#">Editar perfil</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a click.delegate="logOut()">Cerrar Sesión</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <div class="form-group ufps-navbar-search">
+            <div class="input-group">
+              <input type="text" class="form-control ufps-navbar-input" placeholder="Buscar...">
+              <div class="input-group-addon ufps-input-navbar-addon">
+                <span class="glyphicon glyphicon-search"></span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <div repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+        ${row}
+    </div>
+</template>

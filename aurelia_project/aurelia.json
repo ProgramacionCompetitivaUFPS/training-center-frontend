@@ -137,16 +137,6 @@
           },
           "jquery",
           {
-            "name": "bootstrap",
-            "path": "../node_modules/bootstrap/dist",
-            "main": "js/bootstrap.min",
-            "deps": ["jquery"],
-            "exports": "$",
-            "resources": [
-              "css/bootstrap.css"
-            ]
-          },
-          {
             "name": "aurelia-notify",
             "path": "../node_modules/aurelia-notify/dist/amd",
             "main": "index",
