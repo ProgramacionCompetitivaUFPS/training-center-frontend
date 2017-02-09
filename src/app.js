@@ -90,7 +90,7 @@ export class App {
       {
         name: 'problems',
         route: 'problemas',
-        moduleId: './modules/home/home',
+        moduleId: './modules/problems/general-problems/general-problems',
         layoutView: './layouts/logged.html',
         nav: true,
         settings: {

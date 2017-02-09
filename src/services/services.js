@@ -5,9 +5,11 @@
  * @exports Alert (Service) - Servicio de notificaciones
  * @exports Auth (Service) - Servicio de autenticación y validación
  * @exports Http (Service) - Servicio de conexión http
- * @exports jwt (Service) - Servicio de manejode JSON Web Token (JWT)
+ * @exports Jwt (Service) - Servicio de manejode JSON Web Token (JWT)
+ * @exports Problems (Service) - Servicio para el manejo de problemas y categorías
  */
 export * from './alert'
 export * from './auth'
 export * from './http'
 export * from './jwt'
+export * from './problems'

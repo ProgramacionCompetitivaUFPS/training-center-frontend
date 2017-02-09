@@ -10,7 +10,8 @@ export let API = {
     auth: 'auth',
     users: 'users',
     recovery: 'recovery',
-    reset: 'reset'
+    reset: 'reset',
+    categories: 'categories'
   },
 
   // SESSION

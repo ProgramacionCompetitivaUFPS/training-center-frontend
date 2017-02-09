@@ -58,6 +58,11 @@ export let MESSAGES = {
     text: 'Su contraseña se ha cambiado exitosamente',
     type: 'success'
   },
+  // CATEGORIAS
+  categoriesError: {
+    text: 'La lista de categorías no ha sido cargada. Intentelo de nuevo',
+    type: 'succes'
+  },
   // GENERAL
   serverError: {
     text: 'Ha ocurrido un error interno. Lo sentimos. Vuelve a intentarlo mas tarde',
