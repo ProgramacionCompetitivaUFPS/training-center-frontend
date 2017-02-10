@@ -4,9 +4,7 @@ import 'fetch'
 // Configure Bluebird Promises.
 Promise.config({
   longStackTraces: environment.debug,
-  warnings: {
-    wForgottenReturn: false
-  }
+  warnings: false
 })
 
 /**

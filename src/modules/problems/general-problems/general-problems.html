@@ -1,24 +1,22 @@
 <template>
-  <div slot="content">
-    <div class="container ufps-container-logged">
-      <h1 class="text-right">Categorias</h1>
-      <hr>
-      <div repeat.for="category of categories" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
-        <div class="ufps-card">
-          <div class="ufps-card-title">
-            <h1>${category.name}</h1>
-          </div>
-          <div class="col-xs-6 ufps-card-link">
-            <a>Problemas</a>
-          </div>
-          <div class="col-xs-6 ufps-card-link">
-            <a>Material</a>
-          </div>
-          <div class="fix"></div>
+  <div class="container ufps-container-logged">
+    <h1 class="text-right">Categorias</h1>
+    <hr>
+    <div repeat.for="category of categories" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
+      <div class="ufps-card">
+        <div class="ufps-card-title">
+          <h1>${category.name}</h1>
         </div>
+        <div class="col-xs-6 ufps-card-link">
+          <a>Problemas</a>
+        </div>
+        <div class="col-xs-6 ufps-card-link">
+          <a>Material</a>
+        </div>
+        <div class="fix"></div>
       </div>
-      <div class="fix"></div>
-      <div class="separator"></div>
     </div>
+    <div class="fix"></div>
+    <div class="separator"></div>
   </div>
 </template>

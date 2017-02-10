@@ -29,6 +29,7 @@ export class Auth {
   constructor (httpService, jwtService) {
     this.httpService = httpService
     this.jwtService = jwtService
+    this.authenticated = this.isAuthenticated()
   }
   /**
    * Envia al servidor los datos de inicio de sesión, y retorna el token de usuario si el login
@@ -113,6 +114,7 @@ export class Auth {
    */
   login (token) {
     this.jwtService.save(token)
+    this.authenticated = this.isAuthenticated()
   }
 
   /**
@@ -120,6 +122,7 @@ export class Auth {
    */
   logout () {
     this.jwtService.remove()
+    this.authenticated = this.isAuthenticated()
   }
 
   /**

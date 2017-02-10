@@ -5,6 +5,10 @@
  */
 export let API = {
   // API
+
+  /**
+   * apiUrl debe reemplazarse por la dirección del backend
+   */
   apiUrl: 'http://demo9817161.mockable.io/',
   endponts: {
     auth: 'auth',
