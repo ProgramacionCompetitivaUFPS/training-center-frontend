@@ -12,7 +12,14 @@ export class Problem {
         route: '',
         name: 'problemas',
         moduleId: 'modules/problems/general-problems/general-problems',
-        nav: true,
+        settings: {
+          roles: ['admin', 'coach', 'student']
+        }
+      },
+      {
+        name: 'categoria',
+        route: 'categoria/:id',
+        moduleId: 'modules/problems/category-problems/category-problems',
         settings: {
           roles: ['admin', 'coach', 'student']
         }

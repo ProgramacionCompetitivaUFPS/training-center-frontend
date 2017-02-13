@@ -42,7 +42,7 @@ export class GeneralProblems {
       })
       .catch(error => {
         if (error.status === 401) {
-          this.alertService.showMessage(MESSAGES.permissionsError)         
+          this.alertService.showMessage(MESSAGES.permissionsError)
         } else {
           this.alertService.showMessage(MESSAGES.categoriesError)
         }
