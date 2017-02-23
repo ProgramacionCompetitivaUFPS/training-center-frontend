@@ -1,5 +1,5 @@
 import { MESSAGES } from 'config/config'
-import { Alert, Problems } from 'services/services'
+import { Alert, Auth, Problems } from 'services/services'
 
 /**
  * GeneralProblems (Module)
@@ -14,21 +14,24 @@ export class GeneralProblems {
    * Estas dependencias son cargadas bajo el patrón de diseño singleton.
    * @static
    * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * Servicio de obtención y manejo de problemas (Problems)
+   * Servicio de Autenticación (Auth) y Servicio de obtención y manejo de problemas (Problems)
    */
   static inject () {
-    return [Alert, Problems]
+    return [Alert, Auth, Problems]
   }
 
   /**
    * Crea una instancia de GeneralProblems.
    * @param {service} alertService - Servicio de notificaciones
+   * @param {service} authService - Servicio de autenticación
    * @param {service} problemService - Servicio de obtención y manejo de problemas
    */
-  constructor (alertService, problemsService) {
+  constructor (alertService, authService, problemsService) {
     this.alertService = alertService
+    this.authService = authService
     this.problemsService = problemsService
     this.categories = []
+    this.newCategory = ''
   }
 
   /**
@@ -36,6 +39,27 @@ export class GeneralProblems {
    * Este método se dispara una vez la vista y el view-model son cargados.
    */
   created () {
+    this.getCategories()
+  }
+
+  /**
+   * Crea una nueva categoría en la plataforma
+   */
+  createCategory () {
+    window.$('#new-category').modal('hide')
+    this.problemsService.createCategory(this.newCategory)
+      .then(() => {
+        this.getCategories()
+      })
+      .catch(() => {
+        this.alertService.showMessage(MESSAGES.unknownError)
+      })
+  }
+
+  /**
+   * Lee la lista de categorías disponibles en la plataforma.
+   */
+  getCategories () {
     this.problemsService.getCategories()
       .then(data => {
         this.categories = data

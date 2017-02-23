@@ -61,7 +61,11 @@ export let MESSAGES = {
   // CATEGORIAS
   categoriesError: {
     text: 'La lista de categorías no ha sido cargada. Intentelo de nuevo',
-    type: 'succes'
+    type: 'success'
+  },
+  categoryDoesNotExist: {
+    text: 'No existe una categoría con el id solicitado. Verifique el link, e intentelo de nuevo',
+    type: 'error'
   },
   // GENERAL
   serverError: {
@@ -74,6 +78,12 @@ export let MESSAGES = {
   },
   permissionsError: {
     text: 'Usted no tiene permisos para realizar esta acción',
+    type: 'error'
+  },
+
+  //FILES
+  fileTypeIsNotTxtOrIn: {
+    text: 'El archivo debe ser de tipo .txt o .in',
     type: 'error'
   }
 }

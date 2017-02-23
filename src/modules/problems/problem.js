@@ -10,18 +10,26 @@ export class Problem {
     config.map([
       {
         route: '',
-        name: 'problemas',
+        name: 'problems',
         moduleId: 'modules/problems/general-problems/general-problems',
         settings: {
           roles: ['admin', 'coach', 'student']
         }
       },
       {
-        name: 'categoria',
+        name: 'category',
         route: 'categoria/:id',
         moduleId: 'modules/problems/category-problems/category-problems',
         settings: {
           roles: ['admin', 'coach', 'student']
+        }
+      },
+      {
+        name: 'problems-creator',
+        route: 'nuevo',
+        moduleId: 'modules/problems/problems-creator/problems-creator',
+        settings: {
+          roles: ['admin', 'coach']
         }
       }
     ])

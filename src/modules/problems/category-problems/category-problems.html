@@ -1,6 +1,90 @@
 <template>
   <div class="container ufps-container-logged">
-    <h1 class="text-right"></h1>
+    <h1 class="text-right">${category.name}</h1>
     <hr>
+    <div class="col-sm-6 text-left">
+      Mostrar
+      <div class="dropdown dropdown-inline ufps-dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="showNoItems" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="true">
+          ${noProblemsToShow}
+          <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="showNoItems">
+            <li><a click.delegate="setNoProblemsToShow(10)">10</a></li>
+            <li><a click.delegate="setNoProblemsToShow(20)">20</a></li>
+            <li><a click.delegate="setNoProblemsToShow(30)">30</a></li>
+            <li><a click.delegate="setNoProblemsToShow(50)">50</a></li>
+          </ul>
+      </div>
+      problemas
+    </div>
+    <div class="col-sm-6 text-right">
+      Ordenar por
+      <div class="dropdown dropdown-inline ufps-dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          ${sortDisplay}
+          <span class="caret"></span>
+          </button>
+        <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="sortBy">
+          <li><a click.delegate="setSort('id', 'Id')">Id</a></li>
+          <li><a click.delegate="setSort('name', 'Nombre')">Nombre</a></li>
+          <li><a click.delegate="setSort('level', 'Dificultad')">Dificultad</a></li>
+        </ul>
+      </div>
+      en forma
+      <div class="dropdown dropdown-inline ufps-dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="orderBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          ${byDisplay}
+          <span class="caret"></span>
+          </button>
+        <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="orderBy">
+          <li><a click.delegate="setBy('asc', 'Ascendente')">Ascendente</a></li>
+          <li><a click.delegate="setBy('desc', 'Descendente')">Descendente</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ufps-separator"></div>
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Problema</th>
+          <th>Dificultad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="problem of category.problemsLoaded">
+          <td>${problem.id}</td>
+          <td>${problem.title}</td>
+          <td>${problem.level}</td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="Navegación" class="text-center">
+      <ul class="pagination">
+        <li class="${page === 1 ? 'disabled' : ''}">
+          <a click.delegate = "goToFirstPage()" aria-label="Primero">
+            <span aria-hidden="true">Inicio</span>
+          </a>
+        </li>
+        <li class="${page === 1 ? 'disabled' : ''}">
+          <a click.delegate = "goToPrevPage()" aria-label="Anterior">
+            <span aria-hidden="true">Anterior</span>
+          </a>
+        </li>
+        <li repeat.for="i of pagination" class="${i === page ? 'active' : ''}"><a click.delegate = "goToPage(i)">${i}</a></li>
+        <li class="${page === totalPages ? 'disabled' : ''}">
+          <a click.delegate = "goToNextPage()" aria-label="Siguiente">
+            <span aria-hidden="true">Siguiente</span>
+          </a>
+        </li>
+        <li class="${page === totalPages ? 'disabled' : ''}">
+          <a click.delegate = "goToLastPage()" aria-label="Último">
+            <span aria-hidden="true">Final</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>

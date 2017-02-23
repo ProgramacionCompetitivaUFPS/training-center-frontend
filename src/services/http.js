@@ -34,7 +34,8 @@ export class Http {
     if (response.status >= 200 && response.status < 300) {
       return response
     } else {
-      var error = new Error(response.statusText)
+      let error = new Error(response.statusText)
+      error.status = response.status
       error.response = response
       throw error
     }
