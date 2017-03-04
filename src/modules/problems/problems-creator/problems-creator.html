@@ -2,23 +2,26 @@
   <div class="container ufps-container-logged">
     <h1 class="text-right">Nuevo problema</h1>
     <hr>
-    <form>
+    <form submit.delegate="submit()" enctype="multipart/form-data">
       <div class="form-horizontal col-md-7">
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="problem-name">Nombre:</label>
-          <div class="col-sm-10 input-group ufps-input-creator">
-            <input type="text" class="form-control" id="problem-name" placeholder="Nombre del problema" required value.bind="newProblem.title">
-            <span class="input-group-addon" data-toggle="tooltip" title="Título del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
-          </div>
-        </div>
         <div class="form-group">
           <label class="control-label col-sm-2" for="problem-category">Categoría:</label>
           <div class="col-sm-10 input-group ufps-input-creator">
-            <select class="form-control" id="problem-category" value.bind="newProblem.categoryId">
+            <select class="form-control" id="problem-category" value.bind="newProblem.category">
               <option model.bind="null">Elige una categoría</option>
               <option repeat.for="category of categories" model.bind="category.id">${category.name}</option>
             </select>
             <span class="input-group-addon" data-toggle="tooltip" title="Temática relacionada con el problema"><span class="glyphicon glyphicon-question-sign"></span></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="problem-name">Nombre:</label>
+          <div class="col-sm-10 input-group ufps-input-creator">
+            <input type="text" class="form-control" id="problem-name" placeholder="Nombre del problema" value.bind="newProblem.titleES"
+              if.bind="originalLanguage === 'es'">
+            <input type="text" class="form-control" id="problem-name" placeholder="Nombre del problema" value.bind="newProblem.titleEN"
+              if.bind="originalLanguage === 'en'">
+            <span class="input-group-addon" data-toggle="tooltip" title="Título del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
           </div>
         </div>
       </div>
@@ -26,21 +29,32 @@
         <div class="form-group">
           <label class="control-label col-sm-3" for="problem-level">Dificultad:</label>
           <div class="col-sm-9 input-group ufps-input-creator">
-            <input type="number" class="form-control" id="problem-level" min="1" max="10" required value.bind="newProblem.level">
+            <input type="number" class="form-control" id="problem-level" min="1" max="10"  value.bind="newProblem.level">
             <span class="input-group-addon" data-toggle="tooltip" title="Nivel de dificultad [1 - 10] Donde 1 es muy facil, y 10 muy complejo"><span class="glyphicon glyphicon-question-sign"></span></span>
           </div>
         </div>
-        <div class="col-sm-6 ufps-input-creator">
-          <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate = "validateTestCase('input')" accept=".txt, .in">
-          <label for="input-file" data-toggle="tooltip" title="Archivo .txt o .in con las entradas que será ejecutado el programa escrito por el estudiante para ser validado">Entradas <span class="glyphicon glyphicon-ok-sign" show.bind="inputValid"></span></span></label>
-        </div>
-        <div class="col-sm-6 ufps-input-creator">
-          <input type="file" name="output-file" id="output-file" class="inputfile-btn"  accept=".txt, .in" change.delegate = "validateTestCase('output')">
-          <label for="output-file" data-toggle="tooltip" title="Archivo .txt o .out con las salidas que debe generar el programa escrito por el estudiante para ser considerado correcto">Salidas <span class="glyphicon glyphicon-ok-sign" show.bind="outputValid"></span></span></label>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="problem-language">Idioma:</label>
+          <div class="col-sm-9 input-group ufps-input-creator">
+            <select class="form-control" id="problem-language" value.bind="originalLanguage" change.delegate="changeLanguageEditor()">
+              <option model.bind="'en'">Inglés</option>
+              <option model.bind="'es'">Español</option>
+            </select>
+            <span class="input-group-addon" data-toggle="tooltip" title="Idioma del título y enunciado del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
+          </div>
         </div>
         
       </div>
+      <div class="form-horizontal col-md-12">
+        <div class="form-group">
+          <label class="control-label col-sm-9" for="problem-level">Tiempo límite:</label>
+          <div class="col-sm-3 input-group ufps-input-creator">
+            <input type="number" class="form-control" id="problem-level" min="0.5" max="10.0" step="0.1" value.bind="newProblem.timeLimit">
+            <span class="input-group-addon" data-toggle="tooltip" title="Tiempo que tendrá la solución para ejecutarse (en segundos). Si se excede este tiempo, la ejecución se detendrá y se informará al usuario que ha excedido el tiempo limite."><span class="glyphicon glyphicon-question-sign"></span></span>
+        </div>
+      </div>
       <div class="fix"></div>
+      
       <h3 class="text-center">Contenido</h3>
       <textarea name="md-editor" id="md-editor"># Descripción
 
@@ -54,23 +68,148 @@ Reemplaza este texto con la especificación de la entrada de tu problema. Si no 
 
 Reemplaza este texto con la especificación de la salida de tu problema.
       </textarea>
+
       <div class="ufps-separator"></div>
       <div class="col-md-12 text-center">
-        <p>A continuación, introduzca los casos de prueba que se mostrarán en la plataforma de forma pública. Se recomienda que estos casos sean una versión reducida de los casos completos ingresados en la sección superior.</p>
+        <p>Importante: <strong>LAS ENTRADAS Y SALIDAS DE EJEMPLO</strong> se mostrarán junto al enunciado en la plataforma.
+          Se recomenda que estos sean algunos casos simples que expliquen brevemente las entradas y salidas. Por su parte,
+          los casos de prueba <strong>PRIVADOS</strong> son los que utilizará la plataforma para evaluar los ejercicios.
+          Por tanto, estos deberían ser mas extensos y completos (Dado que es posible que estos casos sean muy extensos,
+          deben subirse en formato .txt o .in)</p>
       </div>
       <div class="col-md-6 ufps-input-creator">
         <h4>Entradas de ejemplo</h4>
-        <textarea name="" id="" class="form-control"></textarea>
+        <textarea value.bind="newProblem.exampleInput" class="form-control"></textarea>
       </div>
       <div class="col-md-6 ufps-input-creator">
         <h4>Salidas de ejemplo</h4>
-        <textarea name="" id="" class="form-control"></textarea>
+        <textarea value.bind="newProblem.exampleOutput" class="form-control"></textarea>
       </div>
+      <div class="fix"></div>
+      <div class="ufps-separator"></div>
+      <div class="col-md-6 text-right">
+        <h4>Seleccione los casos de prueba privados:</h4>
+      </div>
+      <div class="col-md-6">
+        <div class="col-sm-6 ufps-input-creator">
+          <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateTestCase('input')" accept=".txt, .in" files.bind="newProblem.input">
+          <label for="input-file" data-toggle="tooltip" title="Archivo .txt o .in con las entradas que será ejecutado el programa escrito por el estudiante para ser validado">Entradas <span class="glyphicon glyphicon-ok-sign" show.bind="inputValid"></span></span></label>
+        </div>
+        <div class="col-sm-6 ufps-input-creator">
+          <input type="file" name="output-file" id="output-file" class="inputfile-btn" accept=".txt, .in" change.delegate="validateTestCase('output')" files.bind="newProblem.output">
+          <label for="output-file" data-toggle="tooltip" title="Archivo .txt o .out con las salidas que debe generar el programa escrito por el estudiante para ser considerado correcto">Salidas <span class="glyphicon glyphicon-ok-sign" show.bind="outputValid"></span></span></label>
+        </div>
+      </div>
+      <div class="fix"></div>
+    <div class="ufps-separator"></div>
+    <div class="col-xs-12 form horizontal" show.bind="doubleLanguage">
+      <h4 class="text-center">Versión en ${originalLanguage === 'en' ? 'Español' : 'Inglés'}</h4>
+      <div class="form-group">
+          <label class="control-label col-sm-2" for="problem-name">Nombre:</label>
+          <div class="col-sm-10 input-group ufps-input-creator">
+            <input type="text" class="form-control" id="problem-name" placeholder="Nombre del problema" value.bind="newProblem.titleES"
+              if.bind="originalLanguage === 'es'">
+            <input type="text" class="form-control" id="problem-name" placeholder="Nombre del problema" value.bind="newProblem.titleES"
+              if.bind="originalLanguage === 'en'">
+            <span class="input-group-addon" data-toggle="tooltip" title="Título del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
+          </div>
+        </div>
+        <textarea name="md-editor-2" id="md-editor-2"># Descripción
+
+Reemplaza este texto con la descripción de tu problema. Recuerda que puedes usar la sintaxis de Markdown.
+
+# Entradas
+
+Reemplaza este texto con la especificación de la entrada de tu problema. Si no conoces la sintaxis markdown, puedes hacer uso de las opciones de la barra superior.
+
+# Salidas
+
+Reemplaza este texto con la especificación de la salida de tu problema.
+      </textarea>
+    </div>
       <div class="col-xs-12 text-center">
-        <input type="submit" class="btn ufps-btn-submit" value="Crear problema">
+        <button if.bind="!doubleLanguage" class="btn ufps-btn-submit" click.delegate="addLanguage()">Añadir versión en ${originalLanguage === 'en' ? 'Español' : 'Inglés'}</button>
+        <button if.bind="doubleLanguage" class="btn ufps-btn-submit" click.delegate="removeLanguage()">Eliminar versión en ${originalLanguage === 'en' ? 'Español' : 'Inglés'}</button>
+        <input type="submit" class="btn ufps-btn-submit" value="Guardar problema">
       </div>
     </form>
     <div class="fix"></div>
     <div class="ufps-separator"></div>
+  </div>
+  <!--Modal explicativo de markdown-->
+  <div class="modal fade" id="markdown-help" tabindex="-1" role="dialog" aria-labelledby="markdown-help">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h2 class="modal-title" id="myModalLabel">Ayuda</h2>
+          <hr>
+          <p>Este editor utiliza Markdown, lenguaje de marcado ligero con el cual puedes dar formato rápido a tus ejercicios. Para tu comodidad, la barra superior del editor contiene las principales opciones de markdown. Si prefieres tu mismo escribir la sintaxis, aquí tienes una referencia rápida:</p>
+          <h3>Enfasis</h3>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              **<strong>negrilla</strong>**<br>
+              *<em>cursiva</em>*<br>
+              ~~<del>tachado</del>~~<br>
+            </div>
+          </div>
+          <h3>Titulos</h3>
+          <pre>
+
+# Título grande
+## Título Mediano
+### Título pequeño
+#### Título muy pequeño
+          </pre>
+          <h3>Listas</h3>
+          <pre>
+
+* Lista con viñetas
+* Lista con viñetas
+* Lista con viñetas
+
+1. Lista numerada
+2. Lista numerada
+3. Lista numerada
+          </pre>
+          <h3>Links</h3>
+          <pre>
+
+[Texto a mostrar en pantalla](http://www.example.com)
+          </pre>
+          <h3>Citas</h3>
+          <pre>
+
+> "Solo se que nada se" 
+          </pre>
+          <h3>Imagenes</h3>
+          <pre>
+
+![Texto alternativo](http://www.example.com/link_de_la_imagen.jpg)
+          </pre>
+          <h3>Tablas</h3>
+          <pre>
+
+| Column 1 | Column 2 | Column 3 |
+| -------- | -------- | -------- |
+| John     | Doe      | Male     |
+| Mary     | Smith    | Female   |
+          </pre>
+          <h3>Código</h3>
+          <pre>
+            
+`var example = "hello!";`
+
+O multiples lineas de código...
+
+```
+var example = "hello!";
+alert(example);
+```             
+          </pre>
+          <p>Esta guía rápida se ha realizado tomando como referencia la Guía de <a href="https://simplemde.com/markdown-guide" target="_blank">SimpleMDE</a></p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

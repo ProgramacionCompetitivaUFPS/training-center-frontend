@@ -16,7 +16,8 @@ export let API = {
     recovery: 'recovery',
     reset: 'reset',
     categories: 'categories',
-    categoryProblems: 'categories/{1}/problems'
+    categoryProblems: 'categories/{1}/problems',
+    problems: 'problems'
   },
 
   // SESSION

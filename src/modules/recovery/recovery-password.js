@@ -41,7 +41,6 @@ export class RecoveryPassword {
           this.alertService.showMessage(MESSAGES.recoveryEmailSent)
         })
         .catch(error => {
-          console.log(error)
           switch (error.status) {
             case 400:
               this.alertService.showMessage(MESSAGES.recoveryMailDoesNotExist)

@@ -32,6 +32,10 @@ export class GeneralProblems {
     this.problemsService = problemsService
     this.categories = []
     this.newCategory = ''
+    this.categoryEditId = null
+    this.categoryEditName = ''
+    this.categoryRemoveId = null
+    this.categoryRemoveName = ''
   }
 
   /**
@@ -43,16 +47,29 @@ export class GeneralProblems {
   }
 
   /**
+   * Activa los tooltips y crea los editores según corresponda.
+   * Este método hace parte del ciclo de vida de la aplicación y se ejecuta en el instante
+   * en que se conecta el componente con el view-model.
+   */
+  attached () {
+    window.$(document).ready(function () {
+      window.$('body').tooltip({ selector: '[data-toggle=tooltip]' })
+    })
+  }
+
+  /**
    * Crea una nueva categoría en la plataforma
    */
   createCategory () {
-    window.$('#new-category').modal('hide')
     this.problemsService.createCategory(this.newCategory)
       .then(() => {
         this.getCategories()
+        this.alertService.showMessage(MESSAGES.categoryCreated)
+        window.$('#new-category').modal('hide')
       })
       .catch(() => {
         this.alertService.showMessage(MESSAGES.unknownError)
+        window.$('#new-category').modal('hide')
       })
   }
 
@@ -73,4 +90,57 @@ export class GeneralProblems {
       })
   }
 
+  /**
+   * Muestra en pantalla el popup para editar el nombre de una categoría.
+   * @param {number} id - Identificador de la categoría a editar.
+   * @param {string} name - Nombre actual de la categoría.
+   */
+  showEditCategory (id, name) {
+    this.categoryEditId = id
+    this.categoryEditName = name
+    window.$('#edit-category').modal('show')
+  }
+
+  /**
+   * Muestra en pantalla el popup para eliminar una categoría.
+   * @param {number} id - Identificador de la categoría a eliminar.
+   * @param {string} name - Nombre de la categoría.
+   */
+  showRemoveCategory (id, name) {
+    this.categoryRemoveId = id
+    this.categoryRemoveName = name
+    window.$('#remove-category').modal('show')
+  }
+
+  /**
+   * Envia al servidor el nuevo nombre de una categoría para ser editado.
+   */
+  editCategory () {
+    this.problemsService.editCategory(this.categoryEditId, this.categoryEditName)
+      .then(() => {
+        this.categories.find(i => i.id === this.categoryEditId).name = this.categoryEditName
+        this.alertService.showMessage(MESSAGES.categoryEdited)
+        window.$('#edit-category').modal('hide')
+      })
+      .catch(() => {
+        this.alertService.showMessage(MESSAGES.unknownError)
+        window.$('#edit-category').modal('hide')
+      })
+  }
+
+  /**
+   * Envia al servidor la categoría que debe ser eliminada.
+   */
+  removeCategory () {
+    this.problemsService.removeCategory(this.categoryRemoveId)
+      .then(() => {
+        this.categories.splice(this.categories.findIndex(i => i.id === this.categoryRemoveId), 1)
+        this.alertService.showMessage(MESSAGES.categoryRemoved)
+        window.$('#remove-category').modal('hide')
+      })
+      .catch(() => {
+        this.alertService.showMessage(MESSAGES.unknownError)
+        window.$('#remove-category').modal('hide')
+      })
+  }
 }

@@ -30,7 +30,7 @@ export class Category {
   setProblemsLoaded (problems) {
     this.problemsLoaded = []
     for (let i = 0; i < problems.length; i++) {
-      this.problemsLoaded.push(new Problem(problems[i].id, problems[i].name, problems[i].level))
+      this.problemsLoaded.push(new Problem(problems[i].id, problems[i].title_en, problems[i].title_es, problems[i].level))
     }
   }
 

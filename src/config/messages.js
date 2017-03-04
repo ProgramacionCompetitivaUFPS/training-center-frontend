@@ -67,6 +67,45 @@ export let MESSAGES = {
     text: 'No existe una categoría con el id solicitado. Verifique el link, e intentelo de nuevo',
     type: 'error'
   },
+  // FILES
+  fileTypeIsNotTxtOrIn: {
+    text: 'El archivo debe ser de tipo .txt o .in',
+    type: 'error'
+  },
+
+  // PROBLEMS
+  categoryCreated: {
+    text: 'La categoría se ha añadido satisfactoriamente',
+    type: 'success'
+  },
+  categoryEdited: {
+    text: 'La categoría se ha editado satisfactoriamente',
+    type: 'success'
+  },
+  categoryRemoved: {
+    text: 'La categoría ha sido eliminada satisfactoriamente',
+    type: 'success'
+  },
+  problemSaved: {
+    text: 'El problema ha sido guardado correctamente',
+    type: 'success'
+  },
+  incompleteDataProblem: {
+    text: 'Debes completar todos los campos visibles antes de enviar el problema',
+    type: 'error'
+  },
+  wrongLevel: {
+    text: 'La dificultad debe ser un valor entre 1 y 10',
+    type: 'error'
+  },
+  wrongTimeLimit: {
+    text: 'El tiempo limite debe ser un valor entre 0.5 y 10 segundos',
+    type: 'error'
+  },
+  incompleteIO: {
+    text: 'Debes añadir archivos de entrada y salida para el problema',
+    type: 'error'
+  },
   // GENERAL
   serverError: {
     text: 'Ha ocurrido un error interno. Lo sentimos. Vuelve a intentarlo mas tarde',
@@ -78,12 +117,6 @@ export let MESSAGES = {
   },
   permissionsError: {
     text: 'Usted no tiene permisos para realizar esta acción',
-    type: 'error'
-  },
-
-  //FILES
-  fileTypeIsNotTxtOrIn: {
-    text: 'El archivo debe ser de tipo .txt o .in',
     type: 'error'
   }
 }

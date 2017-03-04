@@ -1,6 +1,12 @@
-import { API } from 'config/config'
-import { Http } from 'services/http'
-import { Jwt } from 'services/jwt'
+import {
+  API
+} from 'config/config'
+import {
+  Http
+} from 'services/http'
+import {
+  Jwt
+} from 'services/jwt'
 
 /**
  * Problems (Service)
@@ -31,15 +37,17 @@ export class Problems {
     this.httpService = httpService
   }
 
- /**
-  * Obtiene del backend la lista de categorías existentes.
-  * @returns {Promise} Promesa con el token de usuario
-  */
+  /**
+   * Obtiene del backend la lista de categorías existentes.
+   * @returns {Promise} Promesa con el token de usuario
+   */
   getCategories () {
     return this.httpService.httpClient
       .fetch(API.endponts.categories, {
         method: 'get',
-        headers: { 'Authorization': 'Bearer ' + this.jwtService.token }
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)
@@ -54,8 +62,53 @@ export class Problems {
     return this.httpService.httpClient
       .fetch(API.endponts.categories, {
         method: 'post',
-        headers: { 'Authorization': 'Bearer ' + this.jwtService.token },
-        body: {name: name}
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        },
+        body: {
+          name: name
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Edita el nombre de una categoría en la plataforma.
+   * @param {number} id - Identificador de la categoría a editar.
+   * @param {string} name - Nuevo nombre de la categoría.
+   * @return {Promise} Promesa indicando el exito o fracaso de la operación.
+   */
+  editCategory (id, name) {
+    return this.httpService.httpClient
+      .fetch(API.endponts.categories + '/' + id, {
+        method: 'put',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        },
+        body: {
+          id: id,
+          name: name
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Elimina una categoría de la plataforma.
+   * @param {number} id - Identificador de la categoría a eliminar.
+   */
+  removeCategory (id) {
+    return this.httpService.httpClient
+      .fetch(API.endponts.categories + '/' + id, {
+        method: 'delete',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        },
+        body: {
+          id: id
+        }
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)
@@ -70,19 +123,55 @@ export class Problems {
    * @param {number} [limit=10] - Cantidad de resultados a obtener
    * @param {string} [sort='id'] - Modo de ordenamiento (id o level)
    * @param {string} [by='asc'] - Ordenamiento ascendente o descendente (asc o desc)
+   * @param {string} [filter=null] - Selecciona por un lenguaje (null, es o en)
    * @returns {Promise} Promesa con los problemas obtenidos
    */
-  getCategoryProblems (id, page = 1, limit = 10, sort = 'id', by = 'asc') {
+  getCategoryProblems (id, page = 1, limit = 10, sort = 'id', by = 'asc', filter = null) {
     return this.httpService.httpClient
       .fetch(API.endponts.categoryProblems.replace('{1}', id), {
         method: 'get',
-        headers: { 'Authorization': 'Bearer ' + this.jwtService.token },
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        },
         body: {
           page: page,
           limit: limit,
           sort: sort,
-          by: by
+          by: by,
+          filter: filter
         }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Envia un nuevo problema en el servidor
+   * @param {Problem} problem - Problema a subir en el servidor
+   */
+  createProblem (problem) {
+    var data = new window.FormData()
+    // Datos obligatorios
+    data.append('category', problem.category)
+    data.append('level', problem.level)
+    data.append('example_input', problem.exampleInput)
+    data.append('example_output', problem.exampleOutput)
+    data.append('time_limit', problem.timeLimit)
+    // Datos opcionales
+    if (problem.titleEN !== undefined) data.append('title_en', problem.titleEN)
+    if (problem.titleES !== undefined) data.append('title_es', problem.titleES)
+    if (problem.descriptionEN !== undefined) data.append('description_en', problem.descriptionEN)
+    if (problem.descriptionES !== undefined) data.append('description_es', problem.descriptionES)
+    // Archivos
+    data.append('input', problem.input)
+    data.append('output', problem.output)
+    return this.httpService.httpClient
+      .fetch(API.endponts.problems, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        },
+        body: data
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)

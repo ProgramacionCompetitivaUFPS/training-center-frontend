@@ -7,17 +7,46 @@
 export class Problem {
   /**
    * Crea una instancia de Problem.
-   * @param {number} [id] - Identificador del problema
-   * @param {string} [title] - Título del problema
-   * @param {number} [level] - Nivel del problema
-   * @param {number} [categoryId] - Identificador de la categoría
-   * @param {string} [category] - Nombre de la categoría
+   * @param {number} id - Identificador del problema
+   * @param {string} titleEN - Título del problema en ingles
+   * @param {string} titleES - Titulo del problema en español
+   * @param {number} level - Nivel del problema
+   * @param {number} category - Identificador de la categoría
+   * @param {string} categoryName - Nombre de la categoría
+   * @param {string} descriptionEN - Enunciado del problema en inglés
+   * @param {string} descriptionES - Enunciado del problema en español
+   * @param {string} exampleIput - Entradas de ejemplo
+   * @param {string} exampleOutput - Salidas de ejemplo
    */
-  constructor (id = null, title = null, level = null, categoryId = null, category = null) {
+  constructor (id = undefined, titleEN = undefined, titleES = undefined, level = undefined, category = undefined, categoryName = undefined, descriptionEN = undefined, descriptionES = undefined, exampleInput = undefined, exampleOutput = undefined, timeLimit = undefined, input = undefined, output = undefined) {
     this.id = id
-    this.title = title
+    this.titleEN = titleEN
+    this.titleES = titleES
     this.level = level
-    this.categoryId = categoryId
     this.category = category
+    this.categoryName = categoryName
+    this.descriptionEN = descriptionEN
+    this.descriptionES = descriptionES
+    this.exampleInput = exampleInput
+    this.exampleOutput = exampleOutput
+    this.timeLimit = timeLimit
+    this.input = input
+    this.output = output
+  }
+
+  /**
+   * Indica si el problema tiene versión en inglés.
+   * @return true si el problema está en ingles, false en caso contrario
+   */
+  isInEnglish () {
+    return this.titleEN != null
+  }
+
+  /**
+   * Indica si el problema tiene versión en español.
+   * @return true si el problema está en español, false en caso contrario
+   */
+  isInSpanish () {
+    return this.titleES != null
   }
 }

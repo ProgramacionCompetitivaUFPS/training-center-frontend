@@ -17,7 +17,19 @@
             <li><a click.delegate="setNoProblemsToShow(50)">50</a></li>
           </ul>
       </div>
-      problemas
+      problemas en
+      <div class="dropdown dropdown-inline ufps-dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="showLanguage" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="true">
+          ${languageDisplay}
+          <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="showLanguage">
+            <li><a click.delegate="setLanguage(null, 'Cualquier idioma')">Cualquier idioma</a></li>
+            <li><a click.delegate="setLanguage('es', 'español')">Español</a></li>
+            <li><a click.delegate="setLanguage('en', 'ingles')">Ingles</a></li>
+          </ul>
+      </div>
     </div>
     <div class="col-sm-6 text-right">
       Ordenar por
@@ -48,16 +60,19 @@
     <table>
       <thead>
         <tr>
-          <th>Id</th>
-          <th>Problema</th>
-          <th>Dificultad</th>
+          <th class="text-center" style="width:5%">Id</th>
+          <th class="text-center" style="width:70%">Problema</th>
+          <th class="text-center" style="width:10%">Dificultad</th>
+          <th class="text-center" style="width:15%">Idioma</th>
         </tr>
       </thead>
       <tbody>
         <tr repeat.for="problem of category.problemsLoaded">
-          <td>${problem.id}</td>
-          <td>${problem.title}</td>
-          <td>${problem.level}</td>
+          <td class="text-center">${problem.id}</td>
+          <td class="text-left" if.bind="problem.isInEnglish()">${problem.titleEN}</td>
+          <td class="text-left" if.bind="!problem.isInEnglish()">${problem.titleES}</td>
+          <td class="text-center">${problem.level}</td>
+          <td class="text-center ufps-language"><span class="${problem.isInSpanish() ? 'active' : 'inactive'}">ES</span> | <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">EN</span></td>
         </tr>
       </tbody>
     </table>

@@ -251,7 +251,7 @@ body {
 
 .ufps-dropdown-menu>li>a:hover {
   background-color: #E74C3C!important;
-  color: #FFF;
+  color: #FFF!important;
 }
 
 .ufps-navbar-search {
@@ -291,7 +291,7 @@ body {
 /*Notificaciones*/
 
 .alert {
-  position: absolute;
+  position: fixed;
   z-index: 100;
   font-family: Helvetica Neue, Helvetica, san-serif;
   font-size: 16px;
@@ -410,6 +410,29 @@ hr {
   color: #FFF;
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.55);
   height: 100px;
+  position: relative;
+}
+
+.ufps-edit-category,
+.ufps-remove-category {
+  position: absolute;
+  top: 5px;
+  opacity: .4;
+  transition: all .3s ease;
+  cursor: pointer
+}
+
+.ufps-edit-category {
+  left: 5px;
+}
+
+.ufps-remove-category {
+  right: 5px;
+}
+
+.ufps-card-container:hover .ufps-edit-category,
+.ufps-card-container:hover .ufps-remove-category {
+  opacity: 1;
 }
 
 .ufps-card-container:nth-child(3n + 0) .ufps-card-title {
@@ -628,6 +651,7 @@ th {
   height: 20px;
   box-sizing: content-box;
   transition: all .3s ease;
+  cursor: pointer;
 }
 
 .inputfile-btn:focus+label,
@@ -644,10 +668,25 @@ th {
   z-index: 10000!important;
 }
 
-.ufps-btn-submit {
+.ufps-btn-submit,
+.ufps-btn-submit:hover,
+.ufps-btn-submit:active,
+.ufps-btn-submit:focus {
   margin-top: 20px;
   background-color: #e74c3c;
   color: #FFF;
   border-radius: 2px;
   border-bottom: 3px solid #9a2b1f;
+}
+
+.ufps-language {
+  color: #666;
+}
+
+.ufps-language .active {
+  color: #666;
+}
+
+.ufps-language .inactive {
+  color: #CCC;
 }

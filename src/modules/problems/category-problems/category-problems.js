@@ -41,6 +41,8 @@ export class CategoryProblems {
     this.by = 'asc'
     this.byDisplay = 'Ascendente'
     this.pagination = []
+    this.language = null
+    this.languageDisplay = 'Cualquier idioma'
   }
 
   /**
@@ -73,6 +75,17 @@ export class CategoryProblems {
   setSort (sort, sortDisplay) {
     this.sort = sort
     this.sortDisplay = sortDisplay
+    this.getProblems()
+  }
+
+  /**
+   * Establece el filtro para seleccionar ejercicios en cualquier idioma, o en uno determinado.
+   * @param {string} language - Lenguaje (es, en o null)
+   * @param {string} languageDisplay - Texto para desplegar por el lenguaje elegido
+   */
+  setLanguage (language, languageDisplay) {
+    this.language = language
+    this.languageDisplay = languageDisplay
     this.getProblems()
   }
 
@@ -114,7 +127,7 @@ export class CategoryProblems {
    * Obtiene la lista de problemas según los parametros indicados.
    */
   getProblems () {
-    this.problemsService.getCategoryProblems(this.id, this.page, this.noProblemsToShow, this.sort, this.by)
+    this.problemsService.getCategoryProblems(this.id, this.page, this.noProblemsToShow, this.sort, this.by, this.language)
       .then(data => {
         this.category = new Category(data.meta.categoryName)
         this.category.setTotalProblems(data.meta.totalItems)
