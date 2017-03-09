@@ -18,7 +18,7 @@ export class Problem {
    * @param {string} exampleIput - Entradas de ejemplo
    * @param {string} exampleOutput - Salidas de ejemplo
    */
-  constructor (id = undefined, titleEN = undefined, titleES = undefined, level = undefined, category = undefined, categoryName = undefined, descriptionEN = undefined, descriptionES = undefined, exampleInput = undefined, exampleOutput = undefined, timeLimit = undefined, input = undefined, output = undefined) {
+  constructor (id = undefined, titleEN = undefined, titleES = undefined, level = undefined, category = undefined, categoryName = undefined, descriptionEN = undefined, descriptionES = undefined, exampleInput = undefined, exampleOutput = undefined, timeLimit = undefined, input = undefined, output = undefined, author = undefined) {
     this.id = id
     this.titleEN = titleEN
     this.titleES = titleES
@@ -32,6 +32,7 @@ export class Problem {
     this.timeLimit = timeLimit
     this.input = input
     this.output = output
+    this.author = author
   }
 
   /**

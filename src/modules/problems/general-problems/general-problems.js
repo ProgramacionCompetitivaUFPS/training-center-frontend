@@ -47,17 +47,6 @@ export class GeneralProblems {
   }
 
   /**
-   * Activa los tooltips y crea los editores según corresponda.
-   * Este método hace parte del ciclo de vida de la aplicación y se ejecuta en el instante
-   * en que se conecta el componente con el view-model.
-   */
-  attached () {
-    window.$(document).ready(function () {
-      window.$('body').tooltip({ selector: '[data-toggle=tooltip]' })
-    })
-  }
-
-  /**
    * Crea una nueva categoría en la plataforma
    */
   createCategory () {
@@ -122,8 +111,14 @@ export class GeneralProblems {
         this.alertService.showMessage(MESSAGES.categoryEdited)
         window.$('#edit-category').modal('hide')
       })
-      .catch(() => {
-        this.alertService.showMessage(MESSAGES.unknownError)
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
         window.$('#edit-category').modal('hide')
       })
   }
@@ -138,8 +133,14 @@ export class GeneralProblems {
         this.alertService.showMessage(MESSAGES.categoryRemoved)
         window.$('#remove-category').modal('hide')
       })
-      .catch(() => {
-        this.alertService.showMessage(MESSAGES.unknownError)
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
         window.$('#remove-category').modal('hide')
       })
   }

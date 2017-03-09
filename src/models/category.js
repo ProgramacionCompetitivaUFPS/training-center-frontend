@@ -34,4 +34,17 @@ export class Category {
     }
   }
 
+  /**
+   * Elimina un problema de problemsLoaded.
+   * @param {number} id - Identificador del problema a eliminar.
+   */
+  removeProblem (id) {
+    for (let i = 0; i < this.problemsLoaded.length; i++) {
+      if (this.problemsLoaded[i].id === id) {
+        this.problemsLoaded.splice(i, 1)
+        break
+      }
+    }
+  }
+
 }

@@ -17,6 +17,7 @@
     "jquery": "^2.2.4",
     "nprogress": "^0.2.0",
     "requirejs": "^2.3.2",
+    "showdown": "^1.6.4",
     "simplemde": "^1.11.2",
     "text": "github:requirejs/text#latest",
     "whatwg-fetch": "^2.0.2"

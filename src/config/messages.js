@@ -61,15 +61,15 @@ export let MESSAGES = {
   // CATEGORIAS
   categoriesError: {
     text: 'La lista de categorías no ha sido cargada. Intentelo de nuevo',
-    type: 'success'
+    type: 'error'
   },
   categoryDoesNotExist: {
     text: 'No existe una categoría con el id solicitado. Verifique el link, e intentelo de nuevo',
     type: 'error'
   },
   // FILES
-  fileTypeIsNotTxtOrIn: {
-    text: 'El archivo debe ser de tipo .txt o .in',
+  fileTypeIsNotTxt: {
+    text: 'El archivo debe ser de tipo .txt, .in o .out',
     type: 'error'
   },
 
@@ -88,6 +88,10 @@ export let MESSAGES = {
   },
   problemSaved: {
     text: 'El problema ha sido guardado correctamente',
+    type: 'success'
+  },
+  problemDeleted: {
+    text: 'El problema se ha eliminado correctamente',
     type: 'success'
   },
   incompleteDataProblem: {

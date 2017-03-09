@@ -1,12 +1,13 @@
 <template>
+  <require from="../../../resources/attributes/tooltip"></require>
   <div class="container ufps-container-logged">
     <h1 class="text-right">Categorias</h1>
     <hr>
     <div repeat.for="category of categories" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
       <div class="ufps-card">
         <div class="ufps-card-title">
-            <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar el nombre de la categoría" click.delegate="showEditCategory(category.id, category.name)"></span>
-            <span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove"  data-toggle="tooltip" title="Eliminar categoría" click.delegate="showRemoveCategory(category.id, category.name)"></span>
+            <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar el nombre de la categoría" click.delegate="showEditCategory(category.id, category.name)" tooltip></span>
+            <span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove"  data-toggle="tooltip" title="Eliminar categoría" click.delegate="showRemoveCategory(category.id, category.name)" tooltip></span>
           <h1>${category.name}</h1>
         </div>
         <div class="col-xs-6 ufps-card-link">

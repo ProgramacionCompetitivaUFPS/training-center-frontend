@@ -164,7 +164,8 @@
             "name": "fetch",
             "path": "../node_modules/whatwg-fetch",
             "main": "fetch"
-          }
+          },
+          "showdown"
         ]
       }
     ]

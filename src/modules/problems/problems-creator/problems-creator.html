@@ -1,6 +1,8 @@
 <template>
+  <require from="../../../resources/attributes/tooltip"></require>
   <div class="container ufps-container-logged">
-    <h1 class="text-right">Nuevo problema</h1>
+    <h1 class="text-right" if.bind="!editMode">Nuevo problema</h1>
+    <h1 class="text-right" if.bind="editMode">Editar problema ${newProblem.id}</h1>
     <hr>
     <form submit.delegate="submit()" enctype="multipart/form-data">
       <div class="form-horizontal col-md-7">
@@ -11,7 +13,7 @@
               <option model.bind="null">Elige una categoría</option>
               <option repeat.for="category of categories" model.bind="category.id">${category.name}</option>
             </select>
-            <span class="input-group-addon" data-toggle="tooltip" title="Temática relacionada con el problema"><span class="glyphicon glyphicon-question-sign"></span></span>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Temática relacionada con el problema"><span class="glyphicon glyphicon-question-sign"></span></span>
           </div>
         </div>
         <div class="form-group">
@@ -21,7 +23,7 @@
               if.bind="originalLanguage === 'es'">
             <input type="text" class="form-control" id="problem-name" placeholder="Nombre del problema" value.bind="newProblem.titleEN"
               if.bind="originalLanguage === 'en'">
-            <span class="input-group-addon" data-toggle="tooltip" title="Título del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
+            <span class="input-group-addon"  tooltip data-toggle="tooltip" title="Título del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
           </div>
         </div>
       </div>
@@ -30,7 +32,7 @@
           <label class="control-label col-sm-3" for="problem-level">Dificultad:</label>
           <div class="col-sm-9 input-group ufps-input-creator">
             <input type="number" class="form-control" id="problem-level" min="1" max="10"  value.bind="newProblem.level">
-            <span class="input-group-addon" data-toggle="tooltip" title="Nivel de dificultad [1 - 10] Donde 1 es muy facil, y 10 muy complejo"><span class="glyphicon glyphicon-question-sign"></span></span>
+            <span class="input-group-addon"  tooltip data-toggle="tooltip" title="Nivel de dificultad [1 - 10] Donde 1 es muy facil, y 10 muy complejo"><span class="glyphicon glyphicon-question-sign"></span></span>
           </div>
         </div>
         <div class="form-group">
@@ -40,7 +42,7 @@
               <option model.bind="'en'">Inglés</option>
               <option model.bind="'es'">Español</option>
             </select>
-            <span class="input-group-addon" data-toggle="tooltip" title="Idioma del título y enunciado del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
+            <span class="input-group-addon"  tooltip data-toggle="tooltip" title="Idioma del título y enunciado del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
           </div>
         </div>
         
@@ -50,7 +52,7 @@
           <label class="control-label col-sm-9" for="problem-level">Tiempo límite:</label>
           <div class="col-sm-3 input-group ufps-input-creator">
             <input type="number" class="form-control" id="problem-level" min="0.5" max="10.0" step="0.1" value.bind="newProblem.timeLimit">
-            <span class="input-group-addon" data-toggle="tooltip" title="Tiempo que tendrá la solución para ejecutarse (en segundos). Si se excede este tiempo, la ejecución se detendrá y se informará al usuario que ha excedido el tiempo limite."><span class="glyphicon glyphicon-question-sign"></span></span>
+            <span class="input-group-addon"  tooltip data-toggle="tooltip" title="Tiempo que tendrá la solución para ejecutarse (en segundos). Si se excede este tiempo, la ejecución se detendrá y se informará al usuario que ha excedido el tiempo limite."><span class="glyphicon glyphicon-question-sign"></span></span>
         </div>
       </div>
       <div class="fix"></div>
@@ -88,16 +90,17 @@ Reemplaza este texto con la especificación de la salida de tu problema.
       <div class="fix"></div>
       <div class="ufps-separator"></div>
       <div class="col-md-6 text-right">
-        <h4>Seleccione los casos de prueba privados:</h4>
+        <h4 if.bind="!editMode">Seleccione los casos de prueba privados:</h4>
+        <h4 if.bind="editMode">¿Desea cambiar los casos de prueba privados? (Opcional)</h4>
       </div>
       <div class="col-md-6">
         <div class="col-sm-6 ufps-input-creator">
           <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateTestCase('input')" accept=".txt, .in" files.bind="newProblem.input">
-          <label for="input-file" data-toggle="tooltip" title="Archivo .txt o .in con las entradas que será ejecutado el programa escrito por el estudiante para ser validado">Entradas <span class="glyphicon glyphicon-ok-sign" show.bind="inputValid"></span></span></label>
+          <label for="input-file" tooltip data-toggle="tooltip" title="Archivo .txt o .in con las entradas que será ejecutado el programa escrito por el estudiante para ser validado">Entradas <span class="glyphicon glyphicon-ok-sign" show.bind="inputValid"></span></label>
         </div>
         <div class="col-sm-6 ufps-input-creator">
           <input type="file" name="output-file" id="output-file" class="inputfile-btn" accept=".txt, .in" change.delegate="validateTestCase('output')" files.bind="newProblem.output">
-          <label for="output-file" data-toggle="tooltip" title="Archivo .txt o .out con las salidas que debe generar el programa escrito por el estudiante para ser considerado correcto">Salidas <span class="glyphicon glyphicon-ok-sign" show.bind="outputValid"></span></span></label>
+          <label for="output-file" tooltip data-toggle="tooltip" title="Archivo .txt o .out con las salidas que debe generar el programa escrito por el estudiante para ser considerado correcto">Salidas <span class="glyphicon glyphicon-ok-sign" show.bind="outputValid"></span></label>
         </div>
       </div>
       <div class="fix"></div>
@@ -111,7 +114,7 @@ Reemplaza este texto con la especificación de la salida de tu problema.
               if.bind="originalLanguage === 'es'">
             <input type="text" class="form-control" id="problem-name" placeholder="Nombre del problema" value.bind="newProblem.titleES"
               if.bind="originalLanguage === 'en'">
-            <span class="input-group-addon" data-toggle="tooltip" title="Título del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Título del problema"><span class="glyphicon glyphicon-question-sign"></span></span>
           </div>
         </div>
         <textarea name="md-editor-2" id="md-editor-2"># Descripción

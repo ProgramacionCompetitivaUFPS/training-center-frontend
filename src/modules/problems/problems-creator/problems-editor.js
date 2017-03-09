@@ -1,39 +1,100 @@
+import { Router } from 'aurelia-router'
+
 import { MESSAGES } from 'config/config'
 import { Problem } from 'models/models'
 import { Alert, Problems } from 'services/services'
 
-export class ProblemsCreator {
+export class ProblemsEditor {
 
   /**
    * Método que realiza inyección de las dependencias necesarias en el módulo.
    * Estas dependencias son cargadas bajo el patrón de diseño singleton.
    * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * Servicio de Autenticación (Auth) y Servicio de obtención y manejo de problemas (Problems)
+   * @returns Array con las dependencias a inyectar: Router, Servicio de notificaciones (Alert),
+   *  y Servicio de obtención y manejo de problemas (Problems)
    */
   static inject () {
-    return [Alert, Problems]
+    return [Router, Alert, Problems]
   }
 
   /**
    * Crea una instancia de ProblemsCreator.
+   * @param {service} routerService - Enrutador de aurelia
    * @param {service} alertService - Servicio de notificaciones
    * @param {service} problemService - Servicio de obtención y manejo de problemas
    */
-  constructor (alertService, problemsService) {
+  constructor (routerService, alertService, problemsService) {
+    this.routerService = routerService
     this.alertService = alertService
     this.problemsService = problemsService
     this.categories = []
-    this.newProblem = new Problem()
-    this.newProblem.timeLimit = 1
-    this.newProblem.level = 1
     this.inputValid = false
     this.outputValid = false
-    this.originalLanguage = 'es'
-    this.doubleLanguage = false
-    this.editMode = false
+    this.editMode = true
     this.templateSpanish = '# Descripción\n\nReemplaza este texto con la descripción de tu problema. Recuerda que puedes usar la sintaxis de Markdown.\n\n# Entradas\n\nReemplaza este texto con la especificación de la entrada de tu problema. Si no conoces la sintaxis markdown, puedes hacer uso de las opciones de la barra superior.\n\n# Salidas\n\nReemplaza este texto con la especificación de la salida de tu problema.'
     this.templateEnglish = '# Description\n\nReplace this text with the description of your problem. Remember that you can use the Markdown syntax.\n\n# Inputs\n\nReplace this text with the specification of the input of your problem. If you do not know the markdown syntax, you can use the options in the top bar.\n\n# Outputs\n\nReplace this text with the specification of the output of your problem.'
+  }
+
+  /**
+   * Método que se invoca automáticamente en el momento en que el router enlaza al
+   * componente. Carga el problema en el editor.
+   * @param {params} params - Parametros de configuración
+   * @param {RouteConfig} routeConfig - Configuración del enrutador
+   */
+  activate (params, routeConfig) {
+    this.newProblem
+    this.problemsService.getProblem(params.id)
+      .then(problem => {
+        this.newProblem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input, problem.example_output, parseFloat(problem.time_limit))
+        if (this.newProblem.titleEN !== undefined) {
+          this.originalLanguage = 'en'
+          if (this.newProblem.titleES !== undefined) {
+            this.doubleLanguage = true
+          }
+        } else {
+          this.originalLanguage = 'es'
+          this.doubleLanguage = false
+        }
+        let interval
+        if (this.originalLanguage === 'es') {
+          interval = window.setInterval(() => {
+            if (this.attachedFlag) {
+              this.editor.value(this.newProblem.descriptionES)
+              if (this.doubleLanguage) {
+                this.secondEditor.value(this.newProblem.descriptionEN)
+              }
+              window.clearInterval(interval)
+            }
+          }, 200)
+        } else {
+          interval = window.setInterval(() => {
+            if (this.attachedFlag) {
+              this.editor.value(this.newProblem.descriptionEN)
+              if (this.doubleLanguage) {
+                this.secondEditor.value(this.newProblem.descriptionES)
+              }
+              window.clearInterval(interval)
+            }
+          }, 200)
+        }
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+        this.routerService.navigate('')
+      })
+  }
+
+  /**
+   * Define la ruta de la vista para este view-model.
+   */
+  getViewStrategy () {
+    return './problems-creator.html'
   }
 
   /**
@@ -55,6 +116,7 @@ export class ProblemsCreator {
     if (this.doubleLanguage) {
       this.createSecondEditor()
     }
+    this.attachedFlag = true
   }
 
   /**
@@ -100,7 +162,7 @@ export class ProblemsCreator {
           this.outputValid = true
         }
       } else {
-        this.alertService.showMessage(MESSAGES.fileTypeIsNotTxtOrIn)
+        this.alertService.showMessage(MESSAGES.fileTypeIsNotTxt)
       }
     }
   }
@@ -140,11 +202,9 @@ export class ProblemsCreator {
    * Elimina el segundo lenguaje del problema que está siendo añadido.
    */
   removeLanguage () {
-    if (this.doubleLanguage) {
-      this.doubleLanguage = false
-      this.secondEditor.toTextArea()
-      this.secondEditor = null
-    }
+    this.doubleLanguage = false
+    this.secondEditor.toTextArea()
+    this.secondEditor = null
   }
 
   /**
@@ -367,7 +427,7 @@ export class ProblemsCreator {
   validateInfo () {
     this.newProblem.level = parseInt(this.newProblem.level)
     this.newProblem.timeLimit = parseFloat(this.newProblem.timeLimit)
-    if (typeof (this.newProblem.level) === 'number' && !isNaN(this.newProblem.level) && this.newProblem.level >= 1 && this.newProblem.level <= 10 && typeof (this.newProblem.category) === 'number' && this.inputValid && this.outputValid && typeof (this.newProblem.timeLimit) === 'number' && !isNaN(this.newProblem.timeLimit) && this.newProblem.timeLimit >= 0.5 && this.newProblem.timeLimit <= 10.0) {
+    if (typeof (this.newProblem.level) === 'number' && !isNaN(this.newProblem.level) && this.newProblem.level >= 1 && this.newProblem.level <= 10 && typeof (this.newProblem.category) === 'number' && typeof (this.newProblem.timeLimit) === 'number' && !isNaN(this.newProblem.timeLimit) && this.newProblem.timeLimit >= 0.5 && this.newProblem.timeLimit <= 10.0) {
       if (this.originalLanguage === 'es') {
         if (typeof (this.newProblem.titleES) === 'string' && this.newProblem.titleES !== '') {
           if (!this.doubleLanguage) {
@@ -402,8 +462,6 @@ export class ProblemsCreator {
         this.alertService.showMessage(MESSAGES.wrongLevel)
       } else if (typeof (this.newProblem.timeLimit) === 'number' && !isNaN(this.newProblem.timeLimit) && (this.newProblem.timeLimit < 0.5 && this.newProblem.timeLimit > 10.0)) {
         this.alertService.showMessage(MESSAGES.wrongTimeLimit)
-      } else if (!this.inputValid || !this.outputValid) {
-        this.alertService.showMessage(MESSAGES.incompleteIO)
       } else {
         this.alertService.showMessage(MESSAGES.incompleteDataProblem)
       }
@@ -418,27 +476,20 @@ export class ProblemsCreator {
   submit () {
     this.assignDescriptions()
     if (this.validateInfo()) {
-      this.problemsService.createProblem(this.newProblem)
-      .then(() => {
-        this.newProblem = new Problem()
-        this.newProblem.timeLimit = 1
-        this.newProblem.level = 1
-        this.inputValid = false
-        this.outputValid = false
-        this.originalLanguage = 'es'
-        this.removeLanguage()
-        this.changeLanguageEditor()
-        this.alertService.showMessage(MESSAGES.problemSaved)
-      })
-      .catch(error => {
-        if (error.status === 401 || error.status === 403) {
-          this.alertService.showMessage(MESSAGES.permissionsError)
-        } else if (error.status === 500) {
-          this.alertService.showMessage(MESSAGES.serverError)
-        } else {
-          this.alertService.showMessage(MESSAGES.unknownError)
-        }
-      })
+      this.problemsService.editProblem(this.newProblem)
+        .then(() => {
+          this.alertService.showMessage(MESSAGES.problemSaved)
+          this.routerService.navigate(this.newProblem.id + '/detalle')
+        })
+        .catch(error => {
+          if (error.status === 401 || error.status === 403) {
+            this.alertService.showMessage(MESSAGES.permissionsError)
+          } else if (error.status === 500) {
+            this.alertService.showMessage(MESSAGES.serverError)
+          } else {
+            this.alertService.showMessage(MESSAGES.unknownError)
+          }
+        })
     }
   }
 }

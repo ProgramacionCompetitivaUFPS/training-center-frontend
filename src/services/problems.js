@@ -1,12 +1,6 @@
-import {
-  API
-} from 'config/config'
-import {
-  Http
-} from 'services/http'
-import {
-  Jwt
-} from 'services/jwt'
+import { API } from 'config/config'
+import { Http } from 'services/http'
+import { Jwt } from 'services/jwt'
 
 /**
  * Problems (Service)
@@ -87,7 +81,6 @@ export class Problems {
           'Authorization': 'Bearer ' + this.jwtService.token
         },
         body: {
-          id: id,
           name: name
         }
       })
@@ -105,9 +98,6 @@ export class Problems {
         method: 'delete',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token
-        },
-        body: {
-          id: id
         }
       })
       .then(this.httpService.checkStatus)
@@ -146,6 +136,22 @@ export class Problems {
   }
 
   /**
+   * Lee un problema desde la plataforma.
+   * @param {number} id - Identificador del problema.
+   */
+  getProblem (id) {
+    return this.httpService.httpClient
+      .fetch(API.endponts.problems + '/' + id, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
    * Envia un nuevo problema en el servidor
    * @param {Problem} problem - Problema a subir en el servidor
    */
@@ -172,6 +178,55 @@ export class Problems {
           'Authorization': 'Bearer ' + this.jwtService.token
         },
         body: data
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+
+  /**
+   * Envia al servidor un problema editado
+   * @param {Problem} problem - Problema a editar en el servidor
+   */
+  editProblem (problem) {
+    var data = new window.FormData()
+    // Datos obligatorios
+    data.append('category', problem.category)
+    data.append('level', problem.level)
+    data.append('example_input', problem.exampleInput)
+    data.append('example_output', problem.exampleOutput)
+    data.append('time_limit', problem.timeLimit)
+    // Datos opcionales
+    if (problem.titleEN !== undefined) data.append('title_en', problem.titleEN)
+    if (problem.titleES !== undefined) data.append('title_es', problem.titleES)
+    if (problem.descriptionEN !== undefined) data.append('description_en', problem.descriptionEN)
+    if (problem.descriptionES !== undefined) data.append('description_es', problem.descriptionES)
+    // Archivos
+    if (problem.input !== undefined) data.append('input', problem.input)
+    if (problem.output !== undefined) data.append('output', problem.output)
+    return this.httpService.httpClient
+      .fetch(API.endponts.problems + '/' + problem.id, {
+        method: 'put',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        },
+        body: data
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Elimina un problema de la plataforma.
+   * @param {number} id - Identificador del problema a eliminar.
+   */
+  removeProblem (id) {
+    return this.httpService.httpClient
+      .fetch(API.endponts.problem + '/' + id, {
+        method: 'delete',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)

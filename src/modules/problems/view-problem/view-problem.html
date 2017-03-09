@@ -1,0 +1,77 @@
+<template>
+  <require from="../../../resources/attributes/markdown"></require>
+  <require from="../../../resources/attributes/tooltip"> </require>
+  <div class="container-fluid">
+    <div class="col-md-9">
+      <div class="ufps-separator"></div>
+      <div class="panel panel-default">
+        <div class="panel-body" show.bind="lang === 'es'">
+          <h1 class="text-center ufps-problem-title">${problem.titleES}</h1>
+          <p class="ufps-language text-center">
+            <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> | <span class="${problem.isInEnglish() ? 'active' : 'inactive'}"
+              click.delegate="showEN()">EN</span>
+          </p>
+          <p class="ufps-markdown-editor" markdown.bind="problem.descriptionES"></p>
+          <div class="col-xs-12">
+            <div class="col-md-6">
+              <h3 class="text-center">Entrada de ejemplo</h3>
+              <div class="well">
+                ${problem.exampleInput}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h3 class="text-center">Salida de ejemplo</h3>
+              <div class="well">
+                ${problem.exampleOutput}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body" show.bind="lang === 'en'">
+          <h1 class="text-center ufps-problem-title">${problem.titleEN}</h1>
+          <p class="ufps-language text-center">
+            <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> | <span class="${problem.isInEnglish() ? 'active' : 'inactive'}"
+              click.delegate="showEN()">EN</span>
+          </p>
+          <p class="ufps-markdown-editor" markdown.bind="problem.descriptionEN"></p>
+          <div class="col-xs-12">
+            <div class="col-md-6">
+              <h3 class="text-center">Entrada de ejemplo</h3>
+              <div class="well">
+                ${problem.exampleInput}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h3 class="text-center">Salida de ejemplo</h3>
+              <div class="well">
+                ${problem.exampleOutput}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="ufps-separator"></div>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p show.bind="lang === 'en'">Problema: ${problem.titleEN}</p>
+          <p show.bind="lang === 'es'">Problema: ${problem.titleES}</p>
+          <p>Dificultad: ${problem.level}</p>
+          <p>Seleccione el archivo con su código, y el lenguaje a utilizar.</p>
+          <form class="ufps-submit-form">
+            <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()">
+            <label for="input-file" tooltip data-toggle="tooltip" title="Archivo con la solución al problema">Seleccionar <span class="glyphicon glyphicon-ok-sign" show.bind="sourceValid"></span></label>
+            <div class="input-group">
+              <select class="form-control">
+                <option model.bind="null">Elige una categoría</option>
+                <option repeat.for="language of languages" model.bind="language">${language}</option>
+              </select>
+            </div>
+            <input type="submit" value="Enviar" class="btn ufps-btn-submit">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

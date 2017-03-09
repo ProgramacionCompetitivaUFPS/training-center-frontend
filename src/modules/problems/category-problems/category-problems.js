@@ -2,7 +2,7 @@ import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
 import { Category } from 'models/models'
-import { Alert, Problems } from 'services/services'
+import { Alert, Auth, Problems } from 'services/services'
 
 /**
  * CategoryProblems (Module)
@@ -20,17 +20,19 @@ export class CategoryProblems {
    * Servicio de problemas (Problems), servicio de Router (Routr)
    */
   static inject () {
-    return [Alert, Problems, Router]
+    return [Alert, Auth, Problems, Router]
   }
 
   /**
    * Crea una instancia de CategoryProblems.
    * @param {service} alertService - Servicio de notificaciones
+   * @param {service} authService - Servicio de autenticación y validación
    * @param {service} problemService - Servicio manejador de problemas
    * @param {service} routerService - Servicio de enrutamiento
    */
-  constructor (alertService, problemService, routerService) {
+  constructor (alertService, authService, problemService, routerService) {
     this.alertService = alertService
+    this.authService = authService
     this.problemsService = problemService
     this.routerService = routerService
     this.totalPages = 0
@@ -43,6 +45,8 @@ export class CategoryProblems {
     this.pagination = []
     this.language = null
     this.languageDisplay = 'Cualquier idioma'
+
+    this.problemToRemove = null
   }
 
   /**
@@ -183,5 +187,36 @@ export class CategoryProblems {
       this.page = page
       this.getProblems()
     }
+  }
+
+  /**
+   * Muestra un popup para confirmar la eliminación del problema indicado por id.
+   * @param {number} id - Identificador del problema a eliminar.
+   */
+  showRemoveProblem (id) {
+    this.problemToRemove = id
+    window.$('#remove-problem').modal('show')
+  }
+
+  /**
+   * Elimina un problema de la plataforma.
+   */
+  removeProblem () {
+    this.problemService.removeProblem(this.problemToRemove)
+      .then(() => {
+        this.alertService.showMessage(MESSAGES.problemDeleted)
+        this.category.removeProblem(this.problemToRemove)
+        window.$('#remove-category').modal('hide')
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+        window.$('#remove-category').modal('hide')
+      })
   }
 }

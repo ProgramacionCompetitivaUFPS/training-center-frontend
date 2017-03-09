@@ -31,6 +31,22 @@ export class Problem {
         settings: {
           roles: ['admin', 'coach']
         }
+      },
+      {
+        name: 'edit-problem',
+        route: ':id/editar',
+        moduleId: 'modules/problems/problems-creator/problems-editor',
+        settings: {
+          roles: ['admin', 'coach']
+        }
+      },
+      {
+        name: 'view-problem',
+        route: [':id/detalle', ':id/detalle/:lang'],
+        moduleId: 'modules/problems/view-problem/view-problem',
+        settings: {
+          roles: ['admin', 'coach', 'student']
+        }
       }
     ])
     this.router = router
