@@ -68,7 +68,10 @@ export class GeneralProblems {
   getCategories () {
     this.problemsService.getCategories()
       .then(data => {
-        this.categories = data
+        this.categories = data.categories
+        if (this.categories.length === 0) {
+          this.alertService.showMessage(MESSAGES.categoriesEmpty)
+        }
       })
       .catch(error => {
         if (error.status === 401) {

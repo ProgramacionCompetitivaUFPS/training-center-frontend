@@ -683,17 +683,20 @@ th {
   color: #666;
 }
 
-.ufps-language .active, .ufps-language .active a {
+.ufps-language .active,
+.ufps-language .active a {
   color: #666;
   cursor: pointer;
 }
 
-.ufps-language .inactive, .ufps-language .inactive a {
+.ufps-language .inactive,
+.ufps-language .inactive a {
   color: #CCC;
   cursor: not-allowed;
 }
 
-.ufps-name-problem-list, .ufps-edit-problem-list {
+.ufps-name-problem-list,
+.ufps-edit-problem-list {
   float: left;
 }
 
@@ -713,27 +716,35 @@ th {
   opacity: 1;
 }
 
+
 /*MARKDOWN EDITOR*/
+
 .ufps-problem-title {
   font-size: 32px;
   font-weight: bold;
 }
+
 .ufps-markdown-editor h1 {
   font-size: 28px;
   font-weight: bold;
 }
+
 .ufps-markdown-editor h2 {
   font-size: 28px;
 }
+
 .ufps-markdown-editor h3 {
   font-size: 22px;
 }
+
 .ufps-markdown-editor h4 {
   font-size: 20px;
 }
+
 .ufps-markdown-editor h5 {
   font-size: 18px;
 }
+
 .ufps-markdown-editor h6 {
   font-size: 16px;
 }
@@ -741,7 +752,8 @@ th {
 .ufps-submit-form .input-group {
   width: 100%;
 }
-.ufps-submit-form .inputfile-btn + label {
+
+.ufps-submit-form .inputfile-btn+label {
   width: 100%;
   height: 32px;
   box-sizing: border-box;
@@ -754,4 +766,13 @@ th {
 
 .ufps-name-problem-list a {
   color: #444;
+}
+
+.example-in-out {
+  padding: 0;
+}
+.example-in-out pre{
+  padding: 14px;
+  margin: 0;
+  border: none;
 }

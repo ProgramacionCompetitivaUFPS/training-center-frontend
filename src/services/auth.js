@@ -9,7 +9,6 @@ import { Jwt } from 'services/jwt'
  * @class Auth
  */
 export class Auth {
-
   /**
    * Método que realiza inyección de las dependencias necesarias en el servicio.
    * Estas dependencias son cargadas bajo el patrón de diseño singleton.
@@ -39,8 +38,11 @@ export class Auth {
    */
   auth (user) {
     return this.httpService.httpClient
-      .fetch(API.endponts.auth, {
+      .fetch(API.endpoints.auth, {
         method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(user)
       })
       .then(this.httpService.checkStatus)
@@ -53,13 +55,23 @@ export class Auth {
    * @returns Promise sin body, donde el status code indica el resultado de la operación
    */
   registerStudent (user) {
+    let body = {
+      name: user.name,
+      code: user.code,
+      email: user.email,
+      password: user.password,
+      confirm_password: user.confirmPassword,
+      username: user.username
+    }
     return this.httpService.httpClient
-      .fetch(API.endponts.users, {
+      .fetch(API.endpoints.users, {
         method: 'post',
-        body: JSON.stringify(user)
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
       })
       .then(this.httpService.checkStatus)
-      .then(this.httpService.parseJSON)
   }
 
   /**
@@ -70,9 +82,12 @@ export class Auth {
    */
   requestRecovery (email) {
     return this.httpService.httpClient
-      .fetch(API.endponts.recovery, {
+      .fetch(API.endpoints.recovery, {
         method: 'get',
-        body: {email: email}
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)
@@ -85,9 +100,12 @@ export class Auth {
    */
   validateReset (token) {
     return this.httpService.httpClient
-      .fetch(API.endponts.reset, {
+      .fetch(API.endpoints.reset, {
         method: 'post',
-        body: {token: token}
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({token: token})
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)
@@ -100,8 +118,11 @@ export class Auth {
    */
   resetPassword (user) {
     return this.httpService.httpClient
-      .fetch(API.endponts.reset, {
+      .fetch(API.endpoints.reset, {
         method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(user)
       })
       .then(this.httpService.checkStatus)

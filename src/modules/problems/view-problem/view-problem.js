@@ -44,7 +44,10 @@ export class ViewProblem {
     this.lang = params.lang || 'en'
     this.problemService.getProblem(this.id)
       .then(problem => {
-        this.problem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input, problem.example_output, parseFloat(problem.time_limit), problem.created_by)
+        problem = problem.problem
+        
+        this.problem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input.replace(/\r\n/g, '\n'), problem.example_output.replace(/\r\n/g, '\n'), parseFloat(problem.time_limit), problem.user_id, problem.user.username)
+        console.log(this.problem.exampleInput)
         if (this.lang === 'en' && !this.problem.isInEnglish()) {
           this.lang = 'es'
         } else if (this.lang === 'es' && !this.problem.isInSpanish()) {
@@ -57,6 +60,7 @@ export class ViewProblem {
         } else if (error.status === 500) {
           this.alertService.showMessage(MESSAGES.serverError)
         } else {
+          console.log(error)
           this.alertService.showMessage(MESSAGES.unknownError)
         }
         this.routerService.navigate('')

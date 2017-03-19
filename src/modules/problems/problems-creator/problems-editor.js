@@ -1,11 +1,10 @@
 import { Router } from 'aurelia-router'
-
 import { MESSAGES } from 'config/config'
 import { Problem } from 'models/models'
 import { Alert, Problems } from 'services/services'
+import SimpleMDE from 'simplemde'
 
 export class ProblemsEditor {
-
   /**
    * Método que realiza inyección de las dependencias necesarias en el módulo.
    * Estas dependencias son cargadas bajo el patrón de diseño singleton.
@@ -42,13 +41,13 @@ export class ProblemsEditor {
    * @param {RouteConfig} routeConfig - Configuración del enrutador
    */
   activate (params, routeConfig) {
-    this.newProblem
     this.problemsService.getProblem(params.id)
       .then(problem => {
+        problem = problem.problem
         this.newProblem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input, problem.example_output, parseFloat(problem.time_limit))
-        if (this.newProblem.titleEN !== undefined) {
+        if (this.newProblem.titleEN !== undefined && this.newProblem.titleEN != null) {
           this.originalLanguage = 'en'
-          if (this.newProblem.titleES !== undefined) {
+          if (this.newProblem.titleES !== undefined && this.newProblem.titleES != null) {
             this.doubleLanguage = true
           }
         } else {
@@ -61,6 +60,7 @@ export class ProblemsEditor {
             if (this.attachedFlag) {
               this.editor.value(this.newProblem.descriptionES)
               if (this.doubleLanguage) {
+                this.createSecondEditor()
                 this.secondEditor.value(this.newProblem.descriptionEN)
               }
               window.clearInterval(interval)
@@ -71,6 +71,7 @@ export class ProblemsEditor {
             if (this.attachedFlag) {
               this.editor.value(this.newProblem.descriptionEN)
               if (this.doubleLanguage) {
+                this.createSecondEditor()
                 this.secondEditor.value(this.newProblem.descriptionES)
               }
               window.clearInterval(interval)
@@ -107,15 +108,12 @@ export class ProblemsEditor {
   }
 
   /**
-   * Activa los tooltips y crea los editores según corresponda.
+   * Crea los editores según corresponda.
    * Este método hace parte del ciclo de vida de la aplicación y se ejecuta en el instante
    * en que se conecta el componente con el view-model.
    */
   attached () {
     this.createFirstEditor()
-    if (this.doubleLanguage) {
-      this.createSecondEditor()
-    }
     this.attachedFlag = true
   }
 
@@ -126,7 +124,7 @@ export class ProblemsEditor {
   getCategories () {
     this.problemsService.getCategories()
       .then(data => {
-        this.categories = data
+        this.categories = data.categories
       })
       .catch(error => {
         if (error.status === 401) {
@@ -211,7 +209,7 @@ export class ProblemsEditor {
    * Inicializa el editor principal del creador de problemas.
    */
   createFirstEditor () {
-    this.editor = new window.SimpleMDE(
+    this.editor = new SimpleMDE(
       {
         autoDownloadFontAwesome: false,
         autofocus: false,
@@ -221,76 +219,76 @@ export class ProblemsEditor {
         toolbar: [
           {
             name: 'bold',
-            action: window.SimpleMDE.toggleBold,
+            action: SimpleMDE.toggleBold,
             className: 'glyphicon glyphicon-bold',
             title: 'Negrilla'
           },
           {
             name: 'italic',
-            action: window.SimpleMDE.toggleItalic,
+            action: SimpleMDE.toggleItalic,
             className: 'glyphicon glyphicon-italic',
             title: 'Cursiva'
           },
           '|',
           {
             name: 'heading',
-            action: window.SimpleMDE.toggleHeadingSmaller,
+            action: SimpleMDE.toggleHeadingSmaller,
             className: 'glyphicon glyphicon-header',
             title: 'Título (Pulsa varias veces para cambiar tamaño)'
           },
           {
             name: 'quote',
-            action: window.SimpleMDE.toggleBlockquote,
+            action: SimpleMDE.toggleBlockquote,
             className: 'glyphicon glyphicon-bookmark',
             title: 'Cita'
           },
           {
             name: 'unordered-list',
-            action: window.SimpleMDE.toggleUnorderedList,
+            action: SimpleMDE.toggleUnorderedList,
             className: 'glyphicon glyphicon-th-list',
             title: 'Lista'
           },
           {
             name: 'ordered-list',
-            action: window.SimpleMDE.toggleOrderedList,
+            action: SimpleMDE.toggleOrderedList,
             className: 'glyphicon glyphicon-list-alt',
             title: 'Lista numerada'
           },
           '|',
           {
             name: 'link',
-            action: window.SimpleMDE.drawLink,
+            action: SimpleMDE.drawLink,
             className: 'glyphicon glyphicon-link',
             title: 'Insertar enlace'
           },
           {
             name: 'image',
-            action: window.SimpleMDE.drawImage,
+            action: SimpleMDE.drawImage,
             className: 'glyphicon glyphicon-picture',
             title: 'Insertar imagen'
           },
           {
             name: 'code',
-            action: window.SimpleMDE.toggleCodeBlock,
+            action: SimpleMDE.toggleCodeBlock,
             className: 'glyphicon glyphicon-console',
             title: 'Insertar código'
           },
           '|',
           {
             name: 'preview',
-            action: window.SimpleMDE.togglePreview,
+            action: SimpleMDE.togglePreview,
             className: 'glyphicon glyphicon-eye-open no-disable',
             title: 'Vista previa'
           },
           {
             name: 'side-by-side',
-            action: window.SimpleMDE.toggleSideBySide,
+            action: SimpleMDE.toggleSideBySide,
             className: 'glyphicon glyphicon-adjust no-disable no-mobile',
             title: 'Dividir Pantalla'
           },
           {
             name: 'fullscreen',
-            action: window.SimpleMDE.toggleFullScreen,
+            action: SimpleMDE.toggleFullScreen,
             className: 'glyphicon glyphicon-fullscreen no-disable no-mobile',
             title: 'Pantalla Completa'
           },
@@ -313,7 +311,7 @@ export class ProblemsEditor {
    * Inicializa el editor secundario del creador de problemas.
    */
   createSecondEditor () {
-    this.secondEditor = new window.SimpleMDE(
+    this.secondEditor = new SimpleMDE(
       {
         autoDownloadFontAwesome: false,
         autofocus: false,
@@ -323,76 +321,76 @@ export class ProblemsEditor {
         toolbar: [
           {
             name: 'bold',
-            action: window.SimpleMDE.toggleBold,
+            action: SimpleMDE.toggleBold,
             className: 'glyphicon glyphicon-bold',
             title: 'Negrilla'
           },
           {
             name: 'italic',
-            action: window.SimpleMDE.toggleItalic,
+            action: SimpleMDE.toggleItalic,
             className: 'glyphicon glyphicon-italic',
             title: 'Cursiva'
           },
           '|',
           {
             name: 'heading',
-            action: window.SimpleMDE.toggleHeadingSmaller,
+            action: SimpleMDE.toggleHeadingSmaller,
             className: 'glyphicon glyphicon-header',
             title: 'Título (Pulsa varias veces para cambiar tamaño)'
           },
           {
             name: 'quote',
-            action: window.SimpleMDE.toggleBlockquote,
+            action: SimpleMDE.toggleBlockquote,
             className: 'glyphicon glyphicon-bookmark',
             title: 'Cita'
           },
           {
             name: 'unordered-list',
-            action: window.SimpleMDE.toggleUnorderedList,
+            action: SimpleMDE.toggleUnorderedList,
             className: 'glyphicon glyphicon-th-list',
             title: 'Lista'
           },
           {
             name: 'ordered-list',
-            action: window.SimpleMDE.toggleOrderedList,
+            action: SimpleMDE.toggleOrderedList,
             className: 'glyphicon glyphicon-list-alt',
             title: 'Lista numerada'
           },
           '|',
           {
             name: 'link',
-            action: window.SimpleMDE.drawLink,
+            action: SimpleMDE.drawLink,
             className: 'glyphicon glyphicon-link',
             title: 'Insertar enlace'
           },
           {
             name: 'image',
-            action: window.SimpleMDE.drawImage,
+            action: SimpleMDE.drawImage,
             className: 'glyphicon glyphicon-picture',
             title: 'Insertar imagen'
           },
           {
             name: 'code',
-            action: window.SimpleMDE.toggleCodeBlock,
+            action: SimpleMDE.toggleCodeBlock,
             className: 'glyphicon glyphicon-console',
             title: 'Insertar código'
           },
           '|',
           {
             name: 'preview',
-            action: window.SimpleMDE.togglePreview,
+            action: SimpleMDE.togglePreview,
             className: 'glyphicon glyphicon-eye-open no-disable',
             title: 'Vista previa'
           },
           {
             name: 'side-by-side',
-            action: window.SimpleMDE.toggleSideBySide,
+            action: SimpleMDE.toggleSideBySide,
             className: 'glyphicon glyphicon-adjust no-disable no-mobile',
             title: 'Dividir Pantalla'
           },
           {
             name: 'fullscreen',
-            action: window.SimpleMDE.toggleFullScreen,
+            action: SimpleMDE.toggleFullScreen,
             className: 'glyphicon glyphicon-fullscreen no-disable no-mobile',
             title: 'Pantalla Completa'
           }

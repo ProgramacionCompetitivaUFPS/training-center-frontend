@@ -137,6 +137,16 @@
           },
           "jquery",
           {
+            "name": "bootstrap",
+            "path": "../node_modules/bootstrap/dist",
+            "main": "js/bootstrap.min",
+            "deps": ["jquery"],
+            "exports": "$",
+            "resources": [
+              "css/bootstrap.css"
+            ]
+          },
+          {
             "name": "aurelia-notify",
             "path": "../node_modules/aurelia-notify/dist/amd",
             "main": "index",
@@ -165,9 +175,24 @@
             "path": "../node_modules/whatwg-fetch",
             "main": "fetch"
           },
+          {
+            "name": "simplemde",
+            "path": "../node_modules/simplemde/dist",
+            "main": "simplemde.min",
+            "resources": [
+              "simplemde.min.css"
+            ]
+          },
           "showdown"
         ]
       }
-    ]
+    ],
+    "copyFiles": {
+      "node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.eot": "bootstrap/fonts",
+      "node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.svg": "bootstrap/fonts",
+      "node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2": "bootstrap/fonts",
+      "node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.woff": "bootstrap/fonts",
+      "node_modules/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf": "bootstrap/fonts"
+    }
   }
 }

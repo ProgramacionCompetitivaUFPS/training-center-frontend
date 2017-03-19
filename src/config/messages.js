@@ -59,7 +59,7 @@ export let MESSAGES = {
     type: 'success'
   },
   // CATEGORIAS
-  categoriesError: {
+  categoriesEmpty: {
     text: 'La lista de categorías no ha sido cargada. Intentelo de nuevo',
     type: 'error'
   },
@@ -74,6 +74,10 @@ export let MESSAGES = {
   },
 
   // PROBLEMS
+  categoriesEmpty: {
+    text: 'No existe ninguna categoría actualmente almacenada',
+    type: 'warning'
+  },
   categoryCreated: {
     text: 'La categoría se ha añadido satisfactoriamente',
     type: 'success'

@@ -9,8 +9,8 @@ export let API = {
   /**
    * apiUrl debe reemplazarse por la dirección del backend
    */
-  apiUrl: 'http://demo9817161.mockable.io/',
-  endponts: {
+  apiUrl: 'https://ufps-training-center.herokuapp.com/',
+  endpoints: {
     auth: 'auth',
     users: 'users',
     recovery: 'recovery',

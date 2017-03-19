@@ -11,7 +11,6 @@ import { Alert, Auth, Problems } from 'services/services'
  * @class CategoryProblems
  */
 export class CategoryProblems {
-
   /**
    * Método que realiza inyección de las dependencias necesarias en el módulo.
    * Estas dependencias son cargadas bajo el patrón de diseño singleton.
@@ -45,7 +44,6 @@ export class CategoryProblems {
     this.pagination = []
     this.language = null
     this.languageDisplay = 'Cualquier idioma'
-
     this.problemToRemove = null
   }
 
@@ -133,6 +131,7 @@ export class CategoryProblems {
   getProblems () {
     this.problemsService.getCategoryProblems(this.id, this.page, this.noProblemsToShow, this.sort, this.by, this.language)
       .then(data => {
+        console.log(data)
         this.category = new Category(data.meta.categoryName)
         this.category.setTotalProblems(data.meta.totalItems)
         this.category.setProblemsLoaded(data.data)

@@ -78,17 +78,16 @@ export class Jwt {
     if (!this.tokenExists()) {
       return 'visitor'
     } else {
-      let type = this.data.usertype
+      let type = parseInt(this.data.usertype)
       switch (type) {
-        case '0':
+        case 0:
           return 'student'
-        case '1':
+        case 1:
           return 'coach'
-        case '2':
+        case 2:
           return 'admin'
       }
       return 'visitor'
     }
   }
-
 }

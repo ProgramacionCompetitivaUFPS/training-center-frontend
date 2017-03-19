@@ -10,7 +10,6 @@ import 'fetch'
  * @class Http
  */
 export class Http {
-
   /**
    * Crea una instancia de Http, y configura el cliente de conexión.
    */
@@ -49,5 +48,4 @@ export class Http {
   parseJSON (response) {
     return response.json()
   }
-
 }
