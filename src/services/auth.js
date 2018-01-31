@@ -37,6 +37,7 @@ export class Auth {
    * @returns - Promise con el token de usuario
    */
   auth (user) {
+    console.log(JSON.stringify(user))
     return this.httpService.httpClient
       .fetch(API.endpoints.auth, {
         method: 'post',

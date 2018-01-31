@@ -8,7 +8,6 @@ import { Alert, Auth, Problems } from 'services/services'
  * @class GeneralProblems
  */
 export class GeneralProblems {
-
   /**
    * Método que realiza inyección de las dependencias necesarias en el módulo.
    * Estas dependencias son cargadas bajo el patrón de diseño singleton.
@@ -68,16 +67,19 @@ export class GeneralProblems {
   getCategories () {
     this.problemsService.getCategories()
       .then(data => {
+        console.log('DATA')
+        console.log(data)
         this.categories = data.categories
         if (this.categories.length === 0) {
           this.alertService.showMessage(MESSAGES.categoriesEmpty)
         }
       })
       .catch(error => {
+        console.log(error)
         if (error.status === 401) {
           this.alertService.showMessage(MESSAGES.permissionsError)
         } else {
-          this.alertService.showMessage(MESSAGES.categoriesError)
+          this.alertService.showMessage(MESSAGES.unknownError)
         }
       })
   }

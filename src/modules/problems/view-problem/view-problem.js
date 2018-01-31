@@ -4,8 +4,6 @@ import { Problem } from 'models/models'
 import { Alert, Problems } from 'services/services'
 
 export class ViewProblem {
-
-
   /**
    * Método que realiza inyección de las dependencias necesarias en el módulo.
    * Estas dependencias son cargadas bajo el patrón de diseño singleton.
@@ -44,8 +42,7 @@ export class ViewProblem {
     this.lang = params.lang || 'en'
     this.problemService.getProblem(this.id)
       .then(problem => {
-        problem = problem.problem
-        
+        problem = problem.problem   
         this.problem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input.replace(/\r\n/g, '\n'), problem.example_output.replace(/\r\n/g, '\n'), parseFloat(problem.time_limit), problem.user_id, problem.user.username)
         console.log(this.problem.exampleInput)
         if (this.lang === 'en' && !this.problem.isInEnglish()) {

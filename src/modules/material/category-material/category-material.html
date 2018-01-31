@@ -1,0 +1,56 @@
+<template>
+  <require from="../../../resources/attributes/tooltip"></require>
+  <div class="container ufps-container-logged">
+    <h1 class="text-right">${category}</h1>
+    <hr>
+    <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+      <a route-href="route: specificMaterial; params.bind: {id:material.id}">
+        <div class="ufps-card">
+          <div class="ufps-card-title ufps-card-material">
+              <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar este material" tooltip></span>
+              <span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove"  data-toggle="tooltip" title="Eliminar este material" tooltip></span>
+            <h1>${material.name}</h1>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div if.bind="authService.isAdmin()" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container">
+      <div class="ufps-card" data-toggle="modal" data-target="#new-material">
+        <div class="ufps-card-title">
+          <h1><span class="glyphicon glyphicon-plus"></span></h1>
+        </div>
+        <div class="col-xs-12 ufps-card-link">
+          Subir material
+        </div>
+        <div class="fix"></div>
+      </div>
+    </div>
+    <div class="fix"></div>
+  </div>
+  <!--MODAL PARA AÑADIR MATERIAL-->
+  <div if.bind = "authService.isAdmin()" class="modal fade" id="new-material" tabindex="-1" role="dialog" aria-labelledby="new-material">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Añadir material</h4>
+          <br>
+          <form submit.delegate="createMaterial()">
+              <input type="text" class="form-control" placeholder="Nombre" value.bind = "newMaterial.name" required>
+              <br>
+              <input type="text" class="form-control" placeholder="Descripcion" value.bind = "newMaterial.description">
+              <br>
+              <label for="selectType">Tipo:</label>
+              <input type="radio" name="selectType" checked.bind = "newMaterial.isPdf" model.bind="true"> PDF
+              <input type="radio" name="selectType" checked.bind = "newMaterial.isPdf" model.bind="false"> URL
+              <br>
+              <input if.bind="!newMaterial.isPdf" type="text" class="form-control" placeholder="Url" value.bind = "newMaterial.url">
+              <input if.bind="newMaterial.isPdf" type="file" class="form-control" model.bind = "newType" value.bind = "newMaterial.pdf" accept=".pdf">
+              <br>
+              <input type="submit" class="btn btn-default ufps-btn-default" value="Añadir">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

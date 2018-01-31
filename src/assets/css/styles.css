@@ -413,6 +413,19 @@ hr {
   position: relative;
 }
 
+.ufps-card-material {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  height: 130px;
+}
+
+.ufps-card-container a,
+.ufps-card-container a:hover,
+.ufps-card-container a:active {
+  cursor: pointer;
+  text-decoration: none!important;
+}
+
 .ufps-edit-category,
 .ufps-remove-category {
   position: absolute;
@@ -459,6 +472,9 @@ hr {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1abc9c', endColorstr='#27ae60', GradientType=1);
 }
 
+.ufps-card-new {
+  cursor: pointer;
+}
 .ufps-card-new .ufps-card-title {
   background: #BBB!important;
 }
@@ -775,4 +791,21 @@ th {
   padding: 14px;
   margin: 0;
   border: none;
+}
+
+iframe {
+  width: 100%;
+}
+.ufps-container-iframe {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+}
+.ufps-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

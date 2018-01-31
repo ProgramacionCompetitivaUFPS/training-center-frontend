@@ -9,7 +9,7 @@ export let API = {
   /**
    * apiUrl debe reemplazarse por la dirección del backend
    */
-  apiUrl: 'https://ufps-training-center.herokuapp.com/',
+  apiUrl: 'https://ufps-tc.herokuapp.com/',
   endpoints: {
     auth: 'auth',
     users: 'users',
@@ -17,6 +17,7 @@ export let API = {
     reset: 'reset',
     categories: 'categories',
     categoryProblems: 'categories/{1}/problems',
+    materials: 'materials',
     problems: 'problems'
   },
 

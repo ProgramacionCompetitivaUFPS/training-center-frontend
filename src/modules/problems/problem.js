@@ -1,5 +1,4 @@
 export class Problem {
-
     /**
    * Se encarga del enrutamiento dentro de la aplicación
    * @param {any} config - Configuración de la aplicación

@@ -114,6 +114,11 @@ export let MESSAGES = {
     text: 'Debes añadir archivos de entrada y salida para el problema',
     type: 'error'
   },
+  // Material
+  materialDoesNotExists: {
+    text: 'El material solicitado no existe',
+    type: 'error'
+  },
   // GENERAL
   serverError: {
     text: 'Ha ocurrido un error interno. Lo sentimos. Vuelve a intentarlo mas tarde',
