@@ -133,7 +133,7 @@ export class Problems {
       data += '&filter=' + filter
     }
     return this.httpService.httpClient
-      .fetch(API.endpoints.categoryProblems.replace('{1}', id), {
+      .fetch(API.endpoints.categoryProblems.replace('{1}', id) + data, {
         method: 'get',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token,

@@ -26,7 +26,7 @@
               <li><a href="#/problemas/nuevo">Añadir problemas</a></li>
             </ul>
           </li>
-          <li class="ufps-btn-nav ${classes.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
+          <li class="ufps-btn-nav ${classes.isActive ? 'active' : ''}" if.bind="authService.isStudent() || authService.isCoach()">
             <a route-href="route: classes">Clases</a>
           </li>
           <li class="ufps-btn-nav ${ranking.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">

@@ -218,4 +218,12 @@ export class Auth {
       return info.email
     }
   }
+
+  /**
+   * Retorna el id del usuario actualmente logueado
+   * @returns id del usuario logueado
+   */
+  getUserId() {
+    return this.jwtService.getUserId()
+  }
 }

@@ -110,7 +110,7 @@ export class App {
       {
         name: 'classes',
         route: 'clases',
-        moduleId: './modules/home/home',
+        moduleId: './modules/syllabus/syllabus',
         layoutView: './layouts/logged.html',
         nav: true,
         settings: {

@@ -18,7 +18,8 @@ export let API = {
     categories: 'categories',
     categoryProblems: 'categories/{1}/problems',
     materials: 'materials',
-    problems: 'problems'
+    problems: 'problems',
+    syllabus: 'syllabus'
   },
 
   // SESSION

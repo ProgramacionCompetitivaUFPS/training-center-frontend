@@ -131,5 +131,10 @@ export let MESSAGES = {
   permissionsError: {
     text: 'Usted no tiene permisos para realizar esta acción',
     type: 'error'
-  }
+  },
+  // SYLLABUS
+  syllabusesEmpty: {
+    text: 'No existe ninguna clase actualmente almacenada',
+    type: 'warning'
+  },
 }
