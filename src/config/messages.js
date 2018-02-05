@@ -137,4 +137,12 @@ export let MESSAGES = {
     text: 'No existe ninguna clase actualmente almacenada',
     type: 'warning'
   },
+  syllabusKeyNeeded: {
+    text: 'Las clases privadas deben contener una clave.',
+    type: 'error'
+  },
+  syllabusCreated: {
+    text: 'La clase ha sido creada correctamente',
+    type: 'success'
+  }
 }

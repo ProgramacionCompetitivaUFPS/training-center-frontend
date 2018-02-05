@@ -19,7 +19,8 @@ export let API = {
     categoryProblems: 'categories/{1}/problems',
     materials: 'materials',
     problems: 'problems',
-    syllabus: 'syllabus'
+    syllabus: 'syllabus',
+    enrolledSyllabus: 'users/{1}/syllabus'
   },
 
   // SESSION

@@ -1,40 +1,5 @@
 <template>
-  <div slot="content" class="body-slot">
-    <require from="../../resources/attributes/tooltip"></require>
-  	<div if.bind="authService.isStudent()" class="container ufps-container-logged">
-    	<h1 class="text-right">Mis clases</h1>
-			<hr>
-			<div repeat.for="syllabus of enrolledSyllabuses" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
-				<div class="ufps-card">
-					<div class="ufps-card-title">
-							<!--<span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar el nombre de la categoría" click.delegate="showEditCategory(category.id, category.name)" tooltip></span>
-							<span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove"  data-toggle="tooltip" title="Eliminar categoría" click.delegate="showRemoveCategory(category.id, category.name)" tooltip></span>-->
-						<h1>${syllabus.tittle}</h1>
-					</div>
-					<div if.bind="authService.isCoach()" class="col-xs-6 ufps-card-link">
-						<a route-href="route: category; params.bind: {id:category.id}">Temas</a>
-					</div>
-					<div if.bind="authService.isCoach()" class="col-xs-6 ufps-card-link">
-						<a route-href="route: material; params.bind: {id:category.id}">Estadísticas</a>
-					</div>
-					<div class="fix"></div>
-				</div>
-			</div>
-		</div>
-		<div class="container ufps-container-logged">
-			<h1 class="text-right" if.bind="authService.isStudent()">Clases disponibles</h1>
-			<h1 class="text-right" if.bind="authService.isCoach()">Mis clases</h1>
-			<hr>
-			<div repeat.for="syllabus of syllabuses" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
-				<div class="ufps-card">
-					<div class="ufps-card-title">
-							<!--<span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar el nombre de la categoría" click.delegate="showEditCategory(category.id, category.name)" tooltip></span>
-							<span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove"  data-toggle="tooltip" title="Eliminar categoría" click.delegate="showRemoveCategory(category.id, category.name)" tooltip></span>-->
-						<h1>${syllabus.tittle}</h1>
-					</div>
-					<div class="fix"></div>
-				</div>
-			</div>
-		</div>
-  </div>
-</template>
+	<div slot="content" class="body-slot">
+	  <router-view></router-view>
+	</div>
+  </template>

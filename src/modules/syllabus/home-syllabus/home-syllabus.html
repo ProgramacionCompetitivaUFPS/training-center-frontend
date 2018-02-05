@@ -1,0 +1,144 @@
+<template>
+  <require from="../../../resources/attributes/tooltip"></require>
+  <div if.bind="authService.isStudent()" class="container ufps-container-logged">
+    <h1 class="text-right">Mis clases</h1>
+    <hr>
+    <div class="text-center" if.bind="!enrolledSyllabusesLoaded">
+      <p>Actualmente no tienes ninguna clase inscrita.</p>
+    </div>
+    <div repeat.for="syllabus of enrolledSyllabuses" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+      <div class="ufps-card">
+        <div class="ufps-card-title">
+          <!--<span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar el nombre de la categoría" click.delegate="showEditCategory(category.id, category.name)" tooltip></span>
+                              <span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove"  data-toggle="tooltip" title="Eliminar categoría" click.delegate="showRemoveCategory(category.id, category.name)" tooltip></span>-->
+          <h1>${syllabus.tittle}</h1>
+        </div>
+        <div class="fix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="container ufps-container-logged">
+    <h1 class="text-right" if.bind="authService.isStudent()">Clases disponibles</h1>
+    <h1 class="text-right" if.bind="authService.isCoach()">Mis clases</h1>
+    <hr>
+    <div repeat.for="syllabus of syllabuses" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+      <div class="ufps-card">
+        <div class="ufps-card-title">
+          <span if.bind="authService.isCoach()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar los datos de la clase"
+            click.delegate="showEditSyllabus(syllabus.id, syllabus.tittle)" tooltip></span>
+          <span if.bind="authService.isCoach()" class="ufps-remove-category glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar la clase"
+            click.delegate="showRemoveSyllabos(syllabus.id, syllabus.tittle)" tooltip></span>
+          <h1>${syllabus.tittle}</h1>
+        </div>
+        <div if.bind="authService.isCoach()" class="col-xs-6 ufps-card-link">
+          <a>Temas</a>
+        </div>
+        <div if.bind="authService.isCoach()" class="col-xs-6 ufps-card-link">
+          <a>Estadísticas</a>
+        </div>
+        <div class="fix"></div>
+      </div>
+    </div>
+    <div if.bind="authService.isCoach()" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container">
+      <div class="ufps-card" data-toggle="modal" data-target="#new-syllabus">
+        <div class="ufps-card-title">
+          <h1>
+            <span class="glyphicon glyphicon-plus"></span>
+          </h1>
+        </div>
+        <div class="col-xs-12 ufps-card-link">
+          Nueva clase
+        </div>
+        <div class="fix"></div>
+      </div>
+    </div>
+  </div>
+
+  <!--MODAL PARA AÑADIR CLASE-->
+  <div if.bind="authService.isCoach()" class="modal fade" id="new-syllabus" tabindex="-1" role="dialog" aria-labelledby="new-syllabus">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Nueva clase</h4>
+          <br>
+          <form submit.delegate="createSyllabus()">
+            <div class="form-group">
+              <label>Titulo</label>
+              <input type="text" class="form-control" placeholder="Nombre del syllabus" value.bind="newSyllabus.title" required>
+            </div>
+            <div class="form-group">
+              <label>Descripción</label>
+              <input type="text" class="form-control" placeholder="Descripión del syllabus" value.bind="newSyllabus.description" required>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="privacy" model.bind="true" checked.bind="newSyllabus.privacy" checked> Público
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="privacy" model.bind="false" checked.bind="newSyllabus.privacy" checked> Privado
+                <span>(requiere clave)</span>
+              </label>
+            </div>
+            <div class="form-group" if.bind="!newSyllabus.privacy">
+              <label>Clave (Se recomienda reemplazar la siguiente clave)</label>
+              <input type="text" class="form-control" placeholder="clave que deben ingresar los estudiantes para acceder a la clase" value.bind="newSyllabus.key"
+                required>
+            </div>
+            <div class="text-right">
+              <input type="submit" class="btn btn-default ufps-btn-default" value="Registrar clase">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--MODAL PARA EDITAR Syllabus-->
+  <div if.bind="authService.isCoach()" class="modal fade" id="edit-syllabus" tabindex="-1" role="dialog" aria-labelledby="edit-syllabus">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Editar Syllabus</h4>
+            <br>
+            <form submit.delegate="editSyllabus()">
+                <div class="form-group">
+                  <label>Titulo</label>
+                  <input type="text" class="form-control" placeholder="Nombre del syllabus" value.bind="editSyllabus.title" required>
+                </div>
+                <div class="form-group">
+                  <label>Descripción</label>
+                  <input type="text" class="form-control" placeholder="Descripión del syllabus" value.bind="editSyllabus.description" required>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="privacy" model.bind="true" checked.bind="editSyllabus.privacy"> Público
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="privacy" model.bind="false" checked.bind="editSyllabus.privacy"d> Privado
+                    <span>(requiere clave)</span>
+                  </label>
+                </div>
+                <div class="form-group" if.bind="!editSyllabus.privacy">
+                  <label>Clave (Se recomienda reemplazar la siguiente clave)</label>
+                  <input type="text" class="form-control" placeholder="clave que deben ingresar los estudiantes para acceder a la clase" value.bind="editSyllabus.key"
+                    required>
+                </div>
+                <div class="text-right">
+                  <input type="submit" class="btn btn-default ufps-btn-default" value="editar clase">
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>

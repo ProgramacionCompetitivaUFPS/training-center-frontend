@@ -114,7 +114,7 @@ export class App {
         layoutView: './layouts/logged.html',
         nav: true,
         settings: {
-          roles: ['admin', 'coach', 'student']
+          roles: ['coach', 'student']
         }
       },
       {
