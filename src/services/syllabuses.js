@@ -88,4 +88,63 @@ export class Syllabuses {
       })
       .then(this.httpService.checkStatus)
   }
+
+  /**
+   * Edita un syllabus en el sistema
+   * @param {Syllabus} syllabus - Syllabus a editar
+   */
+  editSyllabus (syllabus) {
+    if (syllabus.privacy) syllabus.key = undefined
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + syllabus.id, {
+        method: 'put',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          tittle: syllabus.title,
+          description: syllabus.description,
+          public: syllabus.privacy,
+          key: syllabus.key
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  /**
+   * Elimina un syllabus de la plataforma
+   * @param {number} id - Identificador del syllabus a eliminar
+   */
+  removeSyllabus (id) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + id, {
+        method: 'delete',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  /**
+   * Registrar un estudiante en un syllabus.
+   * @param {number} id - Identificador del syllabus
+   * @param {string} key - Clave en syllabus privados
+   */
+  enrollSyllabus (id, key) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + id + '/register', {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          key: key
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
 }

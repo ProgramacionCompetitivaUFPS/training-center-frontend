@@ -35,6 +35,10 @@ export class HomeSyllabus {
     this.syllabusesLoaded = true
     this.enrolledSyllabusesLoaded = true
     this.newSyllabus = new Syllabus()
+    this.editSyllabus = new Syllabus()
+    this.syllabusToRemove = new Syllabus()
+    this.syllabusToEnroll = new Syllabus()
+    this.options = [true, false]
   }
 
   /**
@@ -42,7 +46,6 @@ export class HomeSyllabus {
    * Este método se dispara una vez la vista y el view-model son cargados.
    */
   created () {
-    if (this.authService.isStudent()) this.getEnrolledSyllabuses()
     this.getSyllabuses()
   }
 
@@ -59,6 +62,7 @@ export class HomeSyllabus {
         if (this.syllabuses.length === 0) {
           this.syllabusesLoaded = false
         }
+        if (this.authService.isStudent()) this.getEnrolledSyllabuses()
       })
       .catch(error => {
         this.syllabusesLoaded = false
@@ -74,9 +78,17 @@ export class HomeSyllabus {
    * Lee la lista de categorías en las cuales está matriculado un estudiante.
    */
   getEnrolledSyllabuses () {
+    this.enrolledSyllabuses = []
     this.syllabusService.getEnrolledSyllabuses()
       .then(data => {
-        this.enrolledSyllabuses = data.user.syllabuses
+        for (let i = 0; i < data.user.syllabuses.length; i++) {
+          for (let j = 0; j < this.syllabuses.length; j++) {
+            if (this.syllabuses[j].id === data.user.syllabuses[i]) {
+              this.enrolledSyllabuses.push(this.syllabuses[j])
+              this.syllabuses[j].enrolled = true
+            }
+          }
+        }
         if (this.enrolledSyllabuses.length === 0) {
           this.enrolledSyllabusesLoaded = false
         }
@@ -101,18 +113,120 @@ export class HomeSyllabus {
     }
     this.syllabusService.registerSyllabus(this.newSyllabus)
       .then((data) => {
-        console.log("PASA")
-        console.log(data)
         this.getSyllabuses()
         this.alertService.showMessage(MESSAGES.syllabusCreated)
         window.$('#new-syllabus').modal('hide')
         this.newSyllabus = new Syllabus()
       })
-      .catch((error) => {
-        console.log("RROR")
-        console.log(error)
+      .catch(() => {
         this.alertService.showMessage(MESSAGES.unknownError)
         window.$('#new-syllabus').modal('hide')
       })
+  }
+
+  /**
+   * Despliega en pantalla el menú de editar Syllabus
+   * @param {number} id - Id del Syllabus a editar
+   * @param {string} title - Título del syllabus a editar
+   * @param {string} description - Descripción del syllabus a editar
+   * @param {bool} privacy - True si el syllabus es público, false en caso contrario
+   */
+  showEditSyllabus (id, title, description, privacy) {
+    this.editSyllabus = new Syllabus(id, title, description, privacy, '')
+    window.$('#edit-syllabus').modal('show')
+  }
+
+  /**
+   * Envia al servidor los datos de un syllabus para ser editado.
+   */
+  modifySyllabus () {
+    if (!this.editSyllabus.privacy && (this.editSyllabus.key === null || this.editSyllabus.key === undefined || this.editSyllabus.key === '')) {
+      this.alertService.showMessage(MESSAGES.syllabusKeyNeeded)
+    } else {
+      this.syllabusService.editSyllabus(this.editSyllabus)
+        .then(() => {
+          this.syllabuses.find(i => i.id === this.editSyllabus.id).tittle = this.editSyllabus.title
+          this.alertService.showMessage(MESSAGES.syllabusEdited)
+          window.$('#edit-syllabus').modal('hide')
+        })
+        .catch(error => {
+          if (error.status === 401 || error.status === 403) {
+            this.alertService.showMessage(MESSAGES.permissionsError)
+          } else if (error.status === 500) {
+            this.alertService.showMessage(MESSAGES.serverError)
+          } else {
+            this.alertService.showMessage(MESSAGES.unknownError)
+          }
+          window.$('#edit-syllabus').modal('hide')
+        })
+    }
+  }
+
+  /**
+   * Muestra en pantalla el popup para eliminar un syllabus.
+   * @param {number} id - Identificador del syllabus a eliminar.
+   * @param {string} name - Nombre del syllabus.
+   */
+  showRemoveSyllabus (id, name) {
+    this.syllabusToRemove = new Syllabus(id, name)
+    window.$('#remove-syllabus').modal('show')
+  }
+
+  /**
+   * Elimina el syllabus seleccionado
+   */
+  removeSyllabus () {
+    this.syllabusService.removeSyllabus(this.syllabusToRemove.id)
+    .then(() => {
+      this.syllabuses.splice(this.syllabuses.findIndex(i => i.id === this.syllabusToRemove.id), 1)
+      this.alertService.showMessage(MESSAGES.syllabusRemoved)
+      window.$('#remove-syllabus').modal('hide')
+    })
+    .catch(error => {
+      if (error.status === 401 || error.status === 403) {
+        this.alertService.showMessage(MESSAGES.permissionsError)
+      } else if (error.status === 500) {
+        this.alertService.showMessage(MESSAGES.serverError)
+      } else {
+        this.alertService.showMessage(MESSAGES.unknownError)
+      }
+      window.$('#remove-syllabys').modal('hide')
+    })
+  }
+
+  /**
+   * Muestra en pantalla el popup para registrarse en un syllabus.
+   * @param {number} id - Identificador del syllabus a registrarse.
+   * @param {string} name - Nombre del syllabus.
+   * @param {string} description - Descripción del Syllabus
+   * @param {bool} privacy - true si es público, false en caso contrario
+   */
+  showEnrollSyllabus (id, name, description, privacy) {
+    this.syllabusToEnroll = new Syllabus(id, name, description, privacy, '')
+    window.$('#enroll-syllabus').modal('show')
+  }
+
+  /**
+   * Matricular estudiante en un syllabus
+   */
+  enrollSyllabus () {
+    if (this.syllabusToEnroll.privacy) this.syllabusToEnroll.key = undefined
+    if (!this.syllabusToEnroll.privacy && (this.syllabusToEnroll.key === null || this.syllabusToEnroll.key === undefined || this.editSyllabus.key === '')) {
+      this.alertService.showMessage(MESSAGES.syllabusKeyNeeded)
+    } else {
+      this.syllabusService.enrollSyllabus(this.syllabusToEnroll.id, this.syllabusToEnroll.key)
+        .then((data) => {
+          console.log(data)
+          this.alertService.showMessage(MESSAGES.enrolledInSyllabus)
+          this.getSyllabuses()
+          this.getEnrolledSyllabuses()
+          window.$('#enroll-syllabus').modal('hide')
+        })
+        .catch((error) => {
+          console.log(error)
+          this.alertService.showMessage(MESSAGES.unknownError)
+          window.$('#enroll-syllabus').modal('hide')
+        })
+    }
   }
 }

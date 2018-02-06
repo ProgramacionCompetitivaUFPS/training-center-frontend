@@ -74,10 +74,6 @@ export let MESSAGES = {
   },
 
   // PROBLEMS
-  categoriesEmpty: {
-    text: 'No existe ninguna categoría actualmente almacenada',
-    type: 'warning'
-  },
   categoryCreated: {
     text: 'La categoría se ha añadido satisfactoriamente',
     type: 'success'
@@ -143,6 +139,18 @@ export let MESSAGES = {
   },
   syllabusCreated: {
     text: 'La clase ha sido creada correctamente',
+    type: 'success'
+  },
+  syllabusEdited: {
+    text: 'La clase ha sido modificada correctamente',
+    type: 'success'
+  },
+  syllabusRemoved: {
+    text: 'La clase ha sido eliminada satisfactoriamente',
+    type: 'success'
+  },
+  enrolledInSyllabus: {
+    text: 'Se ha registrado satisfactoriamente',
     type: 'success'
   }
 }
