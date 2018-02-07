@@ -621,7 +621,8 @@ th {
   outline: 0;
 }
 
-.ufps-input-creator input.form-control {
+.ufps-input-creator input.form-control,
+textarea.form-control {
   border-right: 0;
 }
 
@@ -808,4 +809,7 @@ iframe {
   left: 0;
   width: 100%;
   height: 100%;
+}
+.form-horizontal-assignment .control-label {
+  text-align: left!important;
 }

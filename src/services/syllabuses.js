@@ -1,5 +1,5 @@
 import { API } from 'config/config'
-import { Syllabus } from 'models/models'
+import { Assignment, Syllabus } from 'models/models'
 import { Http } from 'services/http'
 import { Jwt } from 'services/jwt'
 
@@ -57,6 +57,23 @@ export class Syllabuses {
   getEnrolledSyllabuses () {
     return this.httpService.httpClient
       .fetch(API.endpoints.enrolledSyllabus.replace('{1}', this.jwtService.getUserId()), {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Obtiene del backend los detalles de un syllabus específico.
+   * @param {number} id - Identificador del syllabus a obtener
+   * @returns {Promise} Promesa con el token de usuario
+   */
+  getSyllabus (id) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + id, {
         method: 'get',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token
@@ -143,6 +160,30 @@ export class Syllabuses {
         },
         body: JSON.stringify({
           key: key
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  /**
+   * Crea una nueva tarea en el sistema
+   * @param {Assignment} assignment - Tarea a crear
+   */
+  createAssignment (assignment) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.assignments, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          tittle: assignment.title,
+          description: assignment.description,
+          init_date: assignment.startDate,
+          end_date: assignment.endDate,
+          syllabus_id: assignment.syllabusId,
+          problems: assignment.problems
         })
       })
       .then(this.httpService.checkStatus)

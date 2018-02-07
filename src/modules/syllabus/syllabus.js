@@ -24,9 +24,17 @@ export class Syllabus {
       {
         name: 'SyllabusDetail',
         route: 'clases/:id',
-        moduleId: 'modules/problems/syllabus-detail/syllabus-detail',
+        moduleId: 'modules/syllabus/syllabus-detail/syllabus-detail',
         settings: {
           roles: ['coach', 'student']
+        }
+      },
+      {
+        name: 'CreateAssignment',
+        route: 'nueva-tarea/:id',
+        moduleId: 'modules/syllabus/create-assignment/create-assignment',
+        settings: {
+          roles: ['coach']
         }
       }
     ])

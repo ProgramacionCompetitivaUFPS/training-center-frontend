@@ -20,7 +20,8 @@ export let API = {
     materials: 'materials',
     problems: 'problems',
     syllabus: 'syllabus',
-    enrolledSyllabus: 'users/{1}/syllabus'
+    enrolledSyllabus: 'users/{1}/syllabus',
+    assignments: 'assignments'
   },
 
   // SESSION

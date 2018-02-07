@@ -152,5 +152,13 @@ export let MESSAGES = {
   enrolledInSyllabus: {
     text: 'Se ha registrado satisfactoriamente',
     type: 'success'
+  },
+  assignmentInvalidProblems: {
+    text: 'La lista de problemas debe contener solo los id de los problemas a añadir, separada por comas',
+    type: 'error'
+  },
+  assignmentCreated: {
+    text: 'La tarea ha sido creada con éxito',
+    type: 'success'
   }
 }

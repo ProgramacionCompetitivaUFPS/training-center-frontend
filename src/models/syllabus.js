@@ -12,13 +12,16 @@ export class Syllabus {
     * @param {string} description - descripción del syllabus
     * @param {bool} privacy - True si es un syllabus público, false si es privado
     * @param {string} key - opcional, clave para desbloquear el syllabus SOLO si es privado
+    * @param {bool} enrolled - true si el usuario está matriculado en el syllabus, false en caso contrario
+    * @param {array} assignments - Tareas
     */
-  constructor (id = undefined, title = undefined, description = undefined, privacy = true, key = '0000', enrolled = false) {
+  constructor (id = undefined, title = undefined, description = undefined, privacy = true, key = '0000', enrolled = false, assignments = []) {
     this.id = id
     this.title = title
     this.description = description
     this.privacy = privacy
     this.key = key
     this.enrolled = enrolled
+    this.assignments = assignments
   }
 }

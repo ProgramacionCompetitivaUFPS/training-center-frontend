@@ -1,1 +1,37 @@
-<template></template>
+<template>
+  <require from="../../../resources/attributes/tooltip"></require>
+  <div class="container ufps-container-logged">
+    <h1>${syllabus.title}</h1>
+    <p>${syllabus.description}</p>
+    <h2 class="text-right">Tareas</h2>
+    <hr>
+    <div repeat.for="assignment of syllabus.assignments" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+      <a>
+        <div class="ufps-card">
+          <div class="ufps-card-title">
+            <h1>Titulo</h1>
+          </div>
+          <div class="fix"></div>
+        </div>
+      </a>
+    </div>
+    <div if.bind="authService.isCoach()" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container">
+      <a route-href="route: CreateAssignment; params.bind: {id:id}">
+        <div class="ufps-card">
+          <div class="ufps-card-title">
+            <h1>
+              <span class="glyphicon glyphicon-plus"></span>
+            </h1>
+          </div>
+          <div class="col-xs-12 ufps-card-link">
+            Nueva tarea
+          </div>
+          <div class="fix"></div>
+        </div>
+      </a>
+    </div>
+    <div class="fix"></div>
+    <h2 class="text-right">Lecturas</h2>
+    <hr>
+  </div>
+</template>
