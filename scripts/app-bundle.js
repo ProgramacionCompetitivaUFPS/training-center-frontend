@@ -436,6 +436,10 @@ define('config/messages',['exports'], function (exports) {
     assignmentCreated: {
       text: 'La tarea ha sido creada con éxito',
       type: 'success'
+    },
+    assignmentModified: {
+      text: 'La tarea ha sido modificada con éxito',
+      type: 'success'
     }
   };
 });
@@ -447,6 +451,31 @@ define('config/settings',['exports'], function (exports) {
   });
   var SETTINGS = exports.SETTINGS = {
     'languages': ['java', 'c', 'c++', 'python']
+  };
+});
+define('models/assignment',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var Assignment = exports.Assignment = function Assignment(title, description, startDate, endDate, problems, syllabusId, id) {
+    _classCallCheck(this, Assignment);
+
+    this.title = title;
+    this.description = description;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.problems = problems;
+    this.syllabusId = syllabusId;
+    this.id = id;
   };
 });
 define('models/category',['exports', './problem'], function (exports, _problem) {
@@ -668,12 +697,13 @@ define('models/problem',["exports"], function (exports) {
     return Problem;
   }();
 });
-define('models/syllabus',['exports'], function (exports) {
+define('models/syllabus',['exports', './assignment'], function (exports, _assignment) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
+  exports.Syllabus = undefined;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -681,25 +711,36 @@ define('models/syllabus',['exports'], function (exports) {
     }
   }
 
-  var Syllabus = exports.Syllabus = function Syllabus() {
-    var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-    var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-    var description = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
-    var privacy = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
-    var key = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '0000';
-    var enrolled = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
-    var assignments = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : [];
+  var Syllabus = exports.Syllabus = function () {
+    function Syllabus() {
+      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+      var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+      var description = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+      var privacy = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+      var key = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '0000';
+      var enrolled = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
+      var assignments = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : [];
 
-    _classCallCheck(this, Syllabus);
+      _classCallCheck(this, Syllabus);
 
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.privacy = privacy;
-    this.key = key;
-    this.enrolled = enrolled;
-    this.assignments = assignments;
-  };
+      this.id = id;
+      this.title = title;
+      this.description = description;
+      this.privacy = privacy;
+      this.key = key;
+      this.enrolled = enrolled;
+      this.assignments = [];
+      this.mockAssignments(assignments);
+    }
+
+    Syllabus.prototype.mockAssignments = function mockAssignments(assignments) {
+      for (var i = 0; i < assignments.length; i++) {
+        this.assignments.push(new _assignment.Assignment(assignments[i].tittle, assignments[i].description, assignments[i].init_date, assignments[i].end_date, undefined, this.id, assignments[i].id));
+      }
+    };
+
+    return Syllabus;
+  }();
 });
 define('models/user-login',["exports"], function (exports) {
   "use strict";
@@ -1546,6 +1587,22 @@ define('services/syllabuses',['exports', 'config/config', 'models/models', 'serv
           end_date: assignment.endDate,
           syllabus_id: assignment.syllabusId,
           problems: assignment.problems
+        })
+      }).then(this.httpService.checkStatus);
+    };
+
+    Syllabuses.prototype.editAssignment = function editAssignment(assignment) {
+      return this.httpService.httpClient.fetch(_config.API.endpoints.assignments + '/' + assignment.id, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          tittle: assignment.title,
+          description: assignment.description,
+          init_date: assignment.startDate,
+          end_date: assignment.endDate
         })
       }).then(this.httpService.checkStatus);
     };
@@ -7049,6 +7106,13 @@ define('modules/syllabus/syllabus',['exports'], function (exports) {
         settings: {
           roles: ['coach']
         }
+      }, {
+        name: 'EditAssignment',
+        route: 'editar-tarea/:id',
+        moduleId: 'modules/syllabus/create-assignment/edit-assignment',
+        settings: {
+          roles: ['coach']
+        }
       }]);
       this.router = router;
     };
@@ -8468,13 +8532,13 @@ define('modules/problems/view-problem/view-problem',['exports', 'aurelia-router'
     return ViewProblem;
   }();
 });
-define('modules/syllabus/syllabus-detail/syllabus-detail',['exports', 'config/config', 'models/models', 'services/services'], function (exports, _config, _models, _services) {
+define('modules/syllabus/create-assignment/create-assignment',['exports', 'aurelia-router', 'config/config', 'models/models', 'services/services'], function (exports, _aureliaRouter, _config, _models, _services) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.SyllabusDetail = undefined;
+  exports.CreateAssignment = undefined;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -8482,41 +8546,83 @@ define('modules/syllabus/syllabus-detail/syllabus-detail',['exports', 'config/co
     }
   }
 
-  var SyllabusDetail = exports.SyllabusDetail = function () {
-    SyllabusDetail.inject = function inject() {
-      return [_services.Alert, _services.Auth, _services.Syllabuses];
+  var CreateAssignment = exports.CreateAssignment = function () {
+    CreateAssignment.inject = function inject() {
+      return [_services.Alert, _services.Syllabuses, _aureliaRouter.Router];
     };
 
-    function SyllabusDetail(alertService, authService, syllabusService) {
-      _classCallCheck(this, SyllabusDetail);
+    function CreateAssignment(alertService, syllabusService, router) {
+      _classCallCheck(this, CreateAssignment);
 
       this.alertService = alertService;
-      this.authService = authService;
       this.syllabusService = syllabusService;
-      this.syllabus = new _models.Syllabus();
+      this.router = router;
+      this.problems = '';
+      this.startDate = this.formatDate(new Date());
+      this.endDate = this.startDate;
+      this.startTime = this.formatTime(new Date());
+      this.endTime = this.startTime;
     }
 
-    SyllabusDetail.prototype.activate = function activate(params, routeConfig) {
+    CreateAssignment.prototype.activate = function activate(params, routeConfig) {
       this.routeConfig = routeConfig;
-      this.id = params.id;
-      this.getSyllabus();
+      this.assignment = new _models.Assignment();
+      this.assignment.syllabusId = params.id;
     };
 
-    SyllabusDetail.prototype.getSyllabus = function getSyllabus() {
+    CreateAssignment.prototype.formatDate = function formatDate(date) {
+      var str = date.getUTCFullYear() + '-';
+      if (date.getMonth() + 1 < 10) str += '0';
+      str += date.getMonth() + 1 + '-';
+      if (date.getDate() < 10) str += '0';
+      str += date.getDate();
+      return str;
+    };
+
+    CreateAssignment.prototype.formatTime = function formatTime(time) {
+      var str = '';
+      if (time.getHours() < 10) str += '0';
+      str += time.getHours() + ':';
+      if (time.getMinutes() < 10) str += '0';
+      str += time.getMinutes();
+      return str;
+    };
+
+    CreateAssignment.prototype.validateProblems = function validateProblems() {
+      var problemsTemp = this.problems.replace(/ /g, '');
+      problemsTemp = problemsTemp.split(',');
+      var problemsArr = [];
+      for (var i = 0; i < problemsTemp.length; i++) {
+        if (problemsTemp[i].length > 0 && !isNaN(parseInt(problemsTemp[i]))) problemsArr.push(parseInt(problemsTemp[i]));else if (isNaN(parseInt(problemsTemp[i]))) return false;
+      }
+      this.assignment.problems = problemsArr;
+      return true;
+    };
+
+    CreateAssignment.prototype.create = function create() {
       var _this = this;
 
-      this.syllabusService.getSyllabus(this.id).then(function (data) {
-        _this.syllabus = new _models.Syllabus(data.syllabus.id, data.syllabus.tittle, data.syllabus.description, data.syllabus.public, undefined, true, data.syllabus.assignments);
-      }).catch(function (error) {
-        if (error.status === 401) {
-          _this.alertService.showMessage(_config.MESSAGES.permissionsError);
-        } else {
-          _this.alertService.showMessage(_config.MESSAGES.unknownError);
-        }
-      });
+      if (!this.validateProblems()) {
+        this.alertService.showMessage(_config.MESSAGES.assignmentInvalidProblems);
+      } else {
+        this.assignment.startDate = this.startDate + ' ' + this.startTime + ':00';
+        this.assignment.endDate = this.endDate + ' ' + this.endTime + ':00';
+        this.syllabusService.createAssignment(this.assignment).then(function (data) {
+          console.log(data);
+          _this.router.navigate('clases/' + _this.assignment.syllabusId);
+          _this.alertService.showMessage(_config.MESSAGES.assignmentCreated);
+        }).catch(function (error) {
+          console.log(error);
+          if (error.status === 401) {
+            _this.alertService.showMessage(_config.MESSAGES.permissionsError);
+          } else {
+            _this.alertService.showMessage(_config.MESSAGES.unknownError);
+          }
+        });
+      }
     };
 
-    return SyllabusDetail;
+    return CreateAssignment;
   }();
 });
 define('modules/syllabus/home-syllabus/home-syllabus',['exports', 'config/config', 'models/models', 'services/services'], function (exports, _config, _models, _services) {
@@ -8711,13 +8817,13 @@ define('modules/syllabus/home-syllabus/home-syllabus',['exports', 'config/config
     return HomeSyllabus;
   }();
 });
-define('modules/syllabus/create-assignment/create-assignment',['exports', 'aurelia-router', 'config/config', 'models/models', 'services/services'], function (exports, _aureliaRouter, _config, _models, _services) {
+define('modules/syllabus/syllabus-detail/syllabus-detail',['exports', 'config/config', 'models/models', 'services/services'], function (exports, _config, _models, _services) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.CreateAssignment = undefined;
+  exports.SyllabusDetail = undefined;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -8725,49 +8831,84 @@ define('modules/syllabus/create-assignment/create-assignment',['exports', 'aurel
     }
   }
 
-  var CreateAssignment = exports.CreateAssignment = function () {
-    CreateAssignment.inject = function inject() {
+  var SyllabusDetail = exports.SyllabusDetail = function () {
+    SyllabusDetail.inject = function inject() {
+      return [_services.Alert, _services.Auth, _services.Syllabuses];
+    };
+
+    function SyllabusDetail(alertService, authService, syllabusService) {
+      _classCallCheck(this, SyllabusDetail);
+
+      this.alertService = alertService;
+      this.authService = authService;
+      this.syllabusService = syllabusService;
+      this.syllabus = new _models.Syllabus();
+    }
+
+    SyllabusDetail.prototype.activate = function activate(params, routeConfig) {
+      this.routeConfig = routeConfig;
+      this.id = params.id;
+      this.getSyllabus();
+    };
+
+    SyllabusDetail.prototype.getSyllabus = function getSyllabus() {
+      var _this = this;
+
+      this.syllabusService.getSyllabus(this.id).then(function (data) {
+        _this.syllabus = new _models.Syllabus(data.syllabus.id, data.syllabus.tittle, data.syllabus.description, data.syllabus.public, undefined, true, data.syllabus.assignments);
+        console.log(_this.syllabus.assignments);
+      }).catch(function (error) {
+        if (error.status === 401) {
+          _this.alertService.showMessage(_config.MESSAGES.permissionsError);
+        } else {
+          _this.alertService.showMessage(_config.MESSAGES.unknownError);
+        }
+      });
+    };
+
+    return SyllabusDetail;
+  }();
+});
+define('modules/syllabus/create-assignment/edit-assignment',['exports', 'aurelia-router', 'config/config', 'models/models', 'services/services'], function (exports, _aureliaRouter, _config, _models, _services) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.EditAssignment = undefined;
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var EditAssignment = exports.EditAssignment = function () {
+    EditAssignment.inject = function inject() {
       return [_services.Alert, _services.Syllabuses, _aureliaRouter.Router];
     };
 
-    function CreateAssignment(alertService, syllabusService, router) {
-      _classCallCheck(this, CreateAssignment);
+    function EditAssignment(alertService, syllabusService, router) {
+      _classCallCheck(this, EditAssignment);
 
       this.alertService = alertService;
       this.syllabusService = syllabusService;
       this.router = router;
-      this.problems = '';
-      this.startDate = this.formatDate(new Date());
-      this.endDate = this.startDate;
-      this.startTime = this.formatTime(new Date());
-      this.endTime = this.startTime;
     }
 
-    CreateAssignment.prototype.activate = function activate(params, routeConfig) {
+    EditAssignment.prototype.activate = function activate(params, routeConfig) {
       this.routeConfig = routeConfig;
-      this.assignment = new _models.Assignment();
-      this.assignment.syllabusId = params.id;
+      this.assignment = params.assignment;
+      var startTmp = this.assignment.startDate.split(' ');
+      var endTmp = this.assignment.endDate.split(' ');
+      this.startDate = startTmp[0];
+      this.endDate = endTmp[0];
+      this.startTime = startTmp[1].substr(0, 5);
+      this.endTime = endTmp[1].substr(0, 5);
+      this.problems = this.assignment.problems.toString();
     };
 
-    CreateAssignment.prototype.formatDate = function formatDate(date) {
-      var str = date.getUTCFullYear() + '-';
-      if (date.getMonth() + 1 < 10) str += '0';
-      str += date.getMonth() + 1 + '-';
-      if (date.getDate() < 10) str += '0';
-      str += date.getDate();
-      return str;
-    };
-
-    CreateAssignment.prototype.formatTime = function formatTime(time) {
-      var str = '';
-      if (time.getHours() < 10) str += '0';
-      str += time.getHours() + ':';
-      if (time.getMinutes() < 10) str += '0';
-      str += time.getMinutes();
-      return str;
-    };
-
-    CreateAssignment.prototype.validateProblems = function validateProblems() {
+    EditAssignment.prototype.validateProblems = function validateProblems() {
       var problemsTemp = this.problems.replace(/ /g, '');
       problemsTemp = problemsTemp.split(',');
       var problemsArr = [];
@@ -8778,7 +8919,7 @@ define('modules/syllabus/create-assignment/create-assignment',['exports', 'aurel
       return true;
     };
 
-    CreateAssignment.prototype.create = function create() {
+    EditAssignment.prototype.create = function create() {
       var _this = this;
 
       if (!this.validateProblems()) {
@@ -8786,10 +8927,10 @@ define('modules/syllabus/create-assignment/create-assignment',['exports', 'aurel
       } else {
         this.assignment.startDate = this.startDate + ' ' + this.startTime + ':00';
         this.assignment.endDate = this.endDate + ' ' + this.endTime + ':00';
-        this.syllabusService.createAssignment(this.assignment).then(function (data) {
-          console.log(data);
+        this.syllabusService.editAssignment(this.assignment).then(function (data) {
+          _this.modifyProblems();
           _this.router.navigate('clases/' + _this.assignment.syllabusId);
-          _this.alertService.showMessage(_config.MESSAGES.assignmentCreated);
+          _this.alertService.showMessage(_config.MESSAGES.assignmentModified);
         }).catch(function (error) {
           console.log(error);
           if (error.status === 401) {
@@ -8801,32 +8942,8 @@ define('modules/syllabus/create-assignment/create-assignment',['exports', 'aurel
       }
     };
 
-    return CreateAssignment;
+    return EditAssignment;
   }();
-});
-define('models/assignment',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var Assignment = exports.Assignment = function Assignment(title, description, startDate, endDate, problems, syllabusId) {
-    _classCallCheck(this, Assignment);
-
-    this.title = title;
-    this.description = description;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.problems = problems;
-    this.syllabusId = syllabusId;
-  };
 });
 define('text!app.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"bootstrap/css/bootstrap.css\"></require>\n    <require from=\"./assets/css/styles.css\"></require>\n    <loading-indicator loading.bind=\"router.isNavigating || httpService.httpClient.isRequesting\"></loading-indicator>\n    <app-header if.bind=\"authService.authenticated\"></app-header>\n    <router-view></router-view>\n</template>\n"; });
 define('text!assets/css/simplemde.min.css', ['module'], function(module) { module.exports = "/**\n * simplemde v1.11.2\n * Copyright Next Step Webs, Inc.\n * @link https://github.com/NextStepWebs/simplemde-markdown-editor\n * @license MIT\n */\n.CodeMirror{color:#000}.CodeMirror-lines{padding:4px 0}.CodeMirror pre{padding:0 4px}.CodeMirror-gutter-filler,.CodeMirror-scrollbar-filler{background-color:#fff}.CodeMirror-gutters{border-right:1px solid #ddd;background-color:#f7f7f7;white-space:nowrap}.CodeMirror-linenumber{padding:0 3px 0 5px;min-width:20px;text-align:right;color:#999;white-space:nowrap}.CodeMirror-guttermarker{color:#000}.CodeMirror-guttermarker-subtle{color:#999}.CodeMirror-cursor{border-left:1px solid #000;border-right:none;width:0}.CodeMirror div.CodeMirror-secondarycursor{border-left:1px solid silver}.cm-fat-cursor .CodeMirror-cursor{width:auto;border:0!important;background:#7e7}.cm-fat-cursor div.CodeMirror-cursors{z-index:1}.cm-animate-fat-cursor{width:auto;border:0;-webkit-animation:blink 1.06s steps(1) infinite;-moz-animation:blink 1.06s steps(1) infinite;animation:blink 1.06s steps(1) infinite;background-color:#7e7}@-moz-keyframes blink{50%{background-color:transparent}}@-webkit-keyframes blink{50%{background-color:transparent}}@keyframes blink{50%{background-color:transparent}}.cm-tab{display:inline-block;text-decoration:inherit}.CodeMirror-ruler{border-left:1px solid #ccc;position:absolute}.cm-s-default .cm-header{color:#00f}.cm-s-default .cm-quote{color:#090}.cm-negative{color:#d44}.cm-positive{color:#292}.cm-header,.cm-strong{font-weight:700}.cm-em{font-style:italic}.cm-link{text-decoration:underline}.cm-strikethrough{text-decoration:line-through}.cm-s-default .cm-keyword{color:#708}.cm-s-default .cm-atom{color:#219}.cm-s-default .cm-number{color:#164}.cm-s-default .cm-def{color:#00f}.cm-s-default .cm-variable-2{color:#05a}.cm-s-default .cm-variable-3{color:#085}.cm-s-default .cm-comment{color:#a50}.cm-s-default .cm-string{color:#a11}.cm-s-default .cm-string-2{color:#f50}.cm-s-default .cm-meta,.cm-s-default .cm-qualifier{color:#555}.cm-s-default .cm-builtin{color:#30a}.cm-s-default .cm-bracket{color:#997}.cm-s-default .cm-tag{color:#170}.cm-s-default .cm-attribute{color:#00c}.cm-s-default .cm-hr{color:#999}.cm-s-default .cm-link{color:#00c}.cm-invalidchar,.cm-s-default .cm-error{color:red}.CodeMirror-composing{border-bottom:2px solid}div.CodeMirror span.CodeMirror-matchingbracket{color:#0f0}div.CodeMirror span.CodeMirror-nonmatchingbracket{color:#f22}.CodeMirror-matchingtag{background:rgba(255,150,0,.3)}.CodeMirror-activeline-background{background:#e8f2ff}.CodeMirror{position:relative;overflow:hidden;background:#fff}.CodeMirror-scroll{overflow:scroll!important;margin-bottom:-30px;margin-right:-30px;padding-bottom:30px;height:100%;outline:0;position:relative}.CodeMirror-sizer{position:relative;border-right:30px solid transparent}.CodeMirror-gutter-filler,.CodeMirror-hscrollbar,.CodeMirror-scrollbar-filler,.CodeMirror-vscrollbar{position:absolute;z-index:6;display:none}.CodeMirror-vscrollbar{right:0;top:0;overflow-x:hidden;overflow-y:scroll}.CodeMirror-hscrollbar{bottom:0;left:0;overflow-y:hidden;overflow-x:scroll}.CodeMirror-scrollbar-filler{right:0;bottom:0}.CodeMirror-gutter-filler{left:0;bottom:0}.CodeMirror-gutters{position:absolute;left:0;top:0;min-height:100%;z-index:3}.CodeMirror-gutter{white-space:normal;height:100%;display:inline-block;vertical-align:top;margin-bottom:-30px}.CodeMirror-gutter-wrapper{position:absolute;z-index:4;background:0 0!important;border:none!important;-webkit-user-select:none;-moz-user-select:none;user-select:none}.CodeMirror-gutter-background{position:absolute;top:0;bottom:0;z-index:4}.CodeMirror-gutter-elt{position:absolute;cursor:default;z-index:4}.CodeMirror-lines{cursor:text;min-height:1px}.CodeMirror pre{-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;border-width:0;background:0 0;font-family:inherit;font-size:inherit;margin:0;white-space:pre;word-wrap:normal;line-height:inherit;color:inherit;z-index:2;position:relative;overflow:visible;-webkit-tap-highlight-color:transparent;-webkit-font-variant-ligatures:none;font-variant-ligatures:none}.CodeMirror-wrap pre{word-wrap:break-word;white-space:pre-wrap;word-break:normal}.CodeMirror-linebackground{position:absolute;left:0;right:0;top:0;bottom:0;z-index:0}.CodeMirror-linewidget{position:relative;z-index:2;overflow:auto}.CodeMirror-code{outline:0}.CodeMirror-gutter,.CodeMirror-gutters,.CodeMirror-linenumber,.CodeMirror-scroll,.CodeMirror-sizer{-moz-box-sizing:content-box;box-sizing:content-box}.CodeMirror-measure{position:absolute;width:100%;height:0;overflow:hidden;visibility:hidden}.CodeMirror-cursor{position:absolute}.CodeMirror-measure pre{position:static}div.CodeMirror-cursors{visibility:hidden;position:relative;z-index:3}.CodeMirror-focused div.CodeMirror-cursors,div.CodeMirror-dragcursors{visibility:visible}.CodeMirror-selected{background:#d9d9d9}.CodeMirror-focused .CodeMirror-selected,.CodeMirror-line::selection,.CodeMirror-line>span::selection,.CodeMirror-line>span>span::selection{background:#d7d4f0}.CodeMirror-crosshair{cursor:crosshair}.CodeMirror-line::-moz-selection,.CodeMirror-line>span::-moz-selection,.CodeMirror-line>span>span::-moz-selection{background:#d7d4f0}.cm-searching{background:#ffa;background:rgba(255,255,0,.4)}.cm-force-border{padding-right:.1px}@media print{.CodeMirror div.CodeMirror-cursors{visibility:hidden}}.cm-tab-wrap-hack:after{content:''}span.CodeMirror-selectedtext{background:0 0}.CodeMirror{height:auto;min-height:300px;border:1px solid #ddd;border-bottom-left-radius:4px;border-bottom-right-radius:4px;padding:10px;font:inherit;z-index:1}.CodeMirror-scroll{min-height:300px}.CodeMirror-fullscreen{background:#fff;position:fixed!important;top:50px;left:0;right:0;bottom:0;height:auto;z-index:9}.CodeMirror-sided{width:50%!important}.editor-toolbar{position:relative;opacity:.6;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;padding:0 10px;border-top:1px solid #bbb;border-left:1px solid #bbb;border-right:1px solid #bbb;border-top-left-radius:4px;border-top-right-radius:4px}.editor-toolbar:after,.editor-toolbar:before{display:block;content:' ';height:1px}.editor-toolbar:before{margin-bottom:8px}.editor-toolbar:after{margin-top:8px}.editor-toolbar:hover,.editor-wrapper input.title:focus,.editor-wrapper input.title:hover{opacity:.8}.editor-toolbar.fullscreen{width:100%;height:50px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding-top:10px;padding-bottom:10px;box-sizing:border-box;background:#fff;border:0;position:fixed;top:0;left:0;opacity:1;z-index:9}.editor-toolbar.fullscreen::before{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,1)),color-stop(100%,rgba(255,255,255,0)));background:-webkit-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-o-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:linear-gradient(to right,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);position:fixed;top:0;left:0;margin:0;padding:0}.editor-toolbar.fullscreen::after{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,0)),color-stop(100%,rgba(255,255,255,1)));background:-webkit-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-o-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:linear-gradient(to right,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);position:fixed;top:0;right:0;margin:0;padding:0}.editor-toolbar a{display:inline-block;text-align:center;text-decoration:none!important;color:#2c3e50!important;width:30px;height:30px;margin:0;border:1px solid transparent;border-radius:3px;cursor:pointer}.editor-toolbar a.active,.editor-toolbar a:hover{background:#fcfcfc;border-color:#95a5a6}.editor-toolbar a:before{line-height:30px}.editor-toolbar i.separator{display:inline-block;width:0;border-left:1px solid #d9d9d9;border-right:1px solid #fff;color:transparent;text-indent:-10px;margin:0 6px}.editor-toolbar a.fa-header-x:after{font-family:Arial,\"Helvetica Neue\",Helvetica,sans-serif;font-size:65%;vertical-align:text-bottom;position:relative;top:2px}.editor-toolbar a.fa-header-1:after{content:\"1\"}.editor-toolbar a.fa-header-2:after{content:\"2\"}.editor-toolbar a.fa-header-3:after{content:\"3\"}.editor-toolbar a.fa-header-bigger:after{content:\"▲\"}.editor-toolbar a.fa-header-smaller:after{content:\"▼\"}.editor-toolbar.disabled-for-preview a:not(.no-disable){pointer-events:none;background:#fff;border-color:transparent;text-shadow:inherit}@media only screen and (max-width:700px){.editor-toolbar a.no-mobile{display:none}}.editor-statusbar{padding:8px 10px;font-size:12px;color:#959694;text-align:right}.editor-statusbar span{display:inline-block;min-width:4em;margin-left:1em}.editor-preview,.editor-preview-side{padding:10px;background:#fafafa;overflow:auto;display:none;box-sizing:border-box}.editor-statusbar .lines:before{content:'lines: '}.editor-statusbar .words:before{content:'words: '}.editor-statusbar .characters:before{content:'characters: '}.editor-preview{position:absolute;width:100%;height:100%;top:0;left:0;z-index:7}.editor-preview-side{position:fixed;bottom:0;width:50%;top:50px;right:0;z-index:9;border:1px solid #ddd}.editor-preview-active,.editor-preview-active-side{display:block}.editor-preview-side>p,.editor-preview>p{margin-top:0}.editor-preview pre,.editor-preview-side pre{background:#eee;margin-bottom:10px}.editor-preview table td,.editor-preview table th,.editor-preview-side table td,.editor-preview-side table th{border:1px solid #ddd;padding:5px}.CodeMirror .CodeMirror-code .cm-tag{color:#63a35c}.CodeMirror .CodeMirror-code .cm-attribute{color:#795da3}.CodeMirror .CodeMirror-code .cm-string{color:#183691}.CodeMirror .CodeMirror-selected{background:#d9d9d9}.CodeMirror .CodeMirror-code .cm-header-1{font-size:200%;line-height:200%}.CodeMirror .CodeMirror-code .cm-header-2{font-size:160%;line-height:160%}.CodeMirror .CodeMirror-code .cm-header-3{font-size:125%;line-height:125%}.CodeMirror .CodeMirror-code .cm-header-4{font-size:110%;line-height:110%}.CodeMirror .CodeMirror-code .cm-comment{background:rgba(0,0,0,.05);border-radius:2px}.CodeMirror .CodeMirror-code .cm-link{color:#7f8c8d}.CodeMirror .CodeMirror-code .cm-url{color:#aab2b3}.CodeMirror .CodeMirror-code .cm-strikethrough{text-decoration:line-through}.CodeMirror .CodeMirror-placeholder{opacity:.5}.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word){background:rgba(255,0,0,.15)}"; });
@@ -8849,7 +8966,7 @@ define('text!modules/problems/category-problems/category-problems.html', ['modul
 define('text!modules/problems/general-problems/general-problems.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\">Categorias</h1>\n    <hr>\n    <div repeat.for=\"category of categories\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <div class=\"ufps-card\">\n        <div class=\"ufps-card-title\">\n          <span if.bind=\"authService.isAdmin()\" class=\"ufps-edit-category glyphicon glyphicon-pencil\" data-toggle=\"tooltip\" title=\"Editar el nombre de la categoría\"\n            click.delegate=\"showEditCategory(category.id, category.name)\" tooltip></span>\n          <span if.bind=\"authService.isAdmin()\" class=\"ufps-remove-category glyphicon glyphicon-remove\" data-toggle=\"tooltip\" title=\"Eliminar categoría\"\n            click.delegate=\"showRemoveCategory(category.id, category.name)\" tooltip></span>\n          <h1>${category.name}</h1>\n        </div>\n        <div class=\"col-xs-6 ufps-card-link\">\n          <a route-href=\"route: category; params.bind: {id:category.id}\">Problemas</a>\n        </div>\n        <div class=\"col-xs-6 ufps-card-link\">\n          <a route-href=\"route: material; params.bind: {id:category.id}\">Material</a>\n\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n    <div if.bind=\"authService.isAdmin()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <div class=\"ufps-card\" data-toggle=\"modal\" data-target=\"#new-category\">\n        <div class=\"ufps-card-title\">\n          <h1>\n            <span class=\"glyphicon glyphicon-plus\"></span>\n          </h1>\n        </div>\n        <div class=\"col-xs-12 ufps-card-link\">\n          Nueva categoría\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n    <div class=\"fix\"></div>\n    <div class=\"ufps-separator\"></div>\n  </div>\n  <!--MODAL PARA AÑADIR CATEGORIA-->\n  <div if.bind=\"authService.isAdmin()\" class=\"modal fade\" id=\"new-category\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"new-category\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Nueva categoría</h4>\n          <br>\n          <form submit.delegate=\"createCategory()\">\n            <div class=\"input-group\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la categoría\" value.bind=\"newCategory\" required>\n              <span class=\"input-group-btn\">\n                <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Agregar\">\n              </span>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n  <!--MODAL PARA EDITAR CATEGORIA-->\n  <div if.bind=\"authService.isAdmin()\" class=\"modal fade\" id=\"edit-category\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit-category\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Cambiar nombre de la categoría</h4>\n          <br>\n          <form submit.delegate=\"editCategory()\">\n            <div class=\"input-group\">\n              <input type=\"text\" class=\"form-control\" value.bind=\"categoryEditName\" required>\n              <span class=\"input-group-btn\">\n                <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Cambiar\">\n              </span>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA ELIMINAR CATEGORIA-->\n  <div if.bind=\"authService.isAdmin()\" class=\"modal fade\" id=\"remove-category\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remove-category\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Estás seguro de eliminar la categoría ${categoryRemoveName}?</h4>\n          <br>\n          <p>Esto no eliminará los problemas de dicha categoría, pero quedarán sin clasificar</p>\n\n          <button class=\"btn btn-default ufps-btn-default\" click.delegate=removeCategory()>Si</button>\n          <button class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\">No</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
 define('text!modules/problems/problems-creator/problems-creator.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"simplemde/simplemde.min.css\"></require>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\" if.bind=\"!editMode\">Nuevo problema</h1>\n    <h1 class=\"text-right\" if.bind=\"editMode\">Editar problema ${newProblem.id}</h1>\n    <hr>\n    <form submit.delegate=\"submit()\" enctype=\"multipart/form-data\">\n      <div class=\"form-horizontal col-md-7\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-category\">Categoría:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <select class=\"form-control\" id=\"problem-category\" value.bind=\"newProblem.category\">\n              <option model.bind=\"null\">Elige una categoría</option>\n              <option repeat.for=\"category of categories\" model.bind=\"category.id\">${category.name}</option>\n            </select>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Temática relacionada con el problema\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Nombre:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" id=\"problem-name\" placeholder=\"Nombre del problema\" value.bind=\"newProblem.titleES\"\n              if.bind=\"originalLanguage === 'es'\">\n            <input type=\"text\" class=\"form-control\" id=\"problem-name\" placeholder=\"Nombre del problema\" value.bind=\"newProblem.titleEN\"\n              if.bind=\"originalLanguage === 'en'\">\n            <span class=\"input-group-addon\"  tooltip data-toggle=\"tooltip\" title=\"Título del problema\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-5\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-3\" for=\"problem-level\">Dificultad:</label>\n          <div class=\"col-sm-9 input-group ufps-input-creator\">\n            <input type=\"number\" class=\"form-control\" id=\"problem-level\" min=\"1\" max=\"10\"  value.bind=\"newProblem.level\">\n            <span class=\"input-group-addon\"  tooltip data-toggle=\"tooltip\" title=\"Nivel de dificultad [1 - 10] Donde 1 es muy facil, y 10 muy complejo\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-3\" for=\"problem-language\">Idioma:</label>\n          <div class=\"col-sm-9 input-group ufps-input-creator\">\n            <select class=\"form-control\" id=\"problem-language\" value.bind=\"originalLanguage\" change.delegate=\"changeLanguageEditor()\">\n              <option model.bind=\"'en'\">Inglés</option>\n              <option model.bind=\"'es'\">Español</option>\n            </select>\n            <span class=\"input-group-addon\"  tooltip data-toggle=\"tooltip\" title=\"Idioma del título y enunciado del problema\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n        \n      </div>\n      <div class=\"form-horizontal col-md-12\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-9\" for=\"problem-level\">Tiempo límite:</label>\n          <div class=\"col-sm-3 input-group ufps-input-creator\">\n            <input type=\"number\" class=\"form-control\" id=\"problem-level\" min=\"0.5\" max=\"10.0\" step=\"0.1\" value.bind=\"newProblem.timeLimit\">\n            <span class=\"input-group-addon\"  tooltip data-toggle=\"tooltip\" title=\"Tiempo que tendrá la solución para ejecutarse (en segundos). Si se excede este tiempo, la ejecución se detendrá y se informará al usuario que ha excedido el tiempo limite.\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n        </div>\n      </div>\n      <div class=\"fix\"></div>\n      \n      <h3 class=\"text-center\">Contenido</h3>\n      <textarea name=\"md-editor\" id=\"md-editor\"># Descripción\n\nReemplaza este texto con la descripción de tu problema. Recuerda que puedes usar la sintaxis de Markdown.\n\n# Entradas\n\nReemplaza este texto con la especificación de la entrada de tu problema. Si no conoces la sintaxis markdown, puedes hacer uso de las opciones de la barra superior.\n\n# Salidas\n\nReemplaza este texto con la especificación de la salida de tu problema.\n      </textarea>\n\n      <div class=\"ufps-separator\"></div>\n      <div class=\"col-md-12 text-center\">\n        <p>Importante: <strong>LAS ENTRADAS Y SALIDAS DE EJEMPLO</strong> se mostrarán junto al enunciado en la plataforma.\n          Se recomenda que estos sean algunos casos simples que expliquen brevemente las entradas y salidas. Por su parte,\n          los casos de prueba <strong>PRIVADOS</strong> son los que utilizará la plataforma para evaluar los ejercicios.\n          Por tanto, estos deberían ser mas extensos y completos (Dado que es posible que estos casos sean muy extensos,\n          deben subirse en formato .txt o .in)</p>\n      </div>\n      <div class=\"col-md-6 ufps-input-creator\">\n        <h4>Entradas de ejemplo</h4>\n        <textarea value.bind=\"newProblem.exampleInput\" class=\"form-control\"></textarea>\n      </div>\n      <div class=\"col-md-6 ufps-input-creator\">\n        <h4>Salidas de ejemplo</h4>\n        <textarea value.bind=\"newProblem.exampleOutput\" class=\"form-control\"></textarea>\n      </div>\n      <div class=\"fix\"></div>\n      <div class=\"ufps-separator\"></div>\n      <div class=\"col-md-6 text-right\">\n        <h4 if.bind=\"!editMode\">Seleccione los casos de prueba privados:</h4>\n        <h4 if.bind=\"editMode\">¿Desea cambiar los casos de prueba privados? (Opcional)</h4>\n      </div>\n      <div class=\"col-md-6\">\n        <div class=\"col-sm-6 ufps-input-creator\">\n          <input type=\"file\" name=\"input-file\" id=\"input-file\" class=\"inputfile-btn\" change.delegate=\"validateTestCase('input')\" accept=\".txt, .in\" files.bind=\"newProblem.input\">\n          <label for=\"input-file\" tooltip data-toggle=\"tooltip\" title=\"Archivo .txt o .in con las entradas que será ejecutado el programa escrito por el estudiante para ser validado\">Entradas <span class=\"glyphicon glyphicon-ok-sign\" show.bind=\"inputValid\"></span></label>\n        </div>\n        <div class=\"col-sm-6 ufps-input-creator\">\n          <input type=\"file\" name=\"output-file\" id=\"output-file\" class=\"inputfile-btn\" accept=\".txt, .in\" change.delegate=\"validateTestCase('output')\" files.bind=\"newProblem.output\">\n          <label for=\"output-file\" tooltip data-toggle=\"tooltip\" title=\"Archivo .txt o .out con las salidas que debe generar el programa escrito por el estudiante para ser considerado correcto\">Salidas <span class=\"glyphicon glyphicon-ok-sign\" show.bind=\"outputValid\"></span></label>\n        </div>\n      </div>\n      <div class=\"fix\"></div>\n    <div class=\"ufps-separator\"></div>\n    <div class=\"col-xs-12 form horizontal\" show.bind=\"doubleLanguage\">\n      <h4 class=\"text-center\">Versión en ${originalLanguage === 'en' ? 'Español' : 'Inglés'}</h4>\n      <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Nombre:</label>\n          <div class=\"col-sm-9 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" id=\"problem-name\" placeholder=\"Nombre del problema\" value.bind=\"newProblem.titleEN\"\n              if.bind=\"originalLanguage === 'es'\">\n            <input type=\"text\" class=\"form-control\" id=\"problem-name\" placeholder=\"Nombre del problema\" value.bind=\"newProblem.titleES\"\n              if.bind=\"originalLanguage === 'en'\">\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Título del problema\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n        <textarea name=\"md-editor-2\" id=\"md-editor-2\"># Descripción\n\nReemplaza este texto con la descripción de tu problema. Recuerda que puedes usar la sintaxis de Markdown.\n\n# Entradas\n\nReemplaza este texto con la especificación de la entrada de tu problema. Si no conoces la sintaxis markdown, puedes hacer uso de las opciones de la barra superior.\n\n# Salidas\n\nReemplaza este texto con la especificación de la salida de tu problema.\n      </textarea>\n    </div>\n      <div class=\"col-xs-12 text-center\">\n        <button if.bind=\"!doubleLanguage\" class=\"btn ufps-btn-submit\" click.delegate=\"addLanguage()\">Añadir versión en ${originalLanguage === 'en' ? 'Español' : 'Inglés'}</button>\n        <button if.bind=\"doubleLanguage\" class=\"btn ufps-btn-submit\" click.delegate=\"removeLanguage()\">Eliminar versión en ${originalLanguage === 'en' ? 'Español' : 'Inglés'}</button>\n        <input type=\"submit\" class=\"btn ufps-btn-submit\" value=\"Guardar problema\">\n      </div>\n    </form>\n    <div class=\"fix\"></div>\n    <div class=\"ufps-separator\"></div>\n  </div>\n  <!--Modal explicativo de markdown-->\n  <div class=\"modal fade\" id=\"markdown-help\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"markdown-help\">\n    <div class=\"modal-dialog modal-lg\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n          <h2 class=\"modal-title\" id=\"myModalLabel\">Ayuda</h2>\n          <hr>\n          <p>Este editor utiliza Markdown, lenguaje de marcado ligero con el cual puedes dar formato rápido a tus ejercicios. Para tu comodidad, la barra superior del editor contiene las principales opciones de markdown. Si prefieres tu mismo escribir la sintaxis, aquí tienes una referencia rápida:</p>\n          <h3>Enfasis</h3>\n          <div class=\"panel panel-default\">\n            <div class=\"panel-body\">\n              **<strong>negrilla</strong>**<br>\n              *<em>cursiva</em>*<br>\n              ~~<del>tachado</del>~~<br>\n            </div>\n          </div>\n          <h3>Titulos</h3>\n          <pre>\n\n# Título grande\n## Título Mediano\n### Título pequeño\n#### Título muy pequeño\n          </pre>\n          <h3>Listas</h3>\n          <pre>\n\n* Lista con viñetas\n* Lista con viñetas\n* Lista con viñetas\n\n1. Lista numerada\n2. Lista numerada\n3. Lista numerada\n          </pre>\n          <h3>Links</h3>\n          <pre>\n\n[Texto a mostrar en pantalla](http://www.example.com)\n          </pre>\n          <h3>Citas</h3>\n          <pre>\n\n> \"Solo se que nada se\" \n          </pre>\n          <h3>Imagenes</h3>\n          <pre>\n\n![Texto alternativo](http://www.example.com/link_de_la_imagen.jpg)\n          </pre>\n          <h3>Tablas</h3>\n          <pre>\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| John     | Doe      | Male     |\n| Mary     | Smith    | Female   |\n          </pre>\n          <h3>Código</h3>\n          <pre>\n            \n`var example = \"hello!\";`\n\nO multiples lineas de código...\n\n```\nvar example = \"hello!\";\nalert(example);\n```             \n          </pre>\n          <p>Esta guía rápida se ha realizado tomando como referencia la Guía de <a href=\"https://simplemde.com/markdown-guide\" target=\"_blank\">SimpleMDE</a></p>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
 define('text!modules/problems/view-problem/view-problem.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/markdown\"></require>\n  <require from=\"../../../resources/attributes/tooltip\"> </require>\n  <div class=\"container-fluid\">\n    <div class=\"col-md-9\">\n      <div class=\"ufps-separator\"></div>\n      <div class=\"panel panel-default\">\n        <div class=\"panel-body\" show.bind=\"lang === 'es'\">\n          <h1 class=\"text-center ufps-problem-title\">${problem.titleES}</h1>\n          <p class=\"ufps-language text-center\">\n            <span class=\"${problem.isInSpanish() ? 'active' : 'inactive'}\" click.delegate=\"showES()\">ES</span> | <span class=\"${problem.isInEnglish() ? 'active' : 'inactive'}\"\n              click.delegate=\"showEN()\">EN</span>\n          </p>\n          <p class=\"ufps-markdown-editor\" markdown.bind=\"problem.descriptionES\"></p>\n          <div class=\"col-xs-12\">\n            <div class=\"col-md-6\">\n              <h3 class=\"text-center\">Entrada de ejemplo</h3>\n              <div class=\"well example-in-out\">\n                <pre>${problem.exampleInput}</pre>\n              </div>\n            </div>\n            <div class=\"col-md-6\">\n              <h3 class=\"text-center\">Salida de ejemplo</h3>\n              <div class=\"well example-in-out\">\n                <pre>${problem.exampleOutput}</pre>\n              </div>\n            </div>\n          </div>\n        </div>\n        <div class=\"panel-body\" show.bind=\"lang === 'en'\">\n          <h1 class=\"text-center ufps-problem-title\">${problem.titleEN}</h1>\n          <p class=\"ufps-language text-center\">\n            <span class=\"${problem.isInSpanish() ? 'active' : 'inactive'}\" click.delegate=\"showES()\">ES</span> | <span class=\"${problem.isInEnglish() ? 'active' : 'inactive'}\"\n              click.delegate=\"showEN()\">EN</span>\n          </p>\n          <p class=\"ufps-markdown-editor\" markdown.bind=\"problem.descriptionEN\"></p>\n          <div class=\"col-xs-12\">\n            <div class=\"col-md-6\">\n              <h3 class=\"text-center\">Entrada de ejemplo</h3>\n              <div class=\"well example-in-out\">\n                <pre>${problem.exampleInput}</pre>\n                \n              </div>\n            </div>\n            <div class=\"col-md-6\">\n              <h3 class=\"text-center\">Salida de ejemplo</h3>\n              <div class=\"well example-in-out\">\n                <pre>${problem.exampleOutput}</pre>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"col-md-3\">\n      <div class=\"ufps-separator\"></div>\n      <div class=\"panel panel-default\">\n        <div class=\"panel-body\">\n          <p show.bind=\"lang === 'en'\">Problema: ${problem.titleEN}</p>\n          <p show.bind=\"lang === 'es'\">Problema: ${problem.titleES}</p>\n          <p>Dificultad: ${problem.level}</p>\n          <p>Seleccione el archivo con su código, y el lenguaje a utilizar.</p>\n          <form class=\"ufps-submit-form\">\n            <input type=\"file\" name=\"input-file\" id=\"input-file\" class=\"inputfile-btn\" change.delegate=\"validateCode()\">\n            <label for=\"input-file\" tooltip data-toggle=\"tooltip\" title=\"Archivo con la solución al problema\">Seleccionar <span class=\"glyphicon glyphicon-ok-sign\" show.bind=\"sourceValid\"></span></label>\n            <div class=\"input-group\">\n              <select class=\"form-control\">\n                <option model.bind=\"null\">Elige una categoría</option>\n                <option repeat.for=\"language of languages\" model.bind=\"language\">${language}</option>\n              </select>\n            </div>\n            <input type=\"submit\" value=\"Enviar\" class=\"btn ufps-btn-submit\">\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
+define('text!modules/syllabus/create-assignment/create-assignment.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"container ufps-container-logged\">\n    <h2 class=\"text-right\">Nueva Tarea</h2>\n    <hr>\n    <form submit.delegate=\"create()\">\n      <div class=\"form-horizontal form-horizontal-assignment\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Nombre:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la tarea\" value.bind=\"assignment.title\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Nombre que se mostrará al desplegar esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Descripción:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <textarea class=\"form-control\" placeholder=\"Descripción de la tarea\" value.bind=\"assignment.description\"></textarea>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Descripción que se mostrará a los estudiantes al abrir esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal  form-horizontal-assignment\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Problemas:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Ingrese los ID de los problemas separados por coma\" value.bind=\"problems\"\n              required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Puede saber el ID de un problema usando la barra de busqueda superior\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Desde el:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"date\" class=\"form-control\" value.bind=\"startDate\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de inicio desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">a las:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"time\" class=\"form-control\" value.bind=\"startTime\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Hasta el:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"date\" class=\"form-control\" value.bind=\"endDate\" min=\"${startDate}\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de inicio desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">a las:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"time\" class=\"form-control\" value.bind=\"endTime\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora hasta la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"col-xs-12 text-center\">\n        <input type=\"submit\" class=\"btn ufps-btn-submit\" value=\"Crear Tarea\">\n      </div>\n    </form>\n  </div>\n</template>\n"; });
 define('text!modules/syllabus/home-syllabus/home-syllabus.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div if.bind=\"authService.isStudent()\" class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\">Mis clases</h1>\n    <hr>\n    <div class=\"text-center\" if.bind=\"!enrolledSyllabusesLoaded\">\n      <p>Actualmente no tienes ninguna clase inscrita.</p>\n    </div>\n    <div repeat.for=\"syllabus of enrolledSyllabuses\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <a route-href=\"route: SyllabusDetail; params.bind: {id:syllabus.id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>${syllabus.tittle}</h1>\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n  </div>\n  <div class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\" if.bind=\"authService.isStudent()\">Clases disponibles</h1>\n    <h1 class=\"text-right\" if.bind=\"authService.isCoach()\">Mis clases</h1>\n    <hr>\n    <div repeat.for=\"syllabus of syllabuses\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <div class=\"ufps-card\">\n        <div class=\"ufps-card-title\">\n          <span if.bind=\"authService.isCoach()\" class=\"ufps-edit-category glyphicon glyphicon-pencil\" data-toggle=\"tooltip\" title=\"Editar los datos de la clase\"\n            click.delegate=\"showEditSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)\" tooltip></span>\n          <span if.bind=\"authService.isCoach()\" class=\"ufps-remove-category glyphicon glyphicon-remove\" data-toggle=\"tooltip\" title=\"Eliminar la clase\"\n            click.delegate=\"showRemoveSyllabus(syllabus.id, syllabus.tittle)\" tooltip></span>\n          <h1>${syllabus.tittle}</h1>\n        </div>\n        <div if.bind=\"authService.isCoach()\" class=\"col-xs-6 ufps-card-link\">\n          <a route-href=\"route: SyllabusDetail; params.bind: {id:syllabus.id}\">Detalle</a>\n        </div>\n        <div if.bind=\"authService.isCoach()\" class=\"col-xs-6 ufps-card-link\">\n          <a>Estadísticas</a>\n        </div>\n        <div if.bind=\"authService.isStudent()\" class=\"col-xs-6 ufps-card-link\">\n          <span if.bind=\"syllabus.public\">Público</span>\n          <span if.bind=\"!syllabus.public\">Privado</span>\n        </div>\n        <div if.bind=\"authService.isStudent() && !syllabus.enrolled\" class=\"col-xs-6 ufps-card-link\">\n          <a click.delegate=\"showEnrollSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)\">Registrarse</a>\n        </div>\n        <div if.bind=\"authService.isStudent() && syllabus.enrolled\" class=\"col-xs-6 ufps-card-link\">\n          <span>Registrado</a>\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n    <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <div class=\"ufps-card\" data-toggle=\"modal\" data-target=\"#new-syllabus\">\n        <div class=\"ufps-card-title\">\n          <h1>\n            <span class=\"glyphicon glyphicon-plus\"></span>\n          </h1>\n        </div>\n        <div class=\"col-xs-12 ufps-card-link\">\n          Nueva clase\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA AÑADIR CLASE-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"new-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"new-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Nueva clase</h4>\n          <br>\n          <form submit.delegate=\"createSyllabus()\">\n            <div class=\"form-group\">\n              <label>Titulo</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del syllabus\" value.bind=\"newSyllabus.title\" required>\n            </div>\n            <div class=\"form-group\">\n              <label>Descripción</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Descripión del syllabus\" value.bind=\"newSyllabus.description\" required>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"true\" checked.bind=\"newSyllabus.privacy\" checked> Público\n              </label>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"false\" checked.bind=\"newSyllabus.privacy\" checked> Privado\n                <span>(requiere clave)</span>\n              </label>\n            </div>\n            <div class=\"form-group\" if.bind=\"!newSyllabus.privacy\">\n              <label>Clave (Se recomienda reemplazar la siguiente clave)</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"clave que deben ingresar los estudiantes para acceder a la clase\" value.bind=\"newSyllabus.key\"\n                required>\n            </div>\n            <div class=\"text-right\">\n              <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Registrar clase\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA EDITAR SYLLABUS-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"edit-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Editar Syllabus</h4>\n          <br>\n          <form submit.delegate=\"modifySyllabus()\">\n            <div class=\"form-group\">\n              <label>Titulo</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del syllabus\" value.bind=\"editSyllabus.title\" required>\n            </div>\n            <div class=\"form-group\">\n              <label>Descripción</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Descripión del syllabus\" value.bind=\"editSyllabus.description\" required>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"true\" checked.bind=\"editSyllabus.privacy\"> Público\n              </label>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"false\" checked.bind=\"editSyllabus.privacy\"> Privado\n                <span>(requiere clave)</span>\n              </label>\n            </div>\n            <div class=\"form-group\" if.bind=\"!editSyllabus.privacy\">\n              <label>Clave (obligatorio: Confirme la clave o ingrese una nueva)</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"clave que deben ingresar los estudiantes para acceder a la clase\" value.bind=\"editSyllabus.key\"\n                required>\n            </div>\n            <div class=\"text-right\">\n              <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Editar clase\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA ELIMINAR SYLLABUS-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"remove-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remove-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Estás seguro de eliminar la clase ${syllabusToRemove.title}?</h4>\n          <br>\n          <p>Esta operación no se puede deshacer</p>\n\n          <button class=\"btn btn-default ufps-btn-default\" click.delegate=removeSyllabus()>Si</button>\n          <button class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\">No</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA REGISTRARSE EN UN SYLLABUS-->\n  <div if.bind=\"authService.isStudent()\" class=\"modal fade\" id=\"enroll-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"enroll-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>\n          <br>\n          <form submit.delegate=\"enrollSyllabus()\">\n            <div if.bind=\"!syllabusToEnroll.privacy\">\n              <p>Ingresa la clave de esta clase (si no la tienes, comunicate con el profesor/coach a cargo)</p>\n              <div class=\"form-group\">\n                <input type=\"text\" class=\"form-control\" value.bind=\"syllabusToEnroll.key\">\n              </div>\n            </div>\n\n            <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Si\">\n            <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\" value=\"No\">\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
-define('text!modules/syllabus/syllabus-detail/syllabus-detail.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1>${syllabus.title}</h1>\n    <p>${syllabus.description}</p>\n    <h2 class=\"text-right\">Tareas</h2>\n    <hr>\n    <div repeat.for=\"assignment of syllabus.assignments\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <a>\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>Titulo</h1>\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n    <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <a route-href=\"route: CreateAssignment; params.bind: {id:id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>\n              <span class=\"glyphicon glyphicon-plus\"></span>\n            </h1>\n          </div>\n          <div class=\"col-xs-12 ufps-card-link\">\n            Nueva tarea\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n    <div class=\"fix\"></div>\n    <h2 class=\"text-right\">Lecturas</h2>\n    <hr>\n  </div>\n</template>\n"; });
-define('text!modules/syllabus/create-assignment/create-assignment.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"container ufps-container-logged\">\n    <h2 class=\"text-right\">Nueva Tarea</h2>\n    <hr>\n    <form submit.delegate=\"create()\">\n      <div class=\"form-horizontal form-horizontal-assignment\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Nombre:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la tarea\" value.bind=\"assignment.title\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Nombre que se mostrará al desplegar esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Descripción:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <textarea class=\"form-control\" placeholder=\"Descripción de la tarea\" value.bind=\"assignment.description\"></textarea>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Descripción que se mostrará a los estudiantes al abrir esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal  form-horizontal-assignment\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Problemas:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Ingrese los ID de los problemas separados por coma\"\n              value.bind=\"problems\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Puede saber el ID de un problema usando la barra de busqueda superior\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Desde el:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"date\" class=\"form-control\" value.bind=\"startDate\"  required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de inicio desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">a las:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"time\" class=\"form-control\" value.bind=\"startTime\"  required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"form-horizontal col-md-6\">\n          <div class=\"form-group\">\n            <label class=\"control-label col-sm-2\" for=\"problem-name\">Hasta el:</label>\n            <div class=\"col-sm-10 input-group ufps-input-creator\">\n              <input type=\"date\" class=\"form-control\" value.bind=\"endDate\" min=\"${startDate}\" required>\n              <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de inicio desde la cual estará disponible esta tarea\">\n                <span class=\"glyphicon glyphicon-question-sign\"></span>\n              </span>\n            </div>\n          </div>\n        </div>\n        <div class=\"form-horizontal col-md-6\">\n            <div class=\"form-group\">\n              <label class=\"control-label col-sm-2\" for=\"problem-name\">a las:</label>\n              <div class=\"col-sm-10 input-group ufps-input-creator\">\n                <input type=\"time\" class=\"form-control\" value.bind=\"endTime\" required>\n                <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora hasta la cual estará disponible esta tarea\">\n                  <span class=\"glyphicon glyphicon-question-sign\"></span>\n                </span>\n              </div>\n            </div>\n          </div>\n      <div class=\"col-xs-12 text-center\">\n        <input type=\"submit\" class=\"btn ufps-btn-submit\" value=\"Crear Tarea\">\n      </div>\n    </form>\n  </div>\n</template>\n"; });
+define('text!modules/syllabus/syllabus-detail/syllabus-detail.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1>${syllabus.title}</h1>\n    <p>${syllabus.description}</p>\n    <h2 class=\"text-right\">Tareas</h2>\n    <hr>\n    <div repeat.for=\"assignment of syllabus.assignments\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <a>\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>${assignment.title}</h1>\n          </div>\n          <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 ufps-card-link\">\n            <a route-href=\"route: EditAssignment; params.bind: {id:assignment.id, assignment:assignment}\">Editar tarea</a>\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n    <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <a route-href=\"route: CreateAssignment; params.bind: {id:id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>\n              <span class=\"glyphicon glyphicon-plus\"></span>\n            </h1>\n          </div>\n          <div class=\"col-xs-12 ufps-card-link\">\n            Nueva tarea\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n    <div class=\"fix\"></div>\n    <h2 class=\"text-right\">Lecturas</h2>\n    <hr>\n  </div>\n</template>\n"; });
 //# sourceMappingURL=app-bundle.js.map

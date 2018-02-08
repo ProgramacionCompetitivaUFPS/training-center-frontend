@@ -54,6 +54,7 @@ export class SyllabusDetail {
     this.syllabusService.getSyllabus(this.id)
       .then(data => {
         this.syllabus = new Syllabus(data.syllabus.id, data.syllabus.tittle, data.syllabus.description, data.syllabus.public, undefined, true, data.syllabus.assignments)
+        console.log(this.syllabus.assignments)
       })
       .catch(error => {
         if (error.status === 401) {

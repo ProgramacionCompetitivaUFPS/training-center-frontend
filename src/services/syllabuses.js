@@ -188,4 +188,26 @@ export class Syllabuses {
       })
       .then(this.httpService.checkStatus)
   }
+
+  /**
+   * Edita una tarea en el sistema
+   * @param {Assignment} assignment - Tarea a editar
+   */
+  editAssignment (assignment) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.assignments + '/' + assignment.id, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          tittle: assignment.title,
+          description: assignment.description,
+          init_date: assignment.startDate,
+          end_date: assignment.endDate
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
 }

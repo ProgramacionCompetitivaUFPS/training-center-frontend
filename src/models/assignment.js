@@ -13,13 +13,15 @@ export class Assignment {
    * @param {stringdate} endDate - Fecha de cierre de la tarea
    * @param {array} problems - Array con el id de los problemas de la tarea
    * @param {number} syllabusId - Identificador del syllabus al que pertenece la tarea
+   * @param {number} id - Idetificador de la tarea
    */
-  constructor (title, description, startDate, endDate, problems, syllabusId) {
+  constructor (title, description, startDate, endDate, problems, syllabusId, id) {
     this.title = title
     this.description = description
     this.startDate = startDate
     this.endDate = endDate
     this.problems = problems
     this.syllabusId = syllabusId
+    this.id = id
   }
 }

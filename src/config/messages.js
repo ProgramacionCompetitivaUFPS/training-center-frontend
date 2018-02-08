@@ -160,5 +160,9 @@ export let MESSAGES = {
   assignmentCreated: {
     text: 'La tarea ha sido creada con éxito',
     type: 'success'
+  },
+  assignmentModified: {
+    text: 'La tarea ha sido modificada con éxito',
+    type: 'success'
   }
 }

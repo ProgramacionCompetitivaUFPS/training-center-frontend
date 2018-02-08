@@ -9,7 +9,10 @@
       <a>
         <div class="ufps-card">
           <div class="ufps-card-title">
-            <h1>Titulo</h1>
+            <h1>${assignment.title}</h1>
+          </div>
+          <div if.bind="authService.isCoach()" class="col-xs-12 ufps-card-link">
+            <a route-href="route: EditAssignment; params.bind: {id:assignment.id, assignment:assignment}">Editar tarea</a>
           </div>
           <div class="fix"></div>
         </div>

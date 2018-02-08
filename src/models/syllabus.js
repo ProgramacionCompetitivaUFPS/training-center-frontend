@@ -1,3 +1,4 @@
+import { Assignment } from './assignment'
 /**
  * Syllabus (Model)
  * Modelo de Syllabus.
@@ -22,6 +23,13 @@ export class Syllabus {
     this.privacy = privacy
     this.key = key
     this.enrolled = enrolled
-    this.assignments = assignments
+    this.assignments = []
+    this.mockAssignments(assignments)
+  }
+
+  mockAssignments (assignments) {
+    for (let i = 0; i < assignments.length; i++) {
+      this.assignments.push(new Assignment(assignments[i].tittle, assignments[i].description, assignments[i].init_date, assignments[i].end_date, undefined, this.id, assignments[i].id))
+    }
   }
 }

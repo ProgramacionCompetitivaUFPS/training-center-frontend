@@ -36,6 +36,14 @@ export class Syllabus {
         settings: {
           roles: ['coach']
         }
+      },
+      {
+        name: 'EditAssignment',
+        route: 'editar-tarea/:id',
+        moduleId: 'modules/syllabus/create-assignment/edit-assignment',
+        settings: {
+          roles: ['coach']
+        }
       }
     ])
     this.router = router
