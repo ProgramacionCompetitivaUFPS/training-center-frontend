@@ -44,6 +44,7 @@ export class SyllabusDetail {
   activate (params, routeConfig) {
     this.routeConfig = routeConfig
     this.id = params.id
+    console.log('Pasa por aqui')
     this.getSyllabus()
   }
 
@@ -51,12 +52,14 @@ export class SyllabusDetail {
    * Lee los detalles del syllabus en la plataforma.
    */
   getSyllabus () {
+    console.log('Obtener syllabus')
     this.syllabusService.getSyllabus(this.id)
       .then(data => {
+        console.log(data)
         this.syllabus = new Syllabus(data.syllabus.id, data.syllabus.tittle, data.syllabus.description, data.syllabus.public, undefined, true, data.syllabus.assignments)
-        console.log(this.syllabus.assignments)
       })
       .catch(error => {
+        console.log(error)
         if (error.status === 401) {
           this.alertService.showMessage(MESSAGES.permissionsError)
         } else {

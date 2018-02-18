@@ -29,6 +29,7 @@ export class CreateAssignment {
     this.endDate = this.startDate
     this.startTime = this.formatTime(new Date())
     this.endTime = this.startTime
+    this.type = 'new'
   }
   /**
    * Método que toma los parametros enviados en el link y configura la página para adaptarse

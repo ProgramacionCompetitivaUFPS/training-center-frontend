@@ -205,7 +205,7 @@ export class CategoryProblems {
       .then(() => {
         this.alertService.showMessage(MESSAGES.problemDeleted)
         this.category.removeProblem(this.problemToRemove)
-        window.$('#remove-category').modal('hide')
+        window.$('#remove-problem').modal('hide')
       })
       .catch(error => {
         if (error.status === 401 || error.status === 403) {
@@ -215,7 +215,7 @@ export class CategoryProblems {
         } else {
           this.alertService.showMessage(MESSAGES.unknownError)
         }
-        window.$('#remove-category').modal('hide')
+        window.$('#remove-problem').modal('hide')
       })
   }
 }

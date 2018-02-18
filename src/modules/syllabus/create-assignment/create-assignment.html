@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div class="form-horizontal  form-horizontal-assignment">
+      <div class="form-horizontal form-horizontal-assignment" if.bind="type === 'new'">
         <div class="form-group">
           <label class="control-label col-sm-2" for="problem-name">Problemas:</label>
           <div class="col-sm-10 input-group ufps-input-creator">
@@ -80,9 +80,92 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-12 text-center">
+      <div class="col-xs-12 text-center" if.bind="type === 'new'">
         <input type="submit" class="btn ufps-btn-submit" value="Crear Tarea">
       </div>
+      <div class="col-xs-12 text-center" if.bind="type === 'edit'">
+        <input type="submit" class="btn ufps-btn-submit" value="Guardar cambios" style="margin-bottom:30px">
+      </div>
     </form>
+    <div if.bind="type === 'edit'">
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center" style="width:5%">Id</th>
+            <th class="text-center" style="width:70%">Problema</th>
+            <th class="text-center" style="width:10%">Dificultad</th>
+            <th class="text-center" style="width:15%">Idioma</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr if.bind="assignment.problemsLoaded.length === 0">
+            <td></td>
+            <td>
+              <p>No hay problemas actualmente en esta tarea.</p>
+            </td>
+            <td></td>
+            <td></td>
+
+          </tr>
+          <tr repeat.for="problem of assignment.problemsLoaded">
+            <td class="text-center">${problem.id}</td>
+            <td class="text-left ufps-td-problem">
+              <p if.bind="problem.isInEnglish()" class="ufps-name-problem-list">
+                <a href="#/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
+              </p>
+              <p if.bind="!problem.isInEnglish()" class="ufps-name-problem-list">
+                <a href="#/problemas/${problem.id}/detalle/es">${problem.titleES}</a>
+              </p>
+              <span if.bind="authService.isCoach()" class="ufps-edit-problem-list glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar problema de la tarea"
+                click.delegate="showRemoveProblem(problem.id)" tooltip></span>
+            </td>
+            <td class="text-center">${problem.level}</td>
+            <td class="text-center ufps-language">
+              <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
+                <a href="#/problemas/${problem.id}/detalle/es">ES</a>
+              </span> |
+              <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
+                <a href="#/problemas/${problem.id}/detalle/en">EN</a>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form-horizontal form-horizontal-assignment" if.bind="type === 'edit'">
+        <br>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="problem-name">Añadir problemas:</label>
+            <div class="col-sm-9 input-group ufps-input-creator">
+              <input type="text" class="form-control" placeholder="Ingrese los ID de los problemas separados por coma" value.bind="problems"
+                required>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede saber el ID de un problema usando la barra de busqueda superior">
+                <span class="glyphicon glyphicon-question-sign"></span>
+              </span>
+              <span class="input-group-addon btn"  click.delegate="addProblems()">
+                  <span>Añadir</span>
+                </span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!--MODAL PARA ELIMINAR PROBLEMA DE LA TAREA-->
+  <div if.bind="authService.isCoach()" class="modal fade" id="remove-problem" tabindex="-1" role="dialog" aria-labelledby="remove-problem">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">¿Estás seguro de eliminar este problema de la tarea?</h4>
+          <br>
+          <p>Esto no eliminará el problema de la plataforma. Solo de la tarea actual.</p>
+
+          <button class="btn btn-default ufps-btn-default" click.delegate=removeProblem()>Si</button>
+          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

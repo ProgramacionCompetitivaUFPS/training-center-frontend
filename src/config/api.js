@@ -21,7 +21,10 @@ export let API = {
     problems: 'problems',
     syllabus: 'syllabus',
     enrolledSyllabus: 'users/{1}/syllabus',
-    assignments: 'assignments'
+    assignments: 'assignments',
+    assignment: 'assignment',
+    addProblemAssignment: 'add-problems',
+    removeProblemAssignment: 'remove-problems'
   },
 
   // SESSION

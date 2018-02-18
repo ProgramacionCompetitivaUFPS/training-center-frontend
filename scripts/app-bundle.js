@@ -238,7 +238,10 @@ define('config/api',['exports'], function (exports) {
       problems: 'problems',
       syllabus: 'syllabus',
       enrolledSyllabus: 'users/{1}/syllabus',
-      assignments: 'assignments'
+      assignments: 'assignments',
+      assignment: 'assignment',
+      addProblemAssignment: 'add-problems',
+      removeProblemAssignment: 'remove-problems'
     },
 
     tokenName: 'Authorization'
@@ -453,12 +456,13 @@ define('config/settings',['exports'], function (exports) {
     'languages': ['java', 'c', 'c++', 'python']
   };
 });
-define('models/assignment',["exports"], function (exports) {
-  "use strict";
+define('models/assignment',['exports', './problem'], function (exports, _problem) {
+  'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
+  exports.Assignment = undefined;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -466,17 +470,37 @@ define('models/assignment',["exports"], function (exports) {
     }
   }
 
-  var Assignment = exports.Assignment = function Assignment(title, description, startDate, endDate, problems, syllabusId, id) {
-    _classCallCheck(this, Assignment);
+  var Assignment = exports.Assignment = function () {
+    function Assignment(title, description, startDate, endDate, problems, syllabusId, id) {
+      _classCallCheck(this, Assignment);
 
-    this.title = title;
-    this.description = description;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.problems = problems;
-    this.syllabusId = syllabusId;
-    this.id = id;
-  };
+      this.title = title;
+      this.description = description;
+      this.startDate = startDate;
+      this.endDate = endDate;
+      this.problems = problems;
+      this.syllabusId = syllabusId;
+      this.id = id;
+    }
+
+    Assignment.prototype.adjuntProblems = function adjuntProblems(problems) {
+      this.problemsLoaded = [];
+      for (var i = 0; i < problems.length; i++) {
+        this.problemsLoaded.push(new _problem.Problem(problems[i].id, problems[i].title_en, problems[i].title_es, problems[i].level));
+      }
+    };
+
+    Assignment.prototype.removeProblem = function removeProblem(id) {
+      for (var i = 0; i < this.problemsLoaded.length; i++) {
+        if (this.problemsLoaded[i].id === id) {
+          this.problemsLoaded.splice(i, 1);
+          break;
+        }
+      }
+    };
+
+    return Assignment;
+  }();
 });
 define('models/category',['exports', './problem'], function (exports, _problem) {
   'use strict';
@@ -1593,7 +1617,7 @@ define('services/syllabuses',['exports', 'config/config', 'models/models', 'serv
 
     Syllabuses.prototype.editAssignment = function editAssignment(assignment) {
       return this.httpService.httpClient.fetch(_config.API.endpoints.assignments + '/' + assignment.id, {
-        method: 'post',
+        method: 'put',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token,
           'Content-Type': 'application/json'
@@ -1603,6 +1627,41 @@ define('services/syllabuses',['exports', 'config/config', 'models/models', 'serv
           description: assignment.description,
           init_date: assignment.startDate,
           end_date: assignment.endDate
+        })
+      }).then(this.httpService.checkStatus);
+    };
+
+    Syllabuses.prototype.loadAssignment = function loadAssignment(id) {
+      return this.httpService.httpClient.fetch(_config.API.endpoints.assignments + '/' + id, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      }).then(this.httpService.checkStatus).then(this.httpService.parseJSON);
+    };
+
+    Syllabuses.prototype.addProblems = function addProblems(idAssignment, problems) {
+      return this.httpService.httpClient.fetch(_config.API.endpoints.assignments + '/' + idAssignment + '/' + _config.API.endpoints.addProblemAssignment, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          problems: problems
+        })
+      }).then(this.httpService.checkStatus);
+    };
+
+    Syllabuses.prototype.removeProblem = function removeProblem(idAssignment, idProblem) {
+      return this.httpService.httpClient.fetch(_config.API.endpoints.assignments + '/' + idAssignment + '/' + _config.API.endpoints.removeProblemAssignment, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          problems: [idProblem]
         })
       }).then(this.httpService.checkStatus);
     };
@@ -7545,7 +7604,7 @@ define('modules/problems/category-problems/category-problems',['exports', 'aurel
       this.problemService.removeProblem(this.problemToRemove).then(function () {
         _this2.alertService.showMessage(_config.MESSAGES.problemDeleted);
         _this2.category.removeProblem(_this2.problemToRemove);
-        window.$('#remove-category').modal('hide');
+        window.$('#remove-problem').modal('hide');
       }).catch(function (error) {
         if (error.status === 401 || error.status === 403) {
           _this2.alertService.showMessage(_config.MESSAGES.permissionsError);
@@ -7554,7 +7613,7 @@ define('modules/problems/category-problems/category-problems',['exports', 'aurel
         } else {
           _this2.alertService.showMessage(_config.MESSAGES.unknownError);
         }
-        window.$('#remove-category').modal('hide');
+        window.$('#remove-problem').modal('hide');
       });
     };
 
@@ -8562,6 +8621,7 @@ define('modules/syllabus/create-assignment/create-assignment',['exports', 'aurel
       this.endDate = this.startDate;
       this.startTime = this.formatTime(new Date());
       this.endTime = this.startTime;
+      this.type = 'new';
     }
 
     CreateAssignment.prototype.activate = function activate(params, routeConfig) {
@@ -8623,6 +8683,142 @@ define('modules/syllabus/create-assignment/create-assignment',['exports', 'aurel
     };
 
     return CreateAssignment;
+  }();
+});
+define('modules/syllabus/create-assignment/edit-assignment',['exports', 'aurelia-router', 'config/config', 'models/models', 'services/services'], function (exports, _aureliaRouter, _config, _models, _services) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.EditAssignment = undefined;
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var EditAssignment = exports.EditAssignment = function () {
+    EditAssignment.inject = function inject() {
+      return [_services.Alert, _services.Auth, _services.Syllabuses, _aureliaRouter.Router];
+    };
+
+    function EditAssignment(alertService, authService, syllabusService, router) {
+      _classCallCheck(this, EditAssignment);
+
+      this.alertService = alertService;
+      this.authService = authService;
+      this.syllabusService = syllabusService;
+      this.router = router;
+      this.type = 'edit';
+    }
+
+    EditAssignment.prototype.activate = function activate(params, routeConfig) {
+      this.routeConfig = routeConfig;
+      this.id = params.id;
+      this.getAssignment();
+    };
+
+    EditAssignment.prototype.getViewStrategy = function getViewStrategy() {
+      return './create-assignment.html';
+    };
+
+    EditAssignment.prototype.getAssignment = function getAssignment() {
+      var _this = this;
+
+      this.syllabusService.loadAssignment(this.id).then(function (data) {
+        _this.assignment = new _models.Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, undefined, _this.id);
+        _this.startDate = _this.assignment.startDate.substr(0, 10);
+        _this.endDate = _this.assignment.endDate.substr(0, 10);
+        _this.startTime = _this.assignment.startDate.substr(11, 5);
+        _this.endTime = _this.assignment.startDate.substr(11, 5);
+        _this.assignment.adjuntProblems(data.assignment.problems);
+        _this.problems = '';
+      }).catch(function (error) {
+        console.log(error);
+        if (error.status === 401) {
+          _this.alertService.showMessage(_config.MESSAGES.permissionsError);
+        } else {
+          _this.alertService.showMessage(_config.MESSAGES.unknownError);
+        }
+      });
+    };
+
+    EditAssignment.prototype.showRemoveProblem = function showRemoveProblem(id) {
+      this.problemToRemove = id;
+      window.$('#remove-problem').modal('show');
+    };
+
+    EditAssignment.prototype.create = function create() {
+      var _this2 = this;
+
+      this.assignment.startDate = this.startDate + ' ' + this.startTime + ':00';
+      this.assignment.endDate = this.endDate + ' ' + this.endTime + ':00';
+      this.syllabusService.editAssignment(this.assignment).then(function (data) {
+        _this2.alertService.showMessage(_config.MESSAGES.assignmentModified);
+      }).catch(function (error) {
+        console.log(error);
+        if (error.status === 401) {
+          _this2.alertService.showMessage(_config.MESSAGES.permissionsError);
+        } else {
+          _this2.alertService.showMessage(_config.MESSAGES.unknownError);
+        }
+      });
+    };
+
+    EditAssignment.prototype.removeProblem = function removeProblem() {
+      var _this3 = this;
+
+      this.syllabusService.removeProblem(this.id, this.problemToRemove).then(function () {
+        _this3.alertService.showMessage(_config.MESSAGES.problemDeleted);
+        _this3.assignment.removeProblem(_this3.problemToRemove);
+        window.$('#remove-problem').modal('hide');
+      }).catch(function (error) {
+        console.log(error);
+        if (error.status === 401 || error.status === 403) {
+          _this3.alertService.showMessage(_config.MESSAGES.permissionsError);
+        } else if (error.status === 500) {
+          _this3.alertService.showMessage(_config.MESSAGES.serverError);
+        } else {
+          _this3.alertService.showMessage(_config.MESSAGES.unknownError);
+        }
+        window.$('#remove-problem').modal('hide');
+      });
+    };
+
+    EditAssignment.prototype.validateProblems = function validateProblems() {
+      var problemsTemp = this.problems.replace(/ /g, '');
+      problemsTemp = problemsTemp.split(',');
+      var problemsArr = [];
+      for (var i = 0; i < problemsTemp.length; i++) {
+        if (problemsTemp[i].length > 0 && !isNaN(parseInt(problemsTemp[i]))) problemsArr.push(parseInt(problemsTemp[i]));else if (isNaN(parseInt(problemsTemp[i]))) return false;
+      }
+      this.assignment.problems = problemsArr;
+      return true;
+    };
+
+    EditAssignment.prototype.addProblems = function addProblems() {
+      var _this4 = this;
+
+      if (!this.validateProblems()) {
+        this.alertService.showMessage(_config.MESSAGES.assignmentInvalidProblems);
+      } else {
+        this.syllabusService.addProblems(this.id, this.assignment.problems).then(function (data) {
+          _this4.alertService.showMessage(_config.MESSAGES.assignmentCreated);
+          _this4.getAssignment();
+        }).catch(function (error) {
+          console.log(error);
+          if (error.status === 401) {
+            _this4.alertService.showMessage(_config.MESSAGES.permissionsError);
+          } else {
+            _this4.alertService.showMessage(_config.MESSAGES.unknownError);
+          }
+        });
+      }
+    };
+
+    return EditAssignment;
   }();
 });
 define('modules/syllabus/home-syllabus/home-syllabus',['exports', 'config/config', 'models/models', 'services/services'], function (exports, _config, _models, _services) {
@@ -8848,16 +9044,19 @@ define('modules/syllabus/syllabus-detail/syllabus-detail',['exports', 'config/co
     SyllabusDetail.prototype.activate = function activate(params, routeConfig) {
       this.routeConfig = routeConfig;
       this.id = params.id;
+      console.log('Pasa por aqui');
       this.getSyllabus();
     };
 
     SyllabusDetail.prototype.getSyllabus = function getSyllabus() {
       var _this = this;
 
+      console.log('Obtener syllabus');
       this.syllabusService.getSyllabus(this.id).then(function (data) {
+        console.log(data);
         _this.syllabus = new _models.Syllabus(data.syllabus.id, data.syllabus.tittle, data.syllabus.description, data.syllabus.public, undefined, true, data.syllabus.assignments);
-        console.log(_this.syllabus.assignments);
       }).catch(function (error) {
+        console.log(error);
         if (error.status === 401) {
           _this.alertService.showMessage(_config.MESSAGES.permissionsError);
         } else {
@@ -8867,82 +9066,6 @@ define('modules/syllabus/syllabus-detail/syllabus-detail',['exports', 'config/co
     };
 
     return SyllabusDetail;
-  }();
-});
-define('modules/syllabus/create-assignment/edit-assignment',['exports', 'aurelia-router', 'config/config', 'models/models', 'services/services'], function (exports, _aureliaRouter, _config, _models, _services) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.EditAssignment = undefined;
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var EditAssignment = exports.EditAssignment = function () {
-    EditAssignment.inject = function inject() {
-      return [_services.Alert, _services.Syllabuses, _aureliaRouter.Router];
-    };
-
-    function EditAssignment(alertService, syllabusService, router) {
-      _classCallCheck(this, EditAssignment);
-
-      this.alertService = alertService;
-      this.syllabusService = syllabusService;
-      this.router = router;
-    }
-
-    EditAssignment.prototype.activate = function activate(params, routeConfig) {
-      this.routeConfig = routeConfig;
-      this.assignment = params.assignment;
-      var startTmp = this.assignment.startDate.split(' ');
-      var endTmp = this.assignment.endDate.split(' ');
-      this.startDate = startTmp[0];
-      this.endDate = endTmp[0];
-      this.startTime = startTmp[1].substr(0, 5);
-      this.endTime = endTmp[1].substr(0, 5);
-      this.problems = this.assignment.problems.toString();
-    };
-
-    EditAssignment.prototype.validateProblems = function validateProblems() {
-      var problemsTemp = this.problems.replace(/ /g, '');
-      problemsTemp = problemsTemp.split(',');
-      var problemsArr = [];
-      for (var i = 0; i < problemsTemp.length; i++) {
-        if (problemsTemp[i].length > 0 && !isNaN(parseInt(problemsTemp[i]))) problemsArr.push(parseInt(problemsTemp[i]));else if (isNaN(parseInt(problemsTemp[i]))) return false;
-      }
-      this.assignment.problems = problemsArr;
-      return true;
-    };
-
-    EditAssignment.prototype.create = function create() {
-      var _this = this;
-
-      if (!this.validateProblems()) {
-        this.alertService.showMessage(_config.MESSAGES.assignmentInvalidProblems);
-      } else {
-        this.assignment.startDate = this.startDate + ' ' + this.startTime + ':00';
-        this.assignment.endDate = this.endDate + ' ' + this.endTime + ':00';
-        this.syllabusService.editAssignment(this.assignment).then(function (data) {
-          _this.modifyProblems();
-          _this.router.navigate('clases/' + _this.assignment.syllabusId);
-          _this.alertService.showMessage(_config.MESSAGES.assignmentModified);
-        }).catch(function (error) {
-          console.log(error);
-          if (error.status === 401) {
-            _this.alertService.showMessage(_config.MESSAGES.permissionsError);
-          } else {
-            _this.alertService.showMessage(_config.MESSAGES.unknownError);
-          }
-        });
-      }
-    };
-
-    return EditAssignment;
   }();
 });
 define('text!app.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"bootstrap/css/bootstrap.css\"></require>\n    <require from=\"./assets/css/styles.css\"></require>\n    <loading-indicator loading.bind=\"router.isNavigating || httpService.httpClient.isRequesting\"></loading-indicator>\n    <app-header if.bind=\"authService.authenticated\"></app-header>\n    <router-view></router-view>\n</template>\n"; });
@@ -8966,7 +9089,7 @@ define('text!modules/problems/category-problems/category-problems.html', ['modul
 define('text!modules/problems/general-problems/general-problems.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\">Categorias</h1>\n    <hr>\n    <div repeat.for=\"category of categories\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <div class=\"ufps-card\">\n        <div class=\"ufps-card-title\">\n          <span if.bind=\"authService.isAdmin()\" class=\"ufps-edit-category glyphicon glyphicon-pencil\" data-toggle=\"tooltip\" title=\"Editar el nombre de la categoría\"\n            click.delegate=\"showEditCategory(category.id, category.name)\" tooltip></span>\n          <span if.bind=\"authService.isAdmin()\" class=\"ufps-remove-category glyphicon glyphicon-remove\" data-toggle=\"tooltip\" title=\"Eliminar categoría\"\n            click.delegate=\"showRemoveCategory(category.id, category.name)\" tooltip></span>\n          <h1>${category.name}</h1>\n        </div>\n        <div class=\"col-xs-6 ufps-card-link\">\n          <a route-href=\"route: category; params.bind: {id:category.id}\">Problemas</a>\n        </div>\n        <div class=\"col-xs-6 ufps-card-link\">\n          <a route-href=\"route: material; params.bind: {id:category.id}\">Material</a>\n\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n    <div if.bind=\"authService.isAdmin()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <div class=\"ufps-card\" data-toggle=\"modal\" data-target=\"#new-category\">\n        <div class=\"ufps-card-title\">\n          <h1>\n            <span class=\"glyphicon glyphicon-plus\"></span>\n          </h1>\n        </div>\n        <div class=\"col-xs-12 ufps-card-link\">\n          Nueva categoría\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n    <div class=\"fix\"></div>\n    <div class=\"ufps-separator\"></div>\n  </div>\n  <!--MODAL PARA AÑADIR CATEGORIA-->\n  <div if.bind=\"authService.isAdmin()\" class=\"modal fade\" id=\"new-category\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"new-category\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Nueva categoría</h4>\n          <br>\n          <form submit.delegate=\"createCategory()\">\n            <div class=\"input-group\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la categoría\" value.bind=\"newCategory\" required>\n              <span class=\"input-group-btn\">\n                <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Agregar\">\n              </span>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n  <!--MODAL PARA EDITAR CATEGORIA-->\n  <div if.bind=\"authService.isAdmin()\" class=\"modal fade\" id=\"edit-category\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit-category\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Cambiar nombre de la categoría</h4>\n          <br>\n          <form submit.delegate=\"editCategory()\">\n            <div class=\"input-group\">\n              <input type=\"text\" class=\"form-control\" value.bind=\"categoryEditName\" required>\n              <span class=\"input-group-btn\">\n                <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Cambiar\">\n              </span>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA ELIMINAR CATEGORIA-->\n  <div if.bind=\"authService.isAdmin()\" class=\"modal fade\" id=\"remove-category\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remove-category\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Estás seguro de eliminar la categoría ${categoryRemoveName}?</h4>\n          <br>\n          <p>Esto no eliminará los problemas de dicha categoría, pero quedarán sin clasificar</p>\n\n          <button class=\"btn btn-default ufps-btn-default\" click.delegate=removeCategory()>Si</button>\n          <button class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\">No</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
 define('text!modules/problems/problems-creator/problems-creator.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"simplemde/simplemde.min.css\"></require>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\" if.bind=\"!editMode\">Nuevo problema</h1>\n    <h1 class=\"text-right\" if.bind=\"editMode\">Editar problema ${newProblem.id}</h1>\n    <hr>\n    <form submit.delegate=\"submit()\" enctype=\"multipart/form-data\">\n      <div class=\"form-horizontal col-md-7\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-category\">Categoría:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <select class=\"form-control\" id=\"problem-category\" value.bind=\"newProblem.category\">\n              <option model.bind=\"null\">Elige una categoría</option>\n              <option repeat.for=\"category of categories\" model.bind=\"category.id\">${category.name}</option>\n            </select>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Temática relacionada con el problema\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Nombre:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" id=\"problem-name\" placeholder=\"Nombre del problema\" value.bind=\"newProblem.titleES\"\n              if.bind=\"originalLanguage === 'es'\">\n            <input type=\"text\" class=\"form-control\" id=\"problem-name\" placeholder=\"Nombre del problema\" value.bind=\"newProblem.titleEN\"\n              if.bind=\"originalLanguage === 'en'\">\n            <span class=\"input-group-addon\"  tooltip data-toggle=\"tooltip\" title=\"Título del problema\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-5\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-3\" for=\"problem-level\">Dificultad:</label>\n          <div class=\"col-sm-9 input-group ufps-input-creator\">\n            <input type=\"number\" class=\"form-control\" id=\"problem-level\" min=\"1\" max=\"10\"  value.bind=\"newProblem.level\">\n            <span class=\"input-group-addon\"  tooltip data-toggle=\"tooltip\" title=\"Nivel de dificultad [1 - 10] Donde 1 es muy facil, y 10 muy complejo\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-3\" for=\"problem-language\">Idioma:</label>\n          <div class=\"col-sm-9 input-group ufps-input-creator\">\n            <select class=\"form-control\" id=\"problem-language\" value.bind=\"originalLanguage\" change.delegate=\"changeLanguageEditor()\">\n              <option model.bind=\"'en'\">Inglés</option>\n              <option model.bind=\"'es'\">Español</option>\n            </select>\n            <span class=\"input-group-addon\"  tooltip data-toggle=\"tooltip\" title=\"Idioma del título y enunciado del problema\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n        \n      </div>\n      <div class=\"form-horizontal col-md-12\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-9\" for=\"problem-level\">Tiempo límite:</label>\n          <div class=\"col-sm-3 input-group ufps-input-creator\">\n            <input type=\"number\" class=\"form-control\" id=\"problem-level\" min=\"0.5\" max=\"10.0\" step=\"0.1\" value.bind=\"newProblem.timeLimit\">\n            <span class=\"input-group-addon\"  tooltip data-toggle=\"tooltip\" title=\"Tiempo que tendrá la solución para ejecutarse (en segundos). Si se excede este tiempo, la ejecución se detendrá y se informará al usuario que ha excedido el tiempo limite.\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n        </div>\n      </div>\n      <div class=\"fix\"></div>\n      \n      <h3 class=\"text-center\">Contenido</h3>\n      <textarea name=\"md-editor\" id=\"md-editor\"># Descripción\n\nReemplaza este texto con la descripción de tu problema. Recuerda que puedes usar la sintaxis de Markdown.\n\n# Entradas\n\nReemplaza este texto con la especificación de la entrada de tu problema. Si no conoces la sintaxis markdown, puedes hacer uso de las opciones de la barra superior.\n\n# Salidas\n\nReemplaza este texto con la especificación de la salida de tu problema.\n      </textarea>\n\n      <div class=\"ufps-separator\"></div>\n      <div class=\"col-md-12 text-center\">\n        <p>Importante: <strong>LAS ENTRADAS Y SALIDAS DE EJEMPLO</strong> se mostrarán junto al enunciado en la plataforma.\n          Se recomenda que estos sean algunos casos simples que expliquen brevemente las entradas y salidas. Por su parte,\n          los casos de prueba <strong>PRIVADOS</strong> son los que utilizará la plataforma para evaluar los ejercicios.\n          Por tanto, estos deberían ser mas extensos y completos (Dado que es posible que estos casos sean muy extensos,\n          deben subirse en formato .txt o .in)</p>\n      </div>\n      <div class=\"col-md-6 ufps-input-creator\">\n        <h4>Entradas de ejemplo</h4>\n        <textarea value.bind=\"newProblem.exampleInput\" class=\"form-control\"></textarea>\n      </div>\n      <div class=\"col-md-6 ufps-input-creator\">\n        <h4>Salidas de ejemplo</h4>\n        <textarea value.bind=\"newProblem.exampleOutput\" class=\"form-control\"></textarea>\n      </div>\n      <div class=\"fix\"></div>\n      <div class=\"ufps-separator\"></div>\n      <div class=\"col-md-6 text-right\">\n        <h4 if.bind=\"!editMode\">Seleccione los casos de prueba privados:</h4>\n        <h4 if.bind=\"editMode\">¿Desea cambiar los casos de prueba privados? (Opcional)</h4>\n      </div>\n      <div class=\"col-md-6\">\n        <div class=\"col-sm-6 ufps-input-creator\">\n          <input type=\"file\" name=\"input-file\" id=\"input-file\" class=\"inputfile-btn\" change.delegate=\"validateTestCase('input')\" accept=\".txt, .in\" files.bind=\"newProblem.input\">\n          <label for=\"input-file\" tooltip data-toggle=\"tooltip\" title=\"Archivo .txt o .in con las entradas que será ejecutado el programa escrito por el estudiante para ser validado\">Entradas <span class=\"glyphicon glyphicon-ok-sign\" show.bind=\"inputValid\"></span></label>\n        </div>\n        <div class=\"col-sm-6 ufps-input-creator\">\n          <input type=\"file\" name=\"output-file\" id=\"output-file\" class=\"inputfile-btn\" accept=\".txt, .in\" change.delegate=\"validateTestCase('output')\" files.bind=\"newProblem.output\">\n          <label for=\"output-file\" tooltip data-toggle=\"tooltip\" title=\"Archivo .txt o .out con las salidas que debe generar el programa escrito por el estudiante para ser considerado correcto\">Salidas <span class=\"glyphicon glyphicon-ok-sign\" show.bind=\"outputValid\"></span></label>\n        </div>\n      </div>\n      <div class=\"fix\"></div>\n    <div class=\"ufps-separator\"></div>\n    <div class=\"col-xs-12 form horizontal\" show.bind=\"doubleLanguage\">\n      <h4 class=\"text-center\">Versión en ${originalLanguage === 'en' ? 'Español' : 'Inglés'}</h4>\n      <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Nombre:</label>\n          <div class=\"col-sm-9 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" id=\"problem-name\" placeholder=\"Nombre del problema\" value.bind=\"newProblem.titleEN\"\n              if.bind=\"originalLanguage === 'es'\">\n            <input type=\"text\" class=\"form-control\" id=\"problem-name\" placeholder=\"Nombre del problema\" value.bind=\"newProblem.titleES\"\n              if.bind=\"originalLanguage === 'en'\">\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Título del problema\"><span class=\"glyphicon glyphicon-question-sign\"></span></span>\n          </div>\n        </div>\n        <textarea name=\"md-editor-2\" id=\"md-editor-2\"># Descripción\n\nReemplaza este texto con la descripción de tu problema. Recuerda que puedes usar la sintaxis de Markdown.\n\n# Entradas\n\nReemplaza este texto con la especificación de la entrada de tu problema. Si no conoces la sintaxis markdown, puedes hacer uso de las opciones de la barra superior.\n\n# Salidas\n\nReemplaza este texto con la especificación de la salida de tu problema.\n      </textarea>\n    </div>\n      <div class=\"col-xs-12 text-center\">\n        <button if.bind=\"!doubleLanguage\" class=\"btn ufps-btn-submit\" click.delegate=\"addLanguage()\">Añadir versión en ${originalLanguage === 'en' ? 'Español' : 'Inglés'}</button>\n        <button if.bind=\"doubleLanguage\" class=\"btn ufps-btn-submit\" click.delegate=\"removeLanguage()\">Eliminar versión en ${originalLanguage === 'en' ? 'Español' : 'Inglés'}</button>\n        <input type=\"submit\" class=\"btn ufps-btn-submit\" value=\"Guardar problema\">\n      </div>\n    </form>\n    <div class=\"fix\"></div>\n    <div class=\"ufps-separator\"></div>\n  </div>\n  <!--Modal explicativo de markdown-->\n  <div class=\"modal fade\" id=\"markdown-help\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"markdown-help\">\n    <div class=\"modal-dialog modal-lg\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n          <h2 class=\"modal-title\" id=\"myModalLabel\">Ayuda</h2>\n          <hr>\n          <p>Este editor utiliza Markdown, lenguaje de marcado ligero con el cual puedes dar formato rápido a tus ejercicios. Para tu comodidad, la barra superior del editor contiene las principales opciones de markdown. Si prefieres tu mismo escribir la sintaxis, aquí tienes una referencia rápida:</p>\n          <h3>Enfasis</h3>\n          <div class=\"panel panel-default\">\n            <div class=\"panel-body\">\n              **<strong>negrilla</strong>**<br>\n              *<em>cursiva</em>*<br>\n              ~~<del>tachado</del>~~<br>\n            </div>\n          </div>\n          <h3>Titulos</h3>\n          <pre>\n\n# Título grande\n## Título Mediano\n### Título pequeño\n#### Título muy pequeño\n          </pre>\n          <h3>Listas</h3>\n          <pre>\n\n* Lista con viñetas\n* Lista con viñetas\n* Lista con viñetas\n\n1. Lista numerada\n2. Lista numerada\n3. Lista numerada\n          </pre>\n          <h3>Links</h3>\n          <pre>\n\n[Texto a mostrar en pantalla](http://www.example.com)\n          </pre>\n          <h3>Citas</h3>\n          <pre>\n\n> \"Solo se que nada se\" \n          </pre>\n          <h3>Imagenes</h3>\n          <pre>\n\n![Texto alternativo](http://www.example.com/link_de_la_imagen.jpg)\n          </pre>\n          <h3>Tablas</h3>\n          <pre>\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| John     | Doe      | Male     |\n| Mary     | Smith    | Female   |\n          </pre>\n          <h3>Código</h3>\n          <pre>\n            \n`var example = \"hello!\";`\n\nO multiples lineas de código...\n\n```\nvar example = \"hello!\";\nalert(example);\n```             \n          </pre>\n          <p>Esta guía rápida se ha realizado tomando como referencia la Guía de <a href=\"https://simplemde.com/markdown-guide\" target=\"_blank\">SimpleMDE</a></p>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
 define('text!modules/problems/view-problem/view-problem.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/markdown\"></require>\n  <require from=\"../../../resources/attributes/tooltip\"> </require>\n  <div class=\"container-fluid\">\n    <div class=\"col-md-9\">\n      <div class=\"ufps-separator\"></div>\n      <div class=\"panel panel-default\">\n        <div class=\"panel-body\" show.bind=\"lang === 'es'\">\n          <h1 class=\"text-center ufps-problem-title\">${problem.titleES}</h1>\n          <p class=\"ufps-language text-center\">\n            <span class=\"${problem.isInSpanish() ? 'active' : 'inactive'}\" click.delegate=\"showES()\">ES</span> | <span class=\"${problem.isInEnglish() ? 'active' : 'inactive'}\"\n              click.delegate=\"showEN()\">EN</span>\n          </p>\n          <p class=\"ufps-markdown-editor\" markdown.bind=\"problem.descriptionES\"></p>\n          <div class=\"col-xs-12\">\n            <div class=\"col-md-6\">\n              <h3 class=\"text-center\">Entrada de ejemplo</h3>\n              <div class=\"well example-in-out\">\n                <pre>${problem.exampleInput}</pre>\n              </div>\n            </div>\n            <div class=\"col-md-6\">\n              <h3 class=\"text-center\">Salida de ejemplo</h3>\n              <div class=\"well example-in-out\">\n                <pre>${problem.exampleOutput}</pre>\n              </div>\n            </div>\n          </div>\n        </div>\n        <div class=\"panel-body\" show.bind=\"lang === 'en'\">\n          <h1 class=\"text-center ufps-problem-title\">${problem.titleEN}</h1>\n          <p class=\"ufps-language text-center\">\n            <span class=\"${problem.isInSpanish() ? 'active' : 'inactive'}\" click.delegate=\"showES()\">ES</span> | <span class=\"${problem.isInEnglish() ? 'active' : 'inactive'}\"\n              click.delegate=\"showEN()\">EN</span>\n          </p>\n          <p class=\"ufps-markdown-editor\" markdown.bind=\"problem.descriptionEN\"></p>\n          <div class=\"col-xs-12\">\n            <div class=\"col-md-6\">\n              <h3 class=\"text-center\">Entrada de ejemplo</h3>\n              <div class=\"well example-in-out\">\n                <pre>${problem.exampleInput}</pre>\n                \n              </div>\n            </div>\n            <div class=\"col-md-6\">\n              <h3 class=\"text-center\">Salida de ejemplo</h3>\n              <div class=\"well example-in-out\">\n                <pre>${problem.exampleOutput}</pre>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"col-md-3\">\n      <div class=\"ufps-separator\"></div>\n      <div class=\"panel panel-default\">\n        <div class=\"panel-body\">\n          <p show.bind=\"lang === 'en'\">Problema: ${problem.titleEN}</p>\n          <p show.bind=\"lang === 'es'\">Problema: ${problem.titleES}</p>\n          <p>Dificultad: ${problem.level}</p>\n          <p>Seleccione el archivo con su código, y el lenguaje a utilizar.</p>\n          <form class=\"ufps-submit-form\">\n            <input type=\"file\" name=\"input-file\" id=\"input-file\" class=\"inputfile-btn\" change.delegate=\"validateCode()\">\n            <label for=\"input-file\" tooltip data-toggle=\"tooltip\" title=\"Archivo con la solución al problema\">Seleccionar <span class=\"glyphicon glyphicon-ok-sign\" show.bind=\"sourceValid\"></span></label>\n            <div class=\"input-group\">\n              <select class=\"form-control\">\n                <option model.bind=\"null\">Elige una categoría</option>\n                <option repeat.for=\"language of languages\" model.bind=\"language\">${language}</option>\n              </select>\n            </div>\n            <input type=\"submit\" value=\"Enviar\" class=\"btn ufps-btn-submit\">\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
-define('text!modules/syllabus/create-assignment/create-assignment.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"container ufps-container-logged\">\n    <h2 class=\"text-right\">Nueva Tarea</h2>\n    <hr>\n    <form submit.delegate=\"create()\">\n      <div class=\"form-horizontal form-horizontal-assignment\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Nombre:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la tarea\" value.bind=\"assignment.title\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Nombre que se mostrará al desplegar esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Descripción:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <textarea class=\"form-control\" placeholder=\"Descripción de la tarea\" value.bind=\"assignment.description\"></textarea>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Descripción que se mostrará a los estudiantes al abrir esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal  form-horizontal-assignment\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Problemas:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Ingrese los ID de los problemas separados por coma\" value.bind=\"problems\"\n              required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Puede saber el ID de un problema usando la barra de busqueda superior\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Desde el:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"date\" class=\"form-control\" value.bind=\"startDate\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de inicio desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">a las:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"time\" class=\"form-control\" value.bind=\"startTime\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Hasta el:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"date\" class=\"form-control\" value.bind=\"endDate\" min=\"${startDate}\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de inicio desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">a las:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"time\" class=\"form-control\" value.bind=\"endTime\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora hasta la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"col-xs-12 text-center\">\n        <input type=\"submit\" class=\"btn ufps-btn-submit\" value=\"Crear Tarea\">\n      </div>\n    </form>\n  </div>\n</template>\n"; });
-define('text!modules/syllabus/home-syllabus/home-syllabus.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div if.bind=\"authService.isStudent()\" class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\">Mis clases</h1>\n    <hr>\n    <div class=\"text-center\" if.bind=\"!enrolledSyllabusesLoaded\">\n      <p>Actualmente no tienes ninguna clase inscrita.</p>\n    </div>\n    <div repeat.for=\"syllabus of enrolledSyllabuses\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <a route-href=\"route: SyllabusDetail; params.bind: {id:syllabus.id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>${syllabus.tittle}</h1>\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n  </div>\n  <div class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\" if.bind=\"authService.isStudent()\">Clases disponibles</h1>\n    <h1 class=\"text-right\" if.bind=\"authService.isCoach()\">Mis clases</h1>\n    <hr>\n    <div repeat.for=\"syllabus of syllabuses\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <div class=\"ufps-card\">\n        <div class=\"ufps-card-title\">\n          <span if.bind=\"authService.isCoach()\" class=\"ufps-edit-category glyphicon glyphicon-pencil\" data-toggle=\"tooltip\" title=\"Editar los datos de la clase\"\n            click.delegate=\"showEditSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)\" tooltip></span>\n          <span if.bind=\"authService.isCoach()\" class=\"ufps-remove-category glyphicon glyphicon-remove\" data-toggle=\"tooltip\" title=\"Eliminar la clase\"\n            click.delegate=\"showRemoveSyllabus(syllabus.id, syllabus.tittle)\" tooltip></span>\n          <h1>${syllabus.tittle}</h1>\n        </div>\n        <div if.bind=\"authService.isCoach()\" class=\"col-xs-6 ufps-card-link\">\n          <a route-href=\"route: SyllabusDetail; params.bind: {id:syllabus.id}\">Detalle</a>\n        </div>\n        <div if.bind=\"authService.isCoach()\" class=\"col-xs-6 ufps-card-link\">\n          <a>Estadísticas</a>\n        </div>\n        <div if.bind=\"authService.isStudent()\" class=\"col-xs-6 ufps-card-link\">\n          <span if.bind=\"syllabus.public\">Público</span>\n          <span if.bind=\"!syllabus.public\">Privado</span>\n        </div>\n        <div if.bind=\"authService.isStudent() && !syllabus.enrolled\" class=\"col-xs-6 ufps-card-link\">\n          <a click.delegate=\"showEnrollSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)\">Registrarse</a>\n        </div>\n        <div if.bind=\"authService.isStudent() && syllabus.enrolled\" class=\"col-xs-6 ufps-card-link\">\n          <span>Registrado</a>\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n    <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <div class=\"ufps-card\" data-toggle=\"modal\" data-target=\"#new-syllabus\">\n        <div class=\"ufps-card-title\">\n          <h1>\n            <span class=\"glyphicon glyphicon-plus\"></span>\n          </h1>\n        </div>\n        <div class=\"col-xs-12 ufps-card-link\">\n          Nueva clase\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA AÑADIR CLASE-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"new-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"new-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Nueva clase</h4>\n          <br>\n          <form submit.delegate=\"createSyllabus()\">\n            <div class=\"form-group\">\n              <label>Titulo</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del syllabus\" value.bind=\"newSyllabus.title\" required>\n            </div>\n            <div class=\"form-group\">\n              <label>Descripción</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Descripión del syllabus\" value.bind=\"newSyllabus.description\" required>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"true\" checked.bind=\"newSyllabus.privacy\" checked> Público\n              </label>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"false\" checked.bind=\"newSyllabus.privacy\" checked> Privado\n                <span>(requiere clave)</span>\n              </label>\n            </div>\n            <div class=\"form-group\" if.bind=\"!newSyllabus.privacy\">\n              <label>Clave (Se recomienda reemplazar la siguiente clave)</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"clave que deben ingresar los estudiantes para acceder a la clase\" value.bind=\"newSyllabus.key\"\n                required>\n            </div>\n            <div class=\"text-right\">\n              <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Registrar clase\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA EDITAR SYLLABUS-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"edit-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Editar Syllabus</h4>\n          <br>\n          <form submit.delegate=\"modifySyllabus()\">\n            <div class=\"form-group\">\n              <label>Titulo</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del syllabus\" value.bind=\"editSyllabus.title\" required>\n            </div>\n            <div class=\"form-group\">\n              <label>Descripción</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Descripión del syllabus\" value.bind=\"editSyllabus.description\" required>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"true\" checked.bind=\"editSyllabus.privacy\"> Público\n              </label>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"false\" checked.bind=\"editSyllabus.privacy\"> Privado\n                <span>(requiere clave)</span>\n              </label>\n            </div>\n            <div class=\"form-group\" if.bind=\"!editSyllabus.privacy\">\n              <label>Clave (obligatorio: Confirme la clave o ingrese una nueva)</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"clave que deben ingresar los estudiantes para acceder a la clase\" value.bind=\"editSyllabus.key\"\n                required>\n            </div>\n            <div class=\"text-right\">\n              <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Editar clase\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA ELIMINAR SYLLABUS-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"remove-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remove-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Estás seguro de eliminar la clase ${syllabusToRemove.title}?</h4>\n          <br>\n          <p>Esta operación no se puede deshacer</p>\n\n          <button class=\"btn btn-default ufps-btn-default\" click.delegate=removeSyllabus()>Si</button>\n          <button class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\">No</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA REGISTRARSE EN UN SYLLABUS-->\n  <div if.bind=\"authService.isStudent()\" class=\"modal fade\" id=\"enroll-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"enroll-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>\n          <br>\n          <form submit.delegate=\"enrollSyllabus()\">\n            <div if.bind=\"!syllabusToEnroll.privacy\">\n              <p>Ingresa la clave de esta clase (si no la tienes, comunicate con el profesor/coach a cargo)</p>\n              <div class=\"form-group\">\n                <input type=\"text\" class=\"form-control\" value.bind=\"syllabusToEnroll.key\">\n              </div>\n            </div>\n\n            <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Si\">\n            <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\" value=\"No\">\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
-define('text!modules/syllabus/syllabus-detail/syllabus-detail.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1>${syllabus.title}</h1>\n    <p>${syllabus.description}</p>\n    <h2 class=\"text-right\">Tareas</h2>\n    <hr>\n    <div repeat.for=\"assignment of syllabus.assignments\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <a>\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>${assignment.title}</h1>\n          </div>\n          <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 ufps-card-link\">\n            <a route-href=\"route: EditAssignment; params.bind: {id:assignment.id, assignment:assignment}\">Editar tarea</a>\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n    <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <a route-href=\"route: CreateAssignment; params.bind: {id:id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>\n              <span class=\"glyphicon glyphicon-plus\"></span>\n            </h1>\n          </div>\n          <div class=\"col-xs-12 ufps-card-link\">\n            Nueva tarea\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n    <div class=\"fix\"></div>\n    <h2 class=\"text-right\">Lecturas</h2>\n    <hr>\n  </div>\n</template>\n"; });
+define('text!modules/syllabus/create-assignment/create-assignment.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"container ufps-container-logged\">\n    <h2 class=\"text-right\">Nueva Tarea</h2>\n    <hr>\n    <form submit.delegate=\"create()\">\n      <div class=\"form-horizontal form-horizontal-assignment\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Nombre:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la tarea\" value.bind=\"assignment.title\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Nombre que se mostrará al desplegar esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Descripción:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <textarea class=\"form-control\" placeholder=\"Descripción de la tarea\" value.bind=\"assignment.description\"></textarea>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Descripción que se mostrará a los estudiantes al abrir esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal form-horizontal-assignment\" if.bind=\"type === 'new'\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Problemas:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Ingrese los ID de los problemas separados por coma\" value.bind=\"problems\"\n              required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Puede saber el ID de un problema usando la barra de busqueda superior\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Desde el:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"date\" class=\"form-control\" value.bind=\"startDate\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de inicio desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">a las:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"time\" class=\"form-control\" value.bind=\"startTime\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">Hasta el:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"date\" class=\"form-control\" value.bind=\"endDate\" min=\"${startDate}\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de inicio desde la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\" for=\"problem-name\">a las:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"time\" class=\"form-control\" value.bind=\"endTime\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora hasta la cual estará disponible esta tarea\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"col-xs-12 text-center\" if.bind=\"type === 'new'\">\n        <input type=\"submit\" class=\"btn ufps-btn-submit\" value=\"Crear Tarea\">\n      </div>\n      <div class=\"col-xs-12 text-center\" if.bind=\"type === 'edit'\">\n        <input type=\"submit\" class=\"btn ufps-btn-submit\" value=\"Guardar cambios\" style=\"margin-bottom:30px\">\n      </div>\n    </form>\n    <div if.bind=\"type === 'edit'\">\n      <table>\n        <thead>\n          <tr>\n            <th class=\"text-center\" style=\"width:5%\">Id</th>\n            <th class=\"text-center\" style=\"width:70%\">Problema</th>\n            <th class=\"text-center\" style=\"width:10%\">Dificultad</th>\n            <th class=\"text-center\" style=\"width:15%\">Idioma</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr if.bind=\"assignment.problemsLoaded.length === 0\">\n            <td></td>\n            <td>\n              <p>No hay problemas actualmente en esta tarea.</p>\n            </td>\n            <td></td>\n            <td></td>\n\n          </tr>\n          <tr repeat.for=\"problem of assignment.problemsLoaded\">\n            <td class=\"text-center\">${problem.id}</td>\n            <td class=\"text-left ufps-td-problem\">\n              <p if.bind=\"problem.isInEnglish()\" class=\"ufps-name-problem-list\">\n                <a href=\"#/problemas/${problem.id}/detalle/en\">${problem.titleEN}</a>\n              </p>\n              <p if.bind=\"!problem.isInEnglish()\" class=\"ufps-name-problem-list\">\n                <a href=\"#/problemas/${problem.id}/detalle/es\">${problem.titleES}</a>\n              </p>\n              <span if.bind=\"authService.isCoach()\" class=\"ufps-edit-problem-list glyphicon glyphicon-remove\" data-toggle=\"tooltip\" title=\"Eliminar problema de la tarea\"\n                click.delegate=\"showRemoveProblem(problem.id)\" tooltip></span>\n            </td>\n            <td class=\"text-center\">${problem.level}</td>\n            <td class=\"text-center ufps-language\">\n              <span class=\"${problem.isInSpanish() ? 'active' : 'inactive'}\">\n                <a href=\"#/problemas/${problem.id}/detalle/es\">ES</a>\n              </span> |\n              <span class=\"${problem.isInEnglish() ? 'active' : 'inactive'}\">\n                <a href=\"#/problemas/${problem.id}/detalle/en\">EN</a>\n              </span>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n      <div class=\"form-horizontal form-horizontal-assignment\" if.bind=\"type === 'edit'\">\n        <br>\n          <div class=\"form-group\">\n            <label class=\"control-label col-sm-2\" for=\"problem-name\">Añadir problemas:</label>\n            <div class=\"col-sm-9 input-group ufps-input-creator\">\n              <input type=\"text\" class=\"form-control\" placeholder=\"Ingrese los ID de los problemas separados por coma\" value.bind=\"problems\"\n                required>\n              <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Puede saber el ID de un problema usando la barra de busqueda superior\">\n                <span class=\"glyphicon glyphicon-question-sign\"></span>\n              </span>\n              <span class=\"input-group-addon btn\"  click.delegate=\"addProblems()\">\n                  <span>Añadir</span>\n                </span>\n            </div>\n          </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA ELIMINAR PROBLEMA DE LA TAREA-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"remove-problem\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remove-problem\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Estás seguro de eliminar este problema de la tarea?</h4>\n          <br>\n          <p>Esto no eliminará el problema de la plataforma. Solo de la tarea actual.</p>\n\n          <button class=\"btn btn-default ufps-btn-default\" click.delegate=removeProblem()>Si</button>\n          <button class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\">No</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
+define('text!modules/syllabus/home-syllabus/home-syllabus.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div if.bind=\"authService.isStudent()\" class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\">Mis clases</h1>\n    <hr>\n    <div class=\"text-center\" if.bind=\"!enrolledSyllabusesLoaded\">\n      <p>Actualmente no tienes ninguna clase inscrita.</p>\n    </div>\n    <div repeat.for=\"syllabus of enrolledSyllabuses\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <a route-href=\"route: SyllabusDetail; params.bind: {id:syllabus.id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>${syllabus.tittle}</h1>\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n  </div>\n  <div class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\" if.bind=\"authService.isStudent()\">Clases disponibles</h1>\n    <h1 class=\"text-right\" if.bind=\"authService.isCoach()\">Mis clases</h1>\n    <hr>\n    <div repeat.for=\"syllabus of syllabuses\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <div class=\"ufps-card\">\n        <div class=\"ufps-card-title\">\n          <span if.bind=\"authService.isCoach()\" class=\"ufps-edit-category glyphicon glyphicon-pencil\" data-toggle=\"tooltip\" title=\"Editar los datos de la clase\"\n            click.delegate=\"showEditSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)\" tooltip></span>\n          <span if.bind=\"authService.isCoach()\" class=\"ufps-remove-category glyphicon glyphicon-remove\" data-toggle=\"tooltip\" title=\"Eliminar la clase\"\n            click.delegate=\"showRemoveSyllabus(syllabus.id, syllabus.tittle)\" tooltip></span>\n          <h1>${syllabus.tittle}</h1>\n        </div>\n        <div if.bind=\"authService.isCoach()\" class=\"col-xs-6 ufps-card-link\">\n          <a route-href=\"route: SyllabusDetail; params.bind: {id:syllabus.id}\">Detalle</a>\n        </div>\n        <div if.bind=\"authService.isCoach()\" class=\"col-xs-6 ufps-card-link\">\n          <a>Estadísticas</a>\n        </div>\n        <div if.bind=\"authService.isStudent()\" class=\"col-xs-6 ufps-card-link\">\n          <span if.bind=\"syllabus.public\">Público</span>\n          <span if.bind=\"!syllabus.public\">Privado</span>\n        </div>\n        <div if.bind=\"authService.isStudent() && !syllabus.enrolled\" class=\"col-xs-6 ufps-card-link\">\n          <a click.delegate=\"showEnrollSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)\">Registrarse</a>\n        </div>\n        <div if.bind=\"authService.isStudent() && syllabus.enrolled\" class=\"col-xs-6 ufps-card-link\">\n          <span>Registrado</a>\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n    <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <div class=\"ufps-card\" data-toggle=\"modal\" data-target=\"#new-syllabus\">\n        <div class=\"ufps-card-title\">\n          <h1>\n            <span class=\"glyphicon glyphicon-plus\"></span>\n          </h1>\n        </div>\n        <div class=\"col-xs-12 ufps-card-link\">\n          Nueva clase\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA AÑADIR CLASE-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"new-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"new-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Nueva clase</h4>\n          <br>\n          <form submit.delegate=\"createSyllabus()\">\n            <div class=\"form-group\">\n              <label>Titulo</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la clase\" value.bind=\"newSyllabus.title\" required>\n            </div>\n            <div class=\"form-group\">\n              <label>Descripción</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Descripión de la clase\" value.bind=\"newSyllabus.description\" required>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"true\" checked.bind=\"newSyllabus.privacy\" checked> Público\n              </label>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"false\" checked.bind=\"newSyllabus.privacy\" checked> Privado\n                <span>(requiere clave)</span>\n              </label>\n            </div>\n            <div class=\"form-group\" if.bind=\"!newSyllabus.privacy\">\n              <label>Clave (Se recomienda reemplazar la siguiente clave)</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"clave que deben ingresar los estudiantes para acceder a la clase\" value.bind=\"newSyllabus.key\"\n                required>\n            </div>\n            <div class=\"text-right\">\n              <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Registrar clase\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA EDITAR SYLLABUS-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"edit-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Editar Syllabus</h4>\n          <br>\n          <form submit.delegate=\"modifySyllabus()\">\n            <div class=\"form-group\">\n              <label>Titulo</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del syllabus\" value.bind=\"editSyllabus.title\" required>\n            </div>\n            <div class=\"form-group\">\n              <label>Descripción</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Descripión del syllabus\" value.bind=\"editSyllabus.description\" required>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"true\" checked.bind=\"editSyllabus.privacy\"> Público\n              </label>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"false\" checked.bind=\"editSyllabus.privacy\"> Privado\n                <span>(requiere clave)</span>\n              </label>\n            </div>\n            <div class=\"form-group\" if.bind=\"!editSyllabus.privacy\">\n              <label>Clave (obligatorio: Confirme la clave o ingrese una nueva)</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"clave que deben ingresar los estudiantes para acceder a la clase\" value.bind=\"editSyllabus.key\"\n                required>\n            </div>\n            <div class=\"text-right\">\n              <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Editar clase\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA ELIMINAR SYLLABUS-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"remove-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remove-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Estás seguro de eliminar la clase ${syllabusToRemove.title}?</h4>\n          <br>\n          <p>Esta operación no se puede deshacer</p>\n\n          <button class=\"btn btn-default ufps-btn-default\" click.delegate=removeSyllabus()>Si</button>\n          <button class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\">No</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA REGISTRARSE EN UN SYLLABUS-->\n  <div if.bind=\"authService.isStudent()\" class=\"modal fade\" id=\"enroll-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"enroll-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>\n          <br>\n          <form submit.delegate=\"enrollSyllabus()\">\n            <div if.bind=\"!syllabusToEnroll.privacy\">\n              <p>Ingresa la clave de esta clase (si no la tienes, comunicate con el profesor/coach a cargo)</p>\n              <div class=\"form-group\">\n                <input type=\"text\" class=\"form-control\" value.bind=\"syllabusToEnroll.key\">\n              </div>\n            </div>\n\n            <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Si\">\n            <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\" value=\"No\">\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
+define('text!modules/syllabus/syllabus-detail/syllabus-detail.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1>${syllabus.title}</h1>\n    <p>${syllabus.description}</p>\n    <h2 class=\"text-right\">Tareas</h2>\n    <hr>\n    <div repeat.for=\"assignment of syllabus.assignments\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <a>\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>${assignment.title}</h1>\n          </div>\n          <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 ufps-card-link\">\n            <a route-href=\"route: EditAssignment; params.bind: {id:assignment.id}\">Editar tarea</a>\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n    <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <a route-href=\"route: CreateAssignment; params.bind: {id:id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>\n              <span class=\"glyphicon glyphicon-plus\"></span>\n            </h1>\n          </div>\n          <div class=\"col-xs-12 ufps-card-link\">\n            Nueva tarea\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n    <div class=\"fix\"></div>\n    <h2 class=\"text-right\">Lecturas</h2>\n    <hr>\n  </div>\n</template>\n"; });
 //# sourceMappingURL=app-bundle.js.map

@@ -196,7 +196,7 @@ export class Syllabuses {
   editAssignment (assignment) {
     return this.httpService.httpClient
       .fetch(API.endpoints.assignments + '/' + assignment.id, {
-        method: 'post',
+        method: 'put',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token,
           'Content-Type': 'application/json'
@@ -206,6 +206,63 @@ export class Syllabuses {
           description: assignment.description,
           init_date: assignment.startDate,
           end_date: assignment.endDate
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  /**
+   * Obtiene del backend los detalles de una tarea específica.
+   * @param {number} id - Identificador de la tarea a obtener
+   * @returns {Promise} Promesa con el token de usuario
+   */
+  loadAssignment (id) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.assignments + '/' + id, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Agrega problemas a una tarea
+   * @param {Number} idAssignment - Id de la tarea de la cual se añaden las tareas
+   * @param {Array} problems - Arrays con los id de los problemas a añadir
+   */
+  addProblems (idAssignment, problems) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.assignments + '/' + idAssignment + '/' + API.endpoints.addProblemAssignment, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          problems: problems
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
+  
+  /**
+   * Elimina un problema de una tarea
+   * @param {Number} idAssignment - Id de la tarea de la cual se borra el problema
+   * @param {Number} idProblem - Id del problema a borrar
+   */
+  removeProblem (idAssignment, idProblem) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.assignments + '/' + idAssignment + '/' + API.endpoints.removeProblemAssignment, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          problems: [idProblem]
         })
       })
       .then(this.httpService.checkStatus)

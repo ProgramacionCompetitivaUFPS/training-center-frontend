@@ -2,7 +2,7 @@ import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
 import { Assignment } from 'models/models'
-import { Alert, Syllabuses } from 'services/services'
+import { Alert, Auth, Syllabuses } from 'services/services'
 /**
  * EditAssignment (Module)
  * Módulo encargado de editar tareas
@@ -15,15 +15,18 @@ export class EditAssignment {
    * Estas dependencias son cargadas bajo el patrón de diseño singleton.
    * @static
    * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * Servicio de obtención y edición de Syllabus (Syllabus), y enrutamiento (Router)
+   * Servicio de autenticación de usuarios (Auth), Servicio de obtención y edición de
+   * Syllabus (Syllabus), y enrutamiento (Router)
    */
   static inject () {
-    return [Alert, Syllabuses, Router]
+    return [Alert, Auth, Syllabuses, Router]
   }
-  constructor (alertService, syllabusService, router) {
+  constructor (alertService, authService, syllabusService, router) {
     this.alertService = alertService
+    this.authService = authService
     this.syllabusService = syllabusService
     this.router = router
+    this.type = 'edit'
   }
   /**
    * Método que toma los parametros enviados en el link y configura la página para adaptarse
@@ -34,14 +37,88 @@ export class EditAssignment {
    */
   activate (params, routeConfig) {
     this.routeConfig = routeConfig
-    this.assignment = params.assignment
-    let startTmp = this.assignment.startDate.split(' ')
-    let endTmp = this.assignment.endDate.split(' ')
-    this.startDate = startTmp[0]
-    this.endDate = endTmp[0]
-    this.startTime = startTmp[1].substr(0, 5)
-    this.endTime = endTmp[1].substr(0, 5)
-    this.problems = this.assignment.problems.toString()
+    this.id = params.id
+    this.getAssignment()
+  }
+
+  /**
+   * Define la ruta de la vista para este view-model.
+   */
+  getViewStrategy () {
+    return './create-assignment.html'
+  }
+
+  getAssignment () {
+    this.syllabusService.loadAssignment(this.id)
+      .then(data => {
+        this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, undefined, this.id)
+        this.startDate = this.assignment.startDate.substr(0, 10)
+        this.endDate = this.assignment.endDate.substr(0, 10)
+        this.startTime = this.assignment.startDate.substr(11, 5)
+        this.endTime = this.assignment.startDate.substr(11, 5)
+        this.assignment.adjuntProblems(data.assignment.problems)
+        this.problems = ''
+      })
+      .catch(error => {
+        console.log(error)
+        if (error.status === 401) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+      })
+  }
+
+  /**
+   * Muestra un popup para confirmar la eliminación del problema indicado por id.
+   * @param {number} id - Identificador del problema a eliminar.
+   */
+  showRemoveProblem (id) {
+    this.problemToRemove = id
+    window.$('#remove-problem').modal('show')
+  }
+
+  /**
+   * Agrega las ediciones a la plataforma
+   */
+  create () {
+    this.assignment.startDate = this.startDate + ' ' + this.startTime + ':00'
+    this.assignment.endDate = this.endDate + ' ' + this.endTime + ':00'
+    this.syllabusService.editAssignment(this.assignment)
+        .then(data => {
+          this.alertService.showMessage(MESSAGES.assignmentModified)
+        })
+        .catch(error => {
+          console.log(error)
+          if (error.status === 401) {
+            this.alertService.showMessage(MESSAGES.permissionsError)
+          } else {
+            this.alertService.showMessage(MESSAGES.unknownError)
+          }
+        })
+  }
+
+  /**
+   * Elimina un problema de la tarea actual.
+   */
+  removeProblem () {
+    this.syllabusService.removeProblem(this.id, this.problemToRemove)
+      .then(() => {
+        this.alertService.showMessage(MESSAGES.problemDeleted)
+        this.assignment.removeProblem(this.problemToRemove)
+        window.$('#remove-problem').modal('hide')
+      })
+      .catch(error => {
+        console.log(error)
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+        window.$('#remove-problem').modal('hide')
+      })
   }
 
   /**
@@ -61,19 +138,16 @@ export class EditAssignment {
   }
 
   /**
-   * Agrega las ediciones a la plataforma
+   * Añade los problemas almacenados en problems a la tarea.
    */
-  create () {
+  addProblems () {
     if (!this.validateProblems()) {
       this.alertService.showMessage(MESSAGES.assignmentInvalidProblems)
     } else {
-      this.assignment.startDate = this.startDate + ' ' + this.startTime + ':00'
-      this.assignment.endDate = this.endDate + ' ' + this.endTime + ':00'
-      this.syllabusService.editAssignment(this.assignment)
+      this.syllabusService.addProblems(this.id, this.assignment.problems)
         .then(data => {
-          this.modifyProblems()
-          this.router.navigate('clases/' + this.assignment.syllabusId)
-          this.alertService.showMessage(MESSAGES.assignmentModified)
+          this.alertService.showMessage(MESSAGES.assignmentCreated)
+          this.getAssignment()
         })
         .catch(error => {
           console.log(error)
