@@ -33,11 +33,31 @@ export class Materials {
   /**
    * Obtiene del backend la lista de materiales para una categoría dada.
    * @param {Number} idCategory - Id de la categoria
+   * @param {Number} page - Página de materiales a obtener
+   * @param {Number} limit - Cantidad de materiales a obtener
+   * @param {string} sort - opcional, por defecto ordena por id, si sort es 'name' ordena por nombre
+   * @param {string} by - asc o desc, ordenamiento ascendente o descendente
    * @returns {Promise} Promesa con el token de usuario
    */
-  getCategoryMaterial (idCategory) {
+  getCategoryMaterial (idCategory, page, limit, sort, by) {
     return this.httpService.httpClient
-      .fetch(API.endpoints.categories + '/' + idCategory + '/' + API.endpoints.materials, {
+      .fetch(API.endpoints.categories + '/' + idCategory + '/' + API.endpoints.materials + '?page=' + page + '&limit=' + limit + '&sort=' + sort + '&by=' + by, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Obtiene del backend la lista de materiales públicos.
+   * @returns {Promise} Promesa con los materiales.
+   */
+  getPublicMaterial () {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.materials, {
         method: 'get',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token
@@ -62,5 +82,51 @@ export class Materials {
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Crea un nuevo material en la plataforma.
+   * @param {Material} material - Material a añadir
+   * @returns {Promise} Promesa sin body, para validar según el status.
+   */
+  createMaterial (material) {
+    if (!material.isPdf) {
+      return this.httpService.httpClient
+        .fetch(API.endpoints.materials, {
+          method: 'post',
+          headers: {
+            'Authorization': 'Bearer ' + this.jwtService.token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            data: {
+              name: material.name,
+              category: material.category,
+              description: material.description,
+              content: 'url',
+              url: material.url
+            }
+          })
+        })
+        .then(this.httpService.checkStatus)
+    } else {
+      let data = new window.FormData()
+      data.append('data[name]', material.name)
+      data.append('data[category]', material.category)
+      data.append('data[description]', material.description)
+      data.append('data[content]', 'pdf')
+      data.append('pdf', material.pdf[0])
+      console.log(material.pdf[0])
+      return this.httpService.httpClient
+        .fetch(API.endpoints.materials, {
+          method: 'post',
+          headers: {
+            'Authorization': 'Bearer ' + this.jwtService.token
+          },
+          body: data
+        })
+        .then(this.httpService.checkStatus)
+    }
+    
   }
 }

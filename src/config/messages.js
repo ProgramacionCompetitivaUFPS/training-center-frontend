@@ -115,6 +115,10 @@ export let MESSAGES = {
     text: 'El material solicitado no existe',
     type: 'error'
   },
+  addedMaterial: {
+    text: 'Material añadido exitosamente',
+    type: 'success'
+  },
   // GENERAL
   serverError: {
     text: 'Ha ocurrido un error interno. Lo sentimos. Vuelve a intentarlo mas tarde',

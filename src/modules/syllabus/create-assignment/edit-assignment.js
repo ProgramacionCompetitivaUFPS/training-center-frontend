@@ -21,6 +21,14 @@ export class EditAssignment {
   static inject () {
     return [Alert, Auth, Syllabuses, Router]
   }
+
+  /**
+   * Inicializa una instancia de EditAssignment
+   * @param {service} alertService - Servicio de notificaciones
+   * @param {service} authService - Servicio de autenticación
+   * @param {service} syllabusService - Servicio de obtención y manejo de clases
+   * @param {service} router - Servicio de enrutamiento de aurelia
+   */
   constructor (alertService, authService, syllabusService, router) {
     this.alertService = alertService
     this.authService = authService
@@ -48,6 +56,9 @@ export class EditAssignment {
     return './create-assignment.html'
   }
 
+  /**
+   * Obtiene la tarea
+   */
   getAssignment () {
     this.syllabusService.loadAssignment(this.id)
       .then(data => {

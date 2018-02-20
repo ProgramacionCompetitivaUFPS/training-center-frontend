@@ -223,7 +223,7 @@ export class Auth {
    * Retorna el id del usuario actualmente logueado
    * @returns id del usuario logueado
    */
-  getUserId() {
+  getUserId () {
     return this.jwtService.getUserId()
   }
 }

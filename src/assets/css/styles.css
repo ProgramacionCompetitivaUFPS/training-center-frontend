@@ -813,3 +813,7 @@ iframe {
 .form-horizontal-assignment .control-label {
   text-align: left!important;
 }
+
+.ufps-font-size-small {
+  font-size: 11px;
+}

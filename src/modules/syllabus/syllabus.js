@@ -44,6 +44,14 @@ export class Syllabus {
         settings: {
           roles: ['coach']
         }
+      },
+      {
+        name: 'ViewAssignment',
+        route: 'tarea/:id',
+        moduleId: 'modules/syllabus/view-assignment/view-assignment',
+        settings: {
+          roles: ['student']
+        }
       }
     ])
     this.router = router

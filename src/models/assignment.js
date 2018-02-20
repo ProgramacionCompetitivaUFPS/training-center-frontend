@@ -35,6 +35,9 @@ export class Assignment {
     for (let i = 0; i < problems.length; i++) {
       this.problemsLoaded.push(new Problem(problems[i].id, problems[i].title_en, problems[i].title_es, problems[i].level))
     }
+    for (let i = 0; i < 5; i++) {
+      this.problemsLoaded.push(new Problem(i, 'Title ' + i, 'Titulo ' + i, 5 - i))
+    }
   }
 
   /**
@@ -48,5 +51,28 @@ export class Assignment {
         break
       }
     }
+  }
+
+  /**
+   * Retorna un string semantico para los usuarios sobre la fecha de inicio/cierre.
+   */
+  getStringDate () {
+    let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    let now = new Date()
+    let start = new Date(this.startDate)
+    let end = new Date(this.endDate)
+    if (now >= end) return 'Tarea cerrada'
+    else if (now < start) return 'Inicia el ' + start.getDate() + ' de ' + months[start.getMonth()] + ' del ' + start.getFullYear()
+    else return 'Cierra el ' + end.getDate() + ' de ' + months[end.getMonth()] + ' del ' + end.getFullYear()
+  }
+
+  /**
+   * Retorna string semantico con las fechas de apertura y cierre.
+   */
+  getStringAvailability () {
+    let start = new Date(this.startDate)
+    let end = new Date(this.endDate)
+    let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    return 'Disponible desde el ' + start.getDate() + ' de ' + months[start.getMonth()] + ' del ' + start.getFullYear() + ' a las ' + start.getHours() + ':' + start.getMinutes() + ' hasta el ' + end.getDate() + ' de ' + months[end.getMonth()] + ' del ' + end.getFullYear() + ' a las ' + start.getHours() + ':' + start.getMinutes()
   }
 }

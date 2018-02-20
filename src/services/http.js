@@ -30,13 +30,13 @@ export class Http {
    * @throws errores en la comunicación que retornen codigos diferentes a 2xx
    */
   checkStatus (response) {
-    if (response.status >= 200 && response.status < 300) {
+    if (response.ok) {
       return response
     } else {
       let error = new Error(response.statusText)
       error.status = response.status
-      error.response = response
-      throw error
+      error.response = response.clone()
+      return Promise.reject(error)
     }
   }
 

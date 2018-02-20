@@ -1,0 +1,18 @@
+<template>
+  <div slot="content" class="body-slot">
+    <app-header></app-header>
+    <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+      <a route-href="route: specificMaterial; params.bind: {id:material.id}">
+        <div class="ufps-card">
+          <div class="ufps-card-title ufps-card-material">
+            <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar este material"
+              tooltip></span>
+            <span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar este material"
+              tooltip></span>
+            <h1>${material.name}</h1>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</template>

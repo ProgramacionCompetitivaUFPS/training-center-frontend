@@ -55,9 +55,8 @@ export class SpecificMaterial {
   getMaterial () {
     this.materialService.getMaterial(this.id)
       .then(data => {
-        console.log(data)
         let tmp = data.material
-        this.material = new Material(tmp.id, tmp.name, tmp.number, tmp.description, tmp.url.replace('watch?v=', 'v/'))
+        this.material = new Material(tmp.id, tmp.name, tmp.number, tmp.description, undefined, tmp.url.replace('watch?v=', 'embed/'))
       }).catch(error => {
         if (error.status === 404) {
           this.alertService.showMessage(MESSAGES.materialDoesNotExist)

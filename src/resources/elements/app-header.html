@@ -14,6 +14,9 @@
       </div>
       <div class="collapse navbar-collapse" id="menu">
         <ul class="nav navbar-nav navbar-left">
+          <li class="ufps-btn-nav ${problems.isActive ? 'active' : ''}" if.bind="authService.isVisitor()">
+            <a route-href="route: problems">Material</a>
+          </li>
           <li class="ufps-btn-nav ${problems.isActive ? 'active' : ''}" if.bind="authService.isStudent()">
             <a route-href="route: problems">Problemas</a>
           </li>
@@ -22,29 +25,41 @@
               Problemas
             </a>
             <ul class="dropdown-menu ufps-dropdown-menu">
-              <li><a route-href="route: problems">Administrar Categorías</a></li>
-              <li><a href="#/problemas/nuevo">Añadir problemas</a></li>
+              <li>
+                <a route-href="route: problems">Administrar Categorías</a>
+              </li>
+              <li>
+                <a href="#/problemas/nuevo">Añadir problemas</a>
+              </li>
             </ul>
           </li>
           <li class="ufps-btn-nav ${classes.isActive ? 'active' : ''}" if.bind="authService.isStudent() || authService.isCoach()">
             <a route-href="route: classes">Clases</a>
           </li>
           <li class="ufps-btn-nav ${ranking.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
-            <a  route-href="route: ranking">Ranking</a>
+            <a route-href="route: ranking">Ranking</a>
           </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right"  if.bind="authService.authenticated">
           <li class="dropdown ufps-btn-nav ufps-dropdown-user">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               <img src="src/assets/img/user.png" alt="Avatar de usuario" class="ufps-avatar">
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu ufps-dropdown-menu">
-              <li><a href="#">Mis envios</a></li>
-              <li><a href="#">Perfil</a></li>
-              <li><a href="#">Editar perfil</a></li>
+              <li>
+                <a href="#">Mis envios</a>
+              </li>
+              <li>
+                <a href="#">Perfil</a>
+              </li>
+              <li>
+                <a href="#">Editar perfil</a>
+              </li>
               <li role="separator" class="divider"></li>
-              <li><a click.delegate="logOut()">Cerrar Sesión</a></li>
+              <li>
+                <a click.delegate="logOut()">Cerrar Sesión</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -62,6 +77,6 @@
     </div>
   </nav>
   <div repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
-        ${row}
-    </div>
+    ${row}
+  </div>
 </template>

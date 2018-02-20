@@ -6,17 +6,25 @@
     <h2 class="text-right">Tareas</h2>
     <hr>
     <div repeat.for="assignment of syllabus.assignments" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
-      <a>
-        <div class="ufps-card">
+
+      <div class="ufps-card">
+        <a route-href="route: ViewAssignment; params.bind: {id:assignment.id}" if.bind="authService.isStudent()" >
           <div class="ufps-card-title">
             <h1>${assignment.title}</h1>
           </div>
-          <div if.bind="authService.isCoach()" class="col-xs-12 ufps-card-link">
-            <a route-href="route: EditAssignment; params.bind: {id:assignment.id}">Editar tarea</a>
+        </a>
+        <div  if.bind="authService.isCoach()" class="ufps-card-title">
+            <h1>${assignment.title}</h1>
           </div>
-          <div class="fix"></div>
+        <div if.bind="authService.isStudent()" class="col-xs-12 ufps-card-link">
+          <a  route-href="route: ViewAssignment; params.bind: {id:assignment.id}" class="ufps-font-size-small">${assignment.getStringDate()}</a>
         </div>
-      </a>
+        <div if.bind="authService.isCoach()" class="col-xs-12 ufps-card-link">
+          <a route-href="route: EditAssignment; params.bind: {id:assignment.id}">Editar tarea</a>
+        </div>
+        <div class="fix"></div>
+      </div>
+
     </div>
     <div if.bind="authService.isCoach()" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container">
       <a route-href="route: CreateAssignment; params.bind: {id:id}">

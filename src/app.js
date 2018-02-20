@@ -126,6 +126,16 @@ export class App {
         settings: {
           roles: ['admin', 'coach', 'student']
         }
+      },
+      {
+        name: 'public-material',
+        route: ['material-publico'],
+        moduleId: './modules/material/public-material/public-material',
+        layoutView: './layouts/logged.html',
+        nav: true,
+        settings: {
+          roles: ['visitor']
+        }
       }
     ])
     this.router = router
