@@ -53,11 +53,15 @@ export class Materials {
 
   /**
    * Obtiene del backend la lista de materiales públicos.
+   * @param {Number} page - Página de materiales a obtener
+   * @param {Number} limit - Cantidad de materiales a obtener
+   * @param {string} sort - opcional, por defecto ordena por id, si sort es 'name' ordena por nombre
+   * @param {string} by - asc o desc, ordenamiento ascendente o descendente
    * @returns {Promise} Promesa con los materiales.
    */
-  getPublicMaterial () {
+  getPublicMaterial (page, limit, sort, by) {
     return this.httpService.httpClient
-      .fetch(API.endpoints.materials, {
+      .fetch(API.endpoints.materials + '?page=' + page + '&limit=' + limit + '&sort=' + sort + '&by=' + by, {
         method: 'get',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token

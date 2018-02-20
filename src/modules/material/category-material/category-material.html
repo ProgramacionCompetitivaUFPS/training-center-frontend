@@ -137,6 +137,7 @@
             <input if.bind="!newMaterial.isPdf" type="text" class="form-control" placeholder="Url" value.bind="newMaterial.url">
             <input if.bind="newMaterial.isPdf" type="file" class="form-control" files.bind="newMaterial.pdf" accept=".pdf">
             <br>
+            <p class="text-center" if.bind="authService.isStudent()">Aparecerá en la plataforma una vez sea aprobado por un administrador.</p>
             <input type="submit" class="btn btn-default ufps-btn-default" value="Añadir">
           </form>
         </div>

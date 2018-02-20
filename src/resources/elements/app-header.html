@@ -39,6 +39,9 @@
           <li class="ufps-btn-nav ${ranking.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
             <a route-href="route: ranking">Ranking</a>
           </li>
+          <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
+              <a route-href="route: admin">Administración</a>
+            </li>
         </ul>
         <ul class="nav navbar-nav navbar-right"  if.bind="authService.authenticated">
           <li class="dropdown ufps-btn-nav ufps-dropdown-user">
@@ -62,6 +65,9 @@
               </li>
             </ul>
           </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right"  if.bind="!authService.authenticated">
+          <li class="ufps-btn-nav "><a href="#/iniciar-sesion">Iniciar sesión</a></li>
         </ul>
         <form class="navbar-form navbar-right">
           <div class="form-group ufps-navbar-search">

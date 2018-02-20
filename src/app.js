@@ -124,7 +124,7 @@ export class App {
         layoutView: './layouts/logged.html',
         nav: true,
         settings: {
-          roles: ['admin', 'coach', 'student']
+          roles: ['admin', 'coach', 'student', 'visitor']
         }
       },
       {
@@ -135,6 +135,16 @@ export class App {
         nav: true,
         settings: {
           roles: ['visitor']
+        }
+      },
+      {
+        name: 'admin',
+        route: ['administracion'],
+        moduleId: './modules/admin/admin',
+        layoutView: './layouts/logged.html',
+        nav: true,
+        settings: {
+          roles: ['admin']
         }
       }
     ])

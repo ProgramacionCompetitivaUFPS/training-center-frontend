@@ -1,18 +1,106 @@
 <template>
   <div slot="content" class="body-slot">
     <app-header></app-header>
-    <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
-      <a route-href="route: specificMaterial; params.bind: {id:material.id}">
-        <div class="ufps-card">
-          <div class="ufps-card-title ufps-card-material">
-            <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar este material"
-              tooltip></span>
-            <span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar este material"
-              tooltip></span>
-            <h1>${material.name}</h1>
-          </div>
+    <div class="container">
+      <br>
+      <div class="col-sm-6 text-left">
+        Mostrar
+        <div class="dropdown dropdown-inline ufps-dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="showNoItems" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true">
+            ${noProblemsToShow}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="showNoItems">
+            <li>
+              <a click.delegate="setNoProblemsToShow(4)">4</a>
+            </li>
+            <li>
+              <a click.delegate="setNoProblemsToShow(8)">8</a>
+            </li>
+            <li>
+              <a click.delegate="setNoProblemsToShow(12)">12</a>
+            </li>
+            <li>
+              <a click.delegate="setNoProblemsToShow(16)">16</a>
+            </li>
+          </ul>
         </div>
-      </a>
+        materiales
+      </div>
+      <div class="col-sm-6 text-right">
+        Ordenar por
+        <div class="dropdown dropdown-inline ufps-dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            ${sortDisplay}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="sortBy">
+            <li>
+              <a click.delegate="setSort('Id')">Id</a>
+            </li>
+            <li>
+              <a click.delegate="setSort('Nombre')">Nombre</a>
+            </li>
+          </ul>
+        </div>
+        en forma
+        <div class="dropdown dropdown-inline ufps-dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="orderBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            ${byDisplay}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="orderBy">
+            <li>
+              <a click.delegate="setBy('Ascendente')">Ascendente</a>
+            </li>
+            <li>
+              <a click.delegate="setBy('Descendente')">Descendente</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+        <a href="#/materials/1/material/${material.id}">
+          <div class="ufps-card">
+            <div class="ufps-card-title ufps-card-material">
+              <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar este material"
+                tooltip></span>
+              <span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar este material"
+                tooltip></span>
+              <h1>${material.name}</h1>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="fix"></div>
+      <nav aria-label="Navegación" class="text-center">
+          <ul class="pagination">
+            <li class="${page === 1 ? 'disabled' : ''}">
+              <a click.delegate="goToFirstPage()" aria-label="Primero">
+                <span aria-hidden="true">Inicio</span>
+              </a>
+            </li>
+            <li class="${page === 1 ? 'disabled' : ''}">
+              <a click.delegate="goToPrevPage()" aria-label="Anterior">
+                <span aria-hidden="true">Anterior</span>
+              </a>
+            </li>
+            <li repeat.for="i of pagination" class="${i === page ? 'active' : ''}">
+              <a click.delegate="goToPage(i)">${i}</a>
+            </li>
+            <li class="${page === totalPages ? 'disabled' : ''}">
+              <a click.delegate="goToNextPage()" aria-label="Siguiente">
+                <span aria-hidden="true">Siguiente</span>
+              </a>
+            </li>
+            <li class="${page === totalPages ? 'disabled' : ''}">
+              <a click.delegate="goToLastPage()" aria-label="Último">
+                <span aria-hidden="true">Final</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
     </div>
   </div>
 </template>

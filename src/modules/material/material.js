@@ -20,7 +20,7 @@ export class Material {
         name: 'specificMaterial',
         moduleId: 'modules/material/specific-material/specific-material',
         settings: {
-          roles: ['admin', 'coach', 'student']
+          roles: ['admin', 'coach', 'student', 'visitor']
         }
       }
     ])
