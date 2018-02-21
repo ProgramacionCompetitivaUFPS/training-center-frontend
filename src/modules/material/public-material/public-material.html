@@ -1,4 +1,5 @@
 <template>
+    <require from="../../../resources/elements/paginator"></require>
   <div slot="content" class="body-slot">
     <app-header></app-header>
     <div class="container">
@@ -74,33 +75,7 @@
         </a>
       </div>
       <div class="fix"></div>
-      <nav aria-label="Navegación" class="text-center">
-          <ul class="pagination">
-            <li class="${page === 1 ? 'disabled' : ''}">
-              <a click.delegate="goToFirstPage()" aria-label="Primero">
-                <span aria-hidden="true">Inicio</span>
-              </a>
-            </li>
-            <li class="${page === 1 ? 'disabled' : ''}">
-              <a click.delegate="goToPrevPage()" aria-label="Anterior">
-                <span aria-hidden="true">Anterior</span>
-              </a>
-            </li>
-            <li repeat.for="i of pagination" class="${i === page ? 'active' : ''}">
-              <a click.delegate="goToPage(i)">${i}</a>
-            </li>
-            <li class="${page === totalPages ? 'disabled' : ''}">
-              <a click.delegate="goToNextPage()" aria-label="Siguiente">
-                <span aria-hidden="true">Siguiente</span>
-              </a>
-            </li>
-            <li class="${page === totalPages ? 'disabled' : ''}">
-              <a click.delegate="goToLastPage()" aria-label="Último">
-                <span aria-hidden="true">Final</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+      <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
     </div>
   </div>
 </template>

@@ -13,6 +13,7 @@ export let API = {
   endpoints: {
     auth: 'auth',
     users: 'users',
+    superUser: 'super-user',
     recovery: 'recovery',
     reset: 'reset',
     categories: 'categories',

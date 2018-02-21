@@ -4,7 +4,6 @@ import Showdown from 'showdown'
  * Permite la conversión de markdown a html.
  */
 export class MarkdownCustomAttribute {
-
   /**
    * Realiza la inyección de dependencias en la clase.
    * @return array con las dependencias: Element, el elemento al cual se aplicará el atributo.

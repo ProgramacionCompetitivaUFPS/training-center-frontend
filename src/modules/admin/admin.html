@@ -1,9 +1,90 @@
 <template>
   <div slot="content" class="body-slot">
+    
     <div class="container" if.bind="authService.isAdmin()">
+      <h1 class="text-right">Usuarios</h1>
+      <hr>
+      <p class="text-center">Desde esta sección puede añadir docentes (coachs) o administradores. Los estudiantes pueden crear sus propias cuentas
+        desde la página inicial.</p>
+      <form submit.delegate="createUser()">
+        <div class="text-center">
+          <label class="radio-inline">
+            <input type="radio" name="type-user" checked.bind="newUser.type" model.bind="2" required> Administrador
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="type-user" checked.bind="newUser.type" model.bind="1" required> Coach o docente
+          </label>
+        </div>
+        <br>
+        <div class="form-horizontal col-md-6">
+          <div class="form-group">
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="new-user-name">Nombre:</label>
+              <div class="col-sm-9 input-group ufps-input-creator">
+                <input type="text" class="form-control" id="new-user-name" value.bind="newUser.name" required>
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nombre completo del usuario">
+                  <span class="glyphicon glyphicon-question-sign"></span>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="new-user-email">Email:</label>
+              <div class="col-sm-9 input-group ufps-input-creator">
+                <input type="email" class="form-control" id="new-user-email" value.bind="newUser.email" required>
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Email del usuario">
+                  <span class="glyphicon glyphicon-question-sign"></span>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="new-user-password">Contraseña:</label>
+              <div class="col-sm-9 input-group ufps-input-creator">
+                <input type="password" class="form-control" id="new-user-password" value.bind="newUser.password" required>
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Contraseña del usuario">
+                  <span class="glyphicon glyphicon-question-sign"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-horizontal col-md-6">
+          <div class="form-group">
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="new-user-name">Código:</label>
+              <div class="col-sm-9 input-group ufps-input-creator">
+                <input type="number" class="form-control" id="new-user-code" value.bind="newUser.code">
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Código del usuario en la Universidad">
+                  <span class="glyphicon glyphicon-question-sign"></span>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="new-user-username">Username:</label>
+              <div class="col-sm-9 input-group ufps-input-creator">
+                <input type="text" class="form-control" id="new-user-username" value.bind="newUser.username">
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nickname del usuario (sin espacios)">
+                  <span class="glyphicon glyphicon-question-sign"></span>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="new-user-password">Contraseña:</label>
+              <div class="col-sm-9 input-group ufps-input-creator">
+                <input type="password" class="form-control" id="new-user-password" value.bind="newUser.confirmPassword" required>
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Repite la contraseña">
+                  <span class="glyphicon glyphicon-question-sign"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <input type="submit" class="btn ufps-btn-submit" value="Crear usuario">
+        </div>
+      </form>
       <h1 class="text-right">Materiales</h1>
       <hr>
-      <p>Los siguientes materiales han sido añadidos por estudiantes. Para que aparezcan en la plataforma, deben ser aprobados
+      <p class="text-center">Los siguientes materiales han sido añadidos por estudiantes. Para que aparezcan en la plataforma, deben ser aprobados
         por un administrador.</p>
       <div class="col-sm-6 text-left">
         Mostrar

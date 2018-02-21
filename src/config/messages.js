@@ -32,7 +32,18 @@ export let MESSAGES = {
     text: 'Las contraseñas no coinciden',
     type: 'warning'
   },
-
+  superUserWrongData: {
+    text: 'Hay un error en datos. Verifícalos y vuelve a intentarlo',
+    type: 'error'
+  },
+  superUserCreated: {
+    text: 'El usuario se ha creado correctamente, y ya puede iniciar sesión',
+    type: 'success'
+  },
+  usernameInvalid: {
+    text: 'El username debe tener entre 6 y 30 caracteres',
+    type: 'error'
+  },
   // RECOVERY
   recoveryEmailSent: {
     text: 'Se ha enviado un mensaje a su correo para proceder a la recuperación de su contraseña',

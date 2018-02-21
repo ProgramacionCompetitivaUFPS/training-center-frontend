@@ -1,5 +1,5 @@
 import { MESSAGES } from 'config/config'
-import { Material } from 'models/models'
+import { Material, UserSignIn } from 'models/models'
 import { Alert, Auth, Materials } from 'services/services'
 
 /**
@@ -29,6 +29,8 @@ export class Admin {
     this.alertService = alertService
     this.authService = authService
     this.materialService = materialService
+    this.newUser = new UserSignIn()
+    this.newUser.type = 1
     this.noProblemsToShow = 10
     this.sortDisplay = 'Id'
     this.byDisplay = 'Ascendente'
@@ -58,6 +60,27 @@ export class Admin {
           this.alertService.showMessage(MESSAGES.serverError)
         }
       })
+  }
+
+  createUser () {
+    if (!this.newUser.isValid()) {
+      this.alertService.showMessage(MESSAGES.superUserWrongData)
+    } else if (this.newUser.username.length < 6 || this.newUser.username.length > 30) {
+      this.alertService.showMessage(MESSAGES.usernameInvalid)
+    } else if (this.newUser.password !== this.newUser.confirmPassword) {
+      this.alertService.showMessage(MESSAGES.signInDifferentPasswords)
+    } else {
+      this.authService.createSuperUser(this.newUser)
+      .then(() => {
+        this.alertService.showMessage(MESSAGES.superUserCreated)
+      }).catch(error => {
+        if (error.status === 400) {
+          this.alertService.showMessage(MESSAGES.superUserWrongData)
+        } else {
+          this.alertService.showMessage(MESSAGES.serverError)
+        }
+      })
+    }
   }
 
   /**

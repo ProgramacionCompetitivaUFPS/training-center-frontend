@@ -76,6 +76,33 @@ export class Auth {
   }
 
   /**
+   * Envia un usuario administrador o docente para ser registrado en la plataforma
+   * @param {UserSignIn} user - Datos del usuario a ser registrado en la plataforma
+   * @returns Promise sin body, donde el status code indica el resultado de la operación
+   */
+  createSuperUser (user) {
+    let body = {
+      name: user.name,
+      code: user.code,
+      email: user.email,
+      password: user.password,
+      confirm_password: user.confirmPassword,
+      username: user.username,
+      type: user.type
+    }
+    return this.httpService.httpClient
+      .fetch(API.endpoints.superUser, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.jwtService.token
+        },
+        body: JSON.stringify(body)
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  /**
    * Envia un correo para solicitar un cambio de contraseña. Si el correo está registrado
    * Se enviará un mensaje a esa dirección para proceder con el cambio.
    * @param {string} email - Correo que solicita el cambio

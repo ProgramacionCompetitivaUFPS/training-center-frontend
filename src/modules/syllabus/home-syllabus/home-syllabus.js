@@ -29,7 +29,9 @@ export class HomeSyllabus {
     this.alertService = alertService
     this.authService = authService
     this.syllabusService = syllabusService
+    this.syllabusToShow = (this.authService.isCoach()) ? 7 : 8
     this.page = 1
+    this.totalPages = 1
     this.syllabuses = []
     this.enrolledSyllabuses = []
     this.syllabusesLoaded = true
@@ -55,14 +57,15 @@ export class HomeSyllabus {
   getSyllabuses () {
     let coachId = null
     if (this.authService.isCoach()) coachId = this.authService.getUserId()
-    this.syllabusService.getSyllabuses(8, this.page, coachId)
+    this.syllabusService.getSyllabuses(this.syllabusToShow, this.page, coachId)
       .then(data => {
         this.syllabuses = data.data
-        console.log(this.syllabuses)
+        this.totalPages = data.meta.totalPages
         if (this.syllabuses.length === 0) {
           this.syllabusesLoaded = false
         }
         if (this.authService.isStudent()) this.getEnrolledSyllabuses()
+        this.setPagination()
       })
       .catch(error => {
         this.syllabusesLoaded = false
@@ -227,6 +230,72 @@ export class HomeSyllabus {
           this.alertService.showMessage(MESSAGES.unknownError)
           window.$('#enroll-syllabus').modal('hide')
         })
+    }
+  }
+
+  /**
+   * Establece la paginación de los materiales en la parte inferior.
+   */
+  setPagination () {
+    this.pagination = []
+    if (this.page === this.totalPages && this.page - 4 > 0) {
+      this.pagination.push(this.page - 4)
+      this.pagination.push(this.page - 3)
+    } else if (this.page + 1 === this.totalPages && this.page - 3 > 0) {
+      this.pagination.push(this.page - 3)
+    }
+    if (this.page > 2) {
+      this.pagination.push(this.page - 2)
+    }
+    if (this.page > 1) {
+      this.pagination.push(this.page - 1)
+    }
+    this.pagination.push(this.page)
+    while (this.pagination.length < 5 && this.pagination[this.pagination.length - 1] < this.totalPages) {
+      this.pagination.push(this.pagination[this.pagination.length - 1] + 1)
+    }
+  }
+
+  /**
+   * Muestra la primera página de materiales en una categoría
+   */
+  goToFirstPage () {
+    this.goToPage(1)
+  }
+
+  /**
+   * Muestra la última página de materiales en una categoría.
+   */
+  goToLastPage () {
+    this.goToPage(this.totalPages)
+  }
+
+  /**
+   * Muestra la página anterior a la actual de materiales en una categoría.
+   */
+  goToPrevPage () {
+    if (this.page > 1) {
+      this.goToPage(this.page - 1)
+    }
+  }
+
+  /**
+   * Muestra la página de materiales siguiente a la actual en una categoría.
+   */
+  goToNextPage () {
+    if (this.page < this.totalPages) {
+      this.goToPage(this.page + 1)
+    }
+  }
+
+  /**
+   * Muestra una página especifica de materiales en una categoría.
+   * @param {any} page - Página a mostrar
+   */
+  goToPage (page) {
+    if (page !== this.page) {
+      this.page = page
+      this.getSyllabuses()
     }
   }
 }
