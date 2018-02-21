@@ -62,6 +62,23 @@ export class Materials {
   getPublicMaterial (page, limit, sort, by) {
     return this.httpService.httpClient
       .fetch(API.endpoints.materials + '?page=' + page + '&limit=' + limit + '&sort=' + sort + '&by=' + by, {
+        method: 'get'
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Obtiene del backend la lista de materiales pendientes de aprobación.
+   * @param {Number} page - Página de materiales a obtener
+   * @param {Number} limit - Cantidad de materiales a obtener
+   * @param {string} sort - opcional, por defecto ordena por id, si sort es 'name' ordena por nombre
+   * @param {string} by - asc o desc, ordenamiento ascendente o descendente
+   * @returns {Promise} Promesa con los materiales.
+   */
+  getPendingMaterial (page, limit, sort, by) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.materials + '/pending' + '?page=' + page + '&limit=' + limit + '&sort=' + sort + '&by=' + by, {
         method: 'get',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token
@@ -131,6 +148,37 @@ export class Materials {
         })
         .then(this.httpService.checkStatus)
     }
-    
+  }
+
+  /**
+   * Aprueba el material indicado.
+   * @param {Number} id - Id del material a aprobar.
+   */
+  approve (id) {
+    return this.httpService.httpClient
+        .fetch(API.endpoints.materials + '/' + id, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': 'Bearer ' + this.jwtService.token,
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(this.httpService.checkStatus)
+  }
+
+  /**
+   * Elimina el material indicado.
+   * @param {Number} id - Id del material a eliminar.
+   */
+  remove (id) {
+    return this.httpService.httpClient
+        .fetch(API.endpoints.materials + '/' + id, {
+          method: 'delete',
+          headers: {
+            'Authorization': 'Bearer ' + this.jwtService.token,
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(this.httpService.checkStatus)
   }
 }

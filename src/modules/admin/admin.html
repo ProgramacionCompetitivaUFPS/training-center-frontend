@@ -1,3 +1,138 @@
 <template>
-  administrar
+  <div slot="content" class="body-slot">
+    <div class="container" if.bind="authService.isAdmin()">
+      <h1 class="text-right">Materiales</h1>
+      <hr>
+      <p>Los siguientes materiales han sido añadidos por estudiantes. Para que aparezcan en la plataforma, deben ser aprobados
+        por un administrador.</p>
+      <div class="col-sm-6 text-left">
+        Mostrar
+        <div class="dropdown dropdown-inline ufps-dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="showNoItems" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="true">
+            ${noProblemsToShow}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="showNoItems">
+            <li>
+              <a click.delegate="setNoProblemsToShow(10)">10</a>
+            </li>
+            <li>
+              <a click.delegate="setNoProblemsToShow(15)">15</a>
+            </li>
+            <li>
+              <a click.delegate="setNoProblemsToShow(20)">20</a>
+            </li>
+          </ul>
+        </div>
+        materiales
+      </div>
+      <div class="col-sm-6 text-right">
+        Ordenar por
+        <div class="dropdown dropdown-inline ufps-dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            ${sortDisplay}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="sortBy">
+            <li>
+              <a click.delegate="setSort('Id')">Id</a>
+            </li>
+            <li>
+              <a click.delegate="setSort('Nombre')">Nombre</a>
+            </li>
+          </ul>
+        </div>
+        en forma
+        <div class="dropdown dropdown-inline ufps-dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="orderBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            ${byDisplay}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="orderBy">
+            <li>
+              <a click.delegate="setBy('Ascendente')">Ascendente</a>
+            </li>
+            <li>
+              <a click.delegate="setBy('Descendente')">Descendente</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center">Id</th>
+            <th class="text-center">Nombre</th>
+            <th class="text-center">Categoría</th>
+            <th class="text-center">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="material of materials">
+            <td class="text-center">${material.id}</td>
+            <td>${material.name}</td>
+            <td>${material.categoryString}</td>
+            <td class="text-right">
+              <a class="ufps-btn btn ufps-btn-default" href="${material.url}" target="blank">Abrir</a>
+              <button class="ufps-btn btn ufps-btn-default" click.delegate="approveMaterial(material.id)">Aprobar</button>
+              <button class="ufps-btn btn ufps-btn-default" click.delegate="showRemoveMaterial(material.id)">Descartar</button>
+            </td>
+          </tr>
+          <tr if.bind="materials.length === 0">
+            <td></td>
+            <td>No hay materiales pendientes de aprobación.</td>
+            <td>
+            </td>
+            <td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <nav aria-label="Navegación" class="text-center">
+        <ul class="pagination">
+          <li class="${page === 1 ? 'disabled' : ''}">
+            <a click.delegate="goToFirstPage()" aria-label="Primero">
+              <span aria-hidden="true">Inicio</span>
+            </a>
+          </li>
+          <li class="${page === 1 ? 'disabled' : ''}">
+            <a click.delegate="goToPrevPage()" aria-label="Anterior">
+              <span aria-hidden="true">Anterior</span>
+            </a>
+          </li>
+          <li repeat.for="i of pagination" class="${i === page ? 'active' : ''}">
+            <a click.delegate="goToPage(i)">${i}</a>
+          </li>
+          <li class="${page === totalPages ? 'disabled' : ''}">
+            <a click.delegate="goToNextPage()" aria-label="Siguiente">
+              <span aria-hidden="true">Siguiente</span>
+            </a>
+          </li>
+          <li class="${page === totalPages ? 'disabled' : ''}">
+            <a click.delegate="goToLastPage()" aria-label="Último">
+              <span aria-hidden="true">Final</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div if.bind="authService.isAdmin()" class="modal fade" id="remove-material" tabindex="-1" role="dialog" aria-labelledby="remove-material">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">¿Estás seguro de eliminar este material?</h4>
+            <br>
+            <p>Esta acción no puede ser revertida</p>
+
+            <button class="btn btn-default ufps-btn-default" click.delegate=removeMaterial()>Si</button>
+            <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

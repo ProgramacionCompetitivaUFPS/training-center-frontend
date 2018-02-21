@@ -131,11 +131,14 @@ export class CategoryProblems {
   getProblems () {
     this.problemsService.getCategoryProblems(this.id, this.page, this.noProblemsToShow, this.sort, this.by, this.language)
       .then(data => {
-        console.log(data)
         this.category = new Category(data.meta.categoryName)
         this.category.setTotalProblems(data.meta.totalItems)
-        this.category.setProblemsLoaded(data.data)
         this.totalPages = data.meta.totalPages
+        if (this.totalPages !== 0) {
+          this.category.setProblemsLoaded(data.data)
+        } else {
+          this.alertService.showMessage(MESSAGES.problemsEmpty)
+        }
         this.setPagination()
       }).catch(error => {
         if (error.status === 404) {

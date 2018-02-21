@@ -66,8 +66,13 @@ export class CategoryMaterial {
         this.materials = []
         this.category = data.meta.categoryName
         this.totalPages = data.meta.totalPages
-        for (let i = 0; i < data.data.length; i++) {
-          this.materials.push(new Material(data.data[i].id, data.data[i].name))
+        console.log(this.totalPages)
+        if (this.totalPages !== 0) {
+          for (let i = 0; i < data.data.length; i++) {
+            this.materials.push(new Material(data.data[i].id, data.data[i].name))
+          }
+        } else {
+          this.alertService.showMessage(MESSAGES.materialsEmpty)
         }
         this.setPagination()
       }).catch(error => {

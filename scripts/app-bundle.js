@@ -407,6 +407,10 @@ define('config/messages',['exports'], function (exports) {
       text: 'Debes añadir archivos de entrada y salida para el problema',
       type: 'error'
     },
+    problemsEmpty: {
+      text: 'Actualmente no hay problemas almacenados en la plataforma',
+      type: 'warning'
+    },
 
     materialDoesNotExists: {
       text: 'El material solicitado no existe',
@@ -414,6 +418,18 @@ define('config/messages',['exports'], function (exports) {
     },
     addedMaterial: {
       text: 'Material añadido exitosamente',
+      type: 'success'
+    },
+    materialsEmpty: {
+      text: 'Actualmente, no hay materiales en esta categoría',
+      type: 'warning'
+    },
+    materialApproved: {
+      text: 'El material seleccionado ha sido aprobado',
+      type: 'success'
+    },
+    materialDeleted: {
+      text: 'El material seleccionado ha sido eliminado',
       type: 'success'
     },
 
@@ -609,6 +625,7 @@ define('models/material',["exports"], function (exports) {
     var isPdf = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
     var url = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : undefined;
     var pdf = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : undefined;
+    var categoryString = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : undefined;
 
     _classCallCheck(this, Material);
 
@@ -619,6 +636,7 @@ define('models/material',["exports"], function (exports) {
     this.isPdf = isPdf;
     this.url = url;
     this.pdf = pdf;
+    this.categoryString = categoryString;
   };
 });
 define('models/models',['exports', './assignment', './category', './material', './problem', './syllabus', './user-login', './user-reset', './user-signin'], function (exports, _assignment, _category, _material, _problem, _syllabus, _userLogin, _userReset, _userSignin) {
@@ -1270,6 +1288,12 @@ define('services/materials',['exports', 'config/config', 'services/http', 'servi
 
     Materials.prototype.getPublicMaterial = function getPublicMaterial(page, limit, sort, by) {
       return this.httpService.httpClient.fetch(_config.API.endpoints.materials + '?page=' + page + '&limit=' + limit + '&sort=' + sort + '&by=' + by, {
+        method: 'get'
+      }).then(this.httpService.checkStatus).then(this.httpService.parseJSON);
+    };
+
+    Materials.prototype.getPendingMaterial = function getPendingMaterial(page, limit, sort, by) {
+      return this.httpService.httpClient.fetch(_config.API.endpoints.materials + '/pending' + '?page=' + page + '&limit=' + limit + '&sort=' + sort + '&by=' + by, {
         method: 'get',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token
@@ -1320,6 +1344,26 @@ define('services/materials',['exports', 'config/config', 'services/http', 'servi
           body: data
         }).then(this.httpService.checkStatus);
       }
+    };
+
+    Materials.prototype.approve = function approve(id) {
+      return this.httpService.httpClient.fetch(_config.API.endpoints.materials + '/' + id, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        }
+      }).then(this.httpService.checkStatus);
+    };
+
+    Materials.prototype.remove = function remove(id) {
+      return this.httpService.httpClient.fetch(_config.API.endpoints.materials + '/' + id, {
+        method: 'delete',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        }
+      }).then(this.httpService.checkStatus);
     };
 
     return Materials;
@@ -6808,6 +6852,154 @@ define(["module", "exports"], function (module, exports) {
       }, { "./codemirror/tablist": 19, codemirror: 10, "codemirror-spell-checker": 4, "codemirror/addon/display/fullscreen.js": 5, "codemirror/addon/display/placeholder.js": 6, "codemirror/addon/edit/continuelist.js": 7, "codemirror/addon/mode/overlay.js": 8, "codemirror/addon/selection/mark-selection.js": 9, "codemirror/mode/gfm/gfm.js": 11, "codemirror/mode/markdown/markdown.js": 12, "codemirror/mode/xml/xml.js": 14, marked: 17 }] }, {}, [20])(20);
   });
 });
+define('modules/admin/admin',['exports', 'config/config', 'models/models', 'services/services'], function (exports, _config, _models, _services) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.Admin = undefined;
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var Admin = exports.Admin = function () {
+    Admin.inject = function inject() {
+      return [_services.Alert, _services.Auth, _services.Materials];
+    };
+
+    function Admin(alertService, authService, materialService) {
+      _classCallCheck(this, Admin);
+
+      this.alertService = alertService;
+      this.authService = authService;
+      this.materialService = materialService;
+      this.noProblemsToShow = 10;
+      this.sortDisplay = 'Id';
+      this.byDisplay = 'Ascendente';
+      this.page = 1;
+      this.totalPages = 1;
+      this.getMaterials();
+    }
+
+    Admin.prototype.getMaterials = function getMaterials() {
+      var _this = this;
+
+      this.materialService.getPendingMaterial(this.page, this.noProblemsToShow, this.sortDisplay === 'Nombre' ? 'name' : undefined, this.byDisplay === 'Ascendente' ? 'asc' : 'desc').then(function (data) {
+        _this.materials = [];
+        _this.totalPages = data.meta.totalPages;
+        if (_this.totalPages !== 0) {
+          for (var i = 0; i < data.data.length; i++) {
+            _this.materials.push(new _models.Material(data.data[i].id, data.data[i].name, data.data[i].category_id, undefined, undefined, data.data[i].url, undefined, data.data[i].category.name));
+          }
+        }
+        _this.setPagination();
+      }).catch(function (error) {
+        if (error.status === 404) {
+          _this.alertService.showMessage(_config.MESSAGES.materialDoesNotExist);
+        } else {
+          _this.alertService.showMessage(_config.MESSAGES.serverError);
+        }
+      });
+    };
+
+    Admin.prototype.setSort = function setSort(sort) {
+      this.sortDisplay = sort;
+      this.getMaterials();
+    };
+
+    Admin.prototype.setBy = function setBy(by) {
+      this.byDisplay = by;
+      this.getMaterials();
+    };
+
+    Admin.prototype.setNoProblemsToShow = function setNoProblemsToShow(number) {
+      this.noProblemsToShow = number;
+      this.getMaterials();
+    };
+
+    Admin.prototype.setPagination = function setPagination() {
+      this.pagination = [];
+      if (this.page === this.totalPages && this.page - 4 > 0) {
+        this.pagination.push(this.page - 4);
+        this.pagination.push(this.page - 3);
+      } else if (this.page + 1 === this.totalPages && this.page - 3 > 0) {
+        this.pagination.push(this.page - 3);
+      }
+      if (this.page > 2) {
+        this.pagination.push(this.page - 2);
+      }
+      if (this.page > 1) {
+        this.pagination.push(this.page - 1);
+      }
+      this.pagination.push(this.page);
+      while (this.pagination.length < 5 && this.pagination[this.pagination.length - 1] < this.totalPages) {
+        this.pagination.push(this.pagination[this.pagination.length - 1] + 1);
+      }
+    };
+
+    Admin.prototype.goToFirstPage = function goToFirstPage() {
+      this.goToPage(1);
+    };
+
+    Admin.prototype.goToLastPage = function goToLastPage() {
+      this.goToPage(this.totalPages);
+    };
+
+    Admin.prototype.goToPrevPage = function goToPrevPage() {
+      if (this.page > 1) {
+        this.goToPage(this.page - 1);
+      }
+    };
+
+    Admin.prototype.goToNextPage = function goToNextPage() {
+      if (this.page < this.totalPages) {
+        this.goToPage(this.page + 1);
+      }
+    };
+
+    Admin.prototype.goToPage = function goToPage(page) {
+      if (page !== this.page) {
+        this.page = page;
+        this.getMaterials();
+      }
+    };
+
+    Admin.prototype.approveMaterial = function approveMaterial(id) {
+      var _this2 = this;
+
+      this.materialService.approve(id).then(function () {
+        _this2.alertService.showMessage(_config.MESSAGES.materialApproved);
+        _this2.getMaterials();
+      }).catch(function () {
+        _this2.alertService.showMessage(_config.MESSAGES.serverError);
+      });
+    };
+
+    Admin.prototype.showRemoveMaterial = function showRemoveMaterial(id) {
+      this.materialToRemove = id;
+      window.$('#remove-material').modal('show');
+    };
+
+    Admin.prototype.removeMaterial = function removeMaterial() {
+      var _this3 = this;
+
+      this.materialService.remove(this.materialToRemove).then(function () {
+        _this3.alertService.showMessage(_config.MESSAGES.materialDeleted);
+        _this3.getMaterials();
+        window.$('#remove-material').modal('hide');
+      }).catch(function () {
+        _this3.alertService.showMessage(_config.MESSAGES.serverError);
+        window.$('#remove-material').modal('hide');
+      });
+    };
+
+    return Admin;
+  }();
+});
 define('modules/error-404/error-404',["exports"], function (exports) {
   "use strict";
 
@@ -7496,8 +7688,13 @@ define('modules/material/category-material/category-material',['exports', 'aurel
         _this.materials = [];
         _this.category = data.meta.categoryName;
         _this.totalPages = data.meta.totalPages;
-        for (var i = 0; i < data.data.length; i++) {
-          _this.materials.push(new _models.Material(data.data[i].id, data.data[i].name));
+        console.log(_this.totalPages);
+        if (_this.totalPages !== 0) {
+          for (var i = 0; i < data.data.length; i++) {
+            _this.materials.push(new _models.Material(data.data[i].id, data.data[i].name));
+          }
+        } else {
+          _this.alertService.showMessage(_config.MESSAGES.materialsEmpty);
         }
         _this.setPagination();
       }).catch(function (error) {
@@ -7627,8 +7824,12 @@ define('modules/material/public-material/public-material',['exports', 'aurelia-r
       this.materialService.getPublicMaterial(this.page, this.noProblemsToShow, this.sortDisplay === 'Nombre' ? 'name' : undefined, this.byDisplay === 'Ascendente' ? 'asc' : 'desc').then(function (data) {
         _this.materials = [];
         _this.totalPages = data.meta.totalPages;
-        for (var i = 0; i < data.data.length; i++) {
-          _this.materials.push(new _models.Material(data.data[i].id, data.data[i].name));
+        if (_this.totalPages !== 0) {
+          for (var i = 0; i < data.data.length; i++) {
+            _this.materials.push(new _models.Material(data.data[i].id, data.data[i].name));
+          }
+        } else {
+          _this.alertService.showMessage(_config.MESSAGES.materialsEmpty);
         }
         _this.setPagination();
       }).catch(function (error) {
@@ -7850,11 +8051,14 @@ define('modules/problems/category-problems/category-problems',['exports', 'aurel
       var _this = this;
 
       this.problemsService.getCategoryProblems(this.id, this.page, this.noProblemsToShow, this.sort, this.by, this.language).then(function (data) {
-        console.log(data);
         _this.category = new _models.Category(data.meta.categoryName);
         _this.category.setTotalProblems(data.meta.totalItems);
-        _this.category.setProblemsLoaded(data.data);
         _this.totalPages = data.meta.totalPages;
+        if (_this.totalPages !== 0) {
+          _this.category.setProblemsLoaded(data.data);
+        } else {
+          _this.alertService.showMessage(_config.MESSAGES.problemsEmpty);
+        }
         _this.setPagination();
       }).catch(function (error) {
         if (error.status === 404) {
@@ -9443,28 +9647,12 @@ define('modules/syllabus/view-assignment/view-assignment',['exports', 'config/co
     return ViewAssignment;
   }();
 });
-define('modules/admin/admin',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var Admin = exports.Admin = function Admin() {
-    _classCallCheck(this, Admin);
-  };
-});
 define('text!app.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"bootstrap/css/bootstrap.css\"></require>\n    <require from=\"./assets/css/styles.css\"></require>\n    <loading-indicator loading.bind=\"router.isNavigating || httpService.httpClient.isRequesting\"></loading-indicator>\n    <app-header if.bind=\"authService.authenticated\"></app-header>\n    <router-view></router-view>\n</template>\n"; });
 define('text!assets/css/simplemde.min.css', ['module'], function(module) { module.exports = "/**\n * simplemde v1.11.2\n * Copyright Next Step Webs, Inc.\n * @link https://github.com/NextStepWebs/simplemde-markdown-editor\n * @license MIT\n */\n.CodeMirror{color:#000}.CodeMirror-lines{padding:4px 0}.CodeMirror pre{padding:0 4px}.CodeMirror-gutter-filler,.CodeMirror-scrollbar-filler{background-color:#fff}.CodeMirror-gutters{border-right:1px solid #ddd;background-color:#f7f7f7;white-space:nowrap}.CodeMirror-linenumber{padding:0 3px 0 5px;min-width:20px;text-align:right;color:#999;white-space:nowrap}.CodeMirror-guttermarker{color:#000}.CodeMirror-guttermarker-subtle{color:#999}.CodeMirror-cursor{border-left:1px solid #000;border-right:none;width:0}.CodeMirror div.CodeMirror-secondarycursor{border-left:1px solid silver}.cm-fat-cursor .CodeMirror-cursor{width:auto;border:0!important;background:#7e7}.cm-fat-cursor div.CodeMirror-cursors{z-index:1}.cm-animate-fat-cursor{width:auto;border:0;-webkit-animation:blink 1.06s steps(1) infinite;-moz-animation:blink 1.06s steps(1) infinite;animation:blink 1.06s steps(1) infinite;background-color:#7e7}@-moz-keyframes blink{50%{background-color:transparent}}@-webkit-keyframes blink{50%{background-color:transparent}}@keyframes blink{50%{background-color:transparent}}.cm-tab{display:inline-block;text-decoration:inherit}.CodeMirror-ruler{border-left:1px solid #ccc;position:absolute}.cm-s-default .cm-header{color:#00f}.cm-s-default .cm-quote{color:#090}.cm-negative{color:#d44}.cm-positive{color:#292}.cm-header,.cm-strong{font-weight:700}.cm-em{font-style:italic}.cm-link{text-decoration:underline}.cm-strikethrough{text-decoration:line-through}.cm-s-default .cm-keyword{color:#708}.cm-s-default .cm-atom{color:#219}.cm-s-default .cm-number{color:#164}.cm-s-default .cm-def{color:#00f}.cm-s-default .cm-variable-2{color:#05a}.cm-s-default .cm-variable-3{color:#085}.cm-s-default .cm-comment{color:#a50}.cm-s-default .cm-string{color:#a11}.cm-s-default .cm-string-2{color:#f50}.cm-s-default .cm-meta,.cm-s-default .cm-qualifier{color:#555}.cm-s-default .cm-builtin{color:#30a}.cm-s-default .cm-bracket{color:#997}.cm-s-default .cm-tag{color:#170}.cm-s-default .cm-attribute{color:#00c}.cm-s-default .cm-hr{color:#999}.cm-s-default .cm-link{color:#00c}.cm-invalidchar,.cm-s-default .cm-error{color:red}.CodeMirror-composing{border-bottom:2px solid}div.CodeMirror span.CodeMirror-matchingbracket{color:#0f0}div.CodeMirror span.CodeMirror-nonmatchingbracket{color:#f22}.CodeMirror-matchingtag{background:rgba(255,150,0,.3)}.CodeMirror-activeline-background{background:#e8f2ff}.CodeMirror{position:relative;overflow:hidden;background:#fff}.CodeMirror-scroll{overflow:scroll!important;margin-bottom:-30px;margin-right:-30px;padding-bottom:30px;height:100%;outline:0;position:relative}.CodeMirror-sizer{position:relative;border-right:30px solid transparent}.CodeMirror-gutter-filler,.CodeMirror-hscrollbar,.CodeMirror-scrollbar-filler,.CodeMirror-vscrollbar{position:absolute;z-index:6;display:none}.CodeMirror-vscrollbar{right:0;top:0;overflow-x:hidden;overflow-y:scroll}.CodeMirror-hscrollbar{bottom:0;left:0;overflow-y:hidden;overflow-x:scroll}.CodeMirror-scrollbar-filler{right:0;bottom:0}.CodeMirror-gutter-filler{left:0;bottom:0}.CodeMirror-gutters{position:absolute;left:0;top:0;min-height:100%;z-index:3}.CodeMirror-gutter{white-space:normal;height:100%;display:inline-block;vertical-align:top;margin-bottom:-30px}.CodeMirror-gutter-wrapper{position:absolute;z-index:4;background:0 0!important;border:none!important;-webkit-user-select:none;-moz-user-select:none;user-select:none}.CodeMirror-gutter-background{position:absolute;top:0;bottom:0;z-index:4}.CodeMirror-gutter-elt{position:absolute;cursor:default;z-index:4}.CodeMirror-lines{cursor:text;min-height:1px}.CodeMirror pre{-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;border-width:0;background:0 0;font-family:inherit;font-size:inherit;margin:0;white-space:pre;word-wrap:normal;line-height:inherit;color:inherit;z-index:2;position:relative;overflow:visible;-webkit-tap-highlight-color:transparent;-webkit-font-variant-ligatures:none;font-variant-ligatures:none}.CodeMirror-wrap pre{word-wrap:break-word;white-space:pre-wrap;word-break:normal}.CodeMirror-linebackground{position:absolute;left:0;right:0;top:0;bottom:0;z-index:0}.CodeMirror-linewidget{position:relative;z-index:2;overflow:auto}.CodeMirror-code{outline:0}.CodeMirror-gutter,.CodeMirror-gutters,.CodeMirror-linenumber,.CodeMirror-scroll,.CodeMirror-sizer{-moz-box-sizing:content-box;box-sizing:content-box}.CodeMirror-measure{position:absolute;width:100%;height:0;overflow:hidden;visibility:hidden}.CodeMirror-cursor{position:absolute}.CodeMirror-measure pre{position:static}div.CodeMirror-cursors{visibility:hidden;position:relative;z-index:3}.CodeMirror-focused div.CodeMirror-cursors,div.CodeMirror-dragcursors{visibility:visible}.CodeMirror-selected{background:#d9d9d9}.CodeMirror-focused .CodeMirror-selected,.CodeMirror-line::selection,.CodeMirror-line>span::selection,.CodeMirror-line>span>span::selection{background:#d7d4f0}.CodeMirror-crosshair{cursor:crosshair}.CodeMirror-line::-moz-selection,.CodeMirror-line>span::-moz-selection,.CodeMirror-line>span>span::-moz-selection{background:#d7d4f0}.cm-searching{background:#ffa;background:rgba(255,255,0,.4)}.cm-force-border{padding-right:.1px}@media print{.CodeMirror div.CodeMirror-cursors{visibility:hidden}}.cm-tab-wrap-hack:after{content:''}span.CodeMirror-selectedtext{background:0 0}.CodeMirror{height:auto;min-height:300px;border:1px solid #ddd;border-bottom-left-radius:4px;border-bottom-right-radius:4px;padding:10px;font:inherit;z-index:1}.CodeMirror-scroll{min-height:300px}.CodeMirror-fullscreen{background:#fff;position:fixed!important;top:50px;left:0;right:0;bottom:0;height:auto;z-index:9}.CodeMirror-sided{width:50%!important}.editor-toolbar{position:relative;opacity:.6;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;padding:0 10px;border-top:1px solid #bbb;border-left:1px solid #bbb;border-right:1px solid #bbb;border-top-left-radius:4px;border-top-right-radius:4px}.editor-toolbar:after,.editor-toolbar:before{display:block;content:' ';height:1px}.editor-toolbar:before{margin-bottom:8px}.editor-toolbar:after{margin-top:8px}.editor-toolbar:hover,.editor-wrapper input.title:focus,.editor-wrapper input.title:hover{opacity:.8}.editor-toolbar.fullscreen{width:100%;height:50px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;padding-top:10px;padding-bottom:10px;box-sizing:border-box;background:#fff;border:0;position:fixed;top:0;left:0;opacity:1;z-index:9}.editor-toolbar.fullscreen::before{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,1)),color-stop(100%,rgba(255,255,255,0)));background:-webkit-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-o-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);background:linear-gradient(to right,rgba(255,255,255,1) 0,rgba(255,255,255,0) 100%);position:fixed;top:0;left:0;margin:0;padding:0}.editor-toolbar.fullscreen::after{width:20px;height:50px;background:-moz-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-webkit-gradient(linear,left top,right top,color-stop(0,rgba(255,255,255,0)),color-stop(100%,rgba(255,255,255,1)));background:-webkit-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-o-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:-ms-linear-gradient(left,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);background:linear-gradient(to right,rgba(255,255,255,0) 0,rgba(255,255,255,1) 100%);position:fixed;top:0;right:0;margin:0;padding:0}.editor-toolbar a{display:inline-block;text-align:center;text-decoration:none!important;color:#2c3e50!important;width:30px;height:30px;margin:0;border:1px solid transparent;border-radius:3px;cursor:pointer}.editor-toolbar a.active,.editor-toolbar a:hover{background:#fcfcfc;border-color:#95a5a6}.editor-toolbar a:before{line-height:30px}.editor-toolbar i.separator{display:inline-block;width:0;border-left:1px solid #d9d9d9;border-right:1px solid #fff;color:transparent;text-indent:-10px;margin:0 6px}.editor-toolbar a.fa-header-x:after{font-family:Arial,\"Helvetica Neue\",Helvetica,sans-serif;font-size:65%;vertical-align:text-bottom;position:relative;top:2px}.editor-toolbar a.fa-header-1:after{content:\"1\"}.editor-toolbar a.fa-header-2:after{content:\"2\"}.editor-toolbar a.fa-header-3:after{content:\"3\"}.editor-toolbar a.fa-header-bigger:after{content:\"▲\"}.editor-toolbar a.fa-header-smaller:after{content:\"▼\"}.editor-toolbar.disabled-for-preview a:not(.no-disable){pointer-events:none;background:#fff;border-color:transparent;text-shadow:inherit}@media only screen and (max-width:700px){.editor-toolbar a.no-mobile{display:none}}.editor-statusbar{padding:8px 10px;font-size:12px;color:#959694;text-align:right}.editor-statusbar span{display:inline-block;min-width:4em;margin-left:1em}.editor-preview,.editor-preview-side{padding:10px;background:#fafafa;overflow:auto;display:none;box-sizing:border-box}.editor-statusbar .lines:before{content:'lines: '}.editor-statusbar .words:before{content:'words: '}.editor-statusbar .characters:before{content:'characters: '}.editor-preview{position:absolute;width:100%;height:100%;top:0;left:0;z-index:7}.editor-preview-side{position:fixed;bottom:0;width:50%;top:50px;right:0;z-index:9;border:1px solid #ddd}.editor-preview-active,.editor-preview-active-side{display:block}.editor-preview-side>p,.editor-preview>p{margin-top:0}.editor-preview pre,.editor-preview-side pre{background:#eee;margin-bottom:10px}.editor-preview table td,.editor-preview table th,.editor-preview-side table td,.editor-preview-side table th{border:1px solid #ddd;padding:5px}.CodeMirror .CodeMirror-code .cm-tag{color:#63a35c}.CodeMirror .CodeMirror-code .cm-attribute{color:#795da3}.CodeMirror .CodeMirror-code .cm-string{color:#183691}.CodeMirror .CodeMirror-selected{background:#d9d9d9}.CodeMirror .CodeMirror-code .cm-header-1{font-size:200%;line-height:200%}.CodeMirror .CodeMirror-code .cm-header-2{font-size:160%;line-height:160%}.CodeMirror .CodeMirror-code .cm-header-3{font-size:125%;line-height:125%}.CodeMirror .CodeMirror-code .cm-header-4{font-size:110%;line-height:110%}.CodeMirror .CodeMirror-code .cm-comment{background:rgba(0,0,0,.05);border-radius:2px}.CodeMirror .CodeMirror-code .cm-link{color:#7f8c8d}.CodeMirror .CodeMirror-code .cm-url{color:#aab2b3}.CodeMirror .CodeMirror-code .cm-strikethrough{text-decoration:line-through}.CodeMirror .CodeMirror-placeholder{opacity:.5}.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word){background:rgba(255,0,0,.15)}"; });
 define('text!layouts/logged.html', ['module'], function(module) { module.exports = "<template>\n  <slot name=\"content\"></slot>\n</template>"; });
 define('text!assets/css/styles.css', ['module'], function(module) { module.exports = "/*Normalización*/\n\nhtml,\nbody {\n  height: 100%;\n}\n\n.nav>li>a:focus,\n.nav>li>a:hover {\n  background-color: transparent!important;\n}\n\n\n/*Estilos not-logged*/\n\n.ufps-container-sign {\n  min-height: 100%;\n  background-color: #E74C3C;\n}\n\n.ufps-container-sign .ufps-logo-sign {\n  margin-top: 40px;\n  height: 120px;\n}\n\n.ufps-container-sign .ufps-logo-sign-in {\n  margin-top: 20px;\n  height: 80px;\n}\n\n.ufps-form-sign {\n  margin-top: 30px;\n}\n\n.ufps-container-sign h1 {\n  font-size: 24px;\n}\n\n.ufps-container-sign h1,\n.ufps-container-sign label,\n.ufps-container-sign p {\n  color: #FFF;\n}\n\n.ufps-container-sign .ufps-sign-input,\n.ufps-navbar-input {\n  box-shadow: 0 0 10px #C0392B;\n  border: none;\n  height: 45px;\n  border-radius: 2px;\n  font-size: 16px;\n  transition: all .3s ease;\n}\n\n.ufps-navbar-input {\n  box-shadow: none;\n}\n\n.ufps-input-navbar-addon {\n  background-color: #FFF;\n  border: none;\n  cursor: pointer;\n}\n\n.ufps-navbar-input:focus {\n  box-shadow: none;\n}\n\n.ufps-container-sign .ufps-btn-sign {\n  width: 100%;\n  height: 45px;\n  border: 1px solid #ECF0F1;\n  color: #FFF;\n  font-size: 16px;\n  border-radius: 2px;\n  background-color: transparent;\n  margin-top: 20px;\n  transition: all .3s ease;\n}\n\n.ufps-container-sign .ufps-btn-sign:hover,\n.ufps-container-sign .ufps-btn-sign:active,\n.ufps-container-sign .ufps-btn-sign:hover:active,\n.ufps-container-sign .ufps-btn-sign:focus {\n  background-color: #FFF;\n  color: #C0392B;\n  box-shadow: 0 0 10px #C0392B;\n}\n\n.ufps-container-sign .ufps-btn-sign:focus {\n  outline: 0;\n  background-color: #FFF;\n  border: 1px solid #BDC3C7;\n}\n\n.ufps-sign-links {\n  margin-top: 20px;\n  margin-left: 0;\n  margin-right: 0;\n  padding-left: 0;\n  padding-right: 0;\n}\n\n.ufps-sign-links,\n.ufps-sign-links a {\n  color: #FFF;\n  cursor: pointer;\n}\n\n.ufps-sign-about {\n  margin-top: 40px;\n}\n\n.ufps-sign-about p {\n  color: #FFF;\n  font-size: 14px;\n}\n\n\n/*Formulario de registro*/\n\n.ufps-form-inline {\n  position: relative;\n  margin-bottom: 20px;\n}\n\n.ufps-form-inline input {\n  font-size: 14px;\n  padding: 5px 10px 7px 5px;\n  background: transparent;\n  display: block;\n  width: 100%;\n  border: none;\n  color: #FFF;\n  border-bottom: 1px solid #FFF;\n}\n\n.ufps-form-inline input:focus {\n  outline: none;\n}\n\n.ufps-form-inline label {\n  color: #FFF;\n  font-size: 14px;\n  font-weight: normal;\n  position: absolute;\n  pointer-events: none;\n  left: 5px;\n  top: 10px;\n  transition: 0.2s ease all;\n  -moz-transition: 0.2s ease all;\n  -webkit-transition: 0.2s ease all;\n}\n\n.ufps-form-inline input:focus~label,\n.ufps-form-inline input:valid~label {\n  top: -14px;\n  font-size: 12px;\n  font-weight: bold;\n  color: #FFF;\n}\n\n.ufps-form-inline .ufps-form-bar {\n  position: relative;\n  display: block;\n  width: 100%;\n}\n\n.ufps-form-inline .ufps-form-bar:before,\n.ufps-form-inline .ufps-form-bar:after {\n  content: '';\n  height: 2px;\n  width: 0;\n  bottom: 1px;\n  position: absolute;\n  background: #FFF;\n  transition: 0.2s ease all;\n  -moz-transition: 0.2s ease all;\n  -webkit-transition: 0.2s ease all;\n}\n\n.ufps-form-inline .ufps-form-bar:before {\n  left: 50%;\n}\n\n.ufps-form-inline .ufps-form-bar:after {\n  right: 50%;\n}\n\n.ufps-form-inline input:focus~.ufps-form-bar:before,\n.ufps-form-inline input:focus~.ufps-form-bar:after {\n  width: 50%;\n}\n\n\n/*Navbar*/\n\n.ufps-navbar {\n  background-color: #344958;\n  border-radius: 0;\n  border: none;\n  height: 65px;\n}\n\n.ufps-brand {\n  height: 65px;\n  padding: 5px 15px 5px 15px;\n}\n\n.ufps-brand img {\n  height: 55px;\n}\n\n.ufps-btn-nav a {\n  height: 65px;\n  padding-left: 18px!important;\n  padding-right: 18px!important;\n  line-height: 35px!important;\n  font-size: 16px;\n  color: #ACB2B6;\n  transition: all .3s ease;\n}\n\n.ufps-btn-nav.active a {\n  border-bottom: 6px solid #E74C3C;\n  color: #FFF;\n}\n\n.ufps-btn-nav a:hover {\n  background-color: transparent!important;\n  color: #FFF!important;\n}\n\n.ufps-btn-nav.dropdown.open>a {\n  background-color: transparent;\n  color: #FFF!important;\n  border-color: #FFF!important;\n}\n\n.ufps-dropdown-menu {\n  border: none;\n  border-radius: 0;\n}\n\n.ufps-dropdown-menu>li>a {\n  height: 40px;\n  line-height: 35px;\n  color: #444!important;\n  border-bottom: 0px!important;\n}\n\n.ufps-dropdown-menu>li>a:hover {\n  background-color: #E74C3C!important;\n  color: #FFF!important;\n}\n\n.ufps-navbar-search {\n  margin-top: 2px;\n}\n\n.ufps-avatar {\n  width: 55px;\n  height: 55px;\n  border-radius: 2px;\n}\n\n.ufps-dropdown-user a {\n  padding-top: 5px!important;\n  padding-bottom: 5px!important;\n}\n\n\n/*Barra de progreso*/\n\n#nprogress .bar {\n  background: #FFF!important;\n  box-shadow: 0 0 10px rgba(155, 155, 155, .5);\n  height: 4px!important;\n}\n\n#nprogress .peg {\n  box-shadow: 0 0 10px #FFF, 0 0 5px #FFF!important;\n}\n\n#nprogress .spinner-icon {\n  border-top-color: #FFF!important;\n  border-left-color: #FFF!important;\n}\n\n\n/*Notificaciones*/\n\n.alert {\n  position: fixed;\n  z-index: 100;\n  font-family: Helvetica Neue, Helvetica, san-serif;\n  font-size: 16px;\n  top: 65px;\n  left: 30%;\n  width: 40%;\n  color: #444;\n  padding: 10px;\n  opacity: .9;\n  text-align: center;\n  background-color: #fff;\n  border: none;\n  border-top-left-radius: 0;\n  border-top-right-radius: 0;\n  border-bottom-right-radius: 3px;\n  border-bottom-left-radius: 3px;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);\n  transition: all .4s ease;\n}\n\n.alert:hover {\n  opacity: 1;\n}\n\n.alert-success {\n  background-color: #18bc9c;\n  color: #FFF;\n}\n\n.alert-danger {\n  background-color: #e74c3c;\n  color: #FFF;\n}\n\n.alert-info {\n  background-color: #3498db;\n  color: #FFF;\n}\n\n.alert-warning {\n  background-color: #ff9800;\n  color: #FFF;\n}\n\n.ufps-dropdown-menu {\n  cursor: pointer;\n}\n\n.ufps-bg {\n  position: absolute;\n  top: 0;\n  height: 100%;\n  overflow-y: auto;\n  left: 0;\n  right: 0;\n}\n\n@media (min-width: 768px) {\n  .ufps-bg {\n    background-image: url(src/assets/img/bg-pc.jpg);\n    background-position: center center;\n    background-repeat: no-repeat;\n    background-attachment: fixed;\n    background-size: cover;\n    background-color: #34495E;\n  }\n}\n\n.fix {\n  clear: both;\n}\n\n.ufps-separator {\n  width: 100%;\n  height: 40px;\n}\n\nbody {\n  background-color: #ECF0F1;\n}\n\n.body-slot {\n  padding-top: 65px;\n  background-color: #ECF0F1;\n}\n\nhr {\n  border-top: 1px solid #e74c3c;\n}\n\n.ufps-navbar {\n  background-color: #e74c3c;\n}\n\n.ufps-btn-nav.active a {\n  border-bottom: 10px solid #ffffff;\n  color: #FFF;\n}\n\n.ufps-btn-nav a {\n  color: #eee;\n}\n\n.ufps-card {\n  box-shadow: 0 0 10px rgba(0, 0, 0, .2);\n  border-radius: 3px;\n  text-align: center;\n  padding-left: 0;\n  padding-right: 0;\n  margin-top: 25px;\n}\n\n.ufps-card-title {\n  border-top-left-radius: 3px;\n  border-top-right-radius: 3px;\n  color: #FFF;\n  text-shadow: 0 0 20px rgba(0, 0, 0, 0.55);\n  height: 100px;\n  position: relative;\n}\n\n.ufps-card-material {\n  border-bottom-left-radius: 3px;\n  border-bottom-right-radius: 3px;\n  height: 130px;\n}\n\n.ufps-card-container a,\n.ufps-card-container a:hover,\n.ufps-card-container a:active {\n  cursor: pointer;\n  text-decoration: none!important;\n}\n\n.ufps-edit-category,\n.ufps-remove-category {\n  position: absolute;\n  top: 5px;\n  opacity: .4;\n  transition: all .3s ease;\n  cursor: pointer\n}\n\n.ufps-edit-category {\n  left: 5px;\n}\n\n.ufps-remove-category {\n  right: 5px;\n}\n\n.ufps-card-container:hover .ufps-edit-category,\n.ufps-card-container:hover .ufps-remove-category {\n  opacity: 1;\n}\n\n.ufps-card-container:nth-child(3n + 0) .ufps-card-title {\n  background: #87e0fd;\n  background: -moz-linear-gradient(left, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);\n  background: -webkit-linear-gradient(left, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);\n  background: linear-gradient(to right, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);\n  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#87e0fd', endColorstr='#05abe0', GradientType=1);\n}\n\n.ufps-card-container:nth-child(3n + 1) .ufps-card-title {\n  background: #e74c3c;\n  background: -moz-linear-gradient(left, #e74c3c 0%, #e74c3c 40%, #9e2424 100%);\n  background: -webkit-linear-gradient(left, #e74c3c 0%, #e74c3c 40%, #9e2424 100%);\n  background: linear-gradient(to right, #e74c3c 0%, #e74c3c 40%, #9e2424 100%);\n  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e74c3c', endColorstr='#9e2424', GradientType=1);\n}\n\n.ufps-card-container:nth-child(3n + 2) .ufps-card-title {\n  background: #1abc9c;\n  background: -moz-linear-gradient(left, #1abc9c 0%, #1abc9c 40%, #27ae60 100%);\n  background: -webkit-linear-gradient(left, #1abc9c 0%, #1abc9c 40%, #27ae60 100%);\n  background: linear-gradient(to right, #1abc9c 0%, #1abc9c 40%, #27ae60 100%);\n  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1abc9c', endColorstr='#27ae60', GradientType=1);\n}\n\n.ufps-card-new {\n  cursor: pointer;\n}\n.ufps-card-new .ufps-card-title {\n  background: #BBB!important;\n}\n\n.ufps-card-title h1 {\n  margin: 0;\n  font-size: 22px;\n  text-align: center;\n  position: relative;\n  padding-left: 3%;\n  padding-right: 3%;\n  top: 50%;\n  -ms-transform: translateY(-50%);\n  -webkit-transform: translateY(-50%);\n  transform: translateY(-50%);\n}\n\n.ufps-card-title h1 span {\n  border: 4px solid #FFF;\n  border-radius: 50%;\n  padding: 6px 6px 8px 7px;\n}\n\n.ufps-card-link {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n\n.ufps-card-link a,\n.ufps-card-link a:hover {\n  color: #555;\n  text-decoration: none;\n}\n\ntable {\n  border-collapse: collapse;\n  width: 100%;\n}\n\nth,\ntd {\n  text-align: left;\n  padding: 14px;\n}\n\ntr:nth-child(even) {\n  background-color: #F2F2F2;\n}\n\ntr:nth-child(odd) {\n  background-color: #FFF;\n}\n\nth {\n  background-color: #e74c3c;\n  color: white;\n}\n\n.dropdown-inline {\n  display: inline;\n}\n\n.dropdown-mini {\n  min-width: 0;\n  margin-top: 11px;\n}\n\n.ufps-dropdown button,\n.ufps-dropdown button:hover,\n.ufps-dropdown button:focus,\n.ufps-dropdown button:active {\n  border-radius: 0;\n  border: none;\n  background-color: transparent!important;\n  border-bottom: 3px solid #e74c3c!important;\n  outline: none!important;\n  box-shadow: none !important;\n}\n\n\n/* PAGINACIÓN */\n\n.pagination>li>a,\n.pagination>li>span {\n  color: #666;\n  cursor: pointer;\n}\n\n.pagination>li>a:focus,\n.pagination>li>a:hover,\n.pagination>li>span:focus,\n.pagination>li>span:hover {\n  color: #444;\n}\n\n.pagination>.active>a,\n.pagination>.active>a:focus,\n.pagination>.active>a:hover,\n.pagination>.active>span,\n.pagination>.active>span:focus,\n.pagination>.active>span:hover {\n  background-color: #e74c3c;\n  border-color: #e74c3c;\n}\n\n.pagination>.disabled>a,\n.pagination>.disabled>a:focus,\n.pagination>.disabled>a:hover,\n.pagination>.disabled>span,\n.pagination>.disabled>span:focus,\n.pagination>.disabled>span:hover {\n  color: #BBB;\n}\n\n\n/*FIXES*/\n\n.modal-backdrop.in {\n  filter: alpha(opacity=90);\n  opacity: .9;\n}\n\n.modal-content {\n  border-radius: 0px;\n}\n\n.form-control,\n.form-control:focus {\n  border-radius: 2px;\n  border-color: #AAA;\n  box-shadow: none;\n}\n\n\n/*BOTONES*/\n\n.ufps-btn-default,\n.ufps-btn-default:hover,\n.ufps-btn-default:focus,\n.ufps-btn-default:active {\n  background-color: #e74c3c;\n  border-color: #e74c3c;\n  color: #FFF;\n  outline: 0;\n}\n\n.ufps-input-creator input.form-control,\ntextarea.form-control {\n  border-right: 0;\n}\n\n.ufps-input-creator .form-control {\n  border-color: #CCC;\n}\n\n.ufps-input-creator textarea.form-control {\n  height: 100px;\n}\n\n.ufps-input-creator span.input-group-addon,\n.ufps-input-creator span.input-group-addon:hover,\n.ufps-input-creator span.input-group-addon:active {\n  background-color: #FFF!important;\n  border-left: none!important;\n  border-radius: 2px!important;\n}\n\n.ufps-input-creator select {\n  border-color: #CCC;\n  border-radius: 2px;\n  border-right: 0;\n}\n\n.inputfile-btn {\n  width: 0.1px;\n  height: 0.1px;\n  opacity: 0;\n  overflow: hidden;\n  position: absolute;\n  z-index: -1;\n}\n\n.inputfile-btn+label {\n  width: 90%;\n  background-color: #e74c3c;\n  color: #FFF;\n  border-radius: 2px;\n  padding: 6px;\n  float: right;\n  text-align: center;\n  height: 20px;\n  box-sizing: content-box;\n  transition: all .3s ease;\n  cursor: pointer;\n}\n\n.inputfile-btn:focus+label,\n.inputfile-btn+label:hover {\n  box-shadow: 0 0 10px rgba(0, 0, 0, .2);\n}\n\n\n/*EDITOR*/\n\n.editor-toolbar.fullscreen,\n.CodeMirror-fullscreen,\n.editor-preview-side {\n  z-index: 10000!important;\n}\n\n.ufps-btn-submit,\n.ufps-btn-submit:hover,\n.ufps-btn-submit:active,\n.ufps-btn-submit:focus {\n  margin-top: 20px;\n  background-color: #e74c3c;\n  color: #FFF;\n  border-radius: 2px;\n  border-bottom: 3px solid #9a2b1f;\n}\n\n.ufps-language {\n  color: #666;\n}\n\n.ufps-language .active,\n.ufps-language .active a {\n  color: #666;\n  cursor: pointer;\n}\n\n.ufps-language .inactive,\n.ufps-language .inactive a {\n  color: #CCC;\n  cursor: not-allowed;\n}\n\n.ufps-name-problem-list,\n.ufps-edit-problem-list {\n  float: left;\n}\n\n.ufps-name-problem-list {\n  margin-bottom: 0;\n}\n\n.ufps-edit-problem-list {\n  opacity: 0.4;\n  cursor: pointer;\n  color: #000;\n  transition: all .3s ease;\n  margin-left: 10px;\n}\n\n.ufps-td-problem:hover .ufps-edit-problem-list {\n  opacity: 1;\n}\n\n\n/*MARKDOWN EDITOR*/\n\n.ufps-problem-title {\n  font-size: 32px;\n  font-weight: bold;\n}\n\n.ufps-markdown-editor h1 {\n  font-size: 28px;\n  font-weight: bold;\n}\n\n.ufps-markdown-editor h2 {\n  font-size: 28px;\n}\n\n.ufps-markdown-editor h3 {\n  font-size: 22px;\n}\n\n.ufps-markdown-editor h4 {\n  font-size: 20px;\n}\n\n.ufps-markdown-editor h5 {\n  font-size: 18px;\n}\n\n.ufps-markdown-editor h6 {\n  font-size: 16px;\n}\n\n.ufps-submit-form .input-group {\n  width: 100%;\n}\n\n.ufps-submit-form .inputfile-btn+label {\n  width: 100%;\n  height: 32px;\n  box-sizing: border-box;\n  float: none;\n}\n\n.ufps-submit-form .ufps-btn-submit {\n  width: 100%;\n}\n\n.ufps-name-problem-list a {\n  color: #444;\n}\n\n.example-in-out {\n  padding: 0;\n}\n.example-in-out pre{\n  padding: 14px;\n  margin: 0;\n  border: none;\n}\n\niframe {\n  width: 100%;\n}\n.ufps-container-iframe {\n  position: relative;\n  width: 100%;\n  height: 0;\n  padding-bottom: 56.25%;\n}\n.ufps-iframe {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n.form-horizontal-assignment .control-label {\n  text-align: left!important;\n}\n\n.ufps-font-size-small {\n  font-size: 11px;\n}"; });
 define('text!layouts/not-logged.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"ufps-bg\">\n    <div class=\"col-md-4 col-md-offset-8 col-sm-7 col-sm-offset-5 ufps-container-sign\">\n      <slot name=\"content\"></slot>\n      <div class=\"col-sm-12 text-center ufps-sign-about hidden-xs\">\n        <p>\n          UFPS Training Center - 2016\n        </p>\n        <p>\n          Universidad Francisco de Paula Santander\n        </p>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
+define('text!modules/admin/admin.html', ['module'], function(module) { module.exports = "<template>\n  <div slot=\"content\" class=\"body-slot\">\n    <div class=\"container\" if.bind=\"authService.isAdmin()\">\n      <h1 class=\"text-right\">Materiales</h1>\n      <hr>\n      <p>Los siguientes materiales han sido añadidos por estudiantes. Para que aparezcan en la plataforma, deben ser aprobados\n        por un administrador.</p>\n      <div class=\"col-sm-6 text-left\">\n        Mostrar\n        <div class=\"dropdown dropdown-inline ufps-dropdown\">\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"showNoItems\" data-toggle=\"dropdown\" aria-haspopup=\"true\"\n            aria-expanded=\"true\">\n            ${noProblemsToShow}\n            <span class=\"caret\"></span>\n          </button>\n          <ul class=\"dropdown-menu ufps-dropdown-menu dropdown-mini\" aria-labelledby=\"showNoItems\">\n            <li>\n              <a click.delegate=\"setNoProblemsToShow(10)\">10</a>\n            </li>\n            <li>\n              <a click.delegate=\"setNoProblemsToShow(15)\">15</a>\n            </li>\n            <li>\n              <a click.delegate=\"setNoProblemsToShow(20)\">20</a>\n            </li>\n          </ul>\n        </div>\n        materiales\n      </div>\n      <div class=\"col-sm-6 text-right\">\n        Ordenar por\n        <div class=\"dropdown dropdown-inline ufps-dropdown\">\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"sortBy\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n            ${sortDisplay}\n            <span class=\"caret\"></span>\n          </button>\n          <ul class=\"dropdown-menu ufps-dropdown-menu dropdown-mini\" aria-labelledby=\"sortBy\">\n            <li>\n              <a click.delegate=\"setSort('Id')\">Id</a>\n            </li>\n            <li>\n              <a click.delegate=\"setSort('Nombre')\">Nombre</a>\n            </li>\n          </ul>\n        </div>\n        en forma\n        <div class=\"dropdown dropdown-inline ufps-dropdown\">\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"orderBy\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n            ${byDisplay}\n            <span class=\"caret\"></span>\n          </button>\n          <ul class=\"dropdown-menu ufps-dropdown-menu dropdown-mini\" aria-labelledby=\"orderBy\">\n            <li>\n              <a click.delegate=\"setBy('Ascendente')\">Ascendente</a>\n            </li>\n            <li>\n              <a click.delegate=\"setBy('Descendente')\">Descendente</a>\n            </li>\n          </ul>\n        </div>\n      </div>\n      <table>\n        <thead>\n          <tr>\n            <th class=\"text-center\">Id</th>\n            <th class=\"text-center\">Nombre</th>\n            <th class=\"text-center\">Categoría</th>\n            <th class=\"text-center\">Acción</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr repeat.for=\"material of materials\">\n            <td class=\"text-center\">${material.id}</td>\n            <td>${material.name}</td>\n            <td>${material.categoryString}</td>\n            <td class=\"text-right\">\n              <a class=\"ufps-btn btn ufps-btn-default\" href=\"${material.url}\" target=\"blank\">Abrir</a>\n              <button class=\"ufps-btn btn ufps-btn-default\" click.delegate=\"approveMaterial(material.id)\">Aprobar</button>\n              <button class=\"ufps-btn btn ufps-btn-default\" click.delegate=\"showRemoveMaterial(material.id)\">Descartar</button>\n            </td>\n          </tr>\n          <tr if.bind=\"materials.length === 0\">\n            <td></td>\n            <td>No hay materiales pendientes de aprobación.</td>\n            <td>\n            </td>\n            <td>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n      <nav aria-label=\"Navegación\" class=\"text-center\">\n        <ul class=\"pagination\">\n          <li class=\"${page === 1 ? 'disabled' : ''}\">\n            <a click.delegate=\"goToFirstPage()\" aria-label=\"Primero\">\n              <span aria-hidden=\"true\">Inicio</span>\n            </a>\n          </li>\n          <li class=\"${page === 1 ? 'disabled' : ''}\">\n            <a click.delegate=\"goToPrevPage()\" aria-label=\"Anterior\">\n              <span aria-hidden=\"true\">Anterior</span>\n            </a>\n          </li>\n          <li repeat.for=\"i of pagination\" class=\"${i === page ? 'active' : ''}\">\n            <a click.delegate=\"goToPage(i)\">${i}</a>\n          </li>\n          <li class=\"${page === totalPages ? 'disabled' : ''}\">\n            <a click.delegate=\"goToNextPage()\" aria-label=\"Siguiente\">\n              <span aria-hidden=\"true\">Siguiente</span>\n            </a>\n          </li>\n          <li class=\"${page === totalPages ? 'disabled' : ''}\">\n            <a click.delegate=\"goToLastPage()\" aria-label=\"Último\">\n              <span aria-hidden=\"true\">Final</span>\n            </a>\n          </li>\n        </ul>\n      </nav>\n    </div>\n    <div if.bind=\"authService.isAdmin()\" class=\"modal fade\" id=\"remove-material\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remove-material\">\n      <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header text-center\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n              <span aria-hidden=\"true\">&times;</span>\n            </button>\n            <h4 class=\"modal-title\">¿Estás seguro de eliminar este material?</h4>\n            <br>\n            <p>Esta acción no puede ser revertida</p>\n\n            <button class=\"btn btn-default ufps-btn-default\" click.delegate=removeMaterial()>Si</button>\n            <button class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\">No</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
 define('text!modules/error-404/error-404.html', ['module'], function(module) { module.exports = "<template>\n  error 404\n</template>"; });
 define('text!modules/home/home.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"email\">${email}</div>\n</template>"; });
 define('text!modules/login/login.html', ['module'], function(module) { module.exports = "<template>\n  <div slot=\"content\">\n    <div class=\"col-xs-12 text-center\">\n      <img class=\"ufps-logo-sign\" src=\"./src/assets/img/logo-transparent.png\" alt=\"\">\n    </div>\n    <div class=\"col-xs-10 col-xs-offset-1 text-center\">\n      <h1>Iniciar Sesión</h1>\n      <form action=\"\" class=\"text-left ufps-form-sign\" submit.delegate = \"login()\">\n        <div class=\"form-group\">\n          <label for=\"email\">Correo Electrónico</label>\n          <input type=\"email\" class=\"form-control ufps-sign-input\" id=\"email\" placeholder=\"Email\" value.bind=\"user.email\" required>\n        </div>\n        <div class=\"form-group\">\n          <label for=\"password\">Contraseña</label>\n          <input type=\"password\" class=\"form-control ufps-sign-input\" id=\"password\" placeholder=\"Contraseña\" value.bind=\"user.password\" required>\n        </div>\n        <input type=\"submit\" class=\"btn ufps-btn-sign\" value=\"Iniciar Sesión\">\n      </form>\n      <a class=\"btn ufps-btn-sign\"  route-href=\"route: public-material\">Ver Material Público</a>\n      <div class=\"col-xs-4 text-left ufps-sign-links\">\n        <a route-href=\"route: signin\">¡Regístrate!</a>\n      </div>\n      <div class=\"col-xs-8 text-right ufps-sign-links\">\n        <a route-href=\"route: recovery-password\">¿Olvidaste tu contraseña?</a>\n      </div>\n    </div>\n  </div>\n</template>"; });
@@ -9486,5 +9674,4 @@ define('text!modules/syllabus/create-assignment/create-assignment.html', ['modul
 define('text!modules/syllabus/home-syllabus/home-syllabus.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div if.bind=\"authService.isStudent()\" class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\">Mis clases</h1>\n    <hr>\n    <div class=\"text-center\" if.bind=\"!enrolledSyllabusesLoaded\">\n      <p>Actualmente no tienes ninguna clase inscrita.</p>\n    </div>\n    <div repeat.for=\"syllabus of enrolledSyllabuses\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <a route-href=\"route: SyllabusDetail; params.bind: {id:syllabus.id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>${syllabus.tittle}</h1>\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n  </div>\n  <div class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\" if.bind=\"authService.isStudent()\">Clases disponibles</h1>\n    <h1 class=\"text-right\" if.bind=\"authService.isCoach()\">Mis clases</h1>\n    <hr>\n    <div repeat.for=\"syllabus of syllabuses\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <div class=\"ufps-card\">\n        <div class=\"ufps-card-title\">\n          <span if.bind=\"authService.isCoach()\" class=\"ufps-edit-category glyphicon glyphicon-pencil\" data-toggle=\"tooltip\" title=\"Editar los datos de la clase\"\n            click.delegate=\"showEditSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)\" tooltip></span>\n          <span if.bind=\"authService.isCoach()\" class=\"ufps-remove-category glyphicon glyphicon-remove\" data-toggle=\"tooltip\" title=\"Eliminar la clase\"\n            click.delegate=\"showRemoveSyllabus(syllabus.id, syllabus.tittle)\" tooltip></span>\n          <h1>${syllabus.tittle}</h1>\n        </div>\n        <div if.bind=\"authService.isCoach()\" class=\"col-xs-6 ufps-card-link\">\n          <a route-href=\"route: SyllabusDetail; params.bind: {id:syllabus.id}\">Detalle</a>\n        </div>\n        <div if.bind=\"authService.isCoach()\" class=\"col-xs-6 ufps-card-link\">\n          <a>Estadísticas</a>\n        </div>\n        <div if.bind=\"authService.isStudent()\" class=\"col-xs-6 ufps-card-link\">\n          <span if.bind=\"syllabus.public\">Público</span>\n          <span if.bind=\"!syllabus.public\">Privado</span>\n        </div>\n        <div if.bind=\"authService.isStudent() && !syllabus.enrolled\" class=\"col-xs-6 ufps-card-link\">\n          <a click.delegate=\"showEnrollSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)\">Registrarse</a>\n        </div>\n        <div if.bind=\"authService.isStudent() && syllabus.enrolled\" class=\"col-xs-6 ufps-card-link\">\n          <span>Registrado</a>\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n    <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <div class=\"ufps-card\" data-toggle=\"modal\" data-target=\"#new-syllabus\">\n        <div class=\"ufps-card-title\">\n          <h1>\n            <span class=\"glyphicon glyphicon-plus\"></span>\n          </h1>\n        </div>\n        <div class=\"col-xs-12 ufps-card-link\">\n          Nueva clase\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA AÑADIR CLASE-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"new-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"new-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Nueva clase</h4>\n          <br>\n          <form submit.delegate=\"createSyllabus()\">\n            <div class=\"form-group\">\n              <label>Titulo</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la clase\" value.bind=\"newSyllabus.title\" required>\n            </div>\n            <div class=\"form-group\">\n              <label>Descripción</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Descripión de la clase\" value.bind=\"newSyllabus.description\" required>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"true\" checked.bind=\"newSyllabus.privacy\" checked> Público\n              </label>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"false\" checked.bind=\"newSyllabus.privacy\" checked> Privado\n                <span>(requiere clave)</span>\n              </label>\n            </div>\n            <div class=\"form-group\" if.bind=\"!newSyllabus.privacy\">\n              <label>Clave (Se recomienda reemplazar la siguiente clave)</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"clave que deben ingresar los estudiantes para acceder a la clase\" value.bind=\"newSyllabus.key\"\n                required>\n            </div>\n            <div class=\"text-right\">\n              <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Registrar clase\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA EDITAR SYLLABUS-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"edit-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"edit-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Editar Syllabus</h4>\n          <br>\n          <form submit.delegate=\"modifySyllabus()\">\n            <div class=\"form-group\">\n              <label>Titulo</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Nombre del syllabus\" value.bind=\"editSyllabus.title\" required>\n            </div>\n            <div class=\"form-group\">\n              <label>Descripción</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"Descripión del syllabus\" value.bind=\"editSyllabus.description\" required>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"true\" checked.bind=\"editSyllabus.privacy\"> Público\n              </label>\n            </div>\n            <div class=\"radio\">\n              <label>\n                <input type=\"radio\" name=\"privacy\" model.bind=\"false\" checked.bind=\"editSyllabus.privacy\"> Privado\n                <span>(requiere clave)</span>\n              </label>\n            </div>\n            <div class=\"form-group\" if.bind=\"!editSyllabus.privacy\">\n              <label>Clave (obligatorio: Confirme la clave o ingrese una nueva)</label>\n              <input type=\"text\" class=\"form-control\" placeholder=\"clave que deben ingresar los estudiantes para acceder a la clase\" value.bind=\"editSyllabus.key\"\n                required>\n            </div>\n            <div class=\"text-right\">\n              <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Editar clase\">\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA ELIMINAR SYLLABUS-->\n  <div if.bind=\"authService.isCoach()\" class=\"modal fade\" id=\"remove-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"remove-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Estás seguro de eliminar la clase ${syllabusToRemove.title}?</h4>\n          <br>\n          <p>Esta operación no se puede deshacer</p>\n\n          <button class=\"btn btn-default ufps-btn-default\" click.delegate=removeSyllabus()>Si</button>\n          <button class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\">No</button>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <!--MODAL PARA REGISTRARSE EN UN SYLLABUS-->\n  <div if.bind=\"authService.isStudent()\" class=\"modal fade\" id=\"enroll-syllabus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"enroll-syllabus\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header text-center\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>\n          <br>\n          <form submit.delegate=\"enrollSyllabus()\">\n            <div if.bind=\"!syllabusToEnroll.privacy\">\n              <p>Ingresa la clave de esta clase (si no la tienes, comunicate con el profesor/coach a cargo)</p>\n              <div class=\"form-group\">\n                <input type=\"text\" class=\"form-control\" value.bind=\"syllabusToEnroll.key\">\n              </div>\n            </div>\n\n            <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Si\">\n            <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" data-dismiss=\"modal\" aria-label=\"Close\" value=\"No\">\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
 define('text!modules/syllabus/syllabus-detail/syllabus-detail.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1>${syllabus.title}</h1>\n    <p>${syllabus.description}</p>\n    <h2 class=\"text-right\">Tareas</h2>\n    <hr>\n    <div repeat.for=\"assignment of syllabus.assignments\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n\n      <div class=\"ufps-card\">\n        <a route-href=\"route: ViewAssignment; params.bind: {id:assignment.id}\" if.bind=\"authService.isStudent()\" >\n          <div class=\"ufps-card-title\">\n            <h1>${assignment.title}</h1>\n          </div>\n        </a>\n        <div  if.bind=\"authService.isCoach()\" class=\"ufps-card-title\">\n            <h1>${assignment.title}</h1>\n          </div>\n        <div if.bind=\"authService.isStudent()\" class=\"col-xs-12 ufps-card-link\">\n          <a  route-href=\"route: ViewAssignment; params.bind: {id:assignment.id}\" class=\"ufps-font-size-small\">${assignment.getStringDate()}</a>\n        </div>\n        <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 ufps-card-link\">\n          <a route-href=\"route: EditAssignment; params.bind: {id:assignment.id}\">Editar tarea</a>\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n\n    </div>\n    <div if.bind=\"authService.isCoach()\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <a route-href=\"route: CreateAssignment; params.bind: {id:id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title\">\n            <h1>\n              <span class=\"glyphicon glyphicon-plus\"></span>\n            </h1>\n          </div>\n          <div class=\"col-xs-12 ufps-card-link\">\n            Nueva tarea\n          </div>\n          <div class=\"fix\"></div>\n        </div>\n      </a>\n    </div>\n    <div class=\"fix\"></div>\n    <h2 class=\"text-right\">Lecturas</h2>\n    <hr>\n  </div>\n</template>\n"; });
 define('text!modules/syllabus/view-assignment/view-assignment.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"../../../resources/attributes/tooltip\"></require>\n    <div class=\"container ufps-container-logged\">\n      <h1 class=\"text-right\">${assignment.title}</h1>\n      <p class=\"text-right\">${assignment.description}</p>\n      <p class=\"text-right\">${assignment.getStringAvailability()}</p>\n      <hr>\n      <div class=\"col-sm-12\">\n        Ordenar por\n        <div class=\"dropdown dropdown-inline ufps-dropdown\">\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"sortBy\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n            ${sortDisplay}\n            <span class=\"caret\"></span>\n            </button>\n          <ul class=\"dropdown-menu ufps-dropdown-menu dropdown-mini\" aria-labelledby=\"sortBy\">\n            <li><a click.delegate=\"setSort('Id')\">Id</a></li>\n            <li><a click.delegate=\"setSort('Dificultad')\">Dificultad</a></li>\n          </ul>\n        </div>\n        en forma\n        <div class=\"dropdown dropdown-inline ufps-dropdown\">\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"orderBy\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n            ${byDisplay}\n            <span class=\"caret\"></span>\n            </button>\n          <ul class=\"dropdown-menu ufps-dropdown-menu dropdown-mini\" aria-labelledby=\"orderBy\">\n            <li><a click.delegate=\"setBy('Ascendente')\">Ascendente</a></li>\n            <li><a click.delegate=\"setBy('Descendente')\">Descendente</a></li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"ufps-separator\"></div>\n      <table>\n        <thead>\n          <tr>\n            <th class=\"text-center\" style=\"width:5%\">Id</th>\n            <th class=\"text-center\" style=\"width:70%\">Problema</th>\n            <th class=\"text-center\" style=\"width:10%\">Dificultad</th>\n            <th class=\"text-center\" style=\"width:15%\">Idioma</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr repeat.for=\"problem of assignment.problemsLoaded\">\n            <td class=\"text-center\">${problem.id}</td>\n            <td class=\"text-left ufps-td-problem\">\n              <p if.bind=\"problem.isInEnglish()\" class=\"ufps-name-problem-list\"><a href=\"#/problemas/${problem.id}/detalle/en\">${problem.titleEN}</a></p>\n              <p if.bind=\"!problem.isInEnglish()\" class=\"ufps-name-problem-list\"><a href=\"#/problemas/${problem.id}/detalle/es\">${problem.titleES}</a></p>\n            </td>\n            <td class=\"text-center\">${problem.level}</td>\n            <td class=\"text-center ufps-language\"><span class=\"${problem.isInSpanish() ? 'active' : 'inactive'}\"><a href=\"#/problemas/${problem.id}/detalle/es\">ES</a></span> | <span class=\"${problem.isInEnglish() ? 'active' : 'inactive'}\"><a href=\"#/problemas/${problem.id}/detalle/en\">EN</a></span></td>\n          </tr>\n        </tbody>\n      </table>\n      <nav aria-label=\"Navegación\" class=\"text-center\">\n        <ul class=\"pagination\">\n          <li class=\"${page === 1 ? 'disabled' : ''}\">\n            <a click.delegate = \"goToFirstPage()\" aria-label=\"Primero\">\n              <span aria-hidden=\"true\">Inicio</span>\n            </a>\n          </li>\n          <li class=\"${page === 1 ? 'disabled' : ''}\">\n            <a click.delegate = \"goToPrevPage()\" aria-label=\"Anterior\">\n              <span aria-hidden=\"true\">Anterior</span>\n            </a>\n          </li>\n          <li repeat.for=\"i of pagination\" class=\"${i === page ? 'active' : ''}\"><a click.delegate = \"goToPage(i)\">${i}</a></li>\n          <li class=\"${page === totalPages ? 'disabled' : ''}\">\n            <a click.delegate = \"goToNextPage()\" aria-label=\"Siguiente\">\n              <span aria-hidden=\"true\">Siguiente</span>\n            </a>\n          </li>\n          <li class=\"${page === totalPages ? 'disabled' : ''}\">\n            <a click.delegate = \"goToLastPage()\" aria-label=\"Último\">\n              <span aria-hidden=\"true\">Final</span>\n            </a>\n          </li>\n        </ul>\n      </nav>\n    </div>\n  -->\n  </template>\n  "; });
-define('text!modules/admin/admin.html', ['module'], function(module) { module.exports = "<template>\n  administrar\n</template>"; });
 //# sourceMappingURL=app-bundle.js.map

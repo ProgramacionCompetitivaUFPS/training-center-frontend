@@ -110,6 +110,10 @@ export let MESSAGES = {
     text: 'Debes añadir archivos de entrada y salida para el problema',
     type: 'error'
   },
+  problemsEmpty: {
+    text: 'Actualmente no hay problemas almacenados en la plataforma',
+    type: 'warning'
+  },
   // Material
   materialDoesNotExists: {
     text: 'El material solicitado no existe',
@@ -117,6 +121,18 @@ export let MESSAGES = {
   },
   addedMaterial: {
     text: 'Material añadido exitosamente',
+    type: 'success'
+  },
+  materialsEmpty: {
+    text: 'Actualmente, no hay materiales en esta categoría',
+    type: 'warning'
+  },
+  materialApproved: {
+    text: 'El material seleccionado ha sido aprobado',
+    type: 'success'
+  },
+  materialDeleted: {
+    text: 'El material seleccionado ha sido eliminado',
     type: 'success'
   },
   // GENERAL
