@@ -1,4 +1,4 @@
-import { observable } from 'aurelia-framework'
+import { inject, observable } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
@@ -11,19 +11,16 @@ import { Alert, Auth, Materials } from 'services/services'
  * @export
  * @class PublicMaterial
  */
-export class PublicMaterial {
 
+// dependencias a inyectar: Servicio de notificaciones (Alert), 
+// servicio de autenticación y validación de usuarios (Auth),
+// servicio de backend de material (Material)
+@inject(Alert, Auth, Materials)
+
+export class PublicMaterial {
+  // Elementos observables. 
   @observable page
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * servicio de backend de material (Material)
-   */
-  static inject () {
-    return [Alert, Auth, Materials]
-  }
+  @observable filterChange
 
   /**
    * Crea una instancia de CategoryMaterial.
@@ -36,14 +33,31 @@ export class PublicMaterial {
     this.authService = authService
     this.materialService = materialService
     this.materials = []
-    this.noProblemsToShow = 8
-    this.sortDisplay = 'Id'
-    this.byDisplay = 'Ascendente'
+    this.numberOfItems = [4, 8, 12, 16]
+    this.sortOptions = ['Id', 'Nombre']
+    this.filterChange = true
+    this.limit = 8
+    this.sort = 'Id'
+    this.by = 'Ascendente'
     this.page = 1
     this.totalPages = 1
     this.getMaterial()
   }
 
+  /**
+   * Cuando cambia un filtro, obtiene el material con los nuevos parametros.
+   * @param {bool} act - Nuevo estado 
+   * @param {bool} prev - Antiguo estado
+   */
+  filterChangeChanged (act, prev) {
+    if(prev !== undefined) this.getMaterial()
+  }
+
+  /**
+   * Detecta cuando el número de página es modificado para solicitar el nuevo número.
+   * @param {Number} act - Número de página nuevo.
+   * @param {Number} prev - Número de página antes del cambio
+   */
   pageChanged (act, prev) {
     if(prev !== undefined) this.getMaterial()
   }
@@ -52,7 +66,7 @@ export class PublicMaterial {
    * Obtiene la lista de materiales según los parametros indicados.
    */
   getMaterial () {
-    this.materialService.getPublicMaterial(this.page, this.noProblemsToShow, (this.sortDisplay === 'Nombre') ? 'name' : undefined, (this.byDisplay === 'Ascendente' ? 'asc' : 'desc'))
+    this.materialService.getPublicMaterial(this.page, this.limit, (this.sort === 'Nombre') ? 'name' : undefined, (this.by === 'Ascendente' ? 'asc' : 'desc'))
       .then(data => {
         this.materials = []
         this.totalPages = data.meta.totalPages
@@ -70,32 +84,5 @@ export class PublicMaterial {
           this.alertService.showMessage(MESSAGES.serverError)
         }
       })
-  }
-
-  /**
-   * Establece un nuevo criterio de ordenamiento y obtiene los materiales bajo este criterio.
-   * @param {String} sort - Criterio de ordenamiento (Nombre o Id)
-   */
-  setSort (sort) {
-    this.sortDisplay = sort
-    this.getMaterial()
-  }
-
-  /**
-   * Establece una nueva dirección de ordenamiento y obtiene los materiales bajo esta dirección.
-   * @param {String} sort - Dirección de ordenamiento (Ascendente o Descendente)
-   */
-  setBy (by) {
-    this.byDisplay = by
-    this.getMaterial()
-  }
-
-  /**
-   * Establece una nueva cantidad de materiales y obtiene esa cantidad.
-   * @param {Number} number - Cantidad de materiales a obtener.
-   */
-  setNoProblemsToShow (number) {
-    this.noProblemsToShow = number
-    this.getMaterial()
   }
 }

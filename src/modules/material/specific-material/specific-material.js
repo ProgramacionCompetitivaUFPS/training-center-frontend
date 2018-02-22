@@ -1,3 +1,4 @@
+import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
@@ -10,17 +11,12 @@ import { Alert, Auth, Materials } from 'services/services'
  * @export
  * @class SpecificMaterial
  */
+
+// dependencias a inyectar: Servicio de notificaciones (Alert),
+// servicio de autenticación y autorización (Auth),
+// servicio de backend de material (Material), servicio de Router (Router)
+@inject(Alert, Auth, Materials, Router)
 export class SpecificMaterial {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * servicio de backend de material (Material), servicio de Router (Router)
-   */
-  static inject () {
-    return [Alert, Auth, Materials, Router]
-  }
 
   /**
    * Crea una instancia de SpecificMaterial.

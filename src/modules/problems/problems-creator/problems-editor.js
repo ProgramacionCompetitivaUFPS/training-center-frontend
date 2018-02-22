@@ -1,20 +1,15 @@
+import { inject } from 'aurelia-framework'
+
 import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
 import { Problem } from 'models/models'
 import { Alert, Problems } from 'services/services'
 import SimpleMDE from 'simplemde'
 
+// dependencias a inyectar: Router, Servicio de notificaciones (Alert),
+// y Servicio de obtención y manejo de problemas (Problems)
+@inject(Router, Alert, Problems)
 export class ProblemsEditor {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Router, Servicio de notificaciones (Alert),
-   *  y Servicio de obtención y manejo de problemas (Problems)
-   */
-  static inject () {
-    return [Router, Alert, Problems]
-  }
 
   /**
    * Crea una instancia de ProblemsCreator.

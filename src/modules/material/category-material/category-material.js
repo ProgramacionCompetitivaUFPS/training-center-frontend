@@ -1,3 +1,4 @@
+import { inject, observable } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
@@ -10,17 +11,17 @@ import { Alert, Auth, Materials } from 'services/services'
  * @export
  * @class CategoryMaterial
  */
+
+// dependencias a inyectar: Servicio de notificaciones (Alert),
+// servicio de autenticación y autorización (Auth),
+// servicio de backend de material (Material), servicio de Router (Router)
+@inject(Alert, Auth, Materials, Router)
+
 export class CategoryMaterial {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * servicio de backend de material (Material), servicio de Router (Router)
-   */
-  static inject () {
-    return [Alert, Auth, Materials, Router]
-  }
+
+  // Elementos observables. 
+  @observable page
+  @observable filterChange
 
   /**
    * Crea una instancia de CategoryMaterial.
@@ -36,11 +37,32 @@ export class CategoryMaterial {
     this.routerService = routerService
     this.materials = []
     this.newMaterial = new Material()
-    this.noProblemsToShow = 7
-    this.sortDisplay = 'Id'
-    this.byDisplay = 'Ascendente'
+    this.numberOfItems = [3, 7, 11, 15]
+    this.sortOptions = ['Id', 'Nombre']
+    this.filterChange = false
+    this.limit = 7
+    this.sort = 'Id'
+    this.by = 'Ascendente'
     this.page = 1
     this.totalPages = 1
+  }
+
+  /**
+   * Cuando cambia un filtro, obtiene el material con los nuevos parametros.
+   * @param {bool} act - Nuevo estado 
+   * @param {bool} prev - Antiguo estado
+   */
+  filterChangeChanged (act, prev) {
+    if(prev !== undefined) this.getMaterial()
+  }
+
+  /**
+   * Detecta cuando el número de página es modificado para solicitar el nuevo número.
+   * @param {Number} act - Número de página nuevo.
+   * @param {Number} prev - Número de página antes del cambio
+   */
+  pageChanged (act, prev) {
+    if(prev !== undefined) this.getMaterial()
   }
 
   /**
@@ -61,12 +83,11 @@ export class CategoryMaterial {
    * Obtiene la lista de materiales según los parametros indicados.
    */
   getMaterial () {
-    this.materialService.getCategoryMaterial(this.id, this.page, this.noProblemsToShow, (this.sortDisplay === 'Nombre') ? 'name' : undefined, (this.byDisplay === 'Ascendente' ? 'asc' : 'desc'))
+    this.materialService.getCategoryMaterial(this.id, this.page, this.limit, (this.sort === 'Nombre') ? 'name' : undefined, (this.by === 'Ascendente' ? 'asc' : 'desc'))
       .then(data => {
         this.materials = []
         this.category = data.meta.categoryName
         this.totalPages = data.meta.totalPages
-        console.log(this.totalPages)
         if (this.totalPages !== 0) {
           for (let i = 0; i < data.data.length; i++) {
             this.materials.push(new Material(data.data[i].id, data.data[i].name))
@@ -74,7 +95,6 @@ export class CategoryMaterial {
         } else {
           this.alertService.showMessage(MESSAGES.materialsEmpty)
         }
-        this.setPagination()
       }).catch(error => {
         if (error.status === 404) {
           this.alertService.showMessage(MESSAGES.materialDoesNotExist)
@@ -84,6 +104,9 @@ export class CategoryMaterial {
       })
   }
 
+  /**
+   * Crea un nuevo material en la plataforma.
+   */
   createMaterial () {
     this.materialService.createMaterial(this.newMaterial)
       .then(data => {
@@ -94,98 +117,5 @@ export class CategoryMaterial {
         this.alertService.showMessage(MESSAGES.serverError)
         window.$('#new-material').modal('hide')
       })
-  }
-
-  /**
-   * Establece un nuevo criterio de ordenamiento y obtiene los materiales bajo este criterio.
-   * @param {String} sort - Criterio de ordenamiento (Nombre o Id)
-   */
-  setSort (sort) {
-    this.sortDisplay = sort
-    this.getMaterial()
-  }
-
-  /**
-   * Establece una nueva dirección de ordenamiento y obtiene los materiales bajo esta dirección.
-   * @param {String} sort - Dirección de ordenamiento (Ascendente o Descendente)
-   */
-  setBy (by) {
-    this.byDisplay = by
-    this.getMaterial()
-  }
-
-  /**
-   * Establece una nueva cantidad de materiales y obtiene esa cantidad.
-   * @param {Number} number - Cantidad de materiales a obtener.
-   */
-  setNoProblemsToShow (number) {
-    this.noProblemsToShow = number
-    this.getMaterial()
-  }
-
-  /**
-   * Establece la paginación de los materiales en la parte inferior.
-   */
-  setPagination () {
-    this.pagination = []
-    if (this.page === this.totalPages && this.page - 4 > 0) {
-      this.pagination.push(this.page - 4)
-      this.pagination.push(this.page - 3)
-    } else if (this.page + 1 === this.totalPages && this.page - 3 > 0) {
-      this.pagination.push(this.page - 3)
-    }
-    if (this.page > 2) {
-      this.pagination.push(this.page - 2)
-    }
-    if (this.page > 1) {
-      this.pagination.push(this.page - 1)
-    }
-    this.pagination.push(this.page)
-    while (this.pagination.length < 5 && this.pagination[this.pagination.length - 1] < this.totalPages) {
-      this.pagination.push(this.pagination[this.pagination.length - 1] + 1)
-    }
-  }
-
-  /**
-   * Muestra la primera página de materiales en una categoría
-   */
-  goToFirstPage () {
-    this.goToPage(1)
-  }
-
-  /**
-   * Muestra la última página de materiales en una categoría.
-   */
-  goToLastPage () {
-    this.goToPage(this.totalPages)
-  }
-
-  /**
-   * Muestra la página anterior a la actual de materiales en una categoría.
-   */
-  goToPrevPage () {
-    if (this.page > 1) {
-      this.goToPage(this.page - 1)
-    }
-  }
-
-  /**
-   * Muestra la página de materiales siguiente a la actual en una categoría.
-   */
-  goToNextPage () {
-    if (this.page < this.totalPages) {
-      this.goToPage(this.page + 1)
-    }
-  }
-
-  /**
-   * Muestra una página especifica de materiales en una categoría.
-   * @param {any} page - Página a mostrar
-   */
-  goToPage (page) {
-    if (page !== this.page) {
-      this.page = page
-      this.getMaterial()
-    }
   }
 }

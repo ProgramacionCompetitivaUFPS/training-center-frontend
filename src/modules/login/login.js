@@ -1,3 +1,4 @@
+import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
@@ -11,17 +12,12 @@ import { Alert, Auth } from 'services/services'
  * @export
  * @class Login
  */
+
+// dependencias a inyectar: Servicio de notificaciones (Alert),
+// servicio de autenticación (Auth) y servicio de enrutamiento (Router)
+@inject(Alert, Auth, Router)
 export class Login {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * Servicio de autenticación (Auth), y enrutamiento (Router)
-   */
-  static inject () {
-    return [Alert, Auth, Router]
-  }
+
   /**
    * Crea una instancia de Login.
    * @param {service} alertService - Servicio de notificaciones en pantalla
@@ -34,6 +30,7 @@ export class Login {
     this.alertService = alertService
     this.user = new UserLogIn()
   }
+  
   /**
    * Valida los datos e intenta iniciar sesión
    */

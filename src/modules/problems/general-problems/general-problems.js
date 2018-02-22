@@ -1,3 +1,5 @@
+import { inject } from 'aurelia-framework'
+
 import { MESSAGES } from 'config/config'
 import { Alert, Auth, Problems } from 'services/services'
 
@@ -7,17 +9,11 @@ import { Alert, Auth, Problems } from 'services/services'
  * @export
  * @class GeneralProblems
  */
+
+// dependencias a inyectar: Servicio de notificaciones (Alert),
+// Servicio de Autenticación (Auth) y Servicio de obtención y manejo de problemas (Problems)
+@inject(Alert, Auth, Problems)
 export class GeneralProblems {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * Servicio de Autenticación (Auth) y Servicio de obtención y manejo de problemas (Problems)
-   */
-  static inject () {
-    return [Alert, Auth, Problems]
-  }
 
   /**
    * Crea una instancia de GeneralProblems.

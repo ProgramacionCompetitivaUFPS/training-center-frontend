@@ -35,9 +35,6 @@ export class Assignment {
     for (let i = 0; i < problems.length; i++) {
       this.problemsLoaded.push(new Problem(problems[i].id, problems[i].title_en, problems[i].title_es, problems[i].level))
     }
-    for (let i = 0; i < 5; i++) {
-      this.problemsLoaded.push(new Problem(i, 'Title ' + i, 'Titulo ' + i, 5 - i))
-    }
   }
 
   /**

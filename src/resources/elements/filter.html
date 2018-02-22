@@ -1,0 +1,60 @@
+<template>
+  <div class="col-sm-6 text-left">
+    Mostrar
+    <div class="dropdown dropdown-inline ufps-dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="showNoItems" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="true">
+        ${limit}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="showNoItems">
+        <li repeat.for="i of numberOfItems">
+          <a click.delegate="setLimit(i)">${i}</a>
+        </li>
+        
+      </ul>
+    </div>
+    ${textToShow} <span if.bind="languageFlag">en </span>
+    <div if.bind="languageFlag" class="dropdown dropdown-inline ufps-dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="showLanguage" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="true">
+        ${language}
+        <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="showLanguage">
+          <li><a click.delegate="setLanguage('Cualquier idioma')">Cualquier idioma</a></li>
+          <li><a click.delegate="setLanguage('Español')">Español</a></li>
+          <li><a click.delegate="setLanguage('Inglés')">Inglés</a></li>
+        </ul>
+    </div>
+  </div>
+  <div class="col-sm-6 text-right">
+    Ordenar por
+    <div class="dropdown dropdown-inline ufps-dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        ${sort}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="sortBy">
+        <li repeat.for="i of sortOptions">
+          <a click.delegate="setSort(i)">${i}</a>
+        </li>
+      </ul>
+    </div>
+    en forma
+    <div class="dropdown dropdown-inline ufps-dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="orderBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        ${by}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="orderBy">
+        <li>
+          <a click.delegate="setBy('Ascendente')">Ascendente</a>
+        </li>
+        <li>
+          <a click.delegate="setBy('Descendente')">Descendente</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>

@@ -1,66 +1,11 @@
 <template>
-    <require from="../../../resources/elements/paginator"></require>
+  <require from="../../../resources/elements/filter"></require>
+  <require from="../../../resources/elements/paginator"></require>
   <div slot="content" class="body-slot">
     <app-header></app-header>
     <div class="container">
       <br>
-      <div class="col-sm-6 text-left">
-        Mostrar
-        <div class="dropdown dropdown-inline ufps-dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="showNoItems" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="true">
-            ${noProblemsToShow}
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="showNoItems">
-            <li>
-              <a click.delegate="setNoProblemsToShow(4)">4</a>
-            </li>
-            <li>
-              <a click.delegate="setNoProblemsToShow(8)">8</a>
-            </li>
-            <li>
-              <a click.delegate="setNoProblemsToShow(12)">12</a>
-            </li>
-            <li>
-              <a click.delegate="setNoProblemsToShow(16)">16</a>
-            </li>
-          </ul>
-        </div>
-        materiales
-      </div>
-      <div class="col-sm-6 text-right">
-        Ordenar por
-        <div class="dropdown dropdown-inline ufps-dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            ${sortDisplay}
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="sortBy">
-            <li>
-              <a click.delegate="setSort('Id')">Id</a>
-            </li>
-            <li>
-              <a click.delegate="setSort('Nombre')">Nombre</a>
-            </li>
-          </ul>
-        </div>
-        en forma
-        <div class="dropdown dropdown-inline ufps-dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="orderBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            ${byDisplay}
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu ufps-dropdown-menu dropdown-mini" aria-labelledby="orderBy">
-            <li>
-              <a click.delegate="setBy('Ascendente')">Ascendente</a>
-            </li>
-            <li>
-              <a click.delegate="setBy('Descendente')">Descendente</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind = "filterChange" limit.bind ="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
       <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
         <a href="#/materials/1/material/${material.id}">
           <div class="ufps-card">

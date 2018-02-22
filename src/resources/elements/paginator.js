@@ -1,13 +1,24 @@
 import {bindable, bindingMode} from 'aurelia-framework'
 
+/**
+ * Class Paginator (element)
+ * Elemento HTML modular para manejar la paginación
+ */
 export class Paginator {
+  // Decorators
   @bindable({defaultBindingMode: bindingMode.twoWay}) page
   @bindable({defaultBindingMode: bindingMode.twoWay}) totalPages
 
+  /**
+   * Inicializa un paginador
+   */
   constructor () {
     this.pagination = []
   }
 
+  /**
+   * Método que se activa cuando totalPages cambia su valor.
+   */
   totalPagesChanged() {
     this.setPagination()
   }
@@ -32,7 +43,6 @@ export class Paginator {
     while (this.pagination.length < 5 && this.pagination[this.pagination.length - 1] < this.totalPages) {
       this.pagination.push(this.pagination[this.pagination.length - 1] + 1)
     }
-    
   }
 
   /**

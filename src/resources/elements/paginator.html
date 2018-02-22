@@ -14,12 +14,12 @@
       <li repeat.for="i of pagination" class="${i === page ? 'active' : ''}">
         <a click.delegate="goToPage(i)">${i}</a>
       </li>
-      <li class="${page === totalPages ? 'disabled' : ''}">
+      <li class="${page >= totalPages ? 'disabled' : ''}">
         <a click.delegate="goToNextPage()" aria-label="Siguiente">
           <span aria-hidden="true">Siguiente</span>
         </a>
       </li>
-      <li class="${page === totalPages ? 'disabled' : ''}">
+      <li class="${page >= totalPages ? 'disabled' : ''}">
         <a click.delegate="goToLastPage()" aria-label="Último">
           <span aria-hidden="true">Final</span>
         </a>

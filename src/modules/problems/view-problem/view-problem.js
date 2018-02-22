@@ -1,20 +1,15 @@
+import { inject } from 'aurelia-framework'
+
 import { Router } from 'aurelia-router'
 import { MESSAGES, SETTINGS } from 'config/config'
 import { Problem } from 'models/models'
 import { Alert, Problems } from 'services/services'
 
+// dependencias a inyectar: Servicio de notificaciones (Alert),
+// Servicio de problemas (Problems), servicio de enrutamiento (Router)
+@inject(Alert, Problems, Router)
 export class ViewProblem {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * Servicio de problemas (Problems), servicio de enrutamiento (Router)
-   */
-  static inject () {
-    return [Alert, Problems, Router]
-  }
-
+  
   /**
    * Crea una instancia de ViewProblem.
    * @param {service} alertService - Servicio de notificaciones
@@ -42,7 +37,7 @@ export class ViewProblem {
     this.lang = params.lang || 'en'
     this.problemService.getProblem(this.id)
       .then(problem => {
-        problem = problem.problem   
+        problem = problem.problem
         this.problem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input.replace(/\r\n/g, '\n'), problem.example_output.replace(/\r\n/g, '\n'), parseFloat(problem.time_limit), problem.user_id, problem.user.username)
         console.log(this.problem.exampleInput)
         if (this.lang === 'en' && !this.problem.isInEnglish()) {

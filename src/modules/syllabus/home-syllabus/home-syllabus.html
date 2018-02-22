@@ -1,5 +1,6 @@
 <template>
   <require from="../../../resources/attributes/tooltip"></require>
+  <require from="../../../resources/elements/paginator"></require>
   <div if.bind="authService.isStudent()" class="container ufps-container-logged">
     <h1 class="text-right">Mis clases</h1>
     <hr>
@@ -63,33 +64,7 @@
       </div>
     </div>
     <div class="fix"></div>
-    <nav aria-label="Navegación" class="text-center">
-      <ul class="pagination">
-        <li class="${page === 1 ? 'disabled' : ''}">
-          <a click.delegate="goToFirstPage()" aria-label="Primero">
-            <span aria-hidden="true">Inicio</span>
-          </a>
-        </li>
-        <li class="${page === 1 ? 'disabled' : ''}">
-          <a click.delegate="goToPrevPage()" aria-label="Anterior">
-            <span aria-hidden="true">Anterior</span>
-          </a>
-        </li>
-        <li repeat.for="i of pagination" class="${i === page ? 'active' : ''}">
-          <a click.delegate="goToPage(i)">${i}</a>
-        </li>
-        <li class="${page === totalPages ? 'disabled' : ''}">
-          <a click.delegate="goToNextPage()" aria-label="Siguiente">
-            <span aria-hidden="true">Siguiente</span>
-          </a>
-        </li>
-        <li class="${page === totalPages ? 'disabled' : ''}">
-          <a click.delegate="goToLastPage()" aria-label="Último">
-            <span aria-hidden="true">Final</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <paginator page.bind="generalPage" total-pages.bind="generalTotalPages"></paginator>
   </div>
 
   <!--MODAL PARA AÑADIR CLASE-->

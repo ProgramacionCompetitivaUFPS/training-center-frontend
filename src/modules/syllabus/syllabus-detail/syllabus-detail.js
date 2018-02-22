@@ -1,3 +1,5 @@
+import { inject } from 'aurelia-framework'
+
 import { MESSAGES } from 'config/config'
 import { Syllabus } from 'models/models'
 import { Alert, Auth, Syllabuses } from 'services/services'
@@ -9,17 +11,10 @@ import { Alert, Auth, Syllabuses } from 'services/services'
  * @class SyllabusDetail
  */
 
+// dependencias a inyectar: Servicio de notificaciones (Alert),
+// Servicio de Autenticación (Auth) y Servicio de obtención y manejo de clases (Syllabus)
+@inject(Alert, Auth, Syllabuses)
 export class SyllabusDetail {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * Servicio de Autenticación (Auth) y Servicio de obtención y manejo de clases (Syllabus)
-   */
-  static inject () {
-    return [Alert, Auth, Syllabuses]
-  }
 
   /**
    * Crea una instancia de SyllabusDetail.
@@ -44,7 +39,6 @@ export class SyllabusDetail {
   activate (params, routeConfig) {
     this.routeConfig = routeConfig
     this.id = params.id
-    console.log('Pasa por aqui')
     this.getSyllabus()
   }
 
@@ -52,7 +46,6 @@ export class SyllabusDetail {
    * Lee los detalles del syllabus en la plataforma.
    */
   getSyllabus () {
-    console.log('Obtener syllabus')
     this.syllabusService.getSyllabus(this.id)
       .then(data => {
         console.log(data)

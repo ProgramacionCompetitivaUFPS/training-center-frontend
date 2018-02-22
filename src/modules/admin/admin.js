@@ -1,3 +1,5 @@
+import { inject, observable } from 'aurelia-framework'
+
 import { MESSAGES } from 'config/config'
 import { Material, UserSignIn } from 'models/models'
 import { Alert, Auth, Materials } from 'services/services'
@@ -8,17 +10,16 @@ import { Alert, Auth, Materials } from 'services/services'
  * @export
  * @class Admin
  */
+
+// dependencias a inyectar: Servicio de notificaciones (Alert), 
+// servicio de autenticación y validación de usuarios (Auth),
+// servicio de backend de material (Material)
+@inject(Alert, Auth, Materials)
 export class Admin {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * servicio de backend de material (Material), servicio de Router (Router)
-   */
-  static inject () {
-    return [Alert, Auth, Materials]
-  }
+  // Elementos observables. 
+  @observable page
+  @observable filterChange
+
   /**
    * Inicializa una instancia de Admin.
    * @param {service} alertService - Servicio de notificaciones
@@ -31,19 +32,40 @@ export class Admin {
     this.materialService = materialService
     this.newUser = new UserSignIn()
     this.newUser.type = 1
-    this.noProblemsToShow = 10
-    this.sortDisplay = 'Id'
-    this.byDisplay = 'Ascendente'
+    this.numberOfItems = [10, 15, 20]
+    this.sortOptions = ['Id', 'Nombre']
+    this.filterChange = false
+    this.limit = 10
+    this.sort = 'Id'
+    this.by = 'Ascendente'
     this.page = 1
     this.totalPages = 1
     this.getMaterials()
   }
 
   /**
+   * Cuando cambia un filtro, obtiene el material con los nuevos parametros.
+   * @param {bool} act - Nuevo estado 
+   * @param {bool} prev - Antiguo estado
+   */
+  filterChangeChanged (act, prev) {
+    if(prev !== undefined) this.getMaterials()
+  }
+
+  /**
+   * Detecta cuando el número de página es modificado para solicitar el nuevo número.
+   * @param {Number} act - Número de página nuevo.
+   * @param {Number} prev - Número de página antes del cambio
+   */
+  pageChanged (act, prev) {
+    if(prev !== undefined) this.getMaterials()
+  }
+
+  /**
    * Obtiene los materiales pendientes de aprobación.
    */
   getMaterials () {
-    this.materialService.getPendingMaterial(this.page, this.noProblemsToShow, (this.sortDisplay === 'Nombre') ? 'name' : undefined, (this.byDisplay === 'Ascendente' ? 'asc' : 'desc'))
+    this.materialService.getPendingMaterial(this.page, this.limit, (this.sort === 'Nombre') ? 'name' : undefined, (this.by === 'Ascendente' ? 'asc' : 'desc'))
       .then(data => {
         this.materials = []
         this.totalPages = data.meta.totalPages
@@ -52,7 +74,6 @@ export class Admin {
             this.materials.push(new Material(data.data[i].id, data.data[i].name, data.data[i].category_id, undefined, undefined, data.data[i].url, undefined, data.data[i].category.name))
           }
         }
-        this.setPagination()
       }).catch(error => {
         if (error.status === 404) {
           this.alertService.showMessage(MESSAGES.materialDoesNotExist)
@@ -62,6 +83,9 @@ export class Admin {
       })
   }
 
+  /**
+   * Crea un nuevo usuario docente o administrador en la plataforma.
+   */
   createUser () {
     if (!this.newUser.isValid()) {
       this.alertService.showMessage(MESSAGES.superUserWrongData)
@@ -80,99 +104,6 @@ export class Admin {
           this.alertService.showMessage(MESSAGES.serverError)
         }
       })
-    }
-  }
-
-  /**
-   * Establece un nuevo criterio de ordenamiento y obtiene los materiales bajo este criterio.
-   * @param {String} sort - Criterio de ordenamiento (Nombre o Id)
-   */
-  setSort (sort) {
-    this.sortDisplay = sort
-    this.getMaterials()
-  }
-
-  /**
-   * Establece una nueva dirección de ordenamiento y obtiene los materiales bajo esta dirección.
-   * @param {String} sort - Dirección de ordenamiento (Ascendente o Descendente)
-   */
-  setBy (by) {
-    this.byDisplay = by
-    this.getMaterials()
-  }
-
-  /**
-   * Establece una nueva cantidad de materiales y obtiene esa cantidad.
-   * @param {Number} number - Cantidad de materiales a obtener.
-   */
-  setNoProblemsToShow (number) {
-    this.noProblemsToShow = number
-    this.getMaterials()
-  }
-
-  /**
-   * Establece la paginación de los materiales en la parte inferior.
-   */
-  setPagination () {
-    this.pagination = []
-    if (this.page === this.totalPages && this.page - 4 > 0) {
-      this.pagination.push(this.page - 4)
-      this.pagination.push(this.page - 3)
-    } else if (this.page + 1 === this.totalPages && this.page - 3 > 0) {
-      this.pagination.push(this.page - 3)
-    }
-    if (this.page > 2) {
-      this.pagination.push(this.page - 2)
-    }
-    if (this.page > 1) {
-      this.pagination.push(this.page - 1)
-    }
-    this.pagination.push(this.page)
-    while (this.pagination.length < 5 && this.pagination[this.pagination.length - 1] < this.totalPages) {
-      this.pagination.push(this.pagination[this.pagination.length - 1] + 1)
-    }
-  }
-
-  /**
-   * Muestra la primera página de materiales en una categoría
-   */
-  goToFirstPage () {
-    this.goToPage(1)
-  }
-
-  /**
-   * Muestra la última página de materiales en una categoría.
-   */
-  goToLastPage () {
-    this.goToPage(this.totalPages)
-  }
-
-  /**
-   * Muestra la página anterior a la actual de materiales en una categoría.
-   */
-  goToPrevPage () {
-    if (this.page > 1) {
-      this.goToPage(this.page - 1)
-    }
-  }
-
-  /**
-   * Muestra la página de materiales siguiente a la actual en una categoría.
-   */
-  goToNextPage () {
-    if (this.page < this.totalPages) {
-      this.goToPage(this.page + 1)
-    }
-  }
-
-  /**
-   * Muestra una página especifica de materiales en una categoría.
-   * @param {any} page - Página a mostrar
-   */
-  goToPage (page) {
-    if (page !== this.page) {
-      this.page = page
-      this.getMaterials()
     }
   }
 
@@ -199,6 +130,9 @@ export class Admin {
     window.$('#remove-material').modal('show')
   }
 
+  /**
+   * Elimina un material que no ha sido aprobado.
+   */
   removeMaterial () {
     this.materialService.remove(this.materialToRemove)
       .then(() => {

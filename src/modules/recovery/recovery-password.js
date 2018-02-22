@@ -1,3 +1,5 @@
+import { inject } from 'aurelia-framework'
+
 import { MESSAGES } from 'config/config'
 import { Alert, Auth } from 'services/services'
 
@@ -8,17 +10,12 @@ import { Alert, Auth } from 'services/services'
  * @export
  * @class RecoveryPassword
  */
+
+// dependencias a inyectar: Servicio de notificaciones (Alert),
+// Servicio de Autenticación (Auth)
+@inject(Alert, Auth)
 export class RecoveryPassword {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el módulo.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de notificaciones (Alert),
-   * Servicio de Autenticación (Auth)
-   */
-  static inject () {
-    return [Alert, Auth]
-  }
+  
   /**
    * Crea una instancia de RecoveryPassword.
    * @param {service} alertService - Servicio de notificaciones y mensajes
