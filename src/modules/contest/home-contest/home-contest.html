@@ -9,102 +9,59 @@
     <br>
     <h1 class="text-right">Mis maratones</h1>
     <hr>
-    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
-      sort.bind="sort" by.bind="by" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChangeMyContests"
+      limit.bind="limitMyContests" sort.bind="sortMyContests" by.bind="byMyContests" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
     <table>
       <thead>
         <tr>
           <th class="text-center">Id</th>
           <th class="text-center">Nombre</th>
           <th class="text-center">Tipo</th>
+          <th class="text-center">Fecha de inicio</th>
           <th class="text-center"></th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>Maratón Principal</td>
-          <td class="text-center">Pública</td>
-          <td class="text-right">
-            <a href="#" class="btn btn-default ufps-btn-default">Editar y añadir problemas</a>
-          </td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Maratón Principal</td>
-          <td class="text-center">Pública</td>
+        <tr repeat.for="contest of myContests">
+          <td>${contest.id}</td>
+          <td>${contest.title}</td>
+          <td class="text-center" if.bind="contest.privacy">Pública</td>
+          <td class="text-center" if.bind="!contest.privacy">Privada</td>
+          <td class="text-center">${contest.getSemanticStartDate()}</td>
           <td class="text-right">
             <a href="#" class="btn btn-default ufps-btn-default">Editar y añadir problemas</a>
           </td>
         </tr>
       </tbody>
     </table>
-    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
-    <h1 class="text-right">Maratones en ejecución</h1>
+    <paginator page.bind="pageMyContests" total-pages.bind="totalPagesMyContests"></paginator>
+    <h1 class="text-right">Maratones en ejecución y futuras</h1>
     <hr>
-    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
-      sort.bind="sort" by.bind="by" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChangeAllContests"
+      limit.bind="limitAllContests" sort.bind="sortAllContests" by.bind="byAllContests" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
     <table>
       <thead>
         <tr>
           <th class="text-center">Id</th>
           <th class="text-center">Nombre</th>
           <th class="text-center">Tipo</th>
+          <th class="text-center">Fecha de inicio</th>
           <th class="text-center"></th>
         </tr>
       </thead>
       <tbody>
-          <tr>
-              <td>1</td>
-              <td>Maratón Principal</td>
-              <td class="text-center">Pública</td>
-              <td class="text-center">
-                <a href="#" class="btn btn-default ufps-btn-default">Abrir</a>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Maratón Principal</td>
-              <td class="text-center">Pública</td>
-              <td class="text-center">
-                <a href="#" class="btn btn-default ufps-btn-default">Abrir</a>
-              </td>
-            </tr>
-      </tbody>
-    </table>
-    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
-    <h1 class="text-right">Próximas maratones</h1>
-    <hr>
-    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
-      sort.bind="sort" by.bind="by" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
-    <table>
-      <thead>
-        <tr>
-          <th class="text-center">Id</th>
-          <th class="text-center">Nombre</th>
-          <th class="text-center">Tipo</th>
-          <th class="text-center"></th>
+        <tr repeat.for="contest of allContests">
+          <td>${contest.id}</td>
+          <td>${contest.title}</td>
+          <td class="text-center" if.bind="contest.privacy">Pública</td>
+          <td class="text-center" if.bind="!contest.privacy">Privada</td>
+          <td class="text-center">${contest.getSemanticStartDate()}</td>
+          <td class="text-right">
+            <a href="#" class="btn btn-default ufps-btn-default">Abrir</a>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-          <tr>
-              <td>1</td>
-              <td>Maratón Principal</td>
-              <td class="text-center">Pública</td>
-              <td class="text-center">
-                <a href="#" class="btn btn-default ufps-btn-default">Abrir</a>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Maratón Principal</td>
-              <td class="text-center">Pública</td>
-              <td class="text-center">
-                <a href="#" class="btn btn-default ufps-btn-default">Abrir</a>
-              </td>
-            </tr>
       </tbody>
     </table>
-    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+    <paginator page.bind="pageAllContests" total-pages.bind="totalPagesAllContests"></paginator>
   </div>
 </template>

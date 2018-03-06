@@ -643,8 +643,8 @@ define('models/category',['exports', './problem'], function (exports, _problem) 
     return Category;
   }();
 });
-define('models/contest',["exports"], function (exports) {
-  "use strict";
+define('models/contest',['exports'], function (exports) {
+  'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -656,25 +656,45 @@ define('models/contest',["exports"], function (exports) {
     }
   }
 
-  var Contest = exports.Contest = function Contest() {
-    var title = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
-    var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
-    var initDate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
-    var endDate = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : undefined;
-    var rules = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
-    var privacy = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : true;
-    var key = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : undefined;
+  var Contest = exports.Contest = function () {
+    function Contest() {
+      var title = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+      var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+      var initDate = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
+      var endDate = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : undefined;
+      var rules = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : undefined;
+      var privacy = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : true;
+      var key = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : undefined;
+      var id = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : undefined;
 
-    _classCallCheck(this, Contest);
+      _classCallCheck(this, Contest);
 
-    this.title = title;
-    this.description = description;
-    this.initDate = initDate;
-    this.endDate = endDate;
-    this.rules = rules;
-    this.privacy = privacy;
-    this.key = key;
-  };
+      this.title = title;
+      this.description = description;
+      this.initDate = initDate;
+      this.endDate = endDate;
+      this.rules = rules;
+      this.privacy = privacy;
+      this.key = key;
+      this.id = id;
+    }
+
+    Contest.prototype.getSemanticStartDate = function getSemanticStartDate() {
+      return this.getSemanticDate(new Date(this.initDate));
+    };
+
+    Contest.prototype.getSemanticDate = function getSemanticDate(date) {
+      var months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+      var hour = '';
+      if (date.getHours() == 0) hour = '12:';else if (date.getHours() > 12) hour = date.getHours() - 12 + ':';else hour = date.getHours() + ':';
+      if (date.getMinutes() < 10) hour += '0';
+      hour += date.getMinutes();
+      if (date.getHours() >= 12) hour += 'PM';else hour += 'AM';
+      return date.getDate() + ' ' + ' de ' + months[date.getMonth()] + ' del ' + date.getFullYear() + ' - ' + hour;
+    };
+
+    return Contest;
+  }();
 });
 define('models/material',["exports"], function (exports) {
   "use strict";
@@ -1275,6 +1295,24 @@ define('services/contests',['exports', 'aurelia-framework', 'config/config', 'mo
           key: key
         })
       }).then(this.httpService.checkStatus);
+    };
+
+    Contests.prototype.getMyContests = function getMyContests(limit, page, userId) {
+      return this.httpService.httpClient.fetch(_config.API.endpoints.contests + '?limit=' + limit + '&page=' + page + '&user=' + userId, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      }).then(this.httpService.checkStatus).then(this.httpService.parseJSON);
+    };
+
+    Contests.prototype.getContests = function getContests(limit, page) {
+      return this.httpService.httpClient.fetch(_config.API.endpoints.contests + '?limit=' + limit + '&page=' + page, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      }).then(this.httpService.checkStatus).then(this.httpService.parseJSON);
     };
 
     return Contests;
@@ -8234,7 +8272,7 @@ define('modules/contest/create-contest/create-contest',['exports', 'aurelia-fram
     return CreateContest;
   }()) || _class);
 });
-define('modules/contest/home-contest/home-contest',['exports', 'aurelia-framework', 'config/config', 'services/services'], function (exports, _aureliaFramework, _config, _services) {
+define('modules/contest/home-contest/home-contest',['exports', 'aurelia-framework', 'config/config', 'models/models', 'services/services'], function (exports, _aureliaFramework, _config, _models, _services) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -8250,18 +8288,75 @@ define('modules/contest/home-contest/home-contest',['exports', 'aurelia-framewor
 
   var _dec, _class;
 
-  var HomeContest = exports.HomeContest = (_dec = (0, _aureliaFramework.inject)(_services.Alert, _services.Auth), _dec(_class = function HomeContest() {
-    _classCallCheck(this, HomeContest);
+  var HomeContest = exports.HomeContest = (_dec = (0, _aureliaFramework.inject)(_services.Alert, _services.Auth, _services.Contests), _dec(_class = function () {
+    function HomeContest(alertService, authService, contestService) {
+      _classCallCheck(this, HomeContest);
 
-    this.numberOfItems = [10, 15, 20];
-    this.sortOptions = ['Id', 'Nombre'];
-    this.filterChange = false;
-    this.limit = 10;
-    this.sort = 'Id';
-    this.by = 'Ascendente';
-    this.page = 1;
-    this.totalPages = 1;
-  }) || _class);
+      this.alertService = alertService;
+      this.authService = authService;
+      this.contestService = contestService;
+      this.numberOfItems = [10, 15, 20];
+      this.sortOptions = ['Id', 'Nombre'];
+      this.filterChangeMyContests = false;
+      this.limitMyContests = 10;
+      this.sortMyContests = 'Id';
+      this.byMyContests = 'Ascendente';
+      this.pageMyContests = 1;
+      this.totalPagesMyContests = 1;
+      this.filterChangeAllContests = false;
+      this.limitAllContests = 10;
+      this.sortAllContests = 'Id';
+      this.byAllContests = 'Ascendente';
+      this.pageAllContests = 1;
+      this.totalPagesAllContests = 1;
+      this.myContests = [];
+      this.allContests = [];
+      this.getMyContests();
+      this.getContests();
+    }
+
+    HomeContest.prototype.getMyContests = function getMyContests() {
+      var _this = this;
+
+      this.contestService.getMyContests(this.limitMyContests, this.pageMyContests, this.authService.getUserId()).then(function (data) {
+        _this.totalPagesMyContests = data.meta.totalPages;
+        _this.myContests = [];
+        for (var i = 0; i < data.data.length; i++) {
+          _this.myContests.push(new _models.Contest(data.data[i].title, data.data[i].description, data.data[i].init_date, data.data[i].end_date, data.data[i].rules, data.data[i].public, undefined, data.data[i].id));
+        }
+      }).catch(function (error) {
+        if (error.status === 400) {
+          _this.alertService.showMessage(_config.MESSAGES.contestError);
+        } else if (error.status === 401) {
+          _this.alertService.showMessage(_config.MESSAGES.permissionsError);
+        } else {
+          _this.alertService.showMessage(_config.MESSAGES.unknownError);
+        }
+      });
+    };
+
+    HomeContest.prototype.getContests = function getContests() {
+      var _this2 = this;
+
+      this.contestService.getContests(this.limitAllContests, this.pageAllContests).then(function (data) {
+        _this2.totalPagesAllContests = data.meta.totalPages;
+        _this2.allContests = [];
+        for (var i = 0; i < data.data.length; i++) {
+          _this2.allContests.push(new _models.Contest(data.data[i].title, data.data[i].description, data.data[i].init_date, data.data[i].end_date, data.data[i].rules, data.data[i].public, undefined, data.data[i].id));
+        }
+      }).catch(function (error) {
+        if (error.status === 400) {
+          _this2.alertService.showMessage(_config.MESSAGES.contestError);
+        } else if (error.status === 401) {
+          _this2.alertService.showMessage(_config.MESSAGES.permissionsError);
+        } else {
+          _this2.alertService.showMessage(_config.MESSAGES.unknownError);
+        }
+      });
+    };
+
+    return HomeContest;
+  }()) || _class);
 });
 define('modules/material/category-material/category-material',['exports', 'aurelia-framework', 'aurelia-router', 'config/config', 'models/models', 'services/services'], function (exports, _aureliaFramework, _aureliaRouter, _config, _models, _services) {
   'use strict';
@@ -10386,7 +10481,7 @@ define('text!resources/elements/app-header.html', ['module'], function(module) {
 define('text!resources/elements/filter.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"col-sm-6 text-left\">\n    Mostrar\n    <div class=\"dropdown dropdown-inline ufps-dropdown\">\n      <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"showNoItems\" data-toggle=\"dropdown\" aria-haspopup=\"true\"\n        aria-expanded=\"true\">\n        ${limit}\n        <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu ufps-dropdown-menu dropdown-mini\" aria-labelledby=\"showNoItems\">\n        <li repeat.for=\"i of numberOfItems\">\n          <a click.delegate=\"setLimit(i)\">${i}</a>\n        </li>\n        \n      </ul>\n    </div>\n    ${textToShow} <span if.bind=\"languageFlag\">en </span>\n    <div if.bind=\"languageFlag\" class=\"dropdown dropdown-inline ufps-dropdown\">\n      <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"showLanguage\" data-toggle=\"dropdown\" aria-haspopup=\"true\"\n        aria-expanded=\"true\">\n        ${language}\n        <span class=\"caret\"></span>\n        </button>\n        <ul class=\"dropdown-menu ufps-dropdown-menu dropdown-mini\" aria-labelledby=\"showLanguage\">\n          <li><a click.delegate=\"setLanguage('Cualquier idioma')\">Cualquier idioma</a></li>\n          <li><a click.delegate=\"setLanguage('Español')\">Español</a></li>\n          <li><a click.delegate=\"setLanguage('Inglés')\">Inglés</a></li>\n        </ul>\n    </div>\n  </div>\n  <div class=\"col-sm-6 text-right\">\n    Ordenar por\n    <div class=\"dropdown dropdown-inline ufps-dropdown\">\n      <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"sortBy\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n        ${sort}\n        <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu ufps-dropdown-menu dropdown-mini\" aria-labelledby=\"sortBy\">\n        <li repeat.for=\"i of sortOptions\">\n          <a click.delegate=\"setSort(i)\">${i}</a>\n        </li>\n      </ul>\n    </div>\n    en forma\n    <div class=\"dropdown dropdown-inline ufps-dropdown\">\n      <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"orderBy\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n        ${by}\n        <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu ufps-dropdown-menu dropdown-mini\" aria-labelledby=\"orderBy\">\n        <li>\n          <a click.delegate=\"setBy('Ascendente')\">Ascendente</a>\n        </li>\n        <li>\n          <a click.delegate=\"setBy('Descendente')\">Descendente</a>\n        </li>\n      </ul>\n    </div>\n  </div>\n</template>\n"; });
 define('text!resources/elements/paginator.html', ['module'], function(module) { module.exports = "<template>\n  <nav aria-label=\"Navegación\" class=\"text-center\">\n    <ul class=\"pagination\">\n      <li class=\"${page === 1 ? 'disabled' : ''}\">\n        <a click.delegate=\"goToFirstPage()\" aria-label=\"Primero\">\n          <span aria-hidden=\"true\">Inicio</span>\n        </a>\n      </li>\n      <li class=\"${page === 1 ? 'disabled' : ''}\">\n        <a click.delegate=\"goToPrevPage()\" aria-label=\"Anterior\">\n          <span aria-hidden=\"true\">Anterior</span>\n        </a>\n      </li>\n      <li repeat.for=\"i of pagination\" class=\"${i === page ? 'active' : ''}\">\n        <a click.delegate=\"goToPage(i)\">${i}</a>\n      </li>\n      <li class=\"${page >= totalPages ? 'disabled' : ''}\">\n        <a click.delegate=\"goToNextPage()\" aria-label=\"Siguiente\">\n          <span aria-hidden=\"true\">Siguiente</span>\n        </a>\n      </li>\n      <li class=\"${page >= totalPages ? 'disabled' : ''}\">\n        <a click.delegate=\"goToLastPage()\" aria-label=\"Último\">\n          <span aria-hidden=\"true\">Final</span>\n        </a>\n      </li>\n    </ul>\n  </nav>\n</template>\n"; });
 define('text!modules/contest/create-contest/create-contest.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"container\">\n    <h2 class=\"text-right\">Nueva Maratón</h2>\n    <hr>\n    <form submit.delegate=\"create()\">\n      <div class=\"form-horizontal form-horizontal-assignment\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\">Nombre:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Nombre de la maratón\" value.bind=\"newContest.title\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Título de la maratón. Por ejemplo 'II Maratón de Programación UFPS'\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\">Descripción:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <textarea class=\"form-control\" placeholder=\"Descripción de la maratón\" value.bind=\"newContest.description\"></textarea>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Descripción que se mostrará a los estudiantes al ingresar a la maratón\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\">Reglas:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <textarea class=\"form-control\" placeholder=\"En este espacio puede indicar reglas especificas sobre el horario de competencia, premios, información adicional, etc.\"\n              value.bind=\"newContest.rules\"></textarea>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Reglas de la maratón\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\">Desde el:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"date\" class=\"form-control\" value.bind=\"startDate\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de inicio de la maratón\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\">a las:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"time\" class=\"form-control\" value.bind=\"startTime\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora de inicio de la maratón\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\">Hasta el:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"date\" class=\"form-control\" value.bind=\"endDate\" min=\"${startDate}\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Fecha de terminación de la maratón\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-horizontal col-md-6\">\n        <div class=\"form-group\">\n          <label class=\"control-label col-sm-2\">a las:</label>\n          <div class=\"col-sm-10 input-group ufps-input-creator\">\n            <input type=\"time\" class=\"form-control\" value.bind=\"endTime\" required>\n            <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"Hora de terminación de la maratón\">\n              <span class=\"glyphicon glyphicon-question-sign\"></span>\n            </span>\n          </div>\n        </div>\n      </div>\n      <div class=\"text-center\">\n        <p>Esta maratón será: </p>\n        <label class=\"radio-inline\">\n          <input type=\"radio\" model.bind=\"true\" checked.bind=\"newContest.privacy\"> Pública\n        </label>\n        <label class=\"radio-inline\">\n          <input type=\"radio\" model.bind=\"false\" checked.bind=\"newContest.privacy\"> Privada\n        </label>\n      </div>\n      <br>\n      <div class=\"form-horizontal form-horizontal-assignment\" if.bind=\"!newContest.privacy\">\n        <label class=\"control-label col-sm-2\">Clave:</label>\n        <div class=\"col-sm-10 input-group ufps-input-creator\">\n          <input type=\"text\" class=\"form-control\" placeholder=\"Clave para entrar a la maratón\" value.bind=\"newContest.key\" required>\n          <span class=\"input-group-addon\" tooltip data-toggle=\"tooltip\" title=\"asigne una clave e informela a los usuarios que participarán.\">\n            <span class=\"glyphicon glyphicon-question-sign\"></span>\n          </span>\n        </div>\n        <br>\n      </div>\n      <div class=\"text-center\">\n        <input type=\"submit\" value=\"Crear Maratón\" class=\"btn btn-default ufps-btn-default\">\n      </div>\n    </form>\n  </div>\n\n</template>\n"; });
-define('text!modules/contest/home-contest/home-contest.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/elements/filter\"></require>\n  <require from=\"../../../resources/elements/paginator\"></require>\n  <div class=\"container\">\n    <div class=\"text-center col-sm-12\">\n      <br>\n      <a route-href=\"create\" class=\"btn btn-default ufps-btn-default\">Crear Maratón</a>\n    </div>\n    <br>\n    <h1 class=\"text-right\">Mis maratones</h1>\n    <hr>\n    <filter number-of-items.bind=\"numberOfItems\" sort-options.bind=\"sortOptions\" filter-change.bind=\"filterChange\" limit.bind=\"limit\"\n      sort.bind=\"sort\" by.bind=\"by\" text-to-show.bind=\"'maratones'\" language-flag.bind=\"false\"></filter>\n    <table>\n      <thead>\n        <tr>\n          <th class=\"text-center\">Id</th>\n          <th class=\"text-center\">Nombre</th>\n          <th class=\"text-center\">Tipo</th>\n          <th class=\"text-center\"></th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td>1</td>\n          <td>Maratón Principal</td>\n          <td class=\"text-center\">Pública</td>\n          <td class=\"text-right\">\n            <a href=\"#\" class=\"btn btn-default ufps-btn-default\">Editar y añadir problemas</a>\n          </td>\n        </tr>\n        <tr>\n          <td>2</td>\n          <td>Maratón Principal</td>\n          <td class=\"text-center\">Pública</td>\n          <td class=\"text-right\">\n            <a href=\"#\" class=\"btn btn-default ufps-btn-default\">Editar y añadir problemas</a>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n    <paginator page.bind=\"page\" total-pages.bind=\"totalPages\"></paginator>\n    <h1 class=\"text-right\">Maratones en ejecución</h1>\n    <hr>\n    <filter number-of-items.bind=\"numberOfItems\" sort-options.bind=\"sortOptions\" filter-change.bind=\"filterChange\" limit.bind=\"limit\"\n      sort.bind=\"sort\" by.bind=\"by\" text-to-show.bind=\"'maratones'\" language-flag.bind=\"false\"></filter>\n    <table>\n      <thead>\n        <tr>\n          <th class=\"text-center\">Id</th>\n          <th class=\"text-center\">Nombre</th>\n          <th class=\"text-center\">Tipo</th>\n          <th class=\"text-center\"></th>\n        </tr>\n      </thead>\n      <tbody>\n          <tr>\n              <td>1</td>\n              <td>Maratón Principal</td>\n              <td class=\"text-center\">Pública</td>\n              <td class=\"text-center\">\n                <a href=\"#\" class=\"btn btn-default ufps-btn-default\">Abrir</a>\n              </td>\n            </tr>\n            <tr>\n              <td>2</td>\n              <td>Maratón Principal</td>\n              <td class=\"text-center\">Pública</td>\n              <td class=\"text-center\">\n                <a href=\"#\" class=\"btn btn-default ufps-btn-default\">Abrir</a>\n              </td>\n            </tr>\n      </tbody>\n    </table>\n    <paginator page.bind=\"page\" total-pages.bind=\"totalPages\"></paginator>\n    <h1 class=\"text-right\">Próximas maratones</h1>\n    <hr>\n    <filter number-of-items.bind=\"numberOfItems\" sort-options.bind=\"sortOptions\" filter-change.bind=\"filterChange\" limit.bind=\"limit\"\n      sort.bind=\"sort\" by.bind=\"by\" text-to-show.bind=\"'maratones'\" language-flag.bind=\"false\"></filter>\n    <table>\n      <thead>\n        <tr>\n          <th class=\"text-center\">Id</th>\n          <th class=\"text-center\">Nombre</th>\n          <th class=\"text-center\">Tipo</th>\n          <th class=\"text-center\"></th>\n        </tr>\n      </thead>\n      <tbody>\n          <tr>\n              <td>1</td>\n              <td>Maratón Principal</td>\n              <td class=\"text-center\">Pública</td>\n              <td class=\"text-center\">\n                <a href=\"#\" class=\"btn btn-default ufps-btn-default\">Abrir</a>\n              </td>\n            </tr>\n            <tr>\n              <td>2</td>\n              <td>Maratón Principal</td>\n              <td class=\"text-center\">Pública</td>\n              <td class=\"text-center\">\n                <a href=\"#\" class=\"btn btn-default ufps-btn-default\">Abrir</a>\n              </td>\n            </tr>\n      </tbody>\n    </table>\n    <paginator page.bind=\"page\" total-pages.bind=\"totalPages\"></paginator>\n  </div>\n</template>\n"; });
+define('text!modules/contest/home-contest/home-contest.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/elements/filter\"></require>\n  <require from=\"../../../resources/elements/paginator\"></require>\n  <div class=\"container\">\n    <div class=\"text-center col-sm-12\">\n      <br>\n      <a route-href=\"create\" class=\"btn btn-default ufps-btn-default\">Crear Maratón</a>\n    </div>\n    <br>\n    <h1 class=\"text-right\">Mis maratones</h1>\n    <hr>\n    <filter number-of-items.bind=\"numberOfItems\" sort-options.bind=\"sortOptions\" filter-change.bind=\"filterChangeMyContests\"\n      limit.bind=\"limitMyContests\" sort.bind=\"sortMyContests\" by.bind=\"byMyContests\" text-to-show.bind=\"'maratones'\" language-flag.bind=\"false\"></filter>\n    <table>\n      <thead>\n        <tr>\n          <th class=\"text-center\">Id</th>\n          <th class=\"text-center\">Nombre</th>\n          <th class=\"text-center\">Tipo</th>\n          <th class=\"text-center\">Fecha de inicio</th>\n          <th class=\"text-center\"></th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr repeat.for=\"contest of myContests\">\n          <td>${contest.id}</td>\n          <td>${contest.title}</td>\n          <td class=\"text-center\" if.bind=\"contest.privacy\">Pública</td>\n          <td class=\"text-center\" if.bind=\"!contest.privacy\">Privada</td>\n          <td class=\"text-center\">${contest.getSemanticStartDate()}</td>\n          <td class=\"text-right\">\n            <a href=\"#\" class=\"btn btn-default ufps-btn-default\">Editar y añadir problemas</a>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n    <paginator page.bind=\"pageMyContests\" total-pages.bind=\"totalPagesMyContests\"></paginator>\n    <h1 class=\"text-right\">Maratones en ejecución y futuras</h1>\n    <hr>\n    <filter number-of-items.bind=\"numberOfItems\" sort-options.bind=\"sortOptions\" filter-change.bind=\"filterChangeAllContests\"\n      limit.bind=\"limitAllContests\" sort.bind=\"sortAllContests\" by.bind=\"byAllContests\" text-to-show.bind=\"'maratones'\" language-flag.bind=\"false\"></filter>\n    <table>\n      <thead>\n        <tr>\n          <th class=\"text-center\">Id</th>\n          <th class=\"text-center\">Nombre</th>\n          <th class=\"text-center\">Tipo</th>\n          <th class=\"text-center\">Fecha de inicio</th>\n          <th class=\"text-center\"></th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr repeat.for=\"contest of allContests\">\n          <td>${contest.id}</td>\n          <td>${contest.title}</td>\n          <td class=\"text-center\" if.bind=\"contest.privacy\">Pública</td>\n          <td class=\"text-center\" if.bind=\"!contest.privacy\">Privada</td>\n          <td class=\"text-center\">${contest.getSemanticStartDate()}</td>\n          <td class=\"text-right\">\n            <a href=\"#\" class=\"btn btn-default ufps-btn-default\">Abrir</a>\n          </td>\n        </tr>\n      </tbody>\n    </table>\n    <paginator page.bind=\"pageAllContests\" total-pages.bind=\"totalPagesAllContests\"></paginator>\n  </div>\n</template>\n"; });
 define('text!modules/material/category-material/category-material.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/attributes/tooltip\"></require>\n  <require from=\"../../../resources/elements/filter\"></require>\n  <require from=\"../../../resources/elements/paginator\"></require>\n  <div class=\"container ufps-container-logged\">\n    <h1 class=\"text-right\">${category}</h1>\n    <hr>\n    <filter number-of-items.bind=\"numberOfItems\" sort-options.bind=\"sortOptions\" filter-change.bind = \"filterChange\" limit.bind =\"limit\" sort.bind=\"sort\" by.bind=\"by\" text-to-show.bind=\"'materiales'\" language-flag.bind=\"false\"></filter>\n    <div repeat.for=\"material of materials\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n      <a route-href=\"route: specificMaterial; params.bind: {id:material.id}\">\n        <div class=\"ufps-card\">\n          <div class=\"ufps-card-title ufps-card-material\">\n            <span if.bind=\"authService.isAdmin()\" class=\"ufps-edit-category glyphicon glyphicon-pencil\" data-toggle=\"tooltip\" title=\"Editar este material\"\n              tooltip></span>\n            <span if.bind=\"authService.isAdmin()\" class=\"ufps-remove-category glyphicon glyphicon-remove\" data-toggle=\"tooltip\" title=\"Eliminar este material\"\n              tooltip></span>\n            <h1>${material.name}</h1>\n          </div>\n        </div>\n      </a>\n    </div>\n    <div if.bind=\"authService.authenticated\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container\">\n      <div class=\"ufps-card\" data-toggle=\"modal\" data-target=\"#new-material\">\n        <div class=\"ufps-card-title\">\n          <h1>\n            <span class=\"glyphicon glyphicon-plus\"></span>\n          </h1>\n        </div>\n        <div class=\"col-xs-12 ufps-card-link\">\n          Subir material\n        </div>\n        <div class=\"fix\"></div>\n      </div>\n    </div>\n    <div class=\"fix\"></div>\n    <paginator page.bind=\"page\" total-pages.bind=\"totalPages\"></paginator>\n  </div>\n  <!--MODAL PARA AÑADIR MATERIAL-->\n  <div if.bind=\"authService.authenticated\" class=\"modal fade\" id=\"new-material\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"new-material\">\n    <div class=\"modal-dialog\" role=\"document\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n          </button>\n          <h4 class=\"modal-title\">Añadir material</h4>\n          <br>\n          <form submit.delegate=\"createMaterial()\">\n            <input type=\"text\" class=\"form-control\" placeholder=\"Nombre\" value.bind=\"newMaterial.name\" required>\n            <br>\n            <input type=\"text\" class=\"form-control\" placeholder=\"Descripcion\" value.bind=\"newMaterial.description\">\n            <br>\n            <label for=\"selectType\">Tipo:</label>\n            <input type=\"radio\" name=\"selectType\" checked.bind=\"newMaterial.isPdf\" model.bind=\"true\"> PDF\n            <input type=\"radio\" name=\"selectType\" checked.bind=\"newMaterial.isPdf\" model.bind=\"false\"> URL\n            <br>\n            <input if.bind=\"!newMaterial.isPdf\" type=\"text\" class=\"form-control\" placeholder=\"Url\" value.bind=\"newMaterial.url\">\n            <input if.bind=\"newMaterial.isPdf\" type=\"file\" class=\"form-control\" files.bind=\"newMaterial.pdf\" accept=\".pdf\">\n            <br>\n            <p class=\"text-center\" if.bind=\"authService.isStudent()\">Aparecerá en la plataforma una vez sea aprobado por un administrador.</p>\n            <input type=\"submit\" class=\"btn btn-default ufps-btn-default\" value=\"Añadir\">\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</template>\n"; });
 define('text!modules/material/public-material/public-material.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"../../../resources/elements/filter\"></require>\n  <require from=\"../../../resources/elements/paginator\"></require>\n  <div slot=\"content\" class=\"body-slot\">\n    <app-header></app-header>\n    <div class=\"container\">\n      <br>\n      <filter number-of-items.bind=\"numberOfItems\" sort-options.bind=\"sortOptions\" filter-change.bind = \"filterChange\" limit.bind =\"limit\" sort.bind=\"sort\" by.bind=\"by\" text-to-show.bind=\"'materiales'\" language-flag.bind=\"false\"></filter>\n      <div repeat.for=\"material of materials\" class=\"col-xs-12 col-sm-6 col-lg-3 ufps-card-container\">\n        <a href=\"#/materials/1/material/${material.id}\">\n          <div class=\"ufps-card\">\n            <div class=\"ufps-card-title ufps-card-material\">\n              <span if.bind=\"authService.isAdmin()\" class=\"ufps-edit-category glyphicon glyphicon-pencil\" data-toggle=\"tooltip\" title=\"Editar este material\"\n                tooltip></span>\n              <span if.bind=\"authService.isAdmin()\" class=\"ufps-remove-category glyphicon glyphicon-remove\" data-toggle=\"tooltip\" title=\"Eliminar este material\"\n                tooltip></span>\n              <h1>${material.name}</h1>\n            </div>\n          </div>\n        </a>\n      </div>\n      <div class=\"fix\"></div>\n      <paginator page.bind=\"page\" total-pages.bind=\"totalPages\"></paginator>\n    </div>\n  </div>\n</template>\n"; });
 define('text!modules/material/specific-material/specific-material.html', ['module'], function(module) { module.exports = "<template>\n  <div class=\"container text-center\">\n    <div class=\"row\">\n      <div class=\"col-lg-10 col-lg-offset-1\">\n          <h2>${material.name}</h2>\n          <p>${material.description}</p>\n          <div class=\"ufps-container-iframe\">\n              <iframe src=\"${material.url}\" width = \"100%\" class = \"ufps-iframe\" title=\"${material.name}\"></iframe>\n          </div>\n      </div>\n    </div>\n    <div class=\"row\">\n      <p class=\"text-center\"><a href=\"${material.url}\" target=\"_blank\">Abrir en pestaña externa</a></p>\n    </div>\n  </div>\n</template>\n"; });

@@ -53,4 +53,39 @@ export class Contests {
       })
       .then(this.httpService.checkStatus)
   }
+
+  /**
+   * Obtiene la lista de maratones para un usuario especifico (Si el usuario es undefined, para todos).
+   * @param {Number} limit - Cantidad de maratones a obtener.
+   * @param {Number} page - Página a obtener.
+   * @param {Number} userId - Identificador de usuario.
+   */
+  getMyContests (limit, page, userId) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.contests + '?limit=' + limit + '&page=' + page + '&user=' + userId, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Obtiene todas las maratones próximas.
+   * @param {Number} limit - Cantidad de maratones a obtener.
+   * @param {Number} page - Página a obtener
+   */
+  getContests (limit, page) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.contests + '?limit=' + limit + '&page=' + page, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
 }
