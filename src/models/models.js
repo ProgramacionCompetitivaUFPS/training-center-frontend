@@ -4,6 +4,7 @@
  * a través de este archivo: from 'models/models'
  * @exports Assignment (Class) - Modelo de tarea
  * @exports Category (Class) - Modelo de categoría
+ * @exports Category (Class) - Modelo de maratón de programación
  * @exports Material (Class) - Modelo de Material
  * @exports Problem (Class) - Modelo de problemas
  * @exports Syllabus (Class) - Modelo de clases
@@ -13,6 +14,7 @@
  */
 export * from './assignment'
 export * from './category'
+export * from './contest'
 export * from './material'
 export * from './problem'
 export * from './syllabus'

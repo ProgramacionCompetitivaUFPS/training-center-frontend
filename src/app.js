@@ -106,6 +106,17 @@ export class App {
           roles: ['admin', 'coach', 'student']
         }
       },
+      // maratones
+      {
+        name: 'contest',
+        route: 'maraton',
+        moduleId: './modules/contest/contest',
+        layoutView: './layouts/logged.html',
+        nav: true,
+        settings: {
+          roles: ['admin', 'coach', 'student']
+        }
+      },
       // Clases
       {
         name: 'classes',

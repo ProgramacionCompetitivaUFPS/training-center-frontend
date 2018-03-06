@@ -1,0 +1,7 @@
+organization=gersonlazaro-github
+projectKey=ufps-frontend
+serverUrl=https://sonarcloud.io
+serverVersion=7.1.0.36868
+dashboardUrl=https://sonarcloud.io/dashboard/index/ufps-frontend
+ceTaskId=AWHP_MEH1uc8gbLrNfps
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AWHP_MEH1uc8gbLrNfps

@@ -1,3 +1,5 @@
+import { inject } from 'aurelia-framework'
+
 import { API } from 'config/config'
 import { Assignment, Syllabus } from 'models/models'
 import { Http } from 'services/http'
@@ -9,17 +11,11 @@ import { Jwt } from 'services/jwt'
  * @export
  * @class Syllabuses
  */
+
+// dependencias a inyectar: Servicio de conexión Http (Http),
+// servicio de manejo de Json Web Tokens (Jwt)
+@inject(Http, Jwt)
 export class Syllabuses {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el servicio.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de conexión Http (Http),
-   * servicio de manejo de Json Web Tokens (Jwt)
-   */
-  static inject () {
-    return [Http, Jwt]
-  }
 
   /**
    * Crea una instancia de Syllabus.
@@ -229,9 +225,26 @@ export class Syllabuses {
   }
 
   /**
+   * Obtiene del backend los materiales del syllabus.
+   * @param {number} id - Identificador del syllabus del cual se obtendrá el material
+   * @returns {Promise} Promesa con los materiales
+   */
+  loadMaterials (id) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + id + '/' + API.endpoints.materials, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
    * Agrega problemas a una tarea
-   * @param {Number} idAssignment - Id de la tarea de la cual se añaden las tareas
-   * @param {Array} problems - Arrays con los id de los problemas a añadir
+   * @param {Number} idAssignment - Id de la tarea a la cual se añaden los problemas
+   * @param {Array} problems - Array con los id de los problemas a añadir
    */
   addProblems (idAssignment, problems) {
     return this.httpService.httpClient
@@ -249,6 +262,26 @@ export class Syllabuses {
   }
   
   /**
+   * Agrega materiales a un syllabus
+   * @param {Number} idSyllabus - Id del syllabus al cual se añaden los materiales
+   * @param {Array} materials - Array con los id de los materiales a añadir
+   */
+  addMaterials (idSyllabus, materials) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + idSyllabus + '/' + API.endpoints.addMaterials, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          materials: materials
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  /**
    * Elimina un problema de una tarea
    * @param {Number} idAssignment - Id de la tarea de la cual se borra el problema
    * @param {Number} idProblem - Id del problema a borrar
@@ -263,6 +296,26 @@ export class Syllabuses {
         },
         body: JSON.stringify({
           problems: [idProblem]
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  /**
+   * Elimina un material de un syllabus
+   * @param {Number} idSyllabus - Id del syllabus del cual se borra el material
+   * @param {Number} idMaterial - Id del material a borrar
+   */
+  removeMaterial (idSyllabus, idMaterial) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + idSyllabus + '/' + API.endpoints.removeMaterialSyllabus, {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          materials: [idMaterial]
         })
       })
       .then(this.httpService.checkStatus)

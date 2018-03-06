@@ -25,7 +25,10 @@ export let API = {
     assignments: 'assignments',
     assignment: 'assignment',
     addProblemAssignment: 'add-problems',
-    removeProblemAssignment: 'remove-problems'
+    addMaterials: 'add-materials',
+    removeProblemAssignment: 'remove-problems',
+    removeMaterialSyllabus: 'remove-materials',
+    contests: 'contests'
   },
 
   // SESSION

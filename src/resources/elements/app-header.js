@@ -40,6 +40,7 @@ export class AppHeader {
     this.ranking = this.routerService.navigation.find(i => i.config.name.indexOf('ranking') !== -1)
     this.classes = this.routerService.navigation.find(i => i.config.name.indexOf('classes') !== -1)
     this.admin = this.routerService.navigation.find(i => i.config.name.indexOf('admin') !== -1)
+    this.admin = this.routerService.navigation.find(i => i.config.name.indexOf('contest') !== -1)
   }
 
   /**

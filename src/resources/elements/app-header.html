@@ -39,6 +39,9 @@
           <li class="ufps-btn-nav ${ranking.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
             <a route-href="route: ranking">Ranking</a>
           </li>
+          <li class="ufps-btn-nav ${contest.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
+            <a route-href="route: contest">Maratones</a>
+          </li>
           <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
               <a route-href="route: admin">Administración</a>
             </li>

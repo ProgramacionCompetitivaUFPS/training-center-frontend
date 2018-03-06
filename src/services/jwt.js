@@ -1,4 +1,6 @@
-import { API } from 'config/config'
+import { inject } from 'aurelia-framework'
+import { API, MESSAGES } from 'config/config'
+import { Alert } from 'services/alert'
 
 /**
  * Jwt (service)
@@ -6,11 +8,13 @@ import { API } from 'config/config'
  * @export
  * @class Jwt
  */
+@inject(Alert)
 export class Jwt {
   /**
    * Crea una instancia de Jwt.
    */
-  constructor () {
+  constructor (alertService) {
+    this.alertService = alertService
     this.token = window.localStorage.getItem(API.tokenName)
     if (this.tokenExists()) {
       this.data = JSON.parse(window.atob(this.token.split('.')[1]))
@@ -43,7 +47,15 @@ export class Jwt {
    * @returns boolean - true si existe un token, false en caso contrario
    */
   tokenExists () {
-    return window.localStorage.getItem(API.tokenName) !== null
+    if (window.localStorage.getItem(API.tokenName) === null) return false
+    let tmp = JSON.parse(window.atob(this.token.split('.')[1])).exp
+    let now = Date.parse(new Date()) / 1000
+    if (tmp > now) return true
+    else {
+      this.remove()
+      this.alertService.showMessage(MESSAGES.sessionExpired)
+      return false
+    }
   }
 
   /**

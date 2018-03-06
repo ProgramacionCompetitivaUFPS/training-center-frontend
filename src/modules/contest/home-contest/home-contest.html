@@ -1,0 +1,110 @@
+<template>
+  <require from="../../../resources/elements/filter"></require>
+  <require from="../../../resources/elements/paginator"></require>
+  <div class="container">
+    <div class="text-center col-sm-12">
+      <br>
+      <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+    </div>
+    <br>
+    <h1 class="text-right">Mis maratones</h1>
+    <hr>
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
+      sort.bind="sort" by.bind="by" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
+    <table>
+      <thead>
+        <tr>
+          <th class="text-center">Id</th>
+          <th class="text-center">Nombre</th>
+          <th class="text-center">Tipo</th>
+          <th class="text-center"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Maratón Principal</td>
+          <td class="text-center">Pública</td>
+          <td class="text-right">
+            <a href="#" class="btn btn-default ufps-btn-default">Editar y añadir problemas</a>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Maratón Principal</td>
+          <td class="text-center">Pública</td>
+          <td class="text-right">
+            <a href="#" class="btn btn-default ufps-btn-default">Editar y añadir problemas</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+    <h1 class="text-right">Maratones en ejecución</h1>
+    <hr>
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
+      sort.bind="sort" by.bind="by" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
+    <table>
+      <thead>
+        <tr>
+          <th class="text-center">Id</th>
+          <th class="text-center">Nombre</th>
+          <th class="text-center">Tipo</th>
+          <th class="text-center"></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>1</td>
+              <td>Maratón Principal</td>
+              <td class="text-center">Pública</td>
+              <td class="text-center">
+                <a href="#" class="btn btn-default ufps-btn-default">Abrir</a>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Maratón Principal</td>
+              <td class="text-center">Pública</td>
+              <td class="text-center">
+                <a href="#" class="btn btn-default ufps-btn-default">Abrir</a>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+    <h1 class="text-right">Próximas maratones</h1>
+    <hr>
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
+      sort.bind="sort" by.bind="by" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
+    <table>
+      <thead>
+        <tr>
+          <th class="text-center">Id</th>
+          <th class="text-center">Nombre</th>
+          <th class="text-center">Tipo</th>
+          <th class="text-center"></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>1</td>
+              <td>Maratón Principal</td>
+              <td class="text-center">Pública</td>
+              <td class="text-center">
+                <a href="#" class="btn btn-default ufps-btn-default">Abrir</a>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Maratón Principal</td>
+              <td class="text-center">Pública</td>
+              <td class="text-center">
+                <a href="#" class="btn btn-default ufps-btn-default">Abrir</a>
+              </td>
+            </tr>
+      </tbody>
+    </table>
+    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+  </div>
+</template>

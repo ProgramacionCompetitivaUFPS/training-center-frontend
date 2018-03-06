@@ -146,6 +146,10 @@ export let MESSAGES = {
     text: 'El material seleccionado ha sido eliminado',
     type: 'success'
   },
+  invalidIdMaterial: {
+    text: 'La lista de materiales debe contener solo los id de los problemas a añadir, separada por comas',
+    type: 'error'
+  },
   // GENERAL
   serverError: {
     text: 'Ha ocurrido un error interno. Lo sentimos. Vuelve a intentarlo mas tarde',
@@ -157,6 +161,10 @@ export let MESSAGES = {
   },
   permissionsError: {
     text: 'Usted no tiene permisos para realizar esta acción',
+    type: 'error'
+  },
+  sessionExpired: {
+    text: 'Su sesión ha expirado. Para seguir utilizando la plataforma, vuelva a iniciar sesión',
     type: 'error'
   },
   // SYLLABUS
@@ -195,5 +203,14 @@ export let MESSAGES = {
   assignmentModified: {
     text: 'La tarea ha sido modificada con éxito',
     type: 'success'
+  },
+  // Contests
+  contestCreated: {
+    text: 'La maratón ha sido creada con éxito',
+    type: 'success'
+  },
+  contestError: {
+    text: 'Hay un error en la información. Verifica que la fecha y hora de inicio sea futura, que la duración sea de al menos 30 minutos y los datos estén completos',
+    type: 'error'
   }
 }

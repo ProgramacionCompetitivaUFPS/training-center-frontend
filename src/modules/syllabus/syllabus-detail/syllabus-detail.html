@@ -8,16 +8,16 @@
     <div repeat.for="assignment of syllabus.assignments" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
 
       <div class="ufps-card">
-        <a route-href="route: ViewAssignment; params.bind: {id:assignment.id}" if.bind="authService.isStudent()" >
+        <a route-href="route: ViewAssignment; params.bind: {id:assignment.id}" if.bind="authService.isStudent()">
           <div class="ufps-card-title">
             <h1>${assignment.title}</h1>
           </div>
         </a>
-        <div  if.bind="authService.isCoach()" class="ufps-card-title">
-            <h1>${assignment.title}</h1>
-          </div>
+        <div if.bind="authService.isCoach()" class="ufps-card-title">
+          <h1>${assignment.title}</h1>
+        </div>
         <div if.bind="authService.isStudent()" class="col-xs-12 ufps-card-link">
-          <a  route-href="route: ViewAssignment; params.bind: {id:assignment.id}" class="ufps-font-size-small">${assignment.getStringDate()}</a>
+          <a route-href="route: ViewAssignment; params.bind: {id:assignment.id}" class="ufps-font-size-small">${assignment.getStringDate()}</a>
         </div>
         <div if.bind="authService.isCoach()" class="col-xs-12 ufps-card-link">
           <a route-href="route: EditAssignment; params.bind: {id:assignment.id}">Editar tarea</a>
@@ -44,5 +44,65 @@
     <div class="fix"></div>
     <h2 class="text-right">Lecturas</h2>
     <hr>
+    <div class="form-horizontal">
+      <form if.bind="authService.isCoach()" submit.delegate="addMaterials()">
+        <div class="form-group col-sm-10">
+          <label class="control-label col-sm-3" for="problem-name">Añadir material:</label>
+          <div class="col-sm-9 input-group ufps-input-creator">
+            <input type="text" class="form-control" placeholder="Ingresa el id de los materiales separados por comas" value.bind="newMaterials"
+              required>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Si el material no está en la plataforma, agreguelo a una categoría y luego ingrese aqui su id">
+              <span class="glyphicon glyphicon-question-sign"></span>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-2 text-center">
+          <input type="submit" value="Añadir" class="btn ufps-btn ufps-btn-default">
+        </div>
+      </form>
+    </div>
+    <div class="container">
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center">Id</th>
+            <th class="text-center">Nombre</th>
+            <th class="text-right">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="material of materials">
+            <td class="text-center">${material.id}</td>
+            <td>
+              ${material.name}
+            </td>
+            <td class="text-right">
+              <a class="ufps-btn btn ufps-btn-default" href="#/materials/${material.category}/material/${material.id}" target="blank">Abrir</a>
+              <a class="ufps-btn btn ufps-btn-default" click.delegate="showRemoveMaterial(material.id)">Eliminar</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!--MODAL PARA ELIMINAR PROBLEMA-->
+  <div if.bind="authService.isCoach()" class="modal fade" id="remove-material" tabindex="-1" role="dialog" aria-labelledby="remove-material">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">¿Estás seguro de eliminar este material?</h4>
+          <br>
+          <p>Esto solo eliminará el material de la clase actual. El material seguirá disponible en la sección pública.</p>
+
+          <button class="btn btn-default ufps-btn-default" click.delegate=removeMaterial()>Si</button>
+          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
