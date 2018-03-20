@@ -21,8 +21,6 @@ export class ViewProblem {
     this.problemService = problemService
     this.routerService = routerService
     this.languages = SETTINGS.languages
-    this.language
-    this.code
     this.sourceValid = false
   }
 
@@ -35,7 +33,8 @@ export class ViewProblem {
    */
   activate (params, routeConfig) {
     this.routeConfig = routeConfig
-    this.id = params.id
+    this.assignmentId = id
+    this.id = params.problemId
     this.lang = params.lang || 'en'
     this.problemService.getProblem(this.id)
       .then(problem => {
@@ -85,7 +84,7 @@ export class ViewProblem {
   }
 
   submit() {
-    this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0])
+    this.problemService.submitSolution(this.id, this.language, this.assignmentId, undefined, this.code[0])
       .then(() => {
         this.alertService.showMessage(MESSAGES.submittedSolution)
       })

@@ -63,15 +63,12 @@ export class GeneralProblems {
   getCategories () {
     this.problemsService.getCategories()
       .then(data => {
-        console.log('DATA')
-        console.log(data)
         this.categories = data.categories
         if (this.categories.length === 0) {
           this.alertService.showMessage(MESSAGES.categoriesEmpty)
         }
       })
       .catch(error => {
-        console.log(error)
         if (error.status === 401) {
           this.alertService.showMessage(MESSAGES.permissionsError)
         } else {

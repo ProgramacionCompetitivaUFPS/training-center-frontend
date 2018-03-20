@@ -137,7 +137,6 @@ export class Materials {
       data.append('data[description]', material.description)
       data.append('data[content]', 'pdf')
       data.append('pdf', material.pdf[0])
-      console.log(material.pdf[0])
       return this.httpService.httpClient
         .fetch(API.endpoints.materials, {
           method: 'post',

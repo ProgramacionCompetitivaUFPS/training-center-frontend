@@ -27,11 +27,14 @@ export class MarkdownCustomAttribute {
    * @param {string} oldValue - Antiguo markdown.
    */
   valueChanged (newValue, oldValue) {
-    this.element.innerHTML = this.converter.makeHtml(
-      newValue
-        .split('\n')
-        .map(line => line.trim())
-        .join('\n')
-      )
+    if (newValue !== null) {
+      this.element.innerHTML = this.converter.makeHtml(
+        newValue
+          .split('\n')
+          .map(line => line.trim())
+          .join('\n')
+        )
+    }
+    
   }
 }

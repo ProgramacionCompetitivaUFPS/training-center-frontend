@@ -52,19 +52,19 @@
           <td class="text-center">${problem.id}</td>
           <td class="text-left ufps-td-problem">
             <p if.bind="problem.isInEnglish()" class="ufps-name-problem-list">
-              <a href="#/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
+              <a route-href="route: ViewProblem; params.bind: {id:assignment.id, problemId: problem.id, lang: 'en'}">${problem.titleEN}</a>
             </p>
             <p if.bind="!problem.isInEnglish()" class="ufps-name-problem-list">
-              <a href="#/problemas/${problem.id}/detalle/es">${problem.titleES}</a>
+              <a route-href="route: ViewProblem; params.bind: {id:assignment.id, problemId: problem.id, lang: 'es'}">${problem.titleES}</a>
             </p>
           </td>
           <td class="text-center">${problem.level}</td>
           <td class="text-center ufps-language">
             <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
-              <a href="#/problemas/${problem.id}/detalle/es">ES</a>
+              <a  route-href="route: ViewProblem; params.bind: {id:assignment.id, problemId: problem.id, lang: 'es'}">ES</a>
             </span> |
             <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
-              <a href="#/problemas/${problem.id}/detalle/en">EN</a>
+              <a  route-href="route: ViewProblem; params.bind: {id:assignment.id, problemId: problem.id, lang: 'en'}">EN</a>
             </span>
           </td>
         </tr>

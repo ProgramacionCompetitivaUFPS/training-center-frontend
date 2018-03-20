@@ -61,12 +61,11 @@ export class EditAssignment {
         this.startDate = this.assignment.startDate.substr(0, 10)
         this.endDate = this.assignment.endDate.substr(0, 10)
         this.startTime = this.assignment.startDate.substr(11, 5)
-        this.endTime = this.assignment.startDate.substr(11, 5)
+        this.endTime = this.assignment.endDate.substr(11, 5)
         this.assignment.adjuntProblems(data.assignment.problems)
         this.problems = ''
       })
       .catch(error => {
-        console.log(error)
         if (error.status === 401) {
           this.alertService.showMessage(MESSAGES.permissionsError)
         } else {
@@ -95,7 +94,6 @@ export class EditAssignment {
           this.alertService.showMessage(MESSAGES.assignmentModified)
         })
         .catch(error => {
-          console.log(error)
           if (error.status === 401) {
             this.alertService.showMessage(MESSAGES.permissionsError)
           } else {
@@ -115,7 +113,6 @@ export class EditAssignment {
         window.$('#remove-problem').modal('hide')
       })
       .catch(error => {
-        console.log(error)
         if (error.status === 401 || error.status === 403) {
           this.alertService.showMessage(MESSAGES.permissionsError)
         } else if (error.status === 500) {
@@ -156,7 +153,6 @@ export class EditAssignment {
           this.getAssignment()
         })
         .catch(error => {
-          console.log(error)
           if (error.status === 401) {
             this.alertService.showMessage(MESSAGES.permissionsError)
           } else {

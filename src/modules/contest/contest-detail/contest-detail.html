@@ -1,0 +1,87 @@
+<template>
+  <div class="container">
+    <h2 class="text-right">${contest.title}</h2>
+    <hr>
+    <ul class="nav nav-pills nav-justified nav-maraton">
+      <li class="active">
+        <a>Inicio</a>
+      </li>
+      <li>
+        <a>Problemas</a>
+      </li>
+      <li>
+        <a>Tablero</a>
+      </li>
+    </ul>
+    <br>
+    <div class="row">
+      <div class="col-md-8 text-center">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h3>Descripción</h3>
+            <p>${contest.description}</p>
+            <h3>Reglas</h3>
+            <p>${contest.rules}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 text-center">
+        <br>
+        <p>Inicio: ${contest.getSemanticStartDate()}</p>
+        <p>Finalización: ${contest.getSemanticEndDate()}</p>
+        <br>
+        <div if.bind="status === 'registered'">
+          <p>¡Ya estás registrado!</p>
+          <a click.delegate="showUnregisterModal()" class="btn btn-default ufps-btn-default">Anular inscripción</a>
+        </div>
+        <div if.bind="status === 'unregistered'">
+          <a click.delegate="showRegisterModal()" class="btn btn-default ufps-btn-default">Registrate</a>
+        </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!--MODAL PARA REGISTRARSE-->
+  <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Regístrate</h4>
+          <br>
+          <p>¿Deseas participar en esta competencia?</p>
+          <div if.bind="!contest.privacy">
+            <p>Esta competencia es privada. Para ingresar, debes tener una clave, que debe ser indicada por el administrador.</p>
+            <div class="form-group">
+              <input type="text" class="form-control" value.bind="key" placeholder="Ingresa la clave de la competencia">
+            </div>
+          </div>
+          <button class="btn btn-default ufps-btn-default" click.delegate=register()>Registrarme</button>
+          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="unregister-modal" tabindex="-1" role="dialog" aria-labelledby="unregister-modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Anular registro</h4>
+          <br>
+          <p>¿Estas seguro de salir de esta maratón?</p>
+          <button class="btn btn-default ufps-btn-default" click.delegate=unregister()>Anular registro</button>
+          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>

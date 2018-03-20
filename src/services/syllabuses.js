@@ -186,6 +186,21 @@ export class Syllabuses {
   }
 
   /**
+   * Obtiene del backend las estadisticas de un syllabus.
+   */
+  getStatistics (id, limit, page) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + id + '/' + API.endpoints.ranking + '?limit=' + limit + '&page=' + page, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
    * Edita una tarea en el sistema
    * @param {Assignment} assignment - Tarea a editar
    */

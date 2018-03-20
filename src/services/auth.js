@@ -37,7 +37,6 @@ export class Auth {
    * @returns - Promise con el token de usuario
    */
   auth (user) {
-    console.log(JSON.stringify(user))
     return this.httpService.httpClient
       .fetch(API.endpoints.auth, {
         method: 'post',
@@ -252,5 +251,44 @@ export class Auth {
    */
   getUserId () {
     return this.jwtService.getUserId()
+  }
+
+  /**
+   * Obtiene del backend la lista de usuarios.
+   * @param {Number} page - Página de materiales a obtener
+   * @param {Number} limit - Cantidad de materiales a obtener
+   * @param {string} sort - opcional, por defecto ordena por id, si sort es 'name' ordena por nombre
+   * @param {string} by - asc o desc, ordenamiento ascendente o descendente
+   * @returns {Promise} Promesa con los usuarios.
+   */
+  getUsers (page, limit, sort, by) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.users + '?page=' + page + '&limit=' + limit + '&sort=' + sort + '&by=' + by, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+   /**
+   * Elimina un usuario.
+   * @param {Number} id - Id del usuario a eliminar.
+   */
+  removeUser (id) {
+    return this.httpService.httpClient
+        .fetch(API.endpoints.users + '/remove-account', {
+          method: 'post',
+          headers: {
+            'Authorization': 'Bearer ' + this.jwtService.token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            'users': [id]
+          })
+        })
+        .then(this.httpService.checkStatus)
   }
 }

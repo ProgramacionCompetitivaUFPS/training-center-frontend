@@ -4,10 +4,13 @@
  * a través de este archivo: from 'services/services'
  * @exports Alert (Service) - Servicio de notificaciones
  * @exports Auth (Service) - Servicio de autenticación y validación
- *  * @exports Auth (Service) - Servicio de maratones de programación
+ * @exports Contests (Service) - Servicio de maratones de programación
  * @exports Http (Service) - Servicio de conexión http
- * @exports Jwt (Service) - Servicio de manejode JSON Web Token (JWT)
+ * @exports Jwt (Service) - Servicio de manejo de JSON Web Token (JWT)
+ * @exports Materials (Service) - Servicio de manejo de materiales
  * @exports Problems (Service) - Servicio para el manejo de problemas y categorías
+ * @exports Ranking (Service) - Servicio para la obtención del ranking
+ * @exports Syllabuses (Service) - Servicio para el manejo de syllabus
  */
 export * from './alert'
 export * from './auth'
@@ -16,4 +19,5 @@ export * from './http'
 export * from './jwt'
 export * from './materials'
 export * from './problems'
+export * from './rankings'
 export * from './syllabuses'

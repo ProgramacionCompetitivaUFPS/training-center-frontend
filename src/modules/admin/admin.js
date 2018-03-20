@@ -19,6 +19,8 @@ export class Admin {
   // Elementos observables. 
   @observable page
   @observable filterChange
+  @observable pageUsers
+  @observable filterChangeUser
 
   /**
    * Inicializa una instancia de Admin.
@@ -40,6 +42,15 @@ export class Admin {
     this.by = 'Ascendente'
     this.page = 1
     this.totalPages = 1
+
+    this.numberOfUsersToShow = [10, 20, 30]
+    this.filterChangeUser = false
+    this.limitUsers = 10
+    this.sortUsers = 'Id'
+    this.byUsers = 'Ascendente'
+    this.pageUsers = 1
+    this.totalPagesUsers = 1
+    this.getUsers()
     this.getMaterials()
   }
 
@@ -53,12 +64,30 @@ export class Admin {
   }
 
   /**
+   * Cuando cambia un filtro, obtiene los usuarios con los nuevos parametros.
+   * @param {bool} act - Nuevo estado 
+   * @param {bool} prev - Antiguo estado
+   */
+  filterChangeUserChanged (act, prev) {
+    if(prev !== undefined) this.getUsers()
+  }
+
+  /**
    * Detecta cuando el número de página es modificado para solicitar el nuevo número.
    * @param {Number} act - Número de página nuevo.
    * @param {Number} prev - Número de página antes del cambio
    */
   pageChanged (act, prev) {
     if(prev !== undefined) this.getMaterials()
+  }
+
+  /**
+   * Detecta cuando el número de página es modificado para solicitar el nuevo número.
+   * @param {Number} act - Número de página nuevo.
+   * @param {Number} prev - Número de página antes del cambio
+   */
+  pageUsersChanged (act, prev) {
+    if(prev !== undefined) this.getUsers()
   }
 
   /**
@@ -77,6 +106,28 @@ export class Admin {
       }).catch(error => {
         if (error.status === 404) {
           this.alertService.showMessage(MESSAGES.materialDoesNotExist)
+        } else {
+          this.alertService.showMessage(MESSAGES.serverError)
+        }
+      })
+  }
+
+  /**
+   * Obtiene los usuarios.
+   */
+  getUsers () {
+    this.authService.getUsers(this.pageUsers, this.limitUsers, (this.sortUsers === 'Nombre') ? 'name' : undefined, (this.byUsers === 'Ascendente' ? 'asc' : 'desc'))
+      .then(data => {
+        this.users = []
+        this.totalPagesUsers = data.meta.totalPages
+        if (this.totalPagesUsers !== 0) {
+          for (let i = 0; i < data.data.length; i++) {
+            this.users.push(new UserSignIn(data.data[i].email, undefined, undefined, data.data[i].name, data.data[i].username, data.data[i].code, data.data[i].type, data.data[i].id))
+          }
+        }
+      }).catch(error => {
+        if (error.status === 404) {
+          this.alertService.showMessage(MESSAGES.unknownError)
         } else {
           this.alertService.showMessage(MESSAGES.serverError)
         }
@@ -130,6 +181,16 @@ export class Admin {
     window.$('#remove-material').modal('show')
   }
 
+
+  /**
+   * Muestra un popup para confirmar la eliminación del usuario indicado por id.
+   * @param {number} id - Identificador del usuario a eliminar.
+   */
+  showRemoveUser (id) {
+    this.userToRemove = id
+    window.$('#remove-user').modal('show')
+  }
+
   /**
    * Elimina un material que no ha sido aprobado.
    */
@@ -142,6 +203,21 @@ export class Admin {
       }).catch(() => {
         this.alertService.showMessage(MESSAGES.serverError)
         window.$('#remove-material').modal('hide')
+      })
+  }
+
+  /**
+   * Elimina un usuario de la plataforma.
+   */
+  removeUser () {
+    this.authService.removeUser(this.userToRemove)
+      .then(() => {
+        this.alertService.showMessage(MESSAGES.userDeleted)
+        this.getUsers()
+        window.$('#remove-user').modal('hide')
+      }).catch(() => {
+        this.alertService.showMessage(MESSAGES.serverError)
+        window.$('#remove-user').modal('hide')
       })
   }
 }

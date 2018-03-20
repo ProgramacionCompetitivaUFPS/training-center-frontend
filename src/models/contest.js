@@ -35,13 +35,20 @@ export class Contest {
   }
 
   /**
+   * Retorna la fecha de finalización en un formato semántico al usuario.
+   */
+  getSemanticEndDate () {
+    return this.getSemanticDate(new Date(this.initDate))
+  }
+
+  /**
    * Retorna una fecha con un formato semántico.
    * @param {Date} date - Fecha a convertir.
    */
   getSemanticDate (date) {
     let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     let hour = ''
-    if (date.getHours() == 0) hour = '12:' 
+    if (date.getHours() === 0) hour = '12:'
     else if (date.getHours() > 12) hour = ((date.getHours() - 12) + ':')
     else hour = (date.getHours()) + ':'
     if (date.getMinutes() < 10) hour += '0'

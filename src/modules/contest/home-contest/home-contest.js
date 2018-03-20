@@ -30,13 +30,13 @@ export class HomeContest {
     this.sortMyContests = 'Id'
     this.byMyContests = 'Ascendente'
     this.pageMyContests = 1
-    this.totalPagesMyContests = 1
+    this.totalPagesMyContests = 0
     this.filterChangeAllContests = false
     this.limitAllContests = 10
     this.sortAllContests = 'Id'
     this.byAllContests = 'Ascendente'
     this.pageAllContests = 1
-    this.totalPagesAllContests = 1
+    this.totalPagesAllContests = 0
     this.myContests = []
     this.allContests = []
     this.getMyContests()
@@ -52,8 +52,10 @@ export class HomeContest {
       .then(data => {
         this.totalPagesMyContests = data.meta.totalPages
         this.myContests = []
-        for (let i = 0; i < data.data.length; i++) {
-          this.myContests.push(new Contest(data.data[i].title, data.data[i].description, data.data[i].init_date, data.data[i].end_date, data.data[i].rules, data.data[i].public, undefined, data.data[i].id))
+        if(this.totalPagesMyContests > 0) {
+          for (let i = 0; i < data.data.length; i++) {
+            this.myContests.push(new Contest(data.data[i].title, data.data[i].description, data.data[i].init_date, data.data[i].end_date, data.data[i].rules, data.data[i].public, undefined, data.data[i].id))
+          }
         }
       })
       .catch(error => {
@@ -75,8 +77,10 @@ export class HomeContest {
       .then(data => {
         this.totalPagesAllContests = data.meta.totalPages
         this.allContests = []
-        for (let i = 0; i < data.data.length; i++) {
-          this.allContests.push(new Contest(data.data[i].title, data.data[i].description, data.data[i].init_date, data.data[i].end_date, data.data[i].rules, data.data[i].public, undefined, data.data[i].id))
+        if(this.totalPagesAllContests > 0) {
+          for (let i = 0; i < data.data.length; i++) {
+            this.allContests.push(new Contest(data.data[i].title, data.data[i].description, data.data[i].init_date, data.data[i].end_date, data.data[i].rules, data.data[i].public, undefined, data.data[i].id))
+          }
         }
       })
       .catch(error => {

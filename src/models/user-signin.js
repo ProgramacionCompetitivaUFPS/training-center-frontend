@@ -15,8 +15,9 @@ export class UserSignIn {
    * @param {string} [username=null] - Username del usuario
    * @param {number} [code=null] - Código del usuario
    * @param {number} [type=null] - Tipo de usuario (0 => estudiante, 1=> coach, 2=> admin)
+   * @param {number} [id=null] - Identificador del usuario
    */
-  constructor (email = null, password = null, confirmPassword = null, name = null, username = null, code = null, type = null) {
+  constructor (email = null, password = null, confirmPassword = null, name = null, username = null, code = null, type = null, id = null) {
     this.email = email
     this.password = password
     this.confirmPassword = confirmPassword
@@ -24,6 +25,7 @@ export class UserSignIn {
     this.username = username
     this.code = code
     this.type = type
+    this.id = id
   }
 
   /**

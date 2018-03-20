@@ -180,8 +180,6 @@ export class Problems {
     // Archivos
     data.append('input', problem.input[0])
     data.append('output', problem.output[0])
-    console.log(problem.input[0])
-    console.log(problem.output[0])
     return this.httpService.httpClient
       .fetch(API.endpoints.problems, {
         method: 'post',
@@ -236,6 +234,27 @@ export class Problems {
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token
         }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Envia un problema para su calificación
+   */
+  submitSolution (problemId, language, assignmentId, contestId, code) {
+    var data = new window.FormData()
+    data.append('language', language)
+    if(assignmentId !== undefined) data.append('assignment_problem_id', assignmentId)
+    if(contestId !== undefined) data.append('contest_problem_id', contestId)
+    data.append('code', code)
+    return this.httpService.httpClient
+      .fetch(API.endpoints.problems + '/' + problemId + '/submit', {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        },
+        body: data
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)

@@ -68,7 +68,6 @@ export class SyllabusDetail {
   getMaterials () {
     this.syllabusService.loadMaterials(this.id)
       .then(data => {
-        console.log(data.syllabus.materials)
         this.materials = []
         for (let i = 0; i < data.syllabus.materials.length; i++) {
           this.materials.push(new Material(data.syllabus.materials[i].id, data.syllabus.materials[i].name, data.syllabus.materials[i].category_id, data.syllabus.materials[i].description, undefined, data.syllabus.materials[i].url, undefined, undefined))

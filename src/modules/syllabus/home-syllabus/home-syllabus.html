@@ -35,7 +35,7 @@
           <a route-href="route: SyllabusDetail; params.bind: {id:syllabus.id}">Detalle</a>
         </div>
         <div if.bind="authService.isCoach()" class="col-xs-6 ufps-card-link">
-          <a>Estadísticas</a>
+          <a route-href="route: SyllabusStatistics; params.bind: {id:syllabus.id}">Estadísticas</a>
         </div>
         <div if.bind="authService.isStudent()" class="col-xs-6 ufps-card-link">
           <span if.bind="syllabus.public">Público</span>

@@ -99,7 +99,7 @@ export class App {
       {
         name: 'ranking',
         route: 'ranking',
-        moduleId: './modules/home/home',
+        moduleId: './modules/ranking/ranking',
         layoutView: './layouts/logged.html',
         nav: true,
         settings: {

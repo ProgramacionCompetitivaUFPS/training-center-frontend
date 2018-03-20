@@ -642,6 +642,15 @@ textarea.form-control {
   border-radius: 2px!important;
 }
 
+.nav-pills.nav-maraton > li > a, .nav-maraton.nav-pills > li > a:hover, .nav-maraton.nav-pills > li > a:focus {
+  color: #444;
+  cursor: pointer;
+}
+.nav-pills.nav-maraton > li.active > a, .nav-maraton.nav-pills > li.active > a:hover, .nav-maraton.nav-pills > li.active > a:focus {
+  background-color: #e74c3c;
+  color: #FFF;
+}
+
 .ufps-input-creator select {
   border-color: #CCC;
   border-radius: 2px;

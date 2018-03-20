@@ -104,7 +104,6 @@ export class HomeSyllabus {
         }
       })
       .catch(error => {
-        console.log(error)
         this.enrolledSyllabusesLoaded = false
         if (error.status === 401) {
           this.alertService.showMessage(MESSAGES.permissionsError)
@@ -226,14 +225,12 @@ export class HomeSyllabus {
     } else {
       this.syllabusService.enrollSyllabus(this.syllabusToEnroll.id, this.syllabusToEnroll.key)
         .then((data) => {
-          console.log(data)
           this.alertService.showMessage(MESSAGES.enrolledInSyllabus)
           this.getSyllabuses()
           this.getEnrolledSyllabuses()
           window.$('#enroll-syllabus').modal('hide')
         })
         .catch((error) => {
-          console.log(error)
           this.alertService.showMessage(MESSAGES.unknownError)
           window.$('#enroll-syllabus').modal('hide')
         })

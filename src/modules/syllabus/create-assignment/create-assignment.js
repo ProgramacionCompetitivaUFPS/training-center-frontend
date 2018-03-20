@@ -92,12 +92,10 @@ export class CreateAssignment {
       this.assignment.endDate = this.endDate + ' ' + this.endTime + ':00'
       this.syllabusService.createAssignment(this.assignment)
         .then(data => {
-          console.log(data)
           this.router.navigate('clases/' + this.assignment.syllabusId)
           this.alertService.showMessage(MESSAGES.assignmentCreated)
         })
         .catch(error => {
-          console.log(error)
           if (error.status === 401) {
             this.alertService.showMessage(MESSAGES.permissionsError)
           } else {

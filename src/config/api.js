@@ -9,7 +9,7 @@ export let API = {
   /**
    * apiUrl debe reemplazarse por la dirección del backend
    */
-  apiUrl: 'https://ufps-tc.herokuapp.com/',
+  apiUrl: 'http://ufpstrainingcenter.com:3000/',
   endpoints: {
     auth: 'auth',
     users: 'users',
@@ -28,6 +28,7 @@ export let API = {
     addMaterials: 'add-materials',
     removeProblemAssignment: 'remove-problems',
     removeMaterialSyllabus: 'remove-materials',
+    ranking: 'ranking',
     contests: 'contests'
   },
 

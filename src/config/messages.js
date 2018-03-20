@@ -125,6 +125,10 @@ export let MESSAGES = {
     text: 'Actualmente no hay problemas almacenados en la plataforma',
     type: 'warning'
   },
+  submittedSolution: {
+    text: 'Su solución se ha enviado para ser calificada. En breve recibirá una notificación con la calificación',
+    type: 'success'
+  },
   // Material
   materialDoesNotExists: {
     text: 'El material solicitado no existe',
@@ -209,8 +213,33 @@ export let MESSAGES = {
     text: 'La maratón ha sido creada con éxito',
     type: 'success'
   },
+  contestUpdated: {
+    text: 'La maratón ha sido actualizada con éxito',
+    type: 'success'
+  },
   contestError: {
     text: 'Hay un error en la información. Verifica que la fecha y hora de inicio sea futura, que la duración sea de al menos 30 minutos y los datos estén completos',
     type: 'error'
+  },
+  invalidIdProblem: {
+    text: 'La lista de problemas debe contener solo los id de los problemas a añadir, separada por comas',
+    type: 'error'
+  },
+  contestErrorRegister: {
+    text: 'No se ha podido registrar. Verifique que la maratón no haya terminado, y en caso de ser privada, que su clave sea correcta.',
+    type: 'error'
+  },
+  contestRegistered: {
+    text: 'Se ha registrado exitosamente.',
+    type: 'success'
+  },
+  contestUnregistered: {
+    text: 'Has salido de la maratón.',
+    type: 'success'
+  },
+  userDeleted: {
+    text: 'El usuario ha sido eliminado correctamente',
+    type: 'success'
   }
+
 }

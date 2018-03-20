@@ -28,6 +28,22 @@ export class Syllabus {
         settings: {
           roles: ['coach', 'student', 'admin']
         }
+      },
+      {
+        route: 'editar/:id',
+        name: 'edit',
+        moduleId: 'modules/contest/edit-contest/edit-contest',
+        settings: {
+          roles: ['coach', 'student', 'admin']
+        }
+      },
+      {
+        route: ':id/',
+        name: 'detail',
+        moduleId: 'modules/contest/contest-detail/contest-detail',
+        settings: {
+          roles: ['coach', 'student', 'admin']
+        }
       }
     ])
     this.router = router
