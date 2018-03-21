@@ -1,15 +1,14 @@
 import { inject } from 'aurelia-framework'
 
 import { Router } from 'aurelia-router'
-import { MESSAGES, SETTINGS, API } from 'config/config'
+import { MESSAGES, SETTINGS } from 'config/config'
 import { Problem } from 'models/models'
-import { Alert, Auth, Problems } from 'services/services'
-
+import { Alert, Problems } from 'services/services'
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),
 // Servicio de problemas (Problems), servicio de enrutamiento (Router)
-@inject(Alert, Auth, Problems, Router)
-export class ViewProblem {
+@inject(Alert, Problems, Router)
+export class ContestProblem {
   
   /**
    * Crea una instancia de ViewProblem.
@@ -17,14 +16,11 @@ export class ViewProblem {
    * @param {service} problemService - Servicio de problemas
    * @param {service} routerService - Servicio de enrutamiento
    */
-  constructor (alertService, authService, problemService, routerService) {
+  constructor (alertService, problemService, routerService) {
     this.alertService = alertService
-    this.authService = authService
     this.problemService = problemService
     this.routerService = routerService
     this.languages = SETTINGS.languages
-    this.language
-    this.code
     this.sourceValid = false
   }
 
@@ -37,7 +33,8 @@ export class ViewProblem {
    */
   activate (params, routeConfig) {
     this.routeConfig = routeConfig
-    this.id = params.id
+    this.contestId = params.id
+    this.id = params.problemId
     this.lang = params.lang || 'en'
     this.problemService.getProblem(this.id)
       .then(problem => {
@@ -87,7 +84,7 @@ export class ViewProblem {
   }
 
   submit() {
-    this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0])
+    this.problemService.submitSolution(this.id, this.language, undefined, this.contestId, this.code[0])
       .then(() => {
         this.alertService.showMessage(MESSAGES.submittedSolution)
       })

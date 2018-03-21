@@ -2,13 +2,20 @@
   <require from="../../../resources/elements/filter"></require>
   <require from="../../../resources/elements/paginator"></require>
   <div class="container">
-    <div class="text-center col-sm-12">
-      <br>
-      <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
-    </div>
-    <br><br>
-    <div if.bind="totalPagesMyContest > 0">
-      <h1 class="text-right">Mis maratones</h1>
+
+    <br>
+    <br>
+    <div if.bind="totalPagesMyContests > 0">
+      <div class="col-md-3">
+        <h1>
+          <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+        </h1>
+      </div>
+      <div class="col-md-9">
+        <h1 class="text-right">Mis maratones</h1>
+        <div class="fix"></div>
+      </div>
+
       <hr>
       <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChangeMyContests"
         limit.bind="limitMyContests" sort.bind="sortMyContests" by.bind="byMyContests" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
@@ -37,8 +44,24 @@
       </table>
       <paginator page.bind="pageMyContests" total-pages.bind="totalPagesMyContests"></paginator>
     </div>
-    <h1 class="text-right">Maratones en ejecución y futuras</h1>
+    <div if.bind="totalPagesMyContests > 0">
+      <h1 class="text-right">Maratones en ejecución y futuras</h1>
+      <div class="fix"></div>
+    </div>
+    <div if.bind="totalPagesMyContests === 0">
+      <div class="col-md-3">
+        <h1>
+          <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+        </h1>
+      </div>
+      <div class="col-md-9">
+        <h1 class="text-right">Maratones en ejecución y futuras</h1>
+        <div class="fix"></div>
+      </div>
+    </div>
+    <div class="fix"></div>
     <hr>
+    <br>
     <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChangeAllContests"
       limit.bind="limitAllContests" sort.bind="sortAllContests" by.bind="byAllContests" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
     <table>

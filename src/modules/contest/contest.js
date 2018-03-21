@@ -44,6 +44,30 @@ export class Syllabus {
         settings: {
           roles: ['coach', 'student', 'admin']
         }
+      },
+      {
+        route: ':id/resultados',
+        name: 'board',
+        moduleId: 'modules/contest/contest-board/contest-board',
+        settings: {
+          roles: ['coach', 'student', 'admin']
+        }
+      },
+      {
+        route: ':id/problemas',
+        name: 'problems',
+        moduleId: 'modules/contest/contest-problems/contest-problems',
+        settings: {
+          roles: ['coach', 'student', 'admin']
+        }
+      },
+      {
+        route: [':id/problema/:problemId', ':id/problema/:problemId/:lang'],
+        name: 'problem',
+        moduleId: 'modules/contest/contest-problem/contest-problem',
+        settings: {
+          roles: ['coach', 'student', 'admin']
+        }
       }
     ])
     this.router = router

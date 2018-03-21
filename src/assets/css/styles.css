@@ -7,9 +7,8 @@ body {
 
 .nav>li>a:focus,
 .nav>li>a:hover {
-  background-color: transparent!important;
+  background-color: transparent !important;
 }
-
 
 /*Estilos not-logged*/
 
@@ -116,7 +115,6 @@ body {
   font-size: 14px;
 }
 
-
 /*Formulario de registro*/
 
 .ufps-form-inline {
@@ -192,7 +190,6 @@ body {
   width: 50%;
 }
 
-
 /*Navbar*/
 
 .ufps-navbar {
@@ -213,9 +210,9 @@ body {
 
 .ufps-btn-nav a {
   height: 65px;
-  padding-left: 18px!important;
-  padding-right: 18px!important;
-  line-height: 35px!important;
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+  line-height: 35px !important;
   font-size: 16px;
   color: #ACB2B6;
   transition: all .3s ease;
@@ -227,14 +224,14 @@ body {
 }
 
 .ufps-btn-nav a:hover {
-  background-color: transparent!important;
-  color: #FFF!important;
+  background-color: transparent !important;
+  color: #FFF !important;
 }
 
 .ufps-btn-nav.dropdown.open>a {
   background-color: transparent;
-  color: #FFF!important;
-  border-color: #FFF!important;
+  color: #FFF !important;
+  border-color: #FFF !important;
 }
 
 .ufps-dropdown-menu {
@@ -245,13 +242,13 @@ body {
 .ufps-dropdown-menu>li>a {
   height: 40px;
   line-height: 35px;
-  color: #444!important;
-  border-bottom: 0px!important;
+  color: #444 !important;
+  border-bottom: 0px !important;
 }
 
 .ufps-dropdown-menu>li>a:hover {
-  background-color: #E74C3C!important;
-  color: #FFF!important;
+  background-color: #E74C3C !important;
+  color: #FFF !important;
 }
 
 .ufps-navbar-search {
@@ -265,28 +262,26 @@ body {
 }
 
 .ufps-dropdown-user a {
-  padding-top: 5px!important;
-  padding-bottom: 5px!important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
 }
-
 
 /*Barra de progreso*/
 
 #nprogress .bar {
-  background: #FFF!important;
+  background: #FFF !important;
   box-shadow: 0 0 10px rgba(155, 155, 155, .5);
-  height: 4px!important;
+  height: 4px !important;
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px #FFF, 0 0 5px #FFF!important;
+  box-shadow: 0 0 10px #FFF, 0 0 5px #FFF !important;
 }
 
 #nprogress .spinner-icon {
-  border-top-color: #FFF!important;
-  border-left-color: #FFF!important;
+  border-top-color: #FFF !important;
+  border-left-color: #FFF !important;
 }
-
 
 /*Notificaciones*/
 
@@ -423,7 +418,7 @@ hr {
 .ufps-card-container a:hover,
 .ufps-card-container a:active {
   cursor: pointer;
-  text-decoration: none!important;
+  text-decoration: none !important;
 }
 
 .ufps-edit-category,
@@ -475,8 +470,9 @@ hr {
 .ufps-card-new {
   cursor: pointer;
 }
+
 .ufps-card-new .ufps-card-title {
-  background: #BBB!important;
+  background: #BBB !important;
 }
 
 .ufps-card-title h1 {
@@ -548,12 +544,11 @@ th {
 .ufps-dropdown button:active {
   border-radius: 0;
   border: none;
-  background-color: transparent!important;
-  border-bottom: 3px solid #e74c3c!important;
-  outline: none!important;
+  background-color: transparent !important;
+  border-bottom: 3px solid #e74c3c !important;
+  outline: none !important;
   box-shadow: none !important;
 }
-
 
 /* PAGINACIÓN */
 
@@ -589,7 +584,6 @@ th {
   color: #BBB;
 }
 
-
 /*FIXES*/
 
 .modal-backdrop.in {
@@ -607,7 +601,6 @@ th {
   border-color: #AAA;
   box-shadow: none;
 }
-
 
 /*BOTONES*/
 
@@ -637,18 +630,27 @@ textarea.form-control {
 .ufps-input-creator span.input-group-addon,
 .ufps-input-creator span.input-group-addon:hover,
 .ufps-input-creator span.input-group-addon:active {
-  background-color: #FFF!important;
-  border-left: none!important;
-  border-radius: 2px!important;
+  background-color: #FFF !important;
+  border-left: none !important;
+  border-radius: 2px !important;
 }
 
-.nav-pills.nav-maraton > li > a, .nav-maraton.nav-pills > li > a:hover, .nav-maraton.nav-pills > li > a:focus {
+.nav-pills.nav-maraton>li>a,
+.nav-maraton.nav-pills>li>a:hover,
+.nav-maraton.nav-pills>li>a:focus {
   color: #444;
   cursor: pointer;
 }
-.nav-pills.nav-maraton > li.active > a, .nav-maraton.nav-pills > li.active > a:hover, .nav-maraton.nav-pills > li.active > a:focus {
-  background-color: #e74c3c;
-  color: #FFF;
+
+.nav-pills.nav-maraton>li.active>a,
+.nav-maraton.nav-pills>li.active>a:hover,
+.nav-maraton.nav-pills>li.active>a:focus {
+  background-color: #e74c3c !important;
+  color: #FFF !important;
+}
+
+.nav>li.disabled>a {
+  cursor: not-allowed !important;
 }
 
 .ufps-input-creator select {
@@ -685,13 +687,12 @@ textarea.form-control {
   box-shadow: 0 0 10px rgba(0, 0, 0, .2);
 }
 
-
 /*EDITOR*/
 
 .editor-toolbar.fullscreen,
 .CodeMirror-fullscreen,
 .editor-preview-side {
-  z-index: 10000!important;
+  z-index: 10000 !important;
 }
 
 .ufps-btn-submit,
@@ -741,7 +742,6 @@ textarea.form-control {
 .ufps-td-problem:hover .ufps-edit-problem-list {
   opacity: 1;
 }
-
 
 /*MARKDOWN EDITOR*/
 
@@ -797,7 +797,8 @@ textarea.form-control {
 .example-in-out {
   padding: 0;
 }
-.example-in-out pre{
+
+.example-in-out pre {
   padding: 14px;
   margin: 0;
   border: none;
@@ -806,12 +807,14 @@ textarea.form-control {
 iframe {
   width: 100%;
 }
+
 .ufps-container-iframe {
   position: relative;
   width: 100%;
   height: 0;
   padding-bottom: 56.25%;
 }
+
 .ufps-iframe {
   position: absolute;
   top: 0;
@@ -819,10 +822,50 @@ iframe {
   width: 100%;
   height: 100%;
 }
+
 .form-horizontal-assignment .control-label {
-  text-align: left!important;
+  text-align: left !important;
 }
 
 .ufps-font-size-small {
   font-size: 11px;
+}
+
+.ufps-score-correct,
+.ufps-score-incorrect,
+.ufps-score-judging {
+  background-image: url(src/assets/img/score-bg.png);
+  margin: auto;
+  width: 32px;
+  height: 35px;
+}
+
+tr:nth-child(2n+1) td .ufps-score-correct,
+tr:nth-child(2n+1) td .ufps-score-incorrect,
+tr:nth-child(2n+1) td .ufps-score-judging {
+  background-image: url(src/assets/img/score-light.png);
+}
+
+tr:nth-child(2n) td .ufps-score-correct,
+tr:nth-child(2n) td .ufps-score-incorrect,
+tr:nth-child(2n) td .ufps-score-judging {
+  background-image: url(src/assets/img/score-dark.png);
+}
+
+.ufps-score-correct {
+  background-color: #e74c3c;
+}
+
+.ufps-score-incorrect {
+  background-color: #999;
+}
+
+.ufps-score-judging {
+  background-color: #ff988e;
+}
+
+.ufps-score > tbody > tr > td {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  height: 60px;
 }

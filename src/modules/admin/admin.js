@@ -122,7 +122,7 @@ export class Admin {
         this.totalPagesUsers = data.meta.totalPages
         if (this.totalPagesUsers !== 0) {
           for (let i = 0; i < data.data.length; i++) {
-            this.users.push(new UserSignIn(data.data[i].email, undefined, undefined, data.data[i].name, data.data[i].username, data.data[i].code, data.data[i].type, data.data[i].id))
+            if(this.authService.getUserId() !== data.data[i].id) this.users.push(new UserSignIn(data.data[i].email, undefined, undefined, data.data[i].name, data.data[i].username, data.data[i].code, data.data[i].type, data.data[i].id))
           }
         }
       }).catch(error => {

@@ -244,9 +244,9 @@ export class Problems {
    */
   submitSolution (problemId, language, assignmentId, contestId, code) {
     var data = new window.FormData()
-    data.append('language', language)
-    if(assignmentId !== undefined) data.append('assignment_problem_id', assignmentId)
-    if(contestId !== undefined) data.append('contest_problem_id', contestId)
+    data.append('data[language]', language)
+    if(assignmentId !== undefined) data.append('data[assignment_problem_id]', assignmentId)
+    if(contestId !== undefined) data.append('data[contest_problem_id]', contestId)
     data.append('code', code)
     return this.httpService.httpClient
       .fetch(API.endpoints.problems + '/' + problemId + '/submit', {

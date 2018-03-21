@@ -3,49 +3,51 @@
     <h2 class="text-right">${contest.title}</h2>
     <hr>
     <ul class="nav nav-pills nav-justified nav-maraton">
-      <li class="active" role="presentation">
-        <a>Inicio</a>
+      <li role="presentation">
+        <a href="#/maraton/${contest.id}">Inicio</a>
       </li>
-      <li role="presentation" class="disabled" if.bind="status !== 'registered'">
+      <li class="active" role="presentation">
         <a>Problemas</a>
       </li>
-      <li role="presentation" if.bind="status === 'registered'">
-        <a href="#/maraton/${contest.id}/problemas">Problemas</a>
-      </li>
       <li role="presentation" if.bind="contest.privacy || status === 'registered'">
-        <a href="#/maraton/${contest.id}/resultados">Resultados</a>
-      </li>
-      <li role="presentation" class="disabled" if.bind="!contest.privacy && status !== 'registered'">
-        <a>Resultados</a>
-      </li>
+          <a href="#/maraton/${contest.id}/resultados">Resultados</a>
+        </li>
+        <li role="presentation" class="disabled" if.bind="!contest.privacy && status !== 'registered'">
+          <a>Resultados</a>
+        </li>
     </ul>
     <br>
     <div class="row">
-      <div class="col-md-8 text-center">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <h3>Descripción</h3>
-            <p>${contest.description}</p>
-            <h3>Reglas</h3>
-            <p>${contest.rules}
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 text-center">
-        <br>
-        <p>Inicio: ${contest.getSemanticStartDate()}</p>
-        <p>Finalización: ${contest.getSemanticEndDate()}</p>
-        <br>
-        <div if.bind="status === 'registered'">
-          <p>¡Ya estás registrado!</p>
-          <a click.delegate="showUnregisterModal()" class="btn btn-default ufps-btn-default">Anular inscripción</a>
-        </div>
-        <div if.bind="status === 'unregistered'">
-          <a click.delegate="showRegisterModal()" class="btn btn-default ufps-btn-default">Registrate</a>
-        </div>
-        </ul>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center" style="width:5%"></th>
+            <th class="text-center" style="width:80%">Problema</th>
+            <th class="text-center" style="width:15%">Idioma</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="problem of problems">
+            <td class="text-center">${letterValue($index)}</td>
+            <td class="text-left ufps-td-problem">
+              <p if.bind="problem.isInEnglish()" class="ufps-name-problem-list">
+                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, lang: 'en'}">${problem.titleEN}</a>
+              </p>
+              <p if.bind="!problem.isInEnglish()" class="ufps-name-problem-list">
+                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, lang: 'es'}">${problem.titleES}</a>
+              </p>
+            </td>
+            <td class="text-center ufps-language">
+              <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
+                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, lang: 'es'}">ES</a>
+              </span> |
+              <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
+                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, lang: 'en'}">EN</a>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 

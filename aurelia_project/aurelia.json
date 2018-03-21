@@ -183,6 +183,11 @@
               "simplemde.min.css"
             ]
           },
+          {
+            "name": "socket.io-client",
+            "path": "../node_modules/socket.io-client/dist",
+            "main": "socket.io"
+          },
           "showdown"
         ]
       }

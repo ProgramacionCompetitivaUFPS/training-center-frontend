@@ -221,6 +221,14 @@ export let MESSAGES = {
     text: 'Hay un error en la información. Verifica que la fecha y hora de inicio sea futura, que la duración sea de al menos 30 minutos y los datos estén completos',
     type: 'error'
   },
+  contestProblemsNotRegistered: {
+    text: 'Solo los usuarios registrados en la maratón pueden ver los problemas',
+    type: 'warning'
+  },
+  contestBoardNotRegistered: {
+    text: 'Solo los usuarios registrados en la maratón pueden ver los resultados',
+    type: 'warning'
+  },
   invalidIdProblem: {
     text: 'La lista de problemas debe contener solo los id de los problemas a añadir, separada por comas',
     type: 'error'

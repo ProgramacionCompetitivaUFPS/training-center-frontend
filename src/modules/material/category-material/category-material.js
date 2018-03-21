@@ -112,6 +112,7 @@ export class CategoryMaterial {
       .then(data => {
         this.alertService.showMessage(MESSAGES.addedMaterial)
         this.getMaterial()
+        this.newMaterial = new Material()
         window.$('#new-material').modal('hide')
       }).catch(() => {
         this.alertService.showMessage(MESSAGES.serverError)

@@ -100,8 +100,8 @@ Reemplaza este texto con la especificación de la salida de tu problema.
           <label for="input-file" tooltip data-toggle="tooltip" title="Archivo .txt o .in con las entradas que será ejecutado el programa escrito por el estudiante para ser validado">Entradas <span class="glyphicon glyphicon-ok-sign" show.bind="inputValid"></span></label>
         </div>
         <div class="col-sm-6 ufps-input-creator">
-          <input type="file" name="output-file" id="output-file" class="inputfile-btn" accept=".txt, .in" change.delegate="validateTestCase('output')" files.bind="newProblem.output">
-          <label for="output-file" tooltip data-toggle="tooltip" title="Archivo .txt o .out con las salidas que debe generar el programa escrito por el estudiante para ser considerado correcto">Salidas <span class="glyphicon glyphicon-ok-sign" show.bind="outputValid"></span></label>
+          <input type="file" name="output-file" id="output-file" class="inputfile-btn" accept=".txt, .out, .ans" change.delegate="validateTestCase('output')" files.bind="newProblem.output">
+          <label for="output-file" tooltip data-toggle="tooltip" title="Archivo .txt, .ans o .out con las salidas que debe generar el programa escrito por el estudiante para ser considerado correcto">Salidas <span class="glyphicon glyphicon-ok-sign" show.bind="outputValid"></span></label>
         </div>
       </div>
       <div class="fix"></div>

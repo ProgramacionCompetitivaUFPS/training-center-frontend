@@ -187,6 +187,22 @@ export class Contests {
   }
 
   /**
+   * Obtiene los problemas de una maratón específica.
+   * @param {Number} id - Identificador de la maratón a obtener.
+   */
+  getProblemsContest(id) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.contests + '/' + id + '/' + API.endpoints.problems, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
    * Obtiene el status (registrado o no) de un usuario.
    * @param {Number} idContest - Identificador de la maratón a obtener.
    * @param {Number} idUser - Identificador del usuario.
