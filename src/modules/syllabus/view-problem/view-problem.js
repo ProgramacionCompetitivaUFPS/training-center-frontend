@@ -138,7 +138,29 @@ export class ViewProblem {
    * Valida que el código enviado tiene uno de los formatos permitidos
    */
   validateCode () {
-    if (this.code.length === 1) this.sourceValid = true
+    if (this.code.length === 1) {
+      if (this.code[0].type.startsWith('text/')) {
+        this.sourceValid = true
+        if(this.code[0].name.endsWith('.java')) {
+          var reader = new FileReader()
+          reader.onload = () => {
+            let tmp = reader.result.replace(/ /g, '')
+            tmp = tmp.replace(/\n|\r\n|\r/g, '')
+            if (tmp.search('publicclassMain{') < 0) {
+              this.code = null
+              this.sourceValid = false
+              this.alertService.showMessage(MESSAGES.invalidJavaClassname)
+            }
+          }
+          reader.readAsText(this.code[0])
+        }
+      } else {
+        this.code = null
+        this.sourceValid = false
+        this.alertService.showMessage(MESSAGES.invalidCode)
+      }
+    }
+     
   }
 
   submit() {

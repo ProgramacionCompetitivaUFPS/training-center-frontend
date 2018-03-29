@@ -84,7 +84,6 @@ export class ViewProblem {
    * Valida que el código enviado tiene uno de los formatos permitidos
    */
   validateCode () {
-    console.log(this.code[0])
     if (this.code.length === 1) {
       if (this.code[0].type.startsWith('text/')) {
         this.sourceValid = true
@@ -109,10 +108,7 @@ export class ViewProblem {
     }
      
   }
-  resetFile () {
-    this.code = null
-    this.sourceValid = false
-  }
+
   submit() {
     if (!this.sourceValid) {
       this.alertService.showMessage(MESSAGES.invalidCode)
