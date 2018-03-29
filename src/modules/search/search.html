@@ -20,11 +20,11 @@
           <tr repeat.for="problem of problems">
             <td class="text-center">${problem.id}</td>
             <td class="text-left ufps-td-problem">
-              <p if.bind="problem.isInEnglish()" class="ufps-name-problem-list">
-                <a href="#/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
-              </p>
-              <p if.bind="!problem.isInEnglish()" class="ufps-name-problem-list">
+              <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list">
                 <a href="#/problemas/${problem.id}/detalle/es">${problem.titleES}</a>
+              </p>
+              <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
+                <a href="#/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
               </p>
             </td>
             <td class="text-center">${problem.level}</td>

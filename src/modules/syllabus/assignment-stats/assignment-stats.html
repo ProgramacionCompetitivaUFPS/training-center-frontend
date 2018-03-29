@@ -41,11 +41,11 @@
         <tr repeat.for="problem of assignment.problemsLoaded">
           <td class="text-center">${letterValue($index)}</td>
           <td class="text-left ufps-td-problem">
-            <p if.bind="problem.isInEnglish()" class="ufps-name-problem-list">
-              <a route-href="route: ViewProblem; params.bind: {assignmentProblemId:problem.auxiliarId, assignmentId:assignment.id, problemId: problem.id, lang: 'en'}">${problem.titleEN}</a>
-            </p>
-            <p if.bind="!problem.isInEnglish()" class="ufps-name-problem-list">
+            <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list">
               <a route-href="route: ViewProblem; params.bind: {assignmentProblemId:problem.auxiliarId, assignmentId:assignment.id, problemId: problem.id, lang: 'es'}">${problem.titleES}</a>
+            </p>
+            <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
+              <a route-href="route: ViewProblem; params.bind: {assignmentProblemId:problem.auxiliarId, assignmentId:assignment.id, problemId: problem.id, lang: 'en'}">${problem.titleEN}</a>
             </p>
           </td>
           <td class="text-center">${problem.level}</td>
