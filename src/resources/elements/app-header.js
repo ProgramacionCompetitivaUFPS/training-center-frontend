@@ -27,6 +27,7 @@ export class AppHeader {
   constructor (authService, routerService) {
     this.authService = authService
     this.routerService = routerService
+    this.query = ''
   }
 
   /**
@@ -49,5 +50,9 @@ export class AppHeader {
   logOut () {
     this.authService.logout()
     this.routerService.navigate('iniciar-sesion')
+  }
+
+  search () {
+    this.routerService.navigate('#/buscar/' + this.query.replace(/\s/g, '+'))
   }
 }

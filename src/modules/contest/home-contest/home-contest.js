@@ -93,4 +93,8 @@ export class HomeContest {
         }
       })
   }
+
+  showMessage () {
+    this.alertService.showMessage(MESSAGES.temporarilyDisabled)
+  }
 }

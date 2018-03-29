@@ -105,6 +105,17 @@ export class CategoryMaterial {
   }
 
   /**
+   * Muestra un popup para confirmar la eliminación del material indicado por id.
+   * @param {number} id - Identificador del material a eliminar.
+   */
+  showRemoveMaterial (id, name) {
+    console.log('remove')
+    this.materialToRemove = id
+    this.materialToRemoveName = name
+    window.$('#remove-material').modal('show')
+  }
+
+  /**
    * Crea un nuevo material en la plataforma.
    */
   createMaterial () {
@@ -113,10 +124,26 @@ export class CategoryMaterial {
         this.alertService.showMessage(MESSAGES.addedMaterial)
         this.getMaterial()
         this.newMaterial = new Material()
+        this.newMaterial.category = this.id
         window.$('#new-material').modal('hide')
       }).catch(() => {
         this.alertService.showMessage(MESSAGES.serverError)
         window.$('#new-material').modal('hide')
+      })
+  }
+
+  /**
+   * Crea un nuevo material en la plataforma.
+   */
+  removeMaterial () {
+    this.materialService.remove(this.materialToRemove)
+      .then(data => {
+        this.alertService.showMessage(MESSAGES.materialRemoved)
+        this.getMaterial()
+        window.$('#remove-material').modal('hide')
+      }).catch(() => {
+        this.alertService.showMessage(MESSAGES.serverError)
+        window.$('#remove-material').modal('hide')
       })
   }
 }

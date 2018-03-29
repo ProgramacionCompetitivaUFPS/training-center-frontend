@@ -1,5 +1,5 @@
-import { inject } from 'aurelia-framework'
-
+import { inject, observable } from 'aurelia-framework'
+import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
 import { Material, Syllabus } from 'models/models'
 import { Alert, Auth, Syllabuses } from 'services/services'
@@ -13,22 +13,35 @@ import { Alert, Auth, Syllabuses } from 'services/services'
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),
 // Servicio de Autenticación (Auth) y Servicio de obtención y manejo de clases (Syllabus)
-@inject(Alert, Auth, Syllabuses)
+@inject(Alert, Auth, Syllabuses, Router)
 export class SyllabusDetail {
-
+  // Elementos observables. 
+  @observable page
   /**
    * Crea una instancia de SyllabusDetail.
    * @param {service} alertService - Servicio de notificaciones
    * @param {service} authService - Servicio de autenticación
    * @param {service} syllabusService - Servicio de obtención y manejo de clases
    */
-  constructor (alertService, authService, syllabusService) {
+  constructor (alertService, authService, syllabusService, router) {
     this.alertService = alertService
     this.authService = authService
     this.syllabusService = syllabusService
+    this.router = router
     this.syllabus = new Syllabus()
     this.newMaterials = ''
     this.materials = []
+    this.page = 1
+    this.totalPages = 1
+    this.users = []
+  }
+   /**
+   * Detecta cuando el número de página es modificado para solicitar el nuevo número.
+   * @param {Number} act - Número de página nuevo.
+   * @param {Number} prev - Número de página antes del cambio
+   */
+  pageChanged (act, prev) {
+    if (prev !== undefined) this.getUsers()
   }
 
   /**
@@ -43,6 +56,7 @@ export class SyllabusDetail {
     this.id = params.id
     this.getSyllabus()
     this.getMaterials()
+    this.getUsers()
   }
 
   /**
@@ -150,6 +164,82 @@ export class SyllabusDetail {
           this.alertService.showMessage(MESSAGES.unknownError)
         }
         window.$('#remove-problem').modal('hide')
+      })
+  }
+
+  /**
+   * Muestra un popup para confirmar la desuscripción del usuario.
+   */
+  showModalExit () {
+    window.$('#remove-user').modal('show')
+  }
+
+  /**
+   * Desmatricula a un usuario de su clase.
+   */
+  removeUser() {
+    this.syllabusService.removeUser(this.id)
+      .then(() => {
+        this.alertService.showMessage(MESSAGES.syllabusUnenroll)
+        window.$('#remove-user').modal('hide')
+        this.router.navigate('#/clases')
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+        window.$('#remove-user').modal('hide')
+      })
+  }
+
+  /**
+   * Obtiene los usuarios de la clase.
+   */
+  getUsers() {
+    this.syllabusService.getStatistics(this.id, 15, this.page)
+      .then(data => {
+        this.totalPages = data.meta.totalPages
+        this.users = []
+        if(this.totalPages > 0) this.users = data.data
+      }).catch(error => {
+        if (error.status === 404) {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        } else {
+          this.alertService.showMessage(MESSAGES.serverError)
+        }
+      })
+  }
+
+  /**
+   * Muestra un popup para confirmar la desuscripción del usuario.
+   */
+  showModalRemove (id) {
+    this.userToRemove = id
+    window.$('#remove-user-coach').modal('show')
+  }
+
+  /**
+   * Elimina a un usuario por parte del coach
+   */
+  removeUserFromCoach() {
+    this.syllabusService.removeUserFromCoach(this.id, this.userToRemove)
+      .then(() => {
+        this.alertService.showMessage(MESSAGES.userDeletedSyllabus)
+        window.$('#remove-user-coach').modal('hide')
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+        window.$('#remove-user-coach').modal('hide')
       })
   }
 }

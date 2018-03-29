@@ -7,8 +7,9 @@
     <br>
     <div if.bind="totalPagesMyContests > 0">
       <div class="col-md-3">
-        <h1>
-          <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+        <h1> 
+          <!--<a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>-->
+          <a click.delegate="showMessage()" class="btn btn-default ufps-btn-default">Crear Maratón</a>
         </h1>
       </div>
       <div class="col-md-9">
@@ -51,7 +52,8 @@
     <div if.bind="totalPagesMyContests === 0">
       <div class="col-md-3">
         <h1>
-          <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+          <!--<a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>-->
+          <a click.delegate="showMessage()" class="btn btn-default ufps-btn-default">Crear Maratón</a>
         </h1>
       </div>
       <div class="col-md-9">

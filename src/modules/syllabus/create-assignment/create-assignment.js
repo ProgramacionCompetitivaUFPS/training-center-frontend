@@ -88,8 +88,8 @@ export class CreateAssignment {
     if (!this.validateProblems()) {
       this.alertService.showMessage(MESSAGES.assignmentInvalidProblems)
     } else {
-      this.assignment.startDate = this.startDate + ' ' + this.startTime + ':00'
-      this.assignment.endDate = this.endDate + ' ' + this.endTime + ':00'
+      this.assignment.startDate = new Date(this.startDate + ' ' + this.startTime).toISOString()
+      this.assignment.endDate = new Date(this.endDate + ' ' + this.endTime).toISOString()
       this.syllabusService.createAssignment(this.assignment)
         .then(data => {
           this.router.navigate('clases/' + this.assignment.syllabusId)

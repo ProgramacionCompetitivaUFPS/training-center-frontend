@@ -43,18 +43,18 @@
             <a route-href="route: contest">Maratones</a>
           </li>
           <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
-              <a route-href="route: admin">Administración</a>
-            </li>
+            <a route-href="route: admin">Administración</a>
+          </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right"  if.bind="authService.authenticated">
+        <ul class="nav navbar-nav navbar-right" if.bind="authService.authenticated">
           <li class="dropdown ufps-btn-nav ufps-dropdown-user">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               <img src="src/assets/img/user.png" alt="Avatar de usuario" class="ufps-avatar">
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu ufps-dropdown-menu">
-              <li>
-                <a href="#">Mis envios</a>
+              <!--<li>
+                <a>Mis envios</a>
               </li>
               <li>
                 <a href="#">Perfil</a>
@@ -62,28 +62,30 @@
               <li>
                 <a href="#">Editar perfil</a>
               </li>
-              <li role="separator" class="divider"></li>
+              <li role="separator" class="divider"></li>-->
               <li>
                 <a click.delegate="logOut()">Cerrar Sesión</a>
               </li>
             </ul>
           </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right"  if.bind="!authService.authenticated">
-          <li class="ufps-btn-nav "><a href="#/iniciar-sesion">Iniciar sesión</a></li>
+        <ul class="nav navbar-nav navbar-right" if.bind="!authService.authenticated">
+          <li class="ufps-btn-nav ">
+            <a href="#/iniciar-sesion">Iniciar sesión</a>
+          </li>
         </ul>
-        <form class="navbar-form navbar-right">
+        <form class="navbar-form navbar-right" submit.delegate="search()">
           <div class="form-group ufps-navbar-search">
             <div class="input-group">
-              <input type="text" class="form-control ufps-navbar-input" placeholder="Buscar...">
+              <input type="text" value.bind="query" class="form-control ufps-navbar-input" placeholder="Buscar problema...">
               <div class="input-group-addon ufps-input-navbar-addon">
                 <span class="glyphicon glyphicon-search"></span>
               </div>
             </div>
-          </div>
+            <input type="submit" value="" class="search-btn">
         </form>
+        </div>
       </div>
-    </div>
   </nav>
   <div repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
     ${row}

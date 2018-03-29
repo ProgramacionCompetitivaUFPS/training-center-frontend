@@ -45,7 +45,7 @@ export class SyllabusStatistics {
     this.syllabusService.getStatistics(this.id, 30, this.page)
       .then(data => {
         this.totalPages = data.meta.totalPages
-        this.users = data.data
+        if(this.totalPages > 0) this.users = data.data
       }).catch(error => {
         if (error.status === 404) {
           this.alertService.showMessage(MESSAGES.unknownError)

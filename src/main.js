@@ -18,6 +18,7 @@ export function configure (aurelia) {
     .feature('resources')
     .plugin('aurelia-notify', settings => {
       settings.timeout = 7000
+      settings.limit = 1
     })
 
   if (environment.debug) {

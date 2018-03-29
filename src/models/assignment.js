@@ -33,7 +33,7 @@ export class Assignment {
   adjuntProblems (problems) {
     this.problemsLoaded = []
     for (let i = 0; i < problems.length; i++) {
-      this.problemsLoaded.push(new Problem(problems[i].id, problems[i].title_en, problems[i].title_es, problems[i].level))
+      this.problemsLoaded.push(new Problem(problems[i].id, problems[i].title_en, problems[i].title_es, problems[i].level, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, problems[i].assignment_problems.id))
     }
   }
 
@@ -69,7 +69,21 @@ export class Assignment {
   getStringAvailability () {
     let start = new Date(this.startDate)
     let end = new Date(this.endDate)
+    return 'Disponible desde el ' + this.getDate(start) + ' a las ' + this.getTime(start) + ' hasta el ' + this.getDate(end) + ' a las ' + this.getTime(end)
+  }
+
+  getDate (date) {
     let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-    return 'Disponible desde el ' + start.getDate() + ' de ' + months[start.getMonth()] + ' del ' + start.getFullYear() + ' a las ' + start.getHours() + ':' + start.getMinutes() + ' hasta el ' + end.getDate() + ' de ' + months[end.getMonth()] + ' del ' + end.getFullYear() + ' a las ' + start.getHours() + ':' + start.getMinutes()
+    return date.getDate() + ' de ' + months[date.getMonth()] + ' del ' + date.getFullYear()
+  }
+
+  getTime (date) {
+    let tmp = ''
+    if (date.getHours() <= 12) tmp += (date.getHours() + ':') 
+    else if (date.getHours() > 12) tmp += (date.getHours() - 12) + ':'
+    tmp += (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+    if(date.getHours() < 12) tmp += 'AM'
+    else tmp += 'PM'
+    return tmp 
   }
 }

@@ -9,16 +9,17 @@
           <tr>
             <th class="text-center" style="width:5%">Puesto</th>
             <th class="text-center" style="width:75%">Usuario</th>
-            <th class="text-center" style="width:10%">Envios realizados</th>
             <th class="text-center" style="width:10%">Soluciones correctas</th>
+            <th class="text-center" style="width:10%">Envios realizados</th>
+            
           </tr>
         </thead>
         <tbody>
           <tr repeat.for="user of users">
             <td class="text-center">${$index + 1}</td>
-            <td>${user.username}</td>
-            <td class="text-center">${user.total}</td>
+            <td>${user.name}</td>
             <td class="text-center">${user.accepted}</td>
+            <td class="text-center">${user.total}</td>
           </tr>
           <tr if.bind="users.length === 0">
             <td></td>

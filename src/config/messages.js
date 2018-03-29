@@ -129,6 +129,18 @@ export let MESSAGES = {
     text: 'Su solución se ha enviado para ser calificada. En breve recibirá una notificación con la calificación',
     type: 'success'
   },
+  invalidCode: {
+    text: 'Seleccione un archivo válido con el código fuente de su solución',
+    type: 'error'
+  },
+  invalidJavaClassname: {
+    text: 'En java la clase debe ser publica y llamarse Main: \'public class Main\'',
+    type: 'error'
+  },
+  invalidLanguagee: {
+    text: 'Seleccione un lenguaje válido',
+    type: 'error'
+  },
   // Material
   materialDoesNotExists: {
     text: 'El material solicitado no existe',
@@ -141,6 +153,10 @@ export let MESSAGES = {
   materialsEmpty: {
     text: 'Actualmente, no hay materiales en esta categoría',
     type: 'warning'
+  },
+  materialRemoved: {
+    text: 'El material se ha eliminado correctamente',
+    type: 'success'
   },
   materialApproved: {
     text: 'El material seleccionado ha sido aprobado',
@@ -171,6 +187,10 @@ export let MESSAGES = {
     text: 'Su sesión ha expirado. Para seguir utilizando la plataforma, vuelva a iniciar sesión',
     type: 'error'
   },
+  temporarilyDisabled: {
+    text: 'Esta funcionalidad está temporalmente deshabilitada.',
+    type: 'error'
+  },
   // SYLLABUS
   syllabusesEmpty: {
     text: 'No existe ninguna clase actualmente almacenada',
@@ -192,8 +212,16 @@ export let MESSAGES = {
     text: 'La clase ha sido eliminada satisfactoriamente',
     type: 'success'
   },
+  syllabusUnenroll: {
+    text: 'Has sido desmatriculado de esta clase exitosamente',
+    type: 'success'
+  },
   enrolledInSyllabus: {
     text: 'Se ha registrado satisfactoriamente',
+    type: 'success'
+  },
+  userDeletedSyllabus: {
+    text: 'Se ha eliminado el usuario correctamente',
     type: 'success'
   },
   assignmentInvalidProblems: {

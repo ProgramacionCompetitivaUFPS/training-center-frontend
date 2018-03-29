@@ -39,6 +39,7 @@ export class ViewProblem {
     this.routeConfig = routeConfig
     this.id = params.id
     this.lang = params.lang || 'en'
+
     this.problemService.getProblem(this.id)
       .then(problem => {
         problem = problem.problem
@@ -83,22 +84,57 @@ export class ViewProblem {
    * Valida que el código enviado tiene uno de los formatos permitidos
    */
   validateCode () {
-    if (this.code.length === 1) this.sourceValid = true
-  }
-
-  submit() {
-    this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0])
-      .then(() => {
-        this.alertService.showMessage(MESSAGES.submittedSolution)
-      })
-      .catch(error => {
-        if (error.status === 401 || error.status === 403) {
-          this.alertService.showMessage(MESSAGES.permissionsError)
-        } else if (error.status === 500) {
-          this.alertService.showMessage(MESSAGES.serverError)
-        } else {
-          this.alertService.showMessage(MESSAGES.unknownError)
+    console.log(this.code[0])
+    if (this.code.length === 1) {
+      if (this.code[0].type.startsWith('text/')) {
+        this.sourceValid = true
+        if(this.code[0].name.endsWith('.java')) {
+          var reader = new FileReader()
+          reader.onload = () => {
+            let tmp = reader.result.replace(/ /g, '')
+            tmp = tmp.replace(/\n|\r\n|\r/g, '')
+            if (tmp.search('publicclassMain{') < 0) {
+              this.code = null
+              this.sourceValid = false
+              this.alertService.showMessage(MESSAGES.invalidJavaClassname)
+            }
+          }
+          reader.readAsText(this.code[0])
         }
-      })
+      } else {
+        this.code = null
+        this.sourceValid = false
+        this.alertService.showMessage(MESSAGES.invalidCode)
+      }
+    }
+     
+  }
+  resetFile () {
+    this.code = null
+    this.sourceValid = false
+  }
+  submit() {
+    if (!this.sourceValid) {
+      this.alertService.showMessage(MESSAGES.invalidCode)
+    } else if (this.language === null) {
+      this.alertService.showMessage(MESSAGES.invalidLanguage)
+    } else {
+      this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0])
+        .then((data) => {
+          this.alertService.showMessage(MESSAGES.submittedSolution)
+          this.language = null
+          this.code = null
+          this.sourceValid = false
+        })
+        .catch(error => {
+          if (error.status === 401 || error.status === 403) {
+            this.alertService.showMessage(MESSAGES.permissionsError)
+          } else if (error.status === 500) {
+            this.alertService.showMessage(MESSAGES.serverError)
+          } else {
+            this.alertService.showMessage(MESSAGES.unknownError)
+          }
+        })
+    }
   }
 }

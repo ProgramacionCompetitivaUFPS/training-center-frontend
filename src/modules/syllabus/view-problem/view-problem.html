@@ -56,20 +56,22 @@
       <div class="ufps-separator"></div>
       <div class="panel panel-default">
         <div class="panel-body">
-          <p show.bind="lang === 'en'">Problema: ${problem.titleEN}</p>
-          <p show.bind="lang === 'es'">Problema: ${problem.titleES}</p>
-          <p>Dificultad: ${problem.level}</p>
+          <p show.bind="lang === 'en'"><strong>Problema:</strong> ${problem.titleEN}</p>
+          <p show.bind="lang === 'es'"><strong>Problema:</strong> ${problem.titleES}</p>
+          <p><strong>Dificultad:</strong> ${problem.level}</p>
+          <p if.bind="validDate === 1"><strong>Esta tarea aún no puede ser enviada.</strong> ${assignment.getStringAvailability().replace('Disponible', 'Estará disponible')}</p>
+          <p if.bind="validDate === 2"><strong>Esta tarea ya no puede ser enviada.</strong> ${assignment.getStringAvailability().replace('Disponible', 'Estuvo disponible')}</p>
           <p>Seleccione el archivo con su código, y el lenguaje a utilizar.</p>
-          <form class="ufps-submit-form">
-            <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()">
-            <label for="input-file" tooltip data-toggle="tooltip" title="Archivo con la solución al problema">Seleccionar <span class="glyphicon glyphicon-ok-sign" show.bind="sourceValid"></span></label>
+          <form class="ufps-submit-form" submit.delegate="submit()"  enctype="multipart/form-data">
+            <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()"  accept=".py, .java, .cpp" files.bind="code"  disabled.bind="validDate > 0">
+            <label for="${validDate > 0 ? '' : 'input-file'}" tooltip data-toggle="tooltip" title="Archivo con la solución al problema" class="${validDate > 0 ? 'disabled-select' : ''}">Seleccionar <span class="glyphicon glyphicon-ok-sign" show.bind="sourceValid"></span></label>
             <div class="input-group">
-              <select class="form-control">
-                <option model.bind="null">Lenguaje...</option>
-                <option repeat.for="language of languages" model.bind="language">${language}</option>
+              <select class="form-control" value.bind="language" disabled.bind="validDate > 0">
+                <option required model.bind="null">Lenguaje...</option>
+                <option repeat.for="lg of languages" model.bind="lg">${lg}</option>
               </select>
             </div>
-            <input type="submit" value="Enviar" class="btn ufps-btn-submit">
+            <input type="submit" value="Enviar" class="btn ufps-btn-submit btn-disabled" disabled.bind="validDate > 0">
           </form>
         </div>
       </div>

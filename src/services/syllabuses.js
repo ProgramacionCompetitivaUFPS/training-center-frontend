@@ -257,6 +257,23 @@ export class Syllabuses {
   }
 
   /**
+   * Obtiene del backend los resultados de una tarea.
+   * @param {number} id - Identificador de la tarea del cual se obtendrán los resultados.
+   * @returns {Promise} Promesa con los resultados
+   */
+  loadResults (id, page) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.assignments + '/' + id + '/results?limit=20&page=' + page, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
    * Agrega problemas a una tarea
    * @param {Number} idAssignment - Id de la tarea a la cual se añaden los problemas
    * @param {Array} problems - Array con los id de los problemas a añadir
@@ -331,6 +348,39 @@ export class Syllabuses {
         },
         body: JSON.stringify({
           materials: [idMaterial]
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  /**
+   * Elimina un usuario de la base de datos.
+   */
+  removeUser (idSyllabus) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + idSyllabus + '/delete-students', {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  /**
+   * Elimina un usuario de la base de datos.
+   */
+  removeUserFromCoach (idSyllabus, idUser) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.syllabus + '/' + idSyllabus + '/delete-students', {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          students: [idUser]
         })
       })
       .then(this.httpService.checkStatus)

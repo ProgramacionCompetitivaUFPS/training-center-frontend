@@ -67,10 +67,14 @@ export class HomeSyllabus {
     if (this.authService.isCoach()) coachId = this.authService.getUserId()
     this.syllabusService.getSyllabuses(this.syllabusToShow, this.generalPage, coachId)
       .then(data => {
-        this.syllabuses = data.data
         this.generalTotalPages = data.meta.totalPages
         if (this.syllabuses.length === 0) {
           this.syllabusesLoaded = false
+        }
+        if(this.generalTotalPages > 0) {
+          this.syllabuses = data.data
+        } else {
+          this.alertService.showMessage(MESSAGES.syllabusesEmpty)
         }
         if (this.authService.isStudent()) this.getEnrolledSyllabuses()
       })
@@ -85,16 +89,16 @@ export class HomeSyllabus {
   }
 
   /**
-   * Lee la lista de categorías en las cuales está matriculado un estudiante.
+   * Lee la lista de syllabus en las cuales está matriculado un estudiante.
    */
   getEnrolledSyllabuses () {
     this.enrolledSyllabuses = []
     this.syllabusService.getEnrolledSyllabuses()
       .then(data => {
         for (let i = 0; i < data.user.syllabuses.length; i++) {
+          this.enrolledSyllabuses.push(this.syllabuses[i])
           for (let j = 0; j < this.syllabuses.length; j++) {
             if (this.syllabuses[j].id === data.user.syllabuses[i]) {
-              this.enrolledSyllabuses.push(this.syllabuses[j])
               this.syllabuses[j].enrolled = true
             }
           }
@@ -226,7 +230,6 @@ export class HomeSyllabus {
       this.syllabusService.enrollSyllabus(this.syllabusToEnroll.id, this.syllabusToEnroll.key)
         .then((data) => {
           this.alertService.showMessage(MESSAGES.enrolledInSyllabus)
-          this.getSyllabuses()
           this.getEnrolledSyllabuses()
           window.$('#enroll-syllabus').modal('hide')
         })

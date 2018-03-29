@@ -52,16 +52,46 @@ export class EditAssignment {
   }
 
   /**
+   * Formatea una fecha dada al formato YYYY-MM-DD
+   * @param {Date} date - Fecha a formatear
+   * @return {string} fecha formateada
+   */
+  formatDate (date) {
+    let str = date.getUTCFullYear() + '-'
+    if (date.getMonth() + 1 < 10) str += '0'
+    str += (date.getMonth() + 1) + '-'
+    if (date.getDate() < 10) str += '0'
+    str += date.getDate()
+    return str
+  }
+
+  /**
+   * Formatea una hora dada al formato YYYY-MM-DD
+   * @param {Date} time - Hora a formatear (Aunque se envia una fecha completa, solo se analiza la hora)
+   * @return {string} Hora formateada
+   */
+  formatTime (time) {
+    let str = ''
+    if (time.getHours() < 10) str += '0'
+    str += time.getHours() + ':'
+    if (time.getMinutes() < 10) str += '0'
+    str += time.getMinutes()
+    return str
+  }
+
+  /**
    * Obtiene la tarea
    */
   getAssignment () {
     this.syllabusService.loadAssignment(this.id)
       .then(data => {
+        let tmpStart = new Date(data.assignment.init_date)
+        let tmpEnd = new Date(data.assignment.end_date)
+        this.startDate = this.formatDate(tmpStart)
+        this.endDate = this.formatDate(tmpEnd)
+        this.startTime = this.formatTime(tmpStart)
+        this.endTime = this.formatTime(tmpEnd)
         this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, undefined, this.id)
-        this.startDate = this.assignment.startDate.substr(0, 10)
-        this.endDate = this.assignment.endDate.substr(0, 10)
-        this.startTime = this.assignment.startDate.substr(11, 5)
-        this.endTime = this.assignment.endDate.substr(11, 5)
         this.assignment.adjuntProblems(data.assignment.problems)
         this.problems = ''
       })
@@ -87,9 +117,9 @@ export class EditAssignment {
    * Agrega las ediciones a la plataforma
    */
   create () {
-    this.assignment.startDate = this.startDate + ' ' + this.startTime + ':00'
-    this.assignment.endDate = this.endDate + ' ' + this.endTime + ':00'
-    this.syllabusService.editAssignment(this.assignment)
+    this.assignment.startDate = new Date(this.startDate + ' ' + this.startTime).toISOString()
+      this.assignment.endDate = new Date(this.endDate + ' ' + this.endTime).toISOString()
+      this.syllabusService.editAssignment(this.assignment)
         .then(data => {
           this.alertService.showMessage(MESSAGES.assignmentModified)
         })

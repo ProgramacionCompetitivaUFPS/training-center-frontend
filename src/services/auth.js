@@ -1,7 +1,9 @@
 import { API } from 'config/config'
+import { Alert } from 'services/alert'
 import { Http } from 'services/http'
 import { Jwt } from 'services/jwt'
 
+import io from 'socket.io-client'
 /**
  * Auth (Service)
  * Servicio de autenticación y registro
@@ -17,7 +19,7 @@ export class Auth {
    * servicio de manejo de Json Web Tokens (Jwt)
    */
   static inject () {
-    return [Http, Jwt]
+    return [Http, Alert, Jwt]
   }
 
   /**
@@ -25,10 +27,13 @@ export class Auth {
    * @param {service} httpService - Servicio para conexiones http
    * @param {service} jwtService - Servicio para manejo de Json Web Tokens (jwt)
    */
-  constructor (httpService, jwtService) {
+  constructor (httpService, alertService, jwtService) {
     this.httpService = httpService
+    this.alertService = alertService
     this.jwtService = jwtService
     this.authenticated = this.isAuthenticated()
+    this.socketActive = false
+    this.activateSocket()
   }
   /**
    * Envia al servidor los datos de inicio de sesión, y retorna el token de usuario si el login
@@ -47,6 +52,44 @@ export class Auth {
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)
+  }
+
+  activateSocket () {
+    if (this.authenticated && !this.socketActive) {
+      this.socket = io.connect(API.apiUrl + 'normal-mode')
+      this.socket.emit('register', this.getUserId())
+      this.socket.on('new result', (data) => {
+        //if (data.problem_name === 'No pongas un / de más al hacer la conexión a la sala :)') data.problem_name = ''
+        if (data.verdict === 'Accepted') {
+          this.alertService.showMessage({
+            text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" es correcta. ¡Muy bien!',
+            type: 'success'
+          })
+        } else if(data.verdict === 'Compilation Error') {
+          this.alertService.showMessage({
+            text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" presenta un error de compilación.',
+            type: 'error'
+          })
+        } else if(data.verdict === 'Time Limit Exceeded') {
+          this.alertService.showMessage({
+            text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" excede el tiempo límite permitido.',
+            type: 'error'
+          })
+        } else if(data.verdict === 'Runtime Error') {
+          this.alertService.showMessage({
+            text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" tiene un error en tiempo de ejecución.',
+            type: 'error'
+          })
+        } else if(data.verdict === 'Wrong Answer') {
+          this.alertService.showMessage({
+            text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" imprime una respuesta erronea.',
+            type: 'error'
+          })
+        }
+        
+      })
+      this.socketActive = true
+    }
   }
 
   /**
@@ -186,6 +229,7 @@ export class Auth {
    * @returns boolean - true si es estudiante, false en caso contrario
    */
   isStudent () {
+    if (this.jwtService.getUserType() === 'student' && !this.socketActive) this.activateSocket()
     return this.jwtService.getUserType() === 'student'
   }
 
@@ -194,6 +238,7 @@ export class Auth {
    * @returns boolean - true si es coach, false en caso contrario
    */
   isCoach () {
+    if (this.jwtService.getUserType() === 'coach' && !this.socketActive) this.activateSocket()
     return this.jwtService.getUserType() === 'coach'
   }
 
@@ -202,6 +247,7 @@ export class Auth {
    * @returns boolean - true si es administrador, false en caso contrario
    */
   isAdmin () {
+    if (this.jwtService.getUserType() === 'admin' && !this.socketActive) this.activateSocket()
     return this.jwtService.getUserType() === 'admin'
   }
 

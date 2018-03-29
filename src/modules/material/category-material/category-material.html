@@ -5,19 +5,19 @@
   <div class="container ufps-container-logged">
     <h1 class="text-right">${category}</h1>
     <hr>
-    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind = "filterChange" limit.bind ="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
+      sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
     <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
       <a route-href="route: specificMaterial; params.bind: {id:material.id}">
         <div class="ufps-card">
           <div class="ufps-card-title ufps-card-material">
-            <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar este material"
-              tooltip></span>
-            <span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar este material"
-              tooltip></span>
+            <span if.bind="authService.isAdmin()" click.delegate="showRemoveMaterial(material.id, material.name)" class="ufps-remove-category glyphicon glyphicon-remove"
+              data-toggle="tooltip" title="Eliminar este material" tooltip></span>
             <h1>${material.name}</h1>
           </div>
         </div>
       </a>
+
     </div>
     <div if.bind="authService.authenticated" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container">
       <div class="ufps-card" data-toggle="modal" data-target="#new-material">
@@ -60,6 +60,25 @@
             <p class="text-center" if.bind="authService.isStudent()">Aparecerá en la plataforma una vez sea aprobado por un administrador.</p>
             <input type="submit" class="btn btn-default ufps-btn-default" value="Añadir">
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--MODAL PARA ELIMINAR MATERIAL-->
+  <div if.bind="authService.isAdmin()" class="modal fade" id="remove-material" tabindex="-1" role="dialog" aria-labelledby="remove-material">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">¿Estás seguro de eliminar el material '${materialToRemoveName}'?</h4>
+          <br>
+          <p>Esta acción no puede ser revertida.</p>
+
+          <button class="btn btn-default ufps-btn-default" click.delegate=removeMaterial()>Si</button>
+          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
         </div>
       </div>
     </div>

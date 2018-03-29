@@ -54,6 +54,14 @@ export class Syllabus {
         }
       },
       {
+        name: 'StatsAssignment',
+        route: 'estadisticas/:id',
+        moduleId: 'modules/syllabus/assignment-stats/assignment-stats',
+        settings: {
+          roles: ['coach']
+        }
+      },
+      {
         name: 'ViewAssignment',
         route: 'tarea/:id',
         moduleId: 'modules/syllabus/view-assignment/view-assignment',
@@ -63,7 +71,7 @@ export class Syllabus {
       },
       {
         name: 'ViewProblem',
-        route: ['tarea/:id/problema/:problemId', 'tarea/:id/problema/:problemId/:lang'],
+        route: ['tarea/:assignmentId/problema/:problemId/:assignmentProblemId', 'tarea/:assignmentId/problema/:problemId/:assignmentProblemId/:lang'],
         moduleId: 'modules/syllabus/view-problem/view-problem',
         settings: {
           roles: ['student']

@@ -84,6 +84,17 @@ export class App {
           roles: ['visitor']
         }
       },
+      // Reset Password
+      {
+        name: 'search',
+        route: 'buscar/:query',
+        moduleId: './modules/search/search',
+        title: 'Búsqueda',
+        layoutView: './layouts/logged.html',
+        settings: {
+          roles: ['admin', 'coach', 'student']
+        }
+      },
       // Problems
       {
         name: 'problems',

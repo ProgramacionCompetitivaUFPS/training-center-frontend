@@ -5,7 +5,7 @@
   <div class="container ufps-container-logged">
     <h1 class="text-right">${category.name}</h1>
     <hr>
-    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind = "filterChange" limit.bind ="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="true" language.bind="language"></filter>
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind = "filterChange" limit.bind ="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'problemas'" language-flag.bind="true" language.bind="language"></filter>
     <table>
       <thead>
         <tr>
@@ -25,7 +25,15 @@
             <span if.bind="authService.isAdmin()" class="ufps-edit-problem-list glyphicon glyphicon-remove"  data-toggle="tooltip" title="Eliminar problema" click.delegate="showRemoveProblem(problem.id)" tooltip></span>
           </td>
           <td class="text-center">${problem.level}</td>
-          <td class="text-center ufps-language"><span class="${problem.isInSpanish() ? 'active' : 'inactive'}"><a  route-href="route: view-problem; params.bind: {id:problem.id, lang:'es'}">ES</a></span> | <span class="${problem.isInEnglish() ? 'active' : 'inactive'}"><a  route-href="route: view-problem; params.bind: {id:problem.id, lang: 'en'}">EN</a></span></td>
+          <td class="text-center ufps-language">
+            <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
+              <a  route-href="route: view-problem; params.bind: {id:problem.id, lang:'es'}">ES</a>
+            </span> 
+            | 
+            <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
+              <a  route-href="route: view-problem; params.bind: {id:problem.id, lang: 'en'}">EN</a>
+            </span>
+          </td>
         </tr>
       </tbody>
     </table>

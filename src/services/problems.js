@@ -198,16 +198,16 @@ export class Problems {
   editProblem (problem) {
     var data = new window.FormData()
     // Datos obligatorios
-    data.append('category', problem.category)
-    data.append('level', problem.level)
-    data.append('example_input', problem.exampleInput)
-    data.append('example_output', problem.exampleOutput)
-    data.append('time_limit', problem.timeLimit)
+    data.append('data[category]', problem.category)
+    data.append('data[level]', problem.level)
+    data.append('data[example_input]', problem.exampleInput)
+    data.append('data[example_output]', problem.exampleOutput)
+    data.append('data[time_limit]', problem.timeLimit)
     // Datos opcionales
-    if (problem.titleEN !== undefined) data.append('title_en', problem.titleEN)
-    if (problem.titleES !== undefined) data.append('title_es', problem.titleES)
-    if (problem.descriptionEN !== undefined) data.append('description_en', problem.descriptionEN)
-    if (problem.descriptionES !== undefined) data.append('description_es', problem.descriptionES)
+    if (problem.titleEN !== undefined) data.append('data[title_en]', problem.titleEN)
+    if (problem.titleES !== undefined) data.append('data[title_es]', problem.titleES)
+    if (problem.descriptionEN !== undefined) data.append('data[description_en]', problem.descriptionEN)
+    if (problem.descriptionES !== undefined) data.append('data[description_es]', problem.descriptionES)
     // Archivos
     if (problem.input !== undefined) data.append('input', problem.input)
     if (problem.output !== undefined) data.append('output', problem.output)
@@ -245,8 +245,8 @@ export class Problems {
   submitSolution (problemId, language, assignmentId, contestId, code) {
     var data = new window.FormData()
     data.append('data[language]', language)
-    if(assignmentId !== undefined) data.append('data[assignment_problem_id]', assignmentId)
-    if(contestId !== undefined) data.append('data[contest_problem_id]', contestId)
+    if (assignmentId !== undefined) data.append('data[assignment_problem_id]', assignmentId)
+    if (contestId !== undefined) data.append('data[contest_problem_id]', contestId)
     data.append('code', code)
     return this.httpService.httpClient
       .fetch(API.endpoints.problems + '/' + problemId + '/submit', {
@@ -255,6 +255,27 @@ export class Problems {
           'Authorization': 'Bearer ' + this.jwtService.token
         },
         body: data
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  /**
+   * Busca problemas en el backend.
+   * @param {string} query - Texto a buscar
+   * @param {Number} page - Página de problemas a obtener
+   * @param {Number} limit - Cantidad de problemas a obtener
+   * @param {string} sort - opcional, por defecto ordena por id, si sort es 'name' ordena por nombre
+   * @param {string} by - asc o desc, ordenamiento ascendente o descendente
+   * @returns {Promise} Promesa con los problemas.
+   */
+  searchProblems (query, page, limit, sort, by, lang) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.problems + '?search=' + query + '&page=' + page + '&limit=' + limit + '&sort=' + sort + '&by=' + by + '&filter=' + lang, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)

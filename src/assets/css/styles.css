@@ -427,7 +427,8 @@ hr {
   top: 5px;
   opacity: .4;
   transition: all .3s ease;
-  cursor: pointer
+  cursor: pointer;
+  color: #FFF !important;
 }
 
 .ufps-edit-category {
@@ -480,6 +481,7 @@ hr {
   font-size: 22px;
   text-align: center;
   position: relative;
+  color: #FFF !important;
   padding-left: 3%;
   padding-right: 3%;
   top: 50%;
@@ -864,8 +866,26 @@ tr:nth-child(2n) td .ufps-score-judging {
   background-color: #ff988e;
 }
 
-.ufps-score > tbody > tr > td {
+.ufps-score>tbody>tr>td {
   padding-top: 2px;
   padding-bottom: 2px;
   height: 60px;
+}
+
+.disabled-select {
+  cursor: not-allowed !important;
+  opacity: 0.65;
+}
+
+.search-btn {
+  background-color: transparent;
+  border: none;
+  height: 45px;
+  width: 30px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.form-group.ufps-navbar-search{
+  position: relative;
 }
