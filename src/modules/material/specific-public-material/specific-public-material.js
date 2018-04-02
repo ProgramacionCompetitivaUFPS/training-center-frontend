@@ -16,7 +16,7 @@ import { Alert, Auth, Materials } from 'services/services'
 // servicio de autenticación y autorización (Auth),
 // servicio de backend de material (Material), servicio de Router (Router)
 @inject(Alert, Auth, Materials, Router)
-export class SpecificMaterial {
+export class SpecificPublicMaterial {
 
   /**
    * Crea una instancia de SpecificMaterial.

@@ -1,40 +1,26 @@
 <template>
   <require from="../../../resources/elements/paginator"></require>
   <div class="container">
+      <ol class="breadcrumb">
+          <li>
+            <a href="#/clases">Clases</a>
+          </li>
+          <li>
+            <a href="#/clases/clases/${assignment.syllabusId}">Clase actual</a>
+          </li>
+          <li class="active">Detalle de la tarea "${assignment.title}"</li>
+        </ol>
     <h1 class="text-right">${assignment.title}</h1>
     <hr>
-    <table class="ufps-score">
-      <thead>
-        <tr>
-          <th class="text-center">Usuario</th>
-          <th class="text-center" repeat.for="i of assignment.problemsLoaded.length">
-            ${letterValue(i)}
-          </th>
-          <th class="text-center">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr repeat.for="value of score">
-          <td repeat.for="field of value">
-            <p class="text-center" if.bind="$index === 0 || $index === assignment.problemsLoaded.length + 1">${field}</p>
-            <div if.bind="$index !== 0 && $index !== assignment.problemsLoaded.length + 1 && field" class="ufps-score-correct"></div>
-          </td>
-        </tr>
-        <tr if.bind="score.length === 0">
-          <td colspan="${assignment.problemsLoaded.length + 2}">No hay usuarios actualmente registrados en esta clase.</td>
-        </tr>
-      </tbody>
-    </table>
-    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
-    <div class="ufps-separator"></div>
-    <h1 class="text-right">Problemas</h1>
+    <h1 class="text-right">Detalles de la tarea</h1>
     <table>
       <thead>
         <tr>
           <th class="text-center" style="width:5%">Indice</th>
-          <th class="text-center" style="width:70%">Problema</th>
+          <th class="text-center" style="width:60%">Problema</th>
           <th class="text-center" style="width:10%">Dificultad</th>
           <th class="text-center" style="width:15%">Idioma</th>
+          <th class="text-center" style="width:10%">Detalle</th>
         </tr>
       </thead>
       <tbody>
@@ -57,8 +43,37 @@
               <a route-href="route: ViewProblem; params.bind: {assignmentProblemId:problem.auxiliarId, assignmentId:assignment.id, problemId: problem.id, lang: 'en'}">EN</a>
             </span>
           </td>
+          <td>
+            <a  route-href="route: AssignmentDetail; params.bind: {idAssignment:id, idAssignmentProblem: problem.auxiliarId, idProblem: problem.id}" class="ufps-btn ufps-btn-default btn btn-default">Detalle</a>
+          </td>
         </tr>
       </tbody>
-      <hr>
+    </table>
+    <div class="ufps-separator"></div>
+    <h1 class="text-right">Soluciones por estudiante</h1>
+    <table class="ufps-score">
+      <thead>
+        <tr>
+          <th class="text-center">Usuario</th>
+          <th class="text-center" repeat.for="i of assignment.problemsLoaded.length">
+            ${letterValue(i)}
+          </th>
+          <th class="text-center">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="value of score">
+          <td repeat.for="field of value">
+            <p class="text-center" if.bind="$index === 0 || $index === assignment.problemsLoaded.length + 1">${field}</p>
+            <div if.bind="$index !== 0 && $index !== assignment.problemsLoaded.length + 1 && field" class="ufps-score-correct"></div>
+          </td>
+        </tr>
+        <tr if.bind="score.length === 0">
+          <td colspan="${assignment.problemsLoaded.length + 2}">No hay usuarios actualmente registrados en esta clase.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="ufps-separator"></div>
+    <hr>
   </div>
 </template>

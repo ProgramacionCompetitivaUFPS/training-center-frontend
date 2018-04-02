@@ -188,6 +188,24 @@
             "path": "../node_modules/socket.io-client/dist",
             "main": "socket.io"
           },
+          {
+            "name": "chart.js",
+            "path": "../node_modules/chart.js/dist",
+            "main": "Chart.min.js"
+         },
+         {
+            "name": "aurelia-chart",
+             "path": "../node_modules/aurelia-chart/dist/amd",
+             "main": "index",
+             "deps": ["chart.js"],
+             "resources": [
+                     "elements/chart-element.html",
+                     "elements/chart-element.js",
+                     "attributes/chart-attribute.js",
+                     "observers/model-observer.js"
+              ]
+         
+         },
           "showdown"
         ]
       }

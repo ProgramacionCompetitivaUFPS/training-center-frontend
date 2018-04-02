@@ -62,7 +62,7 @@ export class Syllabus {
         }
       },
       {
-        route: [':id/problema/:problemId', ':id/problema/:problemId/:lang'],
+        route: [':id/problema/:problemId/:contestProblemId', ':id/problema/:problemId/:contestProblemId/:lang'],
         name: 'problem',
         moduleId: 'modules/contest/contest-problem/contest-problem',
         settings: {

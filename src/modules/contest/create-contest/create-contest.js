@@ -58,8 +58,8 @@ export class CreateContest {
    * Crea una nueva maratón en la plataforma.
    */
   create () {
-    this.newContest.initDate = this.startDate + ' ' + this.startTime + ':00'
-    this.newContest.endDate = this.endDate + ' ' + this.endTime + ':00'
+    this.newContest.initDate = new Date(this.startDate + ' ' + this.startTime).toISOString()
+    this.newContest.endDate = new Date(this.endDate + ' ' + this.endTime).toISOString()
     this.contestService.createContest(this.newContest)
       .then(data => {
         this.router.navigate('#/maraton/')

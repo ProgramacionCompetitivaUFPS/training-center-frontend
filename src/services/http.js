@@ -48,4 +48,13 @@ export class Http {
   parseJSON (response) {
     return response.json()
   }
+
+  /**
+   * Parsea la respuesta a formato compatible blob
+   * @param {response} response - Respuesta a la petición
+   * @returns BLOB - Objeto blob con la respuesta recibida
+   */
+  parseBlob (response) {
+    return response.blob()
+  }
 }

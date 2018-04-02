@@ -13,6 +13,7 @@ export let API = {
   endpoints: {
     auth: 'auth',
     users: 'users',
+    user: 'user',
     superUser: 'super-user',
     recovery: 'recovery',
     reset: 'reset',
@@ -29,7 +30,8 @@ export let API = {
     removeProblemAssignment: 'remove-problems',
     removeMaterialSyllabus: 'remove-materials',
     ranking: 'ranking',
-    contests: 'contests'
+    contests: 'contests',
+    submissions: 'submissions'
   },
 
   // SESSION

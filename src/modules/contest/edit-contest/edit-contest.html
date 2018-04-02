@@ -1,6 +1,12 @@
 <template>
   <div class="container">
-    <h2 class="text-right">Editar Maratón</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#/maraton">Maratones</a>
+      </li>
+      <li class="active">Editar maratón "${contest.title}"</li>
+    </ol>
+    <h2 class="text-right">Editar maratón "${contest.title}"</h2>
     <hr>
     <form submit.delegate="edit()">
       <div class="form-horizontal form-horizontal-assignment">

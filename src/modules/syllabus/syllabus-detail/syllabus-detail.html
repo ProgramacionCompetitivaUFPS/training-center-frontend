@@ -1,6 +1,12 @@
 <template>
   <require from="../../../resources/attributes/tooltip"></require>
   <div class="container ufps-container-logged">
+    <ol class="breadcrumb">
+      <li>
+        <a href="#/clases">Clases</a>
+      </li>
+      <li class="active">${syllabus.title}</li>
+    </ol>
     <div class="col-md-9">
       <h1>${syllabus.title}</h1>
     </div>
@@ -13,10 +19,10 @@
     <div class="col-md-12">
       <p>${syllabus.description}</p>
     </div>
-
+    <div class="ufps-separator-mini"></div>
     <h2 class="text-right">Tareas</h2>
     <hr>
-    <div repeat.for="assignment of syllabus.assignments" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+    <div repeat.for="assignment of syllabus.assignments" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
 
       <div class="ufps-card">
         <a route-href="route: ViewAssignment; params.bind: {id:assignment.id}" if.bind="authService.isStudent()">
@@ -40,7 +46,7 @@
       </div>
 
     </div>
-    <div if.bind="authService.isCoach()" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container">
+    <div if.bind="authService.isCoach()" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-new ufps-card-container">
       <a route-href="route: CreateAssignment; params.bind: {id:id}">
         <div class="ufps-card">
           <div class="ufps-card-title">

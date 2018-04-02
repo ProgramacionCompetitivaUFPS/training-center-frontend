@@ -10,8 +10,8 @@
         <a click.delegate="goToPrevPage()" aria-label="Anterior">
           <span aria-hidden="true">Anterior</span>
         </a>
-      </li>
-      <li repeat.for="i of pagination" class="${i === page ? 'active' : ''}">
+      </li> 
+      <li repeat.for="i of pagination" class="${i === page ? 'active' : 'hidden-xs'}">
         <a click.delegate="goToPage(i)">${i}</a>
       </li>
       <li class="${page >= totalPages ? 'disabled' : ''}">

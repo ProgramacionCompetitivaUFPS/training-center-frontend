@@ -40,4 +40,55 @@ export class Rankings {
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)
   }
+
+  getSubmissions(userId, limit, page, by, sort, condition) {
+    let strt = ''
+    if(condition !== null) strt = '&condition=' + condition
+    return this.httpService.httpClient
+      .fetch(API.endpoints.users + '/' + userId + '/' + API.endpoints.submissions  + '?limit=' + limit + '&page=' + page + '&by=' + by + '&sort=' + sort + strt, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  loadStatsByVerdict (id) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.users + '/' + id + '/verdicts', {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  loadProfile (id) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.users + '/' + id, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  loadStatsByLang (id) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.users + '/' + id + '/languages', {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
 }

@@ -5,6 +5,76 @@ body {
   height: 100%;
 }
 
+pre {
+  font-family: monospace;
+}
+
+.navbar-toggle {
+  margin-top: 13px;
+  margin-bottom: 13px;
+}
+
+.navbar-toggle .icon-bar {
+  display: block;
+  width: 22px;
+  height: 3px;
+  border-radius: 1px;
+  background-color: #FFF;
+}
+
+.navbar-collapse.collapse.in {
+  background-color: #e74c3c;
+}
+
+@media (max-width: 767px) {
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+  .breadcrumb {
+    display: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .navbar-header {
+    float: none;
+  }
+  .navbar-left,
+  .navbar-right {
+    float: none !important;
+  }
+  .navbar-toggle {
+    display: block;
+  }
+  .navbar-collapse {
+    border-top: 1px solid transparent;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  .navbar-fixed-top {
+    top: 0;
+    border-width: 0 0 1px;
+  }
+  .navbar-collapse.collapse {
+    display: none !important;
+  }
+  .navbar-nav {
+    float: none !important;
+    margin-top: 7.5px;
+  }
+  .navbar-nav>li {
+    float: none;
+  }
+  .navbar-nav>li>a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .collapse.in {
+    display: block !important;
+    overflow-y: auto !important;
+  }
+}
+
 .nav>li>a:focus,
 .nav>li>a:hover {
   background-color: transparent !important;
@@ -362,6 +432,12 @@ body {
 .ufps-separator {
   width: 100%;
   height: 40px;
+}
+
+.ufps-separator-mini {
+  width: 100%;
+  height: 10px;
+  
 }
 
 body {
@@ -724,6 +800,15 @@ textarea.form-control {
   cursor: not-allowed;
 }
 
+a {
+  cursor: pointer!important;
+}
+
+a.inactive {
+  background-color: #e2a29b;
+  cursor:not-allowed;
+}
+
 .ufps-name-problem-list,
 .ufps-edit-problem-list {
   float: left;
@@ -731,6 +816,10 @@ textarea.form-control {
 
 .ufps-name-problem-list {
   margin-bottom: 0;
+}
+
+.ufps-name-problem-list-l {
+  float: none !important;
 }
 
 .ufps-edit-problem-list {
@@ -864,6 +953,7 @@ tr:nth-child(2n) td .ufps-score-judging {
 
 .ufps-score-judging {
   background-color: #ff988e;
+  border-color: #ff988e;
 }
 
 .ufps-score>tbody>tr>td {
@@ -886,6 +976,24 @@ tr:nth-child(2n) td .ufps-score-judging {
   right: 0;
   top: 0;
 }
-.form-group.ufps-navbar-search{
+
+.form-group.ufps-navbar-search {
   position: relative;
+}
+
+.username-gray {
+  color: #666;
+}
+
+.breadcrumb li a {
+  color: #e74c3c;
+}
+
+.breadcrumb {
+  margin-top: 10px;
+  background-color: transparent!important;
+}
+
+.link-register {
+  color: #e74c3c;
 }

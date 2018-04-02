@@ -18,6 +18,7 @@ export class ContestDetail {
     this.contest = new Contest()
     this.status = 'unverified'
     this.key = ''
+    this.dateValid = false
   }
   /**
    * Método que toma los parametros enviados en el link y configura la página para adaptarse
@@ -40,6 +41,9 @@ export class ContestDetail {
     this.contestService.getContest(this.id)
       .then(data => {
         this.contest = new Contest(data.contest.title, data.contest.description, data.contest.init_date, data.contest.end_date, data.contest.rules, data.contest.public, null, this.id)
+        let startDate = new Date(data.contest.init_date)
+        let now = new Date()
+        if (now > startDate) this.dateValid = true
       })
       .catch(error => {
         if (error.status === 400) {

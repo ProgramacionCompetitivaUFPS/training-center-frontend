@@ -62,6 +62,14 @@ export class Syllabus {
         }
       },
       {
+        name: 'AssignmentDetail',
+        route: 'estadisticas/:idAssignment/problema/:idAssignmentProblem/:idProblem',
+        moduleId: 'modules/syllabus/assignment-detail/assignment-detail',
+        settings: {
+          roles: ['coach']
+        }
+      },
+      {
         name: 'ViewAssignment',
         route: 'tarea/:id',
         moduleId: 'modules/syllabus/view-assignment/view-assignment',

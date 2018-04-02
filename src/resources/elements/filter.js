@@ -12,7 +12,7 @@ export class Filter {
   @bindable languageFlag
   @bindable({defaultBindingMode: bindingMode.twoWay}) language
 
-  languageFlagChanged(act, prev) {console.log(act)}
+  languageFlagChanged(act, prev) {}
   /**
    * Establece un nuevo criterio de ordenamiento.
    * @param {String} sort - Criterio de ordenamiento

@@ -59,34 +59,32 @@ export class Auth {
       this.socket = io.connect(API.apiUrl + 'normal-mode')
       this.socket.emit('register', this.getUserId())
       this.socket.on('new result', (data) => {
-        //if (data.problem_name === 'No pongas un / de más al hacer la conexión a la sala :)') data.problem_name = ''
         if (data.verdict === 'Accepted') {
           this.alertService.showMessage({
             text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" es correcta. ¡Muy bien!',
             type: 'success'
           })
-        } else if(data.verdict === 'Compilation Error') {
+        } else if (data.verdict === 'Compilation Error') {
           this.alertService.showMessage({
             text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" presenta un error de compilación.',
             type: 'error'
           })
-        } else if(data.verdict === 'Time Limit Exceeded') {
+        } else if (data.verdict === 'Time Limit Exceeded') {
           this.alertService.showMessage({
             text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" excede el tiempo límite permitido.',
             type: 'error'
           })
-        } else if(data.verdict === 'Runtime Error') {
+        } else if (data.verdict === 'Runtime Error') {
           this.alertService.showMessage({
             text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" tiene un error en tiempo de ejecución.',
             type: 'error'
           })
-        } else if(data.verdict === 'Wrong Answer') {
+        } else if (data.verdict === 'Wrong Answer') {
           this.alertService.showMessage({
             text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" imprime una respuesta erronea.',
             type: 'error'
           })
         }
-        
       })
       this.socketActive = true
     }
@@ -176,6 +174,42 @@ export class Auth {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({token: token})
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  setPassword (id, oldPassword, newPassword, retypePassword) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.users + '/' + id + '/update-password', {
+        method: 'post',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          old_password: oldPassword,
+          password: newPassword,
+          confirm_password: retypePassword
+        })
+      })
+      .then(this.httpService.checkStatus)
+  }
+
+  editProfile (id, email, username, name, code) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.users + '/' + id, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          username: username,
+          name: name,
+          code: code
+        })
       })
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON)

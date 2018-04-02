@@ -49,7 +49,7 @@ export class ViewAssignment {
   getAssignment () {
     this.syllabusService.loadAssignment(this.id)
       .then(data => {
-        this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, undefined, this.id)
+        this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, data.assignment.syllabus_id, this.id)
         this.assignment.adjuntProblems(data.assignment.problems)
       })
       .catch(error => {

@@ -74,7 +74,7 @@ export class ViewProblem {
     this.problemService.getProblem(this.problemId)
       .then(problem => {
         problem = problem.problem
-        this.problem = new Problem(parseInt(params.problemId), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input.replace(/\r\n/g, '\n'), problem.example_output.replace(/\r\n/g, '\n'), parseFloat(problem.time_limit), problem.user_id, problem.user.username)
+        this.problem = new Problem(parseInt(params.problemId), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input !== 'undefined' ? problem.example_input.replace(/\r\n/g, '\n') : '', problem.example_output !== 'undefined' ? problem.example_output.replace(/\r\n/g, '\n') : '', parseFloat(problem.time_limit), problem.user_id, problem.user.username)
         if (this.lang === 'en' && !this.problem.isInEnglish()) {
           this.lang = 'es'
         } else if (this.lang === 'es' && !this.problem.isInSpanish()) {
@@ -103,10 +103,9 @@ export class ViewProblem {
         this.startDate = new Date(data.assignment.init_date).getTime()
         this.endDate = new Date(data.assignment.end_date).getTime()
         this.validateDate()
-        this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, undefined, this.id)
+        this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, data.assignment.syllabus_id, this.id)
       })
       .catch(error => {
-        console.log(error)
         if (error.status === 401) {
           this.alertService.showMessage(MESSAGES.permissionsError)
         } else {
@@ -139,7 +138,7 @@ export class ViewProblem {
    */
   validateCode () {
     if (this.code.length === 1) {
-      if (this.code[0].type.startsWith('text/')) {
+      if (this.code[0].type.startsWith('text/') || this.code[0].name.endsWith('.java') || this.code[0].name.endsWith('.cpp') || this.code[0].name.endsWith('.py')) {
         this.sourceValid = true
         if(this.code[0].name.endsWith('.java')) {
           var reader = new FileReader()
@@ -159,26 +158,31 @@ export class ViewProblem {
         this.sourceValid = false
         this.alertService.showMessage(MESSAGES.invalidCode)
       }
-    }
-     
+    }  
   }
 
   submit() {
-    this.problemService.submitSolution(this.problemId, this.language, this.assignmentProblemId, undefined, this.code[0])
-      .then(() => {
-        this.alertService.showMessage(MESSAGES.submittedSolution)
-        this.language = null
-        this.code = null
-        this.sourceValid = false
-      })
-      .catch(error => {
-        if (error.status === 401 || error.status === 403) {
-          this.alertService.showMessage(MESSAGES.permissionsError)
-        } else if (error.status === 500) {
-          this.alertService.showMessage(MESSAGES.serverError)
-        } else {
-          this.alertService.showMessage(MESSAGES.unknownError)
-        }
-      })
+    if (!this.sourceValid) {
+      this.alertService.showMessage(MESSAGES.invalidCode)
+    } else if (this.language === null) {
+      this.alertService.showMessage(MESSAGES.invalidLanguage)
+    } else {
+      this.problemService.submitSolution(this.problemId, this.language, this.assignmentProblemId, undefined, this.code[0])
+        .then(() => {
+          this.alertService.showMessage(MESSAGES.submittedSolution)
+          this.language = null
+          this.code = null
+          this.sourceValid = false
+        })
+        .catch(error => {
+          if (error.status === 401 || error.status === 403) {
+            this.alertService.showMessage(MESSAGES.permissionsError)
+          } else if (error.status === 500) {
+            this.alertService.showMessage(MESSAGES.serverError)
+          } else {
+            this.alertService.showMessage(MESSAGES.unknownError)
+          }
+        })
+      }
   }
 }

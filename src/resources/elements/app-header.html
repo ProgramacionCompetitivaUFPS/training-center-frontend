@@ -45,24 +45,33 @@
           <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
             <a route-href="route: admin">Administración</a>
           </li>
+          <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.isCoach() || authService.isStudent()">
+            <a href="#/envios">Mis envios</a>
+          </li>
+          <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.authenticated">
+              <a href="#/perfil">Perfil</a>
+            </li>
+          <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.authenticated">
+            <a click.delegate="logOut()">Cerrar Sesión</a>
+          </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right" if.bind="authService.authenticated">
+        <ul class="nav navbar-nav navbar-right hidden-sm hidden-xs" if.bind="authService.authenticated">
           <li class="dropdown ufps-btn-nav ufps-dropdown-user">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               <img src="src/assets/img/user.png" alt="Avatar de usuario" class="ufps-avatar">
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu ufps-dropdown-menu">
-              <!--<li>
-                <a>Mis envios</a>
+              <li if.bind="authService.isCoach() || authService.isStudent()">
+                <a href="#/envios">Mis envios</a>
               </li>
-              <li>
-                <a href="#">Perfil</a>
+              <li if.bind="authService.authenticated">
+                <a href="#/perfil">Perfil</a>
               </li>
-              <li>
+              <li if.bind="false">
                 <a href="#">Editar perfil</a>
               </li>
-              <li role="separator" class="divider"></li>-->
+              <li role="separator" class="divider"></li>
               <li>
                 <a click.delegate="logOut()">Cerrar Sesión</a>
               </li>
@@ -74,7 +83,7 @@
             <a href="#/iniciar-sesion">Iniciar sesión</a>
           </li>
         </ul>
-        <form class="navbar-form navbar-right" submit.delegate="search()">
+        <form class="navbar-form navbar-right" submit.delegate="search()" if.bind="authService.authenticated">
           <div class="form-group ufps-navbar-search">
             <div class="input-group">
               <input type="text" value.bind="query" class="form-control ufps-navbar-input" placeholder="Buscar problema...">

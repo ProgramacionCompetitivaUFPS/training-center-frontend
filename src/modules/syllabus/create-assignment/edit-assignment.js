@@ -91,7 +91,7 @@ export class EditAssignment {
         this.endDate = this.formatDate(tmpEnd)
         this.startTime = this.formatTime(tmpStart)
         this.endTime = this.formatTime(tmpEnd)
-        this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, undefined, this.id)
+        this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, data.assignment.syllabus_id, this.id)
         this.assignment.adjuntProblems(data.assignment.problems)
         this.problems = ''
       })

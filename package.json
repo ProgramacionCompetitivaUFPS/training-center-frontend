@@ -10,7 +10,9 @@
   "dependencies": {
     "aurelia-animator-css": "^1.0.0",
     "aurelia-bootstrapper": "^1.0.0",
+    "aurelia-chart": "^0.2.7",
     "aurelia-fetch-client": "^1.1.0",
+    "aurelia-highlightjs": "^0.1.5",
     "aurelia-notify": "^0.7.0",
     "bluebird": "^3.4.1",
     "bootstrap": "^3.3.7",
@@ -54,7 +56,6 @@
     "karma-babel-preprocessor": "^6.0.1",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.0.2",
-    "karma-phantomjs-launcher": "^1.0.2",
     "karma-spec-reporter": "0.0.26",
     "karma-vivaldi-launcher": "0.0.1",
     "minimatch": "^3.0.2",

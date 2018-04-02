@@ -3,11 +3,18 @@
   <require from="../../../resources/elements/filter"></require>
   <require from="../../../resources/elements/paginator"></require>
   <div class="container ufps-container-logged">
+    <ol class="breadcrumb">
+      <li>
+        <a href="#/">Categorías</a>
+      </li>
+      <li class="active">Materiales de "${category}"</li>
+    </ol>
     <h1 class="text-right">${category}</h1>
     <hr>
+
     <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
       sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
-    <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+    <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
       <a route-href="route: specificMaterial; params.bind: {id:material.id}">
         <div class="ufps-card">
           <div class="ufps-card-title ufps-card-material">
@@ -19,7 +26,7 @@
       </a>
 
     </div>
-    <div if.bind="authService.authenticated" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container">
+    <div if.bind="authService.authenticated" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-new ufps-card-container">
       <div class="ufps-card" data-toggle="modal" data-target="#new-material">
         <div class="ufps-card-title">
           <h1>

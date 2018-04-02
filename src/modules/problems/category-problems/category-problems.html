@@ -3,9 +3,18 @@
   <require from="../../../resources/elements/filter"></require>
   <require from="../../../resources/elements/paginator"></require>
   <div class="container ufps-container-logged">
+
+    <ol class="breadcrumb">
+      <li>
+        <a href="#/">Categorías</a>
+      </li>
+      <li class="active">Problemas de "${category.name}"</li>
+    </ol>
     <h1 class="text-right">${category.name}</h1>
     <hr>
-    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind = "filterChange" limit.bind ="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'problemas'" language-flag.bind="true" language.bind="language"></filter>
+
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
+      sort.bind="sort" by.bind="by" text-to-show.bind="'problemas'" language-flag.bind="true" language.bind="language"></filter>
     <table>
       <thead>
         <tr>
@@ -19,19 +28,27 @@
         <tr repeat.for="problem of category.problemsLoaded">
           <td class="text-center">${problem.id}</td>
           <td class="text-left ufps-td-problem">
-            <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list"><a  route-href="route: view-problem; params.bind: {id:problem.id, lang:'es'}">${problem.titleES}</a></p>
-            <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list"><a  route-href="route: view-problem; params.bind: {id:problem.id, lang:'en'}">${problem.titleEN}</a></p>
-            <a route-href="route: edit-problem; params.bind: {id:problem.id}"><span if.bind="authService.isAdmin()" class="ufps-edit-problem-list glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar problema" tooltip></span></a>
-            <span if.bind="authService.isAdmin()" class="ufps-edit-problem-list glyphicon glyphicon-remove"  data-toggle="tooltip" title="Eliminar problema" click.delegate="showRemoveProblem(problem.id)" tooltip></span>
+            <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list">
+              <a route-href="route: view-problem; params.bind: {id:problem.id, lang:'es'}">${problem.titleES}</a>
+            </p>
+            <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
+              <a route-href="route: view-problem; params.bind: {id:problem.id, lang:'en'}">${problem.titleEN}</a>
+            </p>
+            <a route-href="route: edit-problem; params.bind: {id:problem.id}">
+              <span if.bind="authService.isAdmin()" class="ufps-edit-problem-list glyphicon glyphicon-pencil" data-toggle="tooltip"
+                title="Editar problema" tooltip></span>
+            </a>
+            <span if.bind="authService.isAdmin()" class="ufps-edit-problem-list glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar problema"
+              click.delegate="showRemoveProblem(problem.id)" tooltip></span>
           </td>
           <td class="text-center">${problem.level}</td>
           <td class="text-center ufps-language">
             <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
-              <a  route-href="route: view-problem; params.bind: {id:problem.id, lang:'es'}">ES</a>
-            </span> 
-            | 
+              <a route-href="route: view-problem; params.bind: {id:problem.id, lang:'es'}">ES</a>
+            </span>
+            |
             <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
-              <a  route-href="route: view-problem; params.bind: {id:problem.id, lang: 'en'}">EN</a>
+              <a route-href="route: view-problem; params.bind: {id:problem.id, lang: 'en'}">EN</a>
             </span>
           </td>
         </tr>
@@ -41,15 +58,17 @@
   </div>
 
   <!--MODAL PARA ELIMINAR PROBLEMA-->
-  <div if.bind = "authService.isAdmin()" class="modal fade" id="remove-problem" tabindex="-1" role="dialog" aria-labelledby="remove-problem">
+  <div if.bind="authService.isAdmin()" class="modal fade" id="remove-problem" tabindex="-1" role="dialog" aria-labelledby="remove-problem">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
           <h4 class="modal-title">¿Estás seguro de eliminar este problema?</h4>
           <br>
           <p>Esta acción no puede ser revertida</p>
-          
+
           <button class="btn btn-default ufps-btn-default" click.delegate=removeProblem()>Si</button>
           <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
         </div>

@@ -1,7 +1,19 @@
 <template>
   <div class="container ufps-container-logged">
-    <h2 class="text-right">Nueva Tarea</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#/clases">Clases</a>
+      </li>
+      <li>
+        <a href="#/clases/clases/${assignment.syllabusId}">Detalle de la clase actual</a>
+      </li>
+      <li class="active" if.bind="type === 'edit'">${assignment.title}</li>
+      <li class="active" if.bind="type === 'new'">Nueva tarea</li>
+    </ol>
+    <h2 class="text-right" if.bind="type === 'edit'">${assignment.title}</h2>
+    <h2 class="text-right" if.bind="type === 'new'">Nueva Tarea</h2>
     <hr>
+
     <form submit.delegate="create()">
       <div class="form-horizontal form-horizontal-assignment">
         <div class="form-group">
@@ -133,19 +145,19 @@
       </table>
       <div class="form-horizontal form-horizontal-assignment" if.bind="type === 'edit'">
         <br>
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="problem-name">Añadir problemas:</label>
-            <div class="col-sm-9 input-group ufps-input-creator">
-              <input type="text" class="form-control" placeholder="Ingrese los ID de los problemas separados por coma" value.bind="problems"
-                required>
-              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede saber el ID de un problema usando la barra de busqueda superior">
-                <span class="glyphicon glyphicon-question-sign"></span>
-              </span>
-              <span class="input-group-addon btn"  click.delegate="addProblems()">
-                  <span>Añadir</span>
-                </span>
-            </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="problem-name">Añadir problemas:</label>
+          <div class="col-sm-9 input-group ufps-input-creator">
+            <input type="text" class="form-control" placeholder="Ingrese los ID de los problemas separados por coma" value.bind="problems"
+              required>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede saber el ID de un problema usando la barra de busqueda superior">
+              <span class="glyphicon glyphicon-question-sign"></span>
+            </span>
+            <span class="input-group-addon btn" click.delegate="addProblems()">
+              <span>Añadir</span>
+            </span>
           </div>
+        </div>
       </div>
     </div>
   </div>

@@ -109,7 +109,6 @@ export class CategoryMaterial {
    * @param {number} id - Identificador del material a eliminar.
    */
   showRemoveMaterial (id, name) {
-    console.log('remove')
     this.materialToRemove = id
     this.materialToRemoveName = name
     window.$('#remove-material').modal('show')

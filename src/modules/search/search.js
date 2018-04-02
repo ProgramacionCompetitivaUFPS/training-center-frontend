@@ -73,7 +73,6 @@ export class Search {
         }
       }
     }).catch(error => {
-      console.log(error)
       if (error.status === 401) {
         this.alertService.showMessage(MESSAGES.permissionsError)
       } else {

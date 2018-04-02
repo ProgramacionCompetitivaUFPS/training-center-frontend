@@ -117,6 +117,16 @@ export class App {
           roles: ['admin', 'coach', 'student']
         }
       },
+      {
+        name: 'submissions',
+        route: 'envios',
+        moduleId: './modules/submissions/submissions',
+        layoutView: './layouts/logged.html',
+        nav: true,
+        settings: {
+          roles: ['coach', 'student']
+        }
+      },
       // maratones
       {
         name: 'contest',
@@ -160,6 +170,14 @@ export class App {
         }
       },
       {
+        route: '/material-publico/:id',
+        name: 'specific-material',
+        moduleId: 'modules/material/specific-public-material/specific-public-material',
+        settings: {
+          roles: ['visitor']
+        }
+      },
+      {
         name: 'admin',
         route: ['administracion'],
         moduleId: './modules/admin/admin',
@@ -167,6 +185,16 @@ export class App {
         nav: true,
         settings: {
           roles: ['admin']
+        }
+      },
+      {
+        name: 'profile',
+        route: ['perfil'],
+        moduleId: './modules/profile/profile',
+        layoutView: './layouts/logged.html',
+        nav: true,
+        settings: {
+          roles: ['admin', 'coach', 'student']
         }
       }
     ])

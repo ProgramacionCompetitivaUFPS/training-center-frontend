@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+    <ol class="breadcrumb">
+      <li>
+        <a href="#/maraton">Maratones</a>
+      </li>
+      <li class="active">${contest.title}</li>
+    </ol>
     <h2 class="text-right">${contest.title}</h2>
     <hr>
     <ul class="nav nav-pills nav-justified nav-maraton">
@@ -10,11 +16,11 @@
         <a>Problemas</a>
       </li>
       <li role="presentation" if.bind="contest.privacy || status === 'registered'">
-          <a href="#/maraton/${contest.id}/resultados">Resultados</a>
-        </li>
-        <li role="presentation" class="disabled" if.bind="!contest.privacy && status !== 'registered'">
-          <a>Resultados</a>
-        </li>
+        <a href="#/maraton/${contest.id}/resultados">Resultados</a>
+      </li>
+      <li role="presentation" class="disabled" if.bind="!contest.privacy && status !== 'registered'">
+        <a>Resultados</a>
+      </li>
     </ul>
     <br>
     <div class="row">
@@ -27,22 +33,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr repeat.for="problem of problems">
+          <tr repeat.for="problem of problems" if.bind="flagProblems">
             <td class="text-center">${letterValue($index)}</td>
             <td class="text-left ufps-td-problem">
               <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list">
-                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, lang: 'es'}">${problem.titleES}</a>
+                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, contestProblemId: problem.auxiliarId, lang: 'es'}">${problem.titleES}</a>
               </p>
               <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
-                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, lang: 'en'}">${problem.titleEN}</a>
+                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, contestProblemId: problem.auxiliarId, lang: 'en'}">${problem.titleEN}</a>
               </p>
             </td>
             <td class="text-center ufps-language">
               <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
-                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, lang: 'es'}">ES</a>
+                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, contestProblemId: problem.auxiliarId, lang: 'es'}">ES</a>
               </span> |
               <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
-                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, lang: 'en'}">EN</a>
+                <a route-href="route: problem; params.bind: {id:contest.id, problemId: problem.id, contestProblemId: problem.auxiliarId, lang: 'en'}">EN</a>
               </span>
             </td>
           </tr>

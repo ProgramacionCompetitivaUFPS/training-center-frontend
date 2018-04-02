@@ -41,8 +41,8 @@ export class EditContest {
    * Crea una nueva maratón en la plataforma.
    */
   edit () {
-    this.contest.initDate = this.startDate + ' ' + this.startTime + ':00'
-    this.contest.endDate = this.endDate + ' ' + this.endTime + ':00'
+    this.contest.initDate = new Date(this.startDate + ' ' + this.startTime).toISOString()
+    this.contest.endDate = new Date(this.endDate + ' ' + this.endTime).toISOString()
     this.contestService.editContest(this.contest)
       .then(data => {
         this.alertService.showMessage(MESSAGES.contestUpdated)
@@ -59,16 +59,46 @@ export class EditContest {
   }
 
   /**
+   * Formatea una fecha dada al formato YYYY-MM-DD
+   * @param {Date} date - Fecha a formatear
+   * @return {string} fecha formateada
+   */
+  formatDate (date) {
+    let str = date.getUTCFullYear() + '-'
+    if (date.getMonth() + 1 < 10) str += '0'
+    str += (date.getMonth() + 1) + '-'
+    if (date.getDate() < 10) str += '0'
+    str += date.getDate()
+    return str
+  }
+
+  /**
+   * Formatea una hora dada al formato YYYY-MM-DD
+   * @param {Date} time - Hora a formatear (Aunque se envia una fecha completa, solo se analiza la hora)
+   * @return {string} Hora formateada
+   */
+  formatTime (time) {
+    let str = ''
+    if (time.getHours() < 10) str += '0'
+    str += time.getHours() + ':'
+    if (time.getMinutes() < 10) str += '0'
+    str += time.getMinutes()
+    return str
+  }
+
+  /**
    * Obtener los datos de la maratón actualmente cargada en la plataforma.
    */
   getContest () {
     this.contestService.getContest(this.id)
       .then(data => {
         this.contest = new Contest(data.contest.title, data.contest.description, data.contest.init_date, data.contest.end_date, data.contest.rules, data.contest.public, null, this.id)
-        this.startDate = this.contest.initDate.substr(0, 10)
-        this.endDate = this.contest.endDate.substr(0, 10)
-        this.startTime = this.contest.initDate.substr(11, 5)
-        this.endTime = this.contest.endDate.substr(11, 5)
+        let tmpStart = new Date(data.contest.init_date)
+        let tmpEnd = new Date(data.contest.end_date)
+        this.startDate = this.formatDate(tmpStart)
+        this.endDate = this.formatDate(tmpEnd)
+        this.startTime = this.formatTime(tmpStart)
+        this.endTime = this.formatTime(tmpEnd)
         this.getProblems()
       })
       .catch(error => {
@@ -127,6 +157,7 @@ export class EditContest {
     if(this.validateProblemsIds()) {
       this.contestService.addProblems(this.id, this.newProblems)
       .then(data => {
+        this.alertService.showMessage(MESSAGES.problemsAdded)
         this.getProblems()
       })
       .catch(error => {

@@ -32,6 +32,18 @@ export let MESSAGES = {
     text: 'Las contraseñas no coinciden',
     type: 'warning'
   },
+  passwordUpdated: {
+    text: 'La contraseña ha sido actualizada exitosamente.',
+    type: 'success'
+  },
+  profileUpdated: {
+    text: 'Sus datos se han actualizado exitosamente.',
+    type: 'success'
+  },
+  incorrectPassword: {
+    text: 'La contraseña actual es incorrecta.',
+    type: 'error'
+  },
   superUserWrongData: {
     text: 'Hay un error en datos. Verifícalos y vuelve a intentarlo',
     type: 'error'
@@ -271,6 +283,14 @@ export let MESSAGES = {
   },
   contestUnregistered: {
     text: 'Has salido de la maratón.',
+    type: 'success'
+  },
+  contestNotStarted: {
+    text: 'No puedes ver los problemas antes de iniciar la competencia.',
+    type: 'warning'
+  },
+  problemsAdded: {
+    text: 'Problemas añadidos correctamente.',
     type: 'success'
   },
   userDeleted: {

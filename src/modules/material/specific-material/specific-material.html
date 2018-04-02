@@ -1,16 +1,27 @@
 <template>
   <div class="container text-center">
+    <ol class="breadcrumb text-left">
+      <li>
+        <a href="#/">Categorías</a>
+      </li>
+      <li>
+          <a href="#/materials/${category.id}">Materiales de "${category.name}"</a>
+        </li>
+      <li class="active">${material.name}</li>
+    </ol>
     <div class="row">
       <div class="col-lg-10 col-lg-offset-1">
-          <h2>${material.name}</h2>
-          <p>${material.description}</p>
-          <div class="ufps-container-iframe">
-              <iframe src="${material.url}" width = "100%" class = "ufps-iframe" title="${material.name}"></iframe>
-          </div>
+        <h2>${material.name}</h2>
+        <p>${material.description}</p>
+        <div class="ufps-container-iframe">
+          <iframe src="${material.url}" width="100%" class="ufps-iframe" title="${material.name}"></iframe>
+        </div>
       </div>
     </div>
     <div class="row">
-      <p class="text-center"><a href="${material.url}" target="_blank">Abrir en pestaña externa</a></p>
+      <p class="text-center">
+        <a href="${material.url}" target="_blank">Abrir en pestaña externa</a>
+      </p>
     </div>
   </div>
 </template>

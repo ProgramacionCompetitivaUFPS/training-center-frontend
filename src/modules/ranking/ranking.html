@@ -17,7 +17,7 @@
         <tbody>
           <tr repeat.for="user of users">
             <td class="text-center">${(((page - 1) * 30) + $index + 1)}</td>
-            <td>${user.username}</td>
+            <td>${user.name} <span class="username-gray">(${user.username})</span></td>
             <td class="text-center">${user.accepted}</td>
             <td class="text-center">${user.total}</td>
           </tr>

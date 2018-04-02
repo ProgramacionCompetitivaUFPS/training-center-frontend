@@ -7,14 +7,17 @@
     <div class="text-center" if.bind="!enrolledSyllabusesLoaded">
       <p>Actualmente no tienes ninguna clase inscrita.</p>
     </div>
-    <div repeat.for="syllabus of enrolledSyllabuses" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+    <div repeat.for="syllabus of enrolledSyllabuses" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
       <a route-href="route: SyllabusDetail; params.bind: {id:syllabus.id}">
         <div class="ufps-card">
           <div class="ufps-card-title">
             <h1>${syllabus.tittle}</h1>
           </div>
-          <div class="col-xs-12 ufps-card-link">
-            <span>Abrir clase</span>
+          <div class="col-xs-6 ufps-card-link">
+            <a route-href="route: SyllabusDetail; params.bind: {id:syllabus.id}">Ver clase</a>
+          </div>
+          <div class="col-xs-6 ufps-card-link">
+            <a route-href="route: SyllabusStatistics; params.bind: {id:syllabus.id}">Detalle</a>
           </div>
           <div class="fix"></div>
         </div>
@@ -25,7 +28,7 @@
     <h1 class="text-right" if.bind="authService.isStudent()">Clases disponibles</h1>
     <h1 class="text-right" if.bind="authService.isCoach()">Mis clases</h1>
     <hr>
-    <div repeat.for="syllabus of syllabuses" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-container">
+    <div repeat.for="syllabus of syllabuses" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
       <div class="ufps-card">
         <div class="ufps-card-title">
           <span if.bind="authService.isCoach()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar los datos de la clase"
@@ -53,7 +56,7 @@
         <div class="fix"></div>
       </div>
     </div>
-    <div if.bind="authService.isCoach()" class="col-xs-12 col-sm-6 col-lg-3 ufps-card-new ufps-card-container">
+    <div if.bind="authService.isCoach()" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-new ufps-card-container">
       <div class="ufps-card" data-toggle="modal" data-target="#new-syllabus">
         <div class="ufps-card-title">
           <h1>

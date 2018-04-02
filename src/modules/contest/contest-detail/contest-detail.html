@@ -1,15 +1,21 @@
 <template>
   <div class="container">
+    <ol class="breadcrumb">
+      <li>
+        <a href="#/maraton">Maratones</a>
+      </li>
+      <li class="active">${contest.title}</li>
+    </ol>
     <h2 class="text-right">${contest.title}</h2>
     <hr>
     <ul class="nav nav-pills nav-justified nav-maraton">
       <li class="active" role="presentation">
         <a>Inicio</a>
       </li>
-      <li role="presentation" class="disabled" if.bind="status !== 'registered'">
+      <li role="presentation" class="disabled" if.bind="status !== 'registered' || ! dateValid">
         <a>Problemas</a>
       </li>
-      <li role="presentation" if.bind="status === 'registered'">
+      <li role="presentation" if.bind="status === 'registered' && dateValid">
         <a href="#/maraton/${contest.id}/problemas">Problemas</a>
       </li>
       <li role="presentation" if.bind="contest.privacy || status === 'registered'">

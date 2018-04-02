@@ -160,6 +160,18 @@ export class Problems {
       .then(this.httpService.parseJSON)
   }
 
+  getSubmission (name) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.submissions + '/' + name, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseBlob)
+  }
+
   /**
    * Envia un nuevo problema en el servidor
    * @param {Problem} problem - Problema a subir en el servidor

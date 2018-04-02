@@ -1,6 +1,15 @@
 <template>
   <require from="../../../resources/attributes/tooltip"></require>
   <div class="container ufps-container-logged">
+    <ol class="breadcrumb">
+      <li>
+        <a href="#/clases">Clases</a>
+      </li>
+      <li>
+          <a href="#/clases/clases/${assignment.syllabusId}">Clase actual</a>
+        </li>
+      <li class="active">Tarea "${assignment.title}"</li>
+    </ol>
     <h1 class="text-right">${assignment.title}</h1>
     <p class="text-right">${assignment.description}</p>
     <p class="text-right">${assignment.getStringAvailability()}</p>
@@ -61,10 +70,10 @@
           <td class="text-center">${problem.level}</td>
           <td class="text-center ufps-language">
             <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
-              <a  route-href="route: ViewProblem; params.bind: {assignmentProblemId:problem.auxiliarId, assignmentId:assignment.id, problemId: problem.id, lang: 'es'}">ES</a>
+              <a route-href="route: ViewProblem; params.bind: {assignmentProblemId:problem.auxiliarId, assignmentId:assignment.id, problemId: problem.id, lang: 'es'}">ES</a>
             </span> |
             <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
-              <a  route-href="route: ViewProblem; params.bind: {assignmentProblemId:problem.auxiliarId, assignmentId:assignment.id, problemId: problem.id, lang: 'en'}">EN</a>
+              <a route-href="route: ViewProblem; params.bind: {assignmentProblemId:problem.auxiliarId, assignmentId:assignment.id, problemId: problem.id, lang: 'en'}">EN</a>
             </span>
           </td>
         </tr>

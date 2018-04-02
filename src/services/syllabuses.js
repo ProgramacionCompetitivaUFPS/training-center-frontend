@@ -273,6 +273,31 @@ export class Syllabuses {
       .then(this.httpService.parseJSON)
   }
 
+ 
+  loadStatsByVerdict (idAssignment, idProblem) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.assignments + '/' + idAssignment + '/verdicts/' + idProblem, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
+  loadStatsByLang (idAssignment, idProblem) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.assignments + '/' + idAssignment + '/languages/' + idProblem, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
   /**
    * Agrega problemas a una tarea
    * @param {Number} idAssignment - Id de la tarea a la cual se añaden los problemas
@@ -384,5 +409,19 @@ export class Syllabuses {
         })
       })
       .then(this.httpService.checkStatus)
+  }
+
+  getSubmissionsAssignment(assignmentId, problemId, limit, page, by, sort, condition) {
+    let strt = ''
+    if(condition !== null) strt = '&condition=' + condition
+    return this.httpService.httpClient
+      .fetch(API.endpoints.assignments + '/' + assignmentId + '/' + API.endpoints.submissions  + '/' + problemId + '?limit=' + limit + '&page=' + page + '&by=' + by + '&sort=' + sort + strt, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
   }
 }

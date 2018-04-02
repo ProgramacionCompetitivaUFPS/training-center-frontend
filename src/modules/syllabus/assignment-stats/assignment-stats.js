@@ -50,10 +50,10 @@ export class AssignmentStats {
   getAssignment () {
     this.syllabusService.loadAssignment(this.id)
       .then(data => {
-        this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, undefined, this.id)
+        this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, data.assignment.syllabus_id, this.id)
         this.assignment.adjuntProblems(data.assignment.problems)
         for(let i = 0; i < this.assignment.problemsLoaded.length; i++) {
-          this.mapProblem[this.assignment.problemsLoaded[i].id] = i + 1
+          this.mapProblem[this.assignment.problemsLoaded[i].auxiliarId] = i + 1
         }
         this.getResults()
       })
@@ -72,18 +72,18 @@ export class AssignmentStats {
   getResults () {
     this.syllabusService.loadResults(this.id, this.page)
       .then(data => {
-        for(let i = 0; i < data.length; i++) {
-          if (this.mapUsers[data[i].id] === undefined) {
-            this.mapUsers[data[i].id] = this.score.length
-            this.score.push([])
-            for(let j = 0; j <= this.assignment.problemsLoaded.length + 1; j++) this.score[this.mapUsers[data[i].id]].push(false)
-            this.score[this.mapUsers[data[i].id]][0] = data[i].name
-            this.score[this.mapUsers[data[i].id]][this.assignment.problemsLoaded.length + 1] = 0
+        for (let i = 0; i < data.length; i++) {
+          this.score.push([])
+          this.score[i].push(data[i].name + ' (' + data[i].username + ')')
+          for (let j = 1; j < this.assignment.problemsLoaded.length + 1; j++) {
+            this.score[i].push(false)
           }
-          if (data[i].problem_id !== null && !this.score[this.mapUsers[data[i].id]][this.mapProblem[data[i].problem_id]] ) {
-            this.score[this.mapUsers[data[i].id]][this.mapProblem[data[i].problem_id]] = true
-            this.score[this.mapUsers[data[i].id]][this.assignment.problemsLoaded.length + 1]++
-          }
+          this.score[i].push(data[i].assignment_problems.length)
+        }
+        for (let i = 0; i < data.length; i++) {
+          for (let j = 0; j < data[i].assignment_problems.length; j++) {
+            this.score[i][this.mapProblem[data[i].assignment_problems[j]]] = true;
+          } 
         }
       })
       .catch(error => {
