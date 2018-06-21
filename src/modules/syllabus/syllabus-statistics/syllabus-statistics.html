@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <tr repeat.for="user of users">
-          <td class="text-center">${$index + 1}</td>
+          <td class="text-center">${($index + 1) + ((page - 1) * 30)}</td>
           <td>${user.name}</td>
           <td class="text-center">${user.accepted}</td>
           <td class="text-center">${user.total}</td>

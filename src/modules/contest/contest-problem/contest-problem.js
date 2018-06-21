@@ -1,4 +1,4 @@
-import { inject } from 'aurelia-framework'
+import { inject, observable } from 'aurelia-framework'
 
 import { Router } from 'aurelia-router'
 import { MESSAGES, SETTINGS } from 'config/config'
@@ -9,7 +9,10 @@ import { Alert, Auth, Contests, Problems } from 'services/services'
 // Servicio de problemas (Problems), servicio de enrutamiento (Router)
 @inject(Alert, Auth, Contests, Problems, Router)
 export class ContestProblem {
-  
+  @observable now
+  @observable dateLoaded
+  @observable contestLoaded
+
   /**
    * Crea una instancia de ViewProblem.
    * @param {service} alertService - Servicio de notificaciones
@@ -25,8 +28,10 @@ export class ContestProblem {
     this.languages = SETTINGS.languages
     this.sourceValid = false
     this.code
-    this.status = 'unverified'
+    this.creatorId = 0
+    this.status = 'registered'
     this.validDate = 0 // 0 => Valid, 1 => Prox, 2 => Pasada
+    this.contTime = {}
   }
 
   /**
@@ -42,7 +47,39 @@ export class ContestProblem {
     this.contestProblemId = params.contestProblemId
     this.id = params.problemId
     this.lang = params.lang || 'en'
+    this.validDate = 0 // 0 => Valid, 1 => Prox, 2 => Pasada
     this.getContest()
+  }
+
+  contestLoadedChanged(act, prev) {
+    this.validateDate()
+  }
+  dateLoadedChanged(act, prev) {
+    this.validateDate()
+  }
+
+  validateDate () {
+    if (this.contestLoaded && this.dateLoaded) {
+      if (this.now < this.startDate) {
+        this.routerService.navigate('#/maraton/' + this.id)
+        this.alertService.showMessage(MESSAGES.contestNotStarted)
+      } else {
+        this.getStatus()
+        this.validateSpecificDate()
+      } 
+    }
+  }
+
+  validateSpecificDate () {
+    setInterval(() => {
+      if (this.now < this.startDate) {
+        this.validDate = 1
+      } else if (this.now > this.endDate) {
+        this.validDate = 2
+      } else {
+        this.validDate = 0
+      }
+    }, 1000)
   }
 
   /**
@@ -92,10 +129,13 @@ export class ContestProblem {
   }
 
   submit() {
+    let endDate = new Date(this.contest.endDate)
     if (!this.sourceValid) {
       this.alertService.showMessage(MESSAGES.invalidCode)
     } else if (this.language === null) {
       this.alertService.showMessage(MESSAGES.invalidLanguage)
+    } else if (this.now > endDate) {
+      this.alertService.showMessage(MESSAGES.contestFinished)
     } else {
       this.problemService.submitSolution(this.id, this.language, undefined, this.contestProblemId, this.code[0])
         .then(() => {
@@ -123,7 +163,7 @@ export class ContestProblem {
     this.contestService.getStatus(this.contestId, this.authService.getUserId())
       .then(data => {
         this.status = data.status
-        if (this.status !== 'registered') {
+        if (this.status !== 'registered' && this.authService.getUserId() !== this.creatorId && !this.contest.privacy) {
           this.routerService.navigate('#/maraton/' + this.contestId)
           this.alertService.showMessage(MESSAGES.contestProblemsNotRegistered)
         } else {
@@ -147,17 +187,11 @@ export class ContestProblem {
   getContest () {
     this.contestService.getContest(this.contestId)
       .then(data => {
-        this.contest = new Contest(data.contest.title, data.contest.description, data.contest.init_date, data.contest.end_date, data.contest.rules, data.contest.public, null, this.id)
-        let startDate = new Date(data.contest.init_date)
-        let now = new Date()
-        if (now < startDate) {
-          this.routerService.navigate('#/maraton/' + this.id)
-          this.alertService.showMessage(MESSAGES.contestNotStarted)
-        } else if (this.contest.privacy){
-          this.getProblem()
-        } else {
-          this.getStatus()
-        }
+        this.contest = new Contest(data.contest.title, data.contest.description, data.contest.init_date, data.contest.end_date, data.contest.rules, data.contest.public, null, this.contestId)
+        this.startDate = new Date(data.contest.init_date)
+        this.endDate = new Date(data.contest.end_date)
+        this.contestLoaded = true
+        this.creatorId = data.contest.user.id
       })
       .catch(error => {
         if (error.status === 400) {

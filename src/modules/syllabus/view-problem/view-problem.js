@@ -1,4 +1,4 @@
-import { inject } from 'aurelia-framework'
+import { inject, observable } from 'aurelia-framework'
 
 import { Router } from 'aurelia-router'
 import { MESSAGES, SETTINGS, API } from 'config/config'
@@ -10,7 +10,9 @@ import { Alert, Auth, Problems, Syllabuses } from 'services/services'
 // Servicio de problemas (Problems), servicio de enrutamiento (Router)
 @inject(Alert, Auth, Problems, Syllabuses, Router)
 export class ViewProblem {
-  
+  @observable now
+  @observable assignmentLoaded
+  @observable dateLoaded
   /**
    * Crea una instancia de ViewProblem.
    * @param {service} alertService - Servicio de notificaciones
@@ -29,35 +31,32 @@ export class ViewProblem {
     this.code
     this.sourceValid = false
     this.validDate = 0 // 0 => Valid, 1 => Prox, 2 => Pasada
-    
+    this.now
+  }
+
+  assignmentLoadedChanged(act, prev) {
+    this.validateDate()
+  }
+
+  dateLoadedChanged(act, prev) {
+    this.validateDate()
   }
 
   validateDate () {
-    this.validateSpecificDate()
-    let interval
-    if(this.validDate === 0) {
-      interval = setInterval(() => {
-        this.validateSpecificDate()
-        if (this.validateDate == 2) clearInterval(interval)
-      }, 10000)
-    } else if (this.validDate === 1) {
-      interval = setInterval(() => {
-        this.validateSpecificDate()
-        if (this.validateDate == 2) clearInterval(interval)
-      }, 10000)
+    if(this.dateLoaded && this.assignmentLoaded) {
+      setInterval(() => {
+        if (this.now < this.startDate) {
+          this.validDate = 1
+        } else if (this.now > this.endDate) {
+          this.validDate = 2
+        } else {
+          this.validDate = 0
+        }
+      }, 1000)
+      
     }
+    
   }
-
-  validateSpecificDate () {
-    if (Date.now() < this.startDate) {
-      this.validDate = 1
-    } else if (Date.now() > this.endDate) {
-      this.validDate = 2
-    } else {
-      this.validDate = 0
-    }
-  }
-
   /**
    * Método que toma los parametros enviados en el link y configura la página para adaptarse
    * al contenido solicitado. Este método hace parte del ciclo de vida de la aplicación y se
@@ -100,9 +99,9 @@ export class ViewProblem {
   getAssignment () {
     this.syllabusService.loadAssignment(this.assignmentId)
       .then(data => {
-        this.startDate = new Date(data.assignment.init_date).getTime()
-        this.endDate = new Date(data.assignment.end_date).getTime()
-        this.validateDate()
+        this.startDate = new Date(data.assignment.init_date)
+        this.endDate = new Date(data.assignment.end_date)
+        this.assignmentLoaded = true
         this.assignment = new Assignment(data.assignment.tittle, data.assignment.description, data.assignment.init_date, data.assignment.end_date, undefined, data.assignment.syllabus_id, this.id)
       })
       .catch(error => {

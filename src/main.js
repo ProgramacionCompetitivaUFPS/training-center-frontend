@@ -17,7 +17,7 @@ export function configure (aurelia) {
     .standardConfiguration()
     .feature('resources')
     .plugin('aurelia-notify', settings => {
-      settings.timeout = 0
+      settings.timeout = 40000
       settings.limit = 1
     })
   aurelia.use.plugin('aurelia-chart')

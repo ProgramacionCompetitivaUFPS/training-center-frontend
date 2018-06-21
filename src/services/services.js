@@ -5,6 +5,7 @@
  * @exports Alert (Service) - Servicio de notificaciones
  * @exports Auth (Service) - Servicio de autenticación y validación
  * @exports Contests (Service) - Servicio de maratones de programación
+ * @exports Date (Service) - servicio de obtención de hora
  * @exports Http (Service) - Servicio de conexión http
  * @exports Jwt (Service) - Servicio de manejo de JSON Web Token (JWT)
  * @exports Materials (Service) - Servicio de manejo de materiales
@@ -15,6 +16,7 @@
 export * from './alert'
 export * from './auth'
 export * from './contests'
+export * from './date'
 export * from './http'
 export * from './jwt'
 export * from './materials'

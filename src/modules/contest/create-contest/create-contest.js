@@ -1,4 +1,4 @@
-import { inject } from 'aurelia-framework'
+import { inject, observable } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
 import { Contest } from 'models/models'
@@ -12,6 +12,8 @@ import { Alert, Contests } from 'services/services'
  */
 @inject(Alert, Contests, Router)
 export class CreateContest {
+  @observable now
+  @observable dateLoaded
   /**
    * Inicializa la instancia.
    */
@@ -20,11 +22,18 @@ export class CreateContest {
     this.contestService = contestService
     this.router = router
     this.newContest = new Contest()
-    this.startDate = this.formatDate(new Date())
-    this.endDate = this.startDate
-    this.startTime = this.formatTime(new Date())
-    this.endTime = this.startTime
   }
+
+  dateLoadedChanged(act, prev) {
+    let tmp = this.now
+    tmp.setTime(tmp.getTime() + 600000)
+    this.startDate = this.formatDate(tmp)
+    this.startTime = this.formatTime(tmp)
+    tmp.setTime(tmp.getTime() + 3600000)
+    this.endDate = this.formatDate(tmp)
+    this.endTime = this.formatTime(tmp)
+  }
+
 
   /**
    * Formatea una fecha dada al formato YYYY-MM-DD

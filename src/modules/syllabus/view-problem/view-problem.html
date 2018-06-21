@@ -1,6 +1,8 @@
 <template>
   <require from="../../../resources/attributes/markdown"></require>
   <require from="../../../resources/attributes/tooltip"> </require>
+  <require from="../../../resources/elements/clock"></require>
+  <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="false"></clock>
   <div class="container-fluid">
     <ol class="breadcrumb">
       <li>

@@ -1,4 +1,4 @@
-import { inject } from 'aurelia-framework'
+import { inject, observable } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
 import { Contest } from 'models/models'
@@ -6,7 +6,10 @@ import { Alert, Auth, Contests } from 'services/services'
 
 @inject(Alert, Auth, Contests, Router)
 export class ContestDetail {
-  
+  @observable now
+  @observable dateLoaded
+  @observable contestLoaded
+
   /**
    * Inicializa la instancia.
    */
@@ -17,8 +20,11 @@ export class ContestDetail {
     this.router = router
     this.contest = new Contest()
     this.status = 'unverified'
+    this.creatorId = 0
     this.key = ''
     this.dateValid = false
+    this.contTime = {}
+    this.contestLoaded = false
   }
   /**
    * Método que toma los parametros enviados en el link y configura la página para adaptarse
@@ -34,6 +40,19 @@ export class ContestDetail {
     this.getStatus()
   }
 
+  dateLoadedChanged (act, prev) {
+    this.validateDate() 
+  }
+  contestLoadedChanged (act, prev) {
+    this.validateDate()
+  }
+  nowChanged(act, prev) {
+    this.validateDate()
+  }
+
+  validateDate () {
+    if(this.contestLoaded && this.dateLoaded && this.now > this.startDate) this.dateValid = true 
+  }
   /**
    * Obtiene la información de la maratón actual.
    */
@@ -41,9 +60,10 @@ export class ContestDetail {
     this.contestService.getContest(this.id)
       .then(data => {
         this.contest = new Contest(data.contest.title, data.contest.description, data.contest.init_date, data.contest.end_date, data.contest.rules, data.contest.public, null, this.id)
-        let startDate = new Date(data.contest.init_date)
-        let now = new Date()
-        if (now > startDate) this.dateValid = true
+        this.startDate = new Date(data.contest.init_date)
+        this.endDate = new Date(data.contest.end_date)
+        this.creatorId = data.contest.user.id
+        this.contestLoaded = true
       })
       .catch(error => {
         if (error.status === 400) {

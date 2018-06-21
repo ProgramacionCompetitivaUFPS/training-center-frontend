@@ -38,7 +38,7 @@ export class Contest {
    * Retorna la fecha de finalización en un formato semántico al usuario.
    */
   getSemanticEndDate () {
-    return this.getSemanticDate(new Date(this.initDate))
+    return this.getSemanticDate(new Date(this.endDate))
   }
 
   /**

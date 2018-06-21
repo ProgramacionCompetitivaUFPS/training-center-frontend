@@ -82,7 +82,7 @@ export class CategoryProblems {
    */
   getProblems () {
     let stringSort, stringLang
-    if (this.sort === 'Id') stringSort = 'id'
+    if (this.sort === 'Id') stringSort = null
     else if (this.sort === 'Nombre') stringSort = 'name'
     else if (this.sort === 'Dificultad') stringSort = 'level'
     if (this.language === 'Español') stringLang = 'es'
@@ -119,7 +119,7 @@ export class CategoryProblems {
    * Elimina un problema de la plataforma.
    */
   removeProblem () {
-    this.problemService.removeProblem(this.problemToRemove)
+    this.problemsService.removeProblem(this.problemToRemove)
       .then(() => {
         this.alertService.showMessage(MESSAGES.problemDeleted)
         this.category.removeProblem(this.problemToRemove)

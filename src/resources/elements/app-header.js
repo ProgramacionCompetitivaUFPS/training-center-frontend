@@ -1,3 +1,4 @@
+import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 import { Auth } from 'services/services'
 
@@ -7,17 +8,9 @@ import { Auth } from 'services/services'
  * @export
  * @class AppHeader
  */
+@inject(Auth, Router)
 export class AppHeader {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el elemento.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de Autenticación (Auth),
-   * Enrutamiento (Router)
-   */
-  static inject () {
-    return [Auth, Router]
-  }
+
 
   /**
    * Crea una instancia de AppHeader.

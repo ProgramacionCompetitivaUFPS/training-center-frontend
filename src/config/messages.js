@@ -269,6 +269,10 @@ export let MESSAGES = {
     text: 'Solo los usuarios registrados en la maratón pueden ver los resultados',
     type: 'warning'
   },
+  contestFinished: {
+    text: 'La competencia ha finalizado',
+    type: 'warning'
+  },
   invalidIdProblem: {
     text: 'La lista de problemas debe contener solo los id de los problemas a añadir, separada por comas',
     type: 'error'
@@ -286,7 +290,7 @@ export let MESSAGES = {
     type: 'success'
   },
   contestNotStarted: {
-    text: 'No puedes ver los problemas antes de iniciar la competencia.',
+    text: 'No puedes ver esta sección antes de iniciar la competencia.',
     type: 'warning'
   },
   problemsAdded: {

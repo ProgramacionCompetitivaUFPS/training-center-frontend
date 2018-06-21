@@ -1,3 +1,4 @@
+import { inject } from 'aurelia-framework'
 import { NotificationService } from 'aurelia-notify'
 
 /**
@@ -6,16 +7,8 @@ import { NotificationService } from 'aurelia-notify'
  * @export
  * @class Alert
  */
+@inject(NotificationService)
 export class Alert {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el servicio.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio externo de notificaciones (NotificationService)
-   */
-  static inject () {
-    return [NotificationService]
-  }
 
   /**
    * Crea una instancia de Alert.

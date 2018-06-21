@@ -51,6 +51,9 @@
           <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.authenticated">
               <a href="#/perfil">Perfil</a>
             </li>
+            <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.authenticated">
+                <a href="#/acerca-de">Acerca-de</a>
+              </li>
           <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.authenticated">
             <a click.delegate="logOut()">Cerrar Sesión</a>
           </li>
@@ -68,8 +71,8 @@
               <li if.bind="authService.authenticated">
                 <a href="#/perfil">Perfil</a>
               </li>
-              <li if.bind="false">
-                <a href="#">Editar perfil</a>
+              <li>
+                <a href="#/acerca-de">Acerca de</a>
               </li>
               <li role="separator" class="divider"></li>
               <li>

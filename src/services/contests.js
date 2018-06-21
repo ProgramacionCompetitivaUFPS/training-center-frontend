@@ -137,6 +137,18 @@ export class Contests {
       .then(this.httpService.parseJSON)
   }
 
+  getScore (id) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.contests + '/' + id + '/scoreboard', {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
+
   /**
    * Obtiene todas las maratones próximas.
    * @param {Number} limit - Cantidad de maratones a obtener.

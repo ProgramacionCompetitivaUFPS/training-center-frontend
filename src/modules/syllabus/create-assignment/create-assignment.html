@@ -1,4 +1,6 @@
 <template>
+  <require from="../../../resources/elements/clock"></require>
+  <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="false"></clock>
   <div class="container ufps-container-logged">
     <ol class="breadcrumb">
       <li>

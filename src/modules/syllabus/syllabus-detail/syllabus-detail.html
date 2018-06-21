@@ -93,12 +93,15 @@
         <tbody>
           <tr repeat.for="material of materials">
             <td class="text-center">${material.id}</td>
-            <td>
-              ${material.name}
+            <td class="ufps-td-problem">
+              <p class="ufps-name-problem-list">
+                  <a href="#/materials/${material.category}/material/${material.id}" target="blank">${material.name}</a>
+              </p>
+              
             </td>
             <td class="text-right">
               <a class="ufps-btn btn ufps-btn-default" href="#/materials/${material.category}/material/${material.id}" target="blank">Abrir</a>
-              <a class="ufps-btn btn ufps-btn-default" click.delegate="showRemoveMaterial(material.id)">Eliminar</a>
+              <a class="ufps-btn btn ufps-btn-default" if.bind="authService.isCoach()" click.delegate="showRemoveMaterial(material.id)">Eliminar</a>
             </td>
           </tr>
           <tr if.bind="materials.length === 0">

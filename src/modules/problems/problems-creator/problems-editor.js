@@ -39,7 +39,7 @@ export class ProblemsEditor {
     this.problemsService.getProblem(params.id)
       .then(problem => {
         problem = problem.problem
-        this.newProblem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input, problem.example_output, parseFloat(problem.time_limit))
+        this.newProblem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category_id), undefined, problem.description_en, problem.description_es, problem.example_input, problem.example_output, parseFloat(problem.time_limit))
         if (this.newProblem.titleEN !== undefined && this.newProblem.titleEN != null) {
           this.originalLanguage = 'en'
           if (this.newProblem.titleES !== undefined && this.newProblem.titleES != null) {

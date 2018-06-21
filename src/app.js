@@ -188,6 +188,16 @@ export class App {
         }
       },
       {
+        name: 'about',
+        route: ['acerca-de'],
+        moduleId: './modules/about/about',
+        layoutView: './layouts/logged.html',
+        nav: true,
+        settings: {
+          roles: ['admin', 'coach', 'student']
+        }
+      },
+      {
         name: 'profile',
         route: ['perfil'],
         moduleId: './modules/profile/profile',

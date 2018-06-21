@@ -63,7 +63,7 @@ export class Search {
     if (this.language === 'Español') stringLang = 'es'
     else if (this.language === 'Inglés') stringLang = 'en'
     else stringLang = undefined
-    this.problemService.searchProblems(this.query, this.page, this.limit, (this.sort === 'Nombre') ? 'name' : undefined, (this.by === 'Ascendente' ? 'asc' : 'desc'), stringLang)
+    this.problemService.searchProblems(this.query, this.page, this.limit, (this.sort === 'Nombre') ? 'name' : (this.sort === 'Dificultad') ? 'level' : undefined, (this.by === 'Ascendente' ? 'asc' : 'desc'), stringLang)
     .then(data => {
       this.totalPages = data.meta.totalPages
       this.problems = []

@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+    <require from="../../../resources/elements/clock"></require>
+  <div class="container container-contest">
     <ol class="breadcrumb">
       <li>
         <a href="#/maraton">Maratones</a>
@@ -7,21 +8,22 @@
       <li class="active">${contest.title}</li>
     </ol>
     <h2 class="text-right">${contest.title}</h2>
+    <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="true" start-date.bind="startDate" end-date.bind="endDate"></clock>
     <hr>
     <ul class="nav nav-pills nav-justified nav-maraton">
       <li class="active" role="presentation">
         <a>Inicio</a>
       </li>
-      <li role="presentation" class="disabled" if.bind="status !== 'registered' || ! dateValid">
+      <li role="presentation" class="disabled" if.bind="(status !== 'registered' && authService.getUserId() !== creatorId && !contest.privacy) || ! dateValid">
         <a>Problemas</a>
       </li>
-      <li role="presentation" if.bind="status === 'registered' && dateValid">
+      <li role="presentation" if.bind="(status === 'registered' || authService.getUserId() === creatorId || contest.privacy) && dateValid">
         <a href="#/maraton/${contest.id}/problemas">Problemas</a>
       </li>
-      <li role="presentation" if.bind="contest.privacy || status === 'registered'">
+      <li role="presentation" if.bind="(contest.privacy || status === 'registered' || authService.getUserId() === creatorId) && dateValid">
         <a href="#/maraton/${contest.id}/resultados">Resultados</a>
       </li>
-      <li role="presentation" class="disabled" if.bind="!contest.privacy && status !== 'registered'">
+      <li role="presentation" class="disabled" if.bind="(!contest.privacy && status !== 'registered' && authService.getUserId() !== creatorId) || !dateValid">
         <a>Resultados</a>
       </li>
     </ul>
@@ -29,7 +31,7 @@
     <div class="row">
       <div class="col-md-8 text-center">
         <div class="panel panel-default">
-          <div class="panel-body">
+          <div class="panel-body panel-space">
             <h3>Descripción</h3>
             <p>${contest.description}</p>
             <h3>Reglas</h3>
@@ -40,12 +42,14 @@
       </div>
       <div class="col-md-4 text-center">
         <br>
-        <p>Inicio: ${contest.getSemanticStartDate()}</p>
-        <p>Finalización: ${contest.getSemanticEndDate()}</p>
+        <p><strong>Inicio:</strong> ${contest.getSemanticStartDate()}</p>
+        <p><strong>Finalización:</strong> ${contest.getSemanticEndDate()}</p>
+        <p if.bind="authService.getUserId() === creatorId"><strong>Eres el creador de esta maratón. Si solo deseas ver los resultados o los problemas, puedes hacerlo sin necesidad de registrarte.</strong></p>
         <br>
+
         <div if.bind="status === 'registered'">
           <p>¡Ya estás registrado!</p>
-          <a click.delegate="showUnregisterModal()" class="btn btn-default ufps-btn-default">Anular inscripción</a>
+          <a if.bind="!dateValid" click.delegate="showUnregisterModal()" class="btn btn-default ufps-btn-default">Anular inscripción</a>
         </div>
         <div if.bind="status === 'unregistered'">
           <a click.delegate="showRegisterModal()" class="btn btn-default ufps-btn-default">Registrate</a>

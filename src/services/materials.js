@@ -1,3 +1,4 @@
+import { inject } from 'aurelia-framework'
 import { API } from 'config/config'
 import { Http } from 'services/http'
 import { Jwt } from 'services/jwt'
@@ -8,17 +9,8 @@ import { Jwt } from 'services/jwt'
  * @export
  * @class Materials
  */
+@inject(Http, Jwt)
 export class Materials {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el servicio.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de conexión Http (Http),
-   * servicio de manejo de Json Web Tokens (Jwt)
-   */
-  static inject () {
-    return [Http, Jwt]
-  }
 
   /**
    * Crea una instancia de Material.

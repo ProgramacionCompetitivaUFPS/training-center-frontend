@@ -8,8 +8,8 @@
     <div if.bind="totalPagesMyContests > 0">
       <div class="col-md-3">
         <h1> 
-          <!--<a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>-->
-          <a click.delegate="showMessage()" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+          <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+          <!--<a click.delegate="showMessage()" class="btn btn-default ufps-btn-default">Crear Maratón</a>-->
         </h1>
       </div>
       <div class="col-md-9">
@@ -39,6 +39,7 @@
             <td class="text-center">${contest.getSemanticStartDate()}</td>
             <td class="text-right">
               <a route-href="route: edit; params.bind: {id:contest.id}" class="btn btn-default ufps-btn-default">Editar y añadir problemas</a>
+              <a route-href="route: detail; params.bind: {id:contest.id}" class="btn btn-default ufps-btn-default">Ver</a>
             </td>
           </tr>
         </tbody>
@@ -52,8 +53,8 @@
     <div if.bind="totalPagesMyContests === 0">
       <div class="col-md-3">
         <h1>
-          <!--<a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>-->
-          <a click.delegate="showMessage()" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+          <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+          <!--<a click.delegate="showMessage()" class="btn btn-default ufps-btn-default">Crear Maratón</a>-->
         </h1>
       </div>
       <div class="col-md-9">

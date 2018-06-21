@@ -1,4 +1,4 @@
-import { inject } from 'aurelia-framework'
+import { inject, observable } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
@@ -15,17 +15,25 @@ import { Alert, Syllabuses } from 'services/services'
 // Servicio de obtención y edición de Syllabus (Syllabus), y enrutamiento (Router)
 @inject(Alert, Syllabuses, Router)
 export class CreateAssignment {
+  @observable now
+  @observable dateLoaded
 
   constructor (alertService, syllabusService, router) {
     this.alertService = alertService
     this.syllabusService = syllabusService
     this.router = router
     this.problems = ''
-    this.startDate = this.formatDate(new Date())
-    this.endDate = this.startDate
-    this.startTime = this.formatTime(new Date())
-    this.endTime = this.startTime
     this.type = 'new'
+  }
+
+  dateLoadedChanged(act, prev) {
+    let tmp = this.now
+    tmp.setTime(tmp.getTime() + 600000)
+    this.startDate = this.formatDate(tmp)
+    this.startTime = this.formatTime(tmp)
+    tmp.setTime(tmp.getTime() + 86400000)
+    this.endDate = this.formatDate(tmp)
+    this.endTime = this.formatTime(tmp)
   }
   /**
    * Método que toma los parametros enviados en el link y configura la página para adaptarse

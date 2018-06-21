@@ -1,3 +1,4 @@
+import { inject } from 'aurelia-framework'
 import { API } from 'config/config'
 import { Http } from 'services/http'
 import { Jwt } from 'services/jwt'
@@ -8,17 +9,8 @@ import { Jwt } from 'services/jwt'
  * @export
  * @class Problems
  */
+@inject(Http, Jwt)
 export class Problems {
-  /**
-   * Método que realiza inyección de las dependencias necesarias en el servicio.
-   * Estas dependencias son cargadas bajo el patrón de diseño singleton.
-   * @static
-   * @returns Array con las dependencias a inyectar: Servicio de conexión Http (Http),
-   * servicio de manejo de Json Web Tokens (Jwt)
-   */
-  static inject () {
-    return [Http, Jwt]
-  }
 
   /**
    * Crea una instancia de Problems.
@@ -232,7 +224,6 @@ export class Problems {
         body: data
       })
       .then(this.httpService.checkStatus)
-      .then(this.httpService.parseJSON)
   }
 
   /**
@@ -241,7 +232,7 @@ export class Problems {
    */
   removeProblem (id) {
     return this.httpService.httpClient
-      .fetch(API.endpoints.problem + '/' + id, {
+      .fetch(API.endpoints.problems + '/' + id, {
         method: 'delete',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token
@@ -282,8 +273,13 @@ export class Problems {
    * @returns {Promise} Promesa con los problemas.
    */
   searchProblems (query, page, limit, sort, by, lang) {
+    let q = '?search=' + query + '&page=' + page + '&limit=' + limit
+    if (sort !== undefined) q += '&sort=' + sort
+    if (by !== undefined) q += '&by=' + by
+    if (lang !== undefined) q += '&filter=' + lang
+
     return this.httpService.httpClient
-      .fetch(API.endpoints.problems + '?search=' + query + '&page=' + page + '&limit=' + limit + '&sort=' + sort + '&by=' + by + '&filter=' + lang, {
+      .fetch(API.endpoints.problems + q, {
         method: 'get',
         headers: {
           'Authorization': 'Bearer ' + this.jwtService.token

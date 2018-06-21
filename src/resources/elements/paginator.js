@@ -22,28 +22,24 @@ export class Paginator {
   totalPagesChanged() {
     this.setPagination()
   }
+
+  pageChanged() {
+    this.setPagination()
+  }
   /**
    * Establece la paginación de los materiales en la parte inferior.
    */
   setPagination () {
     this.pagination = []
-    if (this.page === this.totalPages && this.page - 4 > 0) {
-      this.pagination.push(this.page - 4)
-      this.pagination.push(this.page - 3)
-    } else if (this.page + 1 === this.totalPages && this.page - 3 > 0) {
-      this.pagination.push(this.page - 3)
-    }
-    if (this.page > 2) {
-      this.pagination.push(this.page - 2)
-    }
-    if (this.page > 1) {
-      this.pagination.push(this.page - 1)
-    }
-    this.pagination.push(this.page)
-    while (this.pagination.length < 5 && this.pagination[this.pagination.length - 1] < this.totalPages) {
-      this.pagination.push(this.pagination[this.pagination.length - 1] + 1)
+    if (this.page <= 3) {
+      while (this.pagination.length < Math.min(this.totalPages, 5)) this.pagination.push(this.pagination.length + 1)
+    } else {
+      let i = Math.max(this.page - Math.min(2, this.totalPages - this.page), 1)
+      while(this.totalPages - i < 4 && i >= 1) i--
+      while (this.pagination.length < 5 && i <= this.totalPages) this.pagination.push(i++)
     }
   }
+
 
   /**
    * Muestra la primera página de materiales en una categoría

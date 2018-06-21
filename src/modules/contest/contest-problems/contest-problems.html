@@ -1,12 +1,17 @@
 <template>
-  <div class="container">
+  <require from="../../../resources/elements/clock"></require>
+  <div class="container container-contest">
     <ol class="breadcrumb">
       <li>
         <a href="#/maraton">Maratones</a>
       </li>
-      <li class="active">${contest.title}</li>
+      <li>
+        <a href="#/maraton/${contest.id}">${contest.title}</a>
+      </li>
+      <li class="active">Problemas</li>
     </ol>
     <h2 class="text-right">${contest.title}</h2>
+    <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="true" start-date.bind="startDate" end-date.bind="endDate"></clock>
     <hr>
     <ul class="nav nav-pills nav-justified nav-maraton">
       <li role="presentation">
@@ -15,12 +20,12 @@
       <li class="active" role="presentation">
         <a>Problemas</a>
       </li>
-      <li role="presentation" if.bind="contest.privacy || status === 'registered'">
-        <a href="#/maraton/${contest.id}/resultados">Resultados</a>
-      </li>
-      <li role="presentation" class="disabled" if.bind="!contest.privacy && status !== 'registered'">
-        <a>Resultados</a>
-      </li>
+      <li role="presentation" if.bind="(contest.privacy || status === 'registered' || authService.getUserId() === creatorId)">
+          <a href="#/maraton/${contest.id}/resultados">Resultados</a>
+        </li>
+        <li role="presentation" class="disabled" if.bind="(!contest.privacy && status !== 'registered' && authService.getUserId() !== creatorId)">
+          <a>Resultados</a>
+        </li>
     </ul>
     <br>
     <div class="row">
@@ -33,7 +38,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr repeat.for="problem of problems" if.bind="flagProblems">
+          <tr repeat.for="problem of problems" if.bind="flagProblems && (contest.privacy || authService.getUserId() === creatorId || status === 'registered')">
             <td class="text-center">${letterValue($index)}</td>
             <td class="text-left ufps-td-problem">
               <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list">
