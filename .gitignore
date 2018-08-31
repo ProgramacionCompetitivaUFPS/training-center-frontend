@@ -1,3 +1,7 @@
+.vscode
+.scannerwork
+sonar-project.properties
+.editorconfig
 node_modules
 .idea
 .DS_STORE

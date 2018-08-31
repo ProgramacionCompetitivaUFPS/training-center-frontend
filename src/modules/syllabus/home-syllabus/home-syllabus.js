@@ -96,7 +96,7 @@ export class HomeSyllabus {
     this.syllabusService.getEnrolledSyllabuses()
       .then(data => {
         for (let i = 0; i < data.user.syllabuses.length; i++) {
-          this.enrolledSyllabuses.push(this.syllabuses[i])
+          this.enrolledSyllabuses.push(data.user.syllabuses[i])
           for (let j = 0; j < this.syllabuses.length; j++) {
             if (this.syllabuses[j].id === data.user.syllabuses[i]) {
               this.syllabuses[j].enrolled = true
