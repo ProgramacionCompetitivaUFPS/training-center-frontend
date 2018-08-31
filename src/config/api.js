@@ -9,7 +9,7 @@ export let API = {
   /**
    * apiUrl debe reemplazarse por la dirección del backend
    */
-  apiUrl: 'http://ufpstrainingcenter.com:3000/',
+  apiUrl: 'http://ufpstrainingcenter.com:8080/',
   endpoints: {
     addMaterials: 'add-materials',
     addProblemAssignment: 'add-problems',
