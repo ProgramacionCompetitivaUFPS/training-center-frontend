@@ -29,6 +29,7 @@ export class Signin {
     this.router = router
     this.user = new UserSignIn()
     this.user.type = 0
+    this.isValidEmail = false
   }
 
   /**
@@ -62,8 +63,15 @@ export class Signin {
         this.user.password = ''
         this.user.confirmPassword = ''
       }
-    } else {
+    } else if(this.user.username.length < 6) {
+      this.alertService.showMessage(MESSAGES.signInWrongUsername)
+    }else {
       this.alertService.showMessage(MESSAGES.signInIncompleteData)
     }
+  }
+
+  validEmail() {
+    if(/^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(this.user.email)) this.isValidEmail = true
+    else this.isValidEmail = false
   }
 }
