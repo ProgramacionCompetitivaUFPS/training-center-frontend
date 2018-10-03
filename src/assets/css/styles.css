@@ -1,5 +1,14 @@
 /*Normalización*/
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 html,
 body {
   height: 100%;
@@ -183,6 +192,10 @@ pre {
 .ufps-sign-about p {
   color: #FFF;
   font-size: 14px;
+}
+
+.ufps-sign-in-correct, .ufps-sign-in-incorrect {
+  color: #FFF;
 }
 
 /*Formulario de registro*/
