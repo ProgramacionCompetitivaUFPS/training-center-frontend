@@ -28,6 +28,7 @@ export class Signin {
     this.authorizationService = authorizationService
     this.router = router
     this.user = new UserSignIn()
+    this.user.code = 0
     this.user.type = 0
     this.isValidEmail = false
   }
