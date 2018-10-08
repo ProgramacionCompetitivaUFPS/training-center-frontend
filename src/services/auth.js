@@ -142,15 +142,13 @@ export class Auth {
    */
   requestRecovery (email) {
     return this.httpService.httpClient
-      .fetch(API.endpoints.recovery, {
-        method: 'get',
+      .fetch(API.endpoints.recovery + '?email=' + email, {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({email: email})
+        }
       })
       .then(this.httpService.checkStatus)
-      .then(this.httpService.parseJSON)
   }
 
   /**
