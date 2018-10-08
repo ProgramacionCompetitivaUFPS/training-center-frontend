@@ -1,10 +1,10 @@
 {
   "name": "ufps-training-center-frontend",
-  "description": "An Aurelia client application.",
-  "version": "0.1.0",
+  "description": "Aplicación Frontend para el UFPS Training Center.",
+  "version": "1.0.0",
   "repository": {
-    "type": "???",
-    "url": "???"
+    "type": "git",
+    "url": "https://github.com/ProgramacionCompetitivaUFPS/training-center-frontend"
   },
   "license": "MIT",
   "dependencies": {
