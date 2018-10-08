@@ -220,7 +220,6 @@ export class Auth {
         body: JSON.stringify(user)
       })
       .then(this.httpService.checkStatus)
-      .then(this.httpService.parseJSON)
   }
 
   /**
@@ -305,7 +304,7 @@ export class Auth {
     if (info == null || startDate === undefined || endDate === undefined) {
       throw new Error('invalid token')
     }
-    let actualDate = new Date().getTime()
+    let actualDate = new Date().getTime() / 1000
     if (actualDate < startDate) {
       throw new Error('invalid token')
     } else if (actualDate + 1000 >= endDate) {
