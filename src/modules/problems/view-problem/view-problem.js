@@ -85,20 +85,25 @@ export class ViewProblem {
    */
   validateCode () {
     if (this.code.length === 1) {
-      if (this.code[0].type.startsWith('text/') || this.code[0].name.endsWith('.java') || this.code[0].name.endsWith('.cpp') || this.code[0].name.endsWith('.py')) {
+      if (this.code[0].type.startsWith('text/') || this.code[0].name.endsWith('.java') || this.code[0].name.endsWith('.cpp') || this.code[0].name.endsWith('.c') || this.code[0].name.endsWith('.cc') || this.code[0].name.endsWith('.cp') || this.code[0].name.endsWith('.cxx') || this.code[0].name.endsWith('.py')) {
         this.sourceValid = true
         if(this.code[0].name.endsWith('.java')) {
+          this.language = 'Java'
           var reader = new FileReader()
           reader.onload = () => {
             let tmp = reader.result.replace(/ /g, '')
             tmp = tmp.replace(/\n|\r\n|\r/g, '')
-            if (tmp.search('publicclassMain{') < 0) {
+            if (tmp.search('publicclassMain') < 0) {
               this.code = null
               this.sourceValid = false
               this.alertService.showMessage(MESSAGES.invalidJavaClassname)
             }
           }
           reader.readAsText(this.code[0])
+        } else if(this.code[0].name.endsWith('.py')) {
+          this.language = 'Python'
+        } else if(this.code[0].name.endsWith('.cpp') || this.code[0].name.endsWith('.c') || this.code[0].name.endsWith('.cc') || this.code[0].name.endsWith('.cp') || this.code[0].name.endsWith('.cxx')) {
+          this.language = 'C++'
         }
       } else {
         this.code = null
