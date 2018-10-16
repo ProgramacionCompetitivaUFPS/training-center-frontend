@@ -229,6 +229,7 @@ export class Auth {
   login (token) {
     this.jwtService.save(token)
     this.authenticated = this.isAuthenticated()
+    this.activateSocket()
   }
 
   /**
@@ -237,6 +238,7 @@ export class Auth {
   logout () {
     this.jwtService.remove()
     this.authenticated = this.isAuthenticated()
+    this.socketActive = false
   }
 
   /**

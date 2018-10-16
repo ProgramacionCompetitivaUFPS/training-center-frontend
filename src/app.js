@@ -91,6 +91,8 @@ export class App {
         moduleId: './modules/search/search',
         title: 'Búsqueda',
         layoutView: './layouts/logged.html',
+        nav: true,
+        href: "#/buscar/+",
         settings: {
           roles: ['admin', 'coach', 'student']
         }
@@ -208,6 +210,20 @@ export class App {
         }
       }
     ])
+
+    const handleUnknownRoutes = (instruction) => {
+      return { 
+        route: '404', 
+        moduleId: './modules/error-404/error-404',
+        layoutView: './layouts/logged.html',
+        settings: {
+          roles: ['admin', 'coach', 'student', 'visitor']
+        }
+       }
+    }
+
+    config.mapUnknownRoutes(handleUnknownRoutes)
+
     this.router = router
   }
 }

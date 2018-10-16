@@ -778,6 +778,17 @@ textarea.form-control {
   box-shadow: 0 0 10px rgba(0, 0, 0, .2);
 }
 
+.active.selected {
+  color: #222!Important;
+}
+
+.ufps-container-404 {
+  margin-top: 40px;
+}
+.img-404 {
+  margin: 20px auto;
+}
+
 /*EDITOR*/
 
 .editor-toolbar.fullscreen,
@@ -794,7 +805,6 @@ textarea.form-control {
   background-color: #e74c3c;
   color: #FFF;
   border-radius: 2px;
-  border-bottom: 3px solid #9a2b1f;
 }
 
 .ufps-language {
@@ -890,7 +900,7 @@ a.inactive {
   float: none;
 }
 
-.ufps-submit-form .ufps-btn-submit {
+.ufps-submit-form .ufps-btn-submit, .ufps-btn-edit-problem {
   width: 100%;
 }
 
@@ -952,6 +962,7 @@ tr:nth-child(2n+1) td .ufps-score-judging,
 tr:nth-child(2n+1) td .ufps-score-first,
 tr:nth-child(2n+1) td .ufps-score-gold {
   background-image: url(src/assets/img/score-light.png);
+  border-right: 1px solid #FFF;
 }
 
 tr:nth-child(2n) td .ufps-score-correct,
@@ -960,6 +971,8 @@ tr:nth-child(2n) td .ufps-score-judging,
 tr:nth-child(2n) td .ufps-score-first,
 tr:nth-child(2n) td .ufps-score-gold {
   background-image: url(src/assets/img/score-dark.png);
+  border-right: 1px solid #f2f2f2;
+
 }
 
 .ufps-score-correct {

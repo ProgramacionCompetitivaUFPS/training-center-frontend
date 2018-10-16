@@ -213,8 +213,8 @@ export class Problems {
     if (problem.descriptionEN !== undefined && problem.descriptionEN !== null) data.append('data[description_en]', problem.descriptionEN)
     if (problem.descriptionES !== undefined && problem.descriptionES !== null) data.append('data[description_es]', problem.descriptionES)
     // Archivos
-    if (problem.input !== undefined && problem.input !== null) data.append('input', problem.input)
-    if (problem.output !== undefined && problem.output !== null) data.append('output', problem.output)
+    if (problem.input !== undefined && problem.input !== null) data.append('input', problem.input[0])
+    if (problem.output !== undefined && problem.output !== null) data.append('output', problem.output[0])
     return this.httpService.httpClient
       .fetch(API.endpoints.problems + '/' + problem.id, {
         method: 'put',
