@@ -3,7 +3,12 @@
   <require from="../../resources/elements/paginator"></require>
   <div slot="content" class="body-slot">
     <div class="container">
-      <h2 class="text-right">Resultados para "${query}"</h2>
+      <h2 if.bind="query !== ' '" class="text-right">Resultados para "${query}"</h2>
+      <h2 if.bind="query === ' '" class="text-right">Problemas</h2>
+      <p if.bind="query === ' '" class="ufps-language text-right">
+        <a href="/#/problemas"><span class="active">Categorías</span></a> |
+        <span class="active selected">Lista completa</span>
+      </p>
       <hr>
       <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
         sort.bind="sort" by.bind="by" text-to-show.bind="'problemas'" language-flag.bind="true" language.bind="language"></filter>

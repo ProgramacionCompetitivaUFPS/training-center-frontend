@@ -14,10 +14,10 @@
       </div>
       <div class="collapse navbar-collapse" id="menu">
         <ul class="nav navbar-nav navbar-left">
-          <li class="ufps-btn-nav ${problems.isActive ? 'active' : ''}" if.bind="authService.isVisitor()">
+          <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isVisitor()">
             <a route-href="route: problems">Material</a>
           </li>
-          <li class="ufps-btn-nav ${problems.isActive ? 'active' : ''}" if.bind="authService.isStudent()">
+          <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isStudent()">
             <a route-href="route: problems">Problemas</a>
           </li>
           <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${problems.isActive ? 'active' : ''}" if.bind="authService.isCoach() || authService.isAdmin()">
