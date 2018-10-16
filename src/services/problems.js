@@ -208,13 +208,13 @@ export class Problems {
     data.append('data[example_output]', problem.exampleOutput)
     data.append('data[time_limit]', problem.timeLimit)
     // Datos opcionales
-    if (problem.titleEN !== undefined) data.append('data[title_en]', problem.titleEN)
-    if (problem.titleES !== undefined) data.append('data[title_es]', problem.titleES)
-    if (problem.descriptionEN !== undefined) data.append('data[description_en]', problem.descriptionEN)
-    if (problem.descriptionES !== undefined) data.append('data[description_es]', problem.descriptionES)
+    if (problem.titleEN !== undefined && problem.titleEN !== null) data.append('data[title_en]', problem.titleEN)
+    if (problem.titleES !== undefined && problem.titleES !== null) data.append('data[title_es]', problem.titleES)
+    if (problem.descriptionEN !== undefined && problem.descriptionEN !== null) data.append('data[description_en]', problem.descriptionEN)
+    if (problem.descriptionES !== undefined && problem.descriptionES !== null) data.append('data[description_es]', problem.descriptionES)
     // Archivos
-    if (problem.input !== undefined) data.append('input', problem.input)
-    if (problem.output !== undefined) data.append('output', problem.output)
+    if (problem.input !== undefined && problem.input !== null) data.append('input', problem.input)
+    if (problem.output !== undefined && problem.output !== null) data.append('output', problem.output)
     return this.httpService.httpClient
       .fetch(API.endpoints.problems + '/' + problem.id, {
         method: 'put',
