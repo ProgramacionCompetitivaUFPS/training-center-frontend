@@ -86,7 +86,7 @@
             <strong>Dificultad:</strong> ${problem.level}</p>
           <p>Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
           <form class="ufps-submit-form" submit.delegate="submit()" enctype="multipart/form-data">
-            <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()" accept=".py, .java,.cpp"
+            <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()" accept=".py, .java,.cpp, .c, .cc, .cp, .cxx"
               files.bind="code">
             <label for="input-file" tooltip data-toggle="tooltip" title="Archivo con la solución al problema">Seleccionar
               <span class="glyphicon glyphicon-ok-sign" show.bind="sourceValid"></span>
