@@ -18,8 +18,9 @@ export class Problem {
    * @param {string} exampleIput - Entradas de ejemplo
    * @param {string} exampleOutput - Salidas de ejemplo
    * @param {Number} auxiliarId - Si el problema está en una maratón o syllabus, tiene un id axuxiliar
+   * @param {boolean} resolved - True si el problema ha sido previamente solucionado, false en caso contrario 
    */
-  constructor (id = undefined, titleEN = undefined, titleES = undefined, level = undefined, category = undefined, categoryName = undefined, descriptionEN = undefined, descriptionES = undefined, exampleInput = undefined, exampleOutput = undefined, timeLimit = undefined, input = undefined, output = undefined, author = undefined, authorName = undefined, auxiliarId = undefined) {
+  constructor (id = undefined, titleEN = undefined, titleES = undefined, level = undefined, category = undefined, categoryName = undefined, descriptionEN = undefined, descriptionES = undefined, exampleInput = undefined, exampleOutput = undefined, timeLimit = undefined, input = undefined, output = undefined, author = undefined, authorName = undefined, auxiliarId = undefined, resolved = false) {
     this.id = id
     this.titleEN = titleEN
     this.titleES = titleES
@@ -36,6 +37,7 @@ export class Problem {
     this.author = author
     this.authorName = authorName
     this.auxiliarId = auxiliarId
+    this.resolved = resolved
   }
 
   /**
