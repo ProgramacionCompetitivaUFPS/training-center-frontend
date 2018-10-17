@@ -85,22 +85,23 @@
             <strong>Esta tarea ya no puede ser enviada.</strong> ${assignment.getStringAvailability().replace('Disponible', 'Estuvo
             disponible')}
           </p>
-          <p>Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
-          <form class="ufps-submit-form" submit.delegate="submit()" enctype="multipart/form-data">
+          <p if.bind="validDate === 0">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
+          <form  if.bind="validDate === 0" class="ufps-submit-form" submit.delegate="submit()" enctype="multipart/form-data">
             <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()" accept=".py, .java, .cpp"
-              files.bind="code" disabled.bind="validDate > 0">
-            <label for="${validDate > 0 ? '' : 'input-file'}" tooltip data-toggle="tooltip" title="Archivo con la solución al problema"
-              class="${validDate > 0 ? 'disabled-select' : ''}">Seleccionar
+              files.bind="code">
+            <label for="${validDate > 0 ? '' : 'input-file'}" tooltip data-toggle="tooltip" title="Archivo con la solución al problema">Seleccionar
               <span class="glyphicon glyphicon-ok-sign" show.bind="sourceValid"></span>
             </label>
             <div class="input-group">
-              <select class="form-control" value.bind="language" disabled.bind="validDate > 0">
+              <select class="form-control" value.bind="language">
                 <option required model.bind="null">Lenguaje...</option>
                 <option repeat.for="lg of languages" model.bind="lg">${lg}</option>
               </select>
             </div>
-            <input type="submit" value="Enviar" class="btn ufps-btn-submit btn-disabled" disabled.bind="validDate > 0">
+            <input type="submit" value="Enviar" class="btn ufps-btn-submit">
           </form>
+          <p if.bind="validDate === 2">Si lo deseas, puedes enviar tu solución en modo práctica. No sumará puntos a la tarea, pero calificará tu solución.</p>
+          <a  if.bind="validDate === 2" href="/#/problemas/${problemId}/detalle" class="btn btn-submit ufps-btn-submit  ufps-btn-edit-problem">Enviar en modo práctica</a>
         </div>
       </div>
     </div>

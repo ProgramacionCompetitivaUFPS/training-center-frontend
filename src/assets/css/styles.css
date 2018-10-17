@@ -1002,6 +1002,10 @@ tr:nth-child(2n) td .ufps-score-gold {
   height: 60px;
 }
 
+.problem-resolved {
+  width: 50px;
+}
+
 .disabled-select {
   cursor: not-allowed !important;
   opacity: 0.65;
@@ -1055,4 +1059,9 @@ tr:nth-child(2n) td .ufps-score-gold {
 
 .text-lg-a,.text-lg-a p {
   font-size: 18px;
+}
+
+.panel-resolved {
+  background-color: #e74c3c;
+  color: #FFF;
 }

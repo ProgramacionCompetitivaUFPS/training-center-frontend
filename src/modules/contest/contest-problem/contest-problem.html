@@ -101,8 +101,8 @@
           </p>
           <p if.bind="status !== 'registered' && validDate === 0">
             <strong>Debes estar registrado para enviar este problema.</strong></p>
-          <p>Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
-          <form class="ufps-submit-form" submit.delegate="submit()" enctype="multipart/form-data">
+          <p if.bind="status === 'registered' && validDate === 0" >Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
+          <form if.bind="status === 'registered' && validDate === 0" class="ufps-submit-form" submit.delegate="submit()" enctype="multipart/form-data">
             <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()" accept=".py, .java, .cpp"
               files.bind="code" disabled.bind="status !== 'registered' || validDate > 0">
             <label for="${status !== 'registered' || validDate > 0 ? '' : 'input-file'}" tooltip data-toggle="tooltip" title="Archivo con la solución al problema"
@@ -117,6 +117,8 @@
             </div>
             <input type="submit" value="Enviar" class="btn ufps-btn-submit btn-disabled" disabled.bind="status !== 'registered' || validDate > 0">
           </form>
+          <p if.bind="validDate === 2">Si lo deseas, puedes enviar tu solución en modo práctica. No afectará el tablero, pero calificará tu solución.</p>
+          <a if.bind="validDate === 2" href="/#/problemas/${id}/detalle" class="btn btn-submit ufps-btn-submit  ufps-btn-edit-problem btn-disabled">Enviar en modo práctica</a>
         </div>
       </div>
     </div>

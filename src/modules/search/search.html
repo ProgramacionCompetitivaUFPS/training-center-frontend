@@ -31,6 +31,7 @@
               <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
                 <a href="#/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
               </p>
+              <span if.bind="problem.resolved" class="ufps-edit-problem-list glyphicon glyphicon-ok" data-toggle="tooltip" title="Ya solucionaste este problema" tooltip></span>            
             </td>
             <td class="text-center">${problem.level}</td>
             <td class="text-center ufps-language">

@@ -70,6 +70,7 @@ export class Search {
       if (this.totalPages > 0) {
         for(let i = 0; i < data.data.length; i++) {
           this.problems.push(new Problem(data.data[i].id, data.data[i].title_en, data.data[i].title_es, data.data[i].level))
+          if(data.data[i].submissions.length > 0) this.problems[i].resolved = true 
         }
       }
     }).catch(error => {
