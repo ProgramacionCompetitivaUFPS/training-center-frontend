@@ -4,10 +4,10 @@
   <div class="container ufps-container-logged">
     <ol class="breadcrumb">
       <li>
-        <a href="#/clases">Clases</a>
+        <a href="/clases">Clases</a>
       </li>
       <li>
-        <a href="#/clases/clases/${assignment.syllabusId}">Detalle de la clase actual</a>
+        <a href="/clases/clases/${assignment.syllabusId}">Detalle de la clase actual</a>
       </li>
       <li class="active" if.bind="type === 'edit'">${assignment.title}</li>
       <li class="active" if.bind="type === 'new'">Nueva tarea</li>
@@ -125,10 +125,10 @@
             <td class="text-center">${problem.id}</td>
             <td class="text-left ufps-td-problem">
               <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list">
-                <a href="#/problemas/${problem.id}/detalle/es">${problem.titleES}</a>
+                <a href="/problemas/${problem.id}/detalle/es">${problem.titleES}</a>
               </p>
               <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
-                <a href="#/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
+                <a href="/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
               </p>
               <span if.bind="authService.isCoach()" class="ufps-edit-problem-list glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar problema de la tarea"
                 click.delegate="showRemoveProblem(problem.id)" tooltip></span>
@@ -136,10 +136,10 @@
             <td class="text-center">${problem.level}</td>
             <td class="text-center ufps-language">
               <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
-                <a href="#/problemas/${problem.id}/detalle/es">ES</a>
+                <a href="/problemas/${problem.id}/detalle/es">ES</a>
               </span> |
               <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
-                <a href="#/problemas/${problem.id}/detalle/en">EN</a>
+                <a href="/problemas/${problem.id}/detalle/en">EN</a>
               </span>
             </td>
           </tr>

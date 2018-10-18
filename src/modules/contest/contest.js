@@ -11,12 +11,12 @@ export class Syllabus {
    * @param {any} router - Enrutador principal de la aplicación
    */
   configureRouter (config, router) {
-    config.title = 'UFPS Training Center'
     config.map([
       {
         route: '',
         name: 'contest',
         moduleId: 'modules/contest/home-contest/home-contest',
+        title: 'Maratones',
         settings: {
           roles: ['coach', 'student', 'admin']
         }
@@ -25,6 +25,7 @@ export class Syllabus {
         route: 'nueva',
         name: 'create',
         moduleId: 'modules/contest/create-contest/create-contest',
+        title: 'Nueva maratón',
         settings: {
           roles: ['coach', 'student', 'admin']
         }
@@ -33,6 +34,7 @@ export class Syllabus {
         route: 'editar/:id',
         name: 'edit',
         moduleId: 'modules/contest/edit-contest/edit-contest',
+        title: 'Editar maratón',
         settings: {
           roles: ['coach', 'student', 'admin']
         }
@@ -41,6 +43,7 @@ export class Syllabus {
         route: ':id/',
         name: 'detail',
         moduleId: 'modules/contest/contest-detail/contest-detail',
+        title: 'Maratón',
         settings: {
           roles: ['coach', 'student', 'admin']
         }
@@ -49,6 +52,7 @@ export class Syllabus {
         route: ':id/resultados',
         name: 'board',
         moduleId: 'modules/contest/contest-board/contest-board',
+        title: 'Tablero de resultados',
         settings: {
           roles: ['coach', 'student', 'admin']
         }
@@ -57,6 +61,7 @@ export class Syllabus {
         route: ':id/problemas',
         name: 'problems',
         moduleId: 'modules/contest/contest-problems/contest-problems',
+        title: 'Problemas',
         settings: {
           roles: ['coach', 'student', 'admin']
         }
@@ -65,6 +70,7 @@ export class Syllabus {
         route: [':id/problema/:problemId/:contestProblemId', ':id/problema/:problemId/:contestProblemId/:lang'],
         name: 'problem',
         moduleId: 'modules/contest/contest-problem/contest-problem',
+        title: 'Problema',
         settings: {
           roles: ['coach', 'student', 'admin']
         }

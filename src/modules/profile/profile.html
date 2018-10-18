@@ -34,10 +34,6 @@
                 <td>Código:</td>
                 <td>${user.code}</td>
               </tr>
-              <tr>
-                <td>Activo desde:</td>
-                <td>${getDate()}</td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -85,16 +81,16 @@
             <br>
             <form submit.delegate="editProfile()" class="text-left">
               <label>Nombre:</label>
-              <input type="text" class="form-control" placeholder="Nombre" value.bind="user.name" required>
+              <input type="text" class="form-control" placeholder="Nombre" value.bind="newUser.name" required>
               <br>
               <label>Username:</label>
-              <input type="text" class="form-control" placeholder="Username" value.bind="user.username" required>
+              <input type="text" class="form-control" placeholder="Username" value.bind="newUser.username" required>
               <br>
               <label>Correo electrónico:</label>
-              <input type="email" class="form-control" placeholder="Correo electrónico" value.bind="user.email" required>
+              <input type="email" class="form-control" placeholder="Correo electrónico" value.bind="newUser.email" required>
               <br>
               <label>Código:</label>
-              <input type="number" class="form-control" placeholder="Código" value.bind="user.code">
+              <input type="number" class="form-control" placeholder="Código" value.bind="newUser.code">
               <br>
               <input type="submit" class="btn btn-default ufps-btn-default" value="Guardar cambios">
             </form>

@@ -7,7 +7,7 @@
       <br>
       <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind = "filterChange" limit.bind ="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
       <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
-        <a href="#/material-publico/${material.id}">
+        <a href="/material-publico/${material.id}">
           <div class="ufps-card">
             <div class="ufps-card-title ufps-card-material">
               <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar este material"

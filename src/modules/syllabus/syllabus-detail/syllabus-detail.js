@@ -182,7 +182,7 @@ export class SyllabusDetail {
       .then(() => {
         this.alertService.showMessage(MESSAGES.syllabusUnenroll)
         window.$('#remove-user').modal('hide')
-        this.router.navigate('#/clases')
+        this.router.navigate('/clases')
       })
       .catch(error => {
         if (error.status === 401 || error.status === 403) {

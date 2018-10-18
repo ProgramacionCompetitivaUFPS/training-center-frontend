@@ -27,6 +27,7 @@ export class ProblemsEditor {
     this.editMode = true
     this.templateSpanish = '# Descripción\n\nReemplaza este texto con la descripción de tu problema. Recuerda que puedes usar la sintaxis de Markdown.\n\n# Entradas\n\nReemplaza este texto con la especificación de la entrada de tu problema. Si no conoces la sintaxis markdown, puedes hacer uso de las opciones de la barra superior.\n\n# Salidas\n\nReemplaza este texto con la especificación de la salida de tu problema.'
     this.templateEnglish = '# Description\n\nReplace this text with the description of your problem. Remember that you can use the Markdown syntax.\n\n# Inputs\n\nReplace this text with the specification of the input of your problem. If you do not know the markdown syntax, you can use the options in the top bar.\n\n# Outputs\n\nReplace this text with the specification of the output of your problem.'
+    this.settingsMarkdownEditor = this.loadSettingsMarkdownEditor()
   }
 
   /**
@@ -201,6 +202,98 @@ export class ProblemsEditor {
   }
 
   /**
+   * Carga las configuraciones para los editores de Markdown.
+   */
+  loadSettingsMarkdownEditor() {
+    return [
+      {
+        name: 'bold',
+        action: SimpleMDE.toggleBold,
+        className: 'glyphicon glyphicon-bold',
+        title: 'Negrilla'
+      },
+      {
+        name: 'italic',
+        action: SimpleMDE.toggleItalic,
+        className: 'glyphicon glyphicon-italic',
+        title: 'Cursiva'
+      },
+      '|',
+      {
+        name: 'heading',
+        action: SimpleMDE.toggleHeadingSmaller,
+        className: 'glyphicon glyphicon-header',
+        title: 'Título (Pulsa varias veces para cambiar tamaño)'
+      },
+      {
+        name: 'quote',
+        action: SimpleMDE.toggleBlockquote,
+        className: 'glyphicon glyphicon-bookmark',
+        title: 'Cita'
+      },
+      {
+        name: 'unordered-list',
+        action: SimpleMDE.toggleUnorderedList,
+        className: 'glyphicon glyphicon-th-list',
+        title: 'Lista'
+      },
+      {
+        name: 'ordered-list',
+        action: SimpleMDE.toggleOrderedList,
+        className: 'glyphicon glyphicon-list-alt',
+        title: 'Lista numerada'
+      },
+      '|',
+      {
+        name: 'link',
+        action: SimpleMDE.drawLink,
+        className: 'glyphicon glyphicon-link',
+        title: 'Insertar enlace'
+      },
+      {
+        name: 'image',
+        action: SimpleMDE.drawImage,
+        className: 'glyphicon glyphicon-picture',
+        title: 'Insertar imagen'
+      },
+      {
+        name: 'code',
+        action: SimpleMDE.toggleCodeBlock,
+        className: 'glyphicon glyphicon-console',
+        title: 'Insertar código'
+      },
+      '|',
+      {
+        name: 'preview',
+        action: SimpleMDE.togglePreview,
+        className: 'glyphicon glyphicon-eye-open no-disable',
+        title: 'Vista previa'
+      },
+      {
+        name: 'side-by-side',
+        action: SimpleMDE.toggleSideBySide,
+        className: 'glyphicon glyphicon-adjust no-disable no-mobile',
+        title: 'Dividir Pantalla'
+      },
+      {
+        name: 'fullscreen',
+        action: SimpleMDE.toggleFullScreen,
+        className: 'glyphicon glyphicon-fullscreen no-disable no-mobile',
+        title: 'Pantalla Completa'
+      },
+      '|',
+      {
+        name: 'custom',
+        action: function customFunction (editor) {
+          window.$('#markdown-help').modal('show')
+        },
+        className: 'glyphicon glyphicon-question-sign',
+        title: 'Guía de Markdown'
+      }
+
+    ]
+  }
+  /**
    * Inicializa el editor principal del creador de problemas.
    */
   createFirstEditor () {
@@ -211,93 +304,7 @@ export class ProblemsEditor {
         element: document.getElementById('md-editor'),
         spellChecker: false,
         status: false,
-        toolbar: [
-          {
-            name: 'bold',
-            action: SimpleMDE.toggleBold,
-            className: 'glyphicon glyphicon-bold',
-            title: 'Negrilla'
-          },
-          {
-            name: 'italic',
-            action: SimpleMDE.toggleItalic,
-            className: 'glyphicon glyphicon-italic',
-            title: 'Cursiva'
-          },
-          '|',
-          {
-            name: 'heading',
-            action: SimpleMDE.toggleHeadingSmaller,
-            className: 'glyphicon glyphicon-header',
-            title: 'Título (Pulsa varias veces para cambiar tamaño)'
-          },
-          {
-            name: 'quote',
-            action: SimpleMDE.toggleBlockquote,
-            className: 'glyphicon glyphicon-bookmark',
-            title: 'Cita'
-          },
-          {
-            name: 'unordered-list',
-            action: SimpleMDE.toggleUnorderedList,
-            className: 'glyphicon glyphicon-th-list',
-            title: 'Lista'
-          },
-          {
-            name: 'ordered-list',
-            action: SimpleMDE.toggleOrderedList,
-            className: 'glyphicon glyphicon-list-alt',
-            title: 'Lista numerada'
-          },
-          '|',
-          {
-            name: 'link',
-            action: SimpleMDE.drawLink,
-            className: 'glyphicon glyphicon-link',
-            title: 'Insertar enlace'
-          },
-          {
-            name: 'image',
-            action: SimpleMDE.drawImage,
-            className: 'glyphicon glyphicon-picture',
-            title: 'Insertar imagen'
-          },
-          {
-            name: 'code',
-            action: SimpleMDE.toggleCodeBlock,
-            className: 'glyphicon glyphicon-console',
-            title: 'Insertar código'
-          },
-          '|',
-          {
-            name: 'preview',
-            action: SimpleMDE.togglePreview,
-            className: 'glyphicon glyphicon-eye-open no-disable',
-            title: 'Vista previa'
-          },
-          {
-            name: 'side-by-side',
-            action: SimpleMDE.toggleSideBySide,
-            className: 'glyphicon glyphicon-adjust no-disable no-mobile',
-            title: 'Dividir Pantalla'
-          },
-          {
-            name: 'fullscreen',
-            action: SimpleMDE.toggleFullScreen,
-            className: 'glyphicon glyphicon-fullscreen no-disable no-mobile',
-            title: 'Pantalla Completa'
-          },
-          '|',
-          {
-            name: 'custom',
-            action: function customFunction (editor) {
-              window.$('#markdown-help').modal('show')
-            },
-            className: 'glyphicon glyphicon-question-sign',
-            title: 'Guía de Markdown'
-          }
-
-        ]
+        toolbar: this.settingsMarkdownEditor
       }
     )
   }
@@ -313,83 +320,7 @@ export class ProblemsEditor {
         element: document.getElementById('md-editor-2'),
         spellChecker: false,
         status: false,
-        toolbar: [
-          {
-            name: 'bold',
-            action: SimpleMDE.toggleBold,
-            className: 'glyphicon glyphicon-bold',
-            title: 'Negrilla'
-          },
-          {
-            name: 'italic',
-            action: SimpleMDE.toggleItalic,
-            className: 'glyphicon glyphicon-italic',
-            title: 'Cursiva'
-          },
-          '|',
-          {
-            name: 'heading',
-            action: SimpleMDE.toggleHeadingSmaller,
-            className: 'glyphicon glyphicon-header',
-            title: 'Título (Pulsa varias veces para cambiar tamaño)'
-          },
-          {
-            name: 'quote',
-            action: SimpleMDE.toggleBlockquote,
-            className: 'glyphicon glyphicon-bookmark',
-            title: 'Cita'
-          },
-          {
-            name: 'unordered-list',
-            action: SimpleMDE.toggleUnorderedList,
-            className: 'glyphicon glyphicon-th-list',
-            title: 'Lista'
-          },
-          {
-            name: 'ordered-list',
-            action: SimpleMDE.toggleOrderedList,
-            className: 'glyphicon glyphicon-list-alt',
-            title: 'Lista numerada'
-          },
-          '|',
-          {
-            name: 'link',
-            action: SimpleMDE.drawLink,
-            className: 'glyphicon glyphicon-link',
-            title: 'Insertar enlace'
-          },
-          {
-            name: 'image',
-            action: SimpleMDE.drawImage,
-            className: 'glyphicon glyphicon-picture',
-            title: 'Insertar imagen'
-          },
-          {
-            name: 'code',
-            action: SimpleMDE.toggleCodeBlock,
-            className: 'glyphicon glyphicon-console',
-            title: 'Insertar código'
-          },
-          '|',
-          {
-            name: 'preview',
-            action: SimpleMDE.togglePreview,
-            className: 'glyphicon glyphicon-eye-open no-disable',
-            title: 'Vista previa'
-          },
-          {
-            name: 'side-by-side',
-            action: SimpleMDE.toggleSideBySide,
-            className: 'glyphicon glyphicon-adjust no-disable no-mobile',
-            title: 'Dividir Pantalla'
-          },
-          {
-            name: 'fullscreen',
-            action: SimpleMDE.toggleFullScreen,
-            className: 'glyphicon glyphicon-fullscreen no-disable no-mobile',
-            title: 'Pantalla Completa'
-          }
-        ]
+        toolbar: this.settingsMarkdownEditor
       }
     )
   }

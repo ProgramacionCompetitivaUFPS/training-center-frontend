@@ -3,10 +3,10 @@
   <div class="container container-contest">
     <ol class="breadcrumb">
       <li>
-        <a href="#/maraton">Maratones</a>
+        <a route-href="route: contest;">Maratones</a>
       </li>
       <li>
-        <a href="#/maraton/${contest.id}">${contest.title}</a>
+        <a route-href="route: detail; params.bind: {id:id}">${contest.title}</a>
       </li>
       <li class="active">Resultados</li>
     </ol>
@@ -15,13 +15,13 @@
     <hr>
     <ul class="nav nav-pills nav-justified nav-maraton">
       <li role="presentation">
-        <a href="#/maraton/${contest.id}">Inicio</a>
+        <a route-href="route: detail; params.bind: {id:id}">Inicio</a>
       </li>
       <li role="presentation" class="disabled" if.bind="(status !== 'registered' && !contest.privacy && authService.getUserId() !== creatorId)">
         <a>Problemas</a>
       </li>
       <li role="presentation" if.bind="(status === 'registered' || authService.getUserId() === creatorId || contest.privacy)">
-        <a href="#/maraton/${contest.id}/problemas">Problemas</a>
+        <a route-href="route: problems; params.bind: {id:id}">Problemas</a>
       </li>
       <li role="presentation" class="active">
         <a>Resultados</a>

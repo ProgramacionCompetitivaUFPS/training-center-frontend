@@ -71,7 +71,7 @@ export class CreateContest {
     this.newContest.endDate = new Date(this.endDate + ' ' + this.endTime).toISOString()
     this.contestService.createContest(this.newContest)
       .then(data => {
-        this.router.navigate('#/maraton/')
+        this.router.navigateToRoute('contest')
         this.alertService.showMessage(MESSAGES.contestCreated)
       })
       .catch(error => {

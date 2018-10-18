@@ -15,6 +15,7 @@ export class Profile {
     this.rankingService = rankingService
     this.authService = authService
     this.user = new UserSignIn()
+    this.newUser = new UserSignIn()
     this.date = new Date()
     this.oldPassword = ''
     this.newPassword = ''
@@ -58,11 +59,13 @@ export class Profile {
     this.rankingService.loadProfile(this.authService.getUserId())
       .then(data => {
         this.user = new UserSignIn(data.email, null, null, data.name, data.username, data.code, null, data.id)
+        this.newUser = new UserSignIn(data.email, null, null, data.name, data.username, data.code, null, data.id)
         this.date = new Date(data.created_at)
         if (this.user.code === null) this.user.code = 'No registrado'
       })
       .catch(error => {
         this.user = new UserSignIn()
+        this.newUser = new UserSignIn()
         this.date = new Date()
         if (error.status === 401) {
           this.alertService.showMessage(MESSAGES.permissionsError)
@@ -148,22 +151,30 @@ export class Profile {
   }
 
   editProfile() {
-    this.authService.editProfile(this.authService.getUserId(), this.user.email, this.user.username, this.user.name, this.user.code)
-      .then(data => {
-        window.$('#edit-profile').modal('hide')
-        this.alertService.showMessage(MESSAGES.profileUpdated)
-        this.user.email = data.email
-        this.user.username = data.username
-        this.user.name = data.name
-        this.user.code = data.code
-      })
-      .catch(error => {
-        if (error.status === 401) {
-          this.alertService.showMessage(MESSAGES.permissionsError)
-        } else {
-          this.alertService.showMessage(MESSAGES.unknownError)
-        }
-        window.$('#edit-profile').modal('hide')
-      })
+    if(this.newUser.username.length < 6) {
+      this.alertService.showMessage(MESSAGES.usernameInvalid)
+      window.$('#edit-profile').modal('hide')
+    } else if(/^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(this.newUser.email) === false) {
+      this.alertService.showMessage(MESSAGES.emailInvalid)
+      window.$('#edit-profile').modal('hide')
+    }else {
+      this.authService.editProfile(this.authService.getUserId(), this.newUser.email, this.newUser.username, this.newUser.name, this.newUser.code)
+        .then(data => {
+          window.$('#edit-profile').modal('hide')
+          this.alertService.showMessage(MESSAGES.profileUpdated)
+          this.user.email = data.email
+          this.user.username = data.username
+          this.user.name = data.name
+          this.user.code = data.code
+        })
+        .catch(error => {
+          if (error.status === 401) {
+            this.alertService.showMessage(MESSAGES.permissionsError)
+          } else {
+            this.alertService.showMessage(MESSAGES.unknownError)
+          }
+          window.$('#edit-profile').modal('hide')
+        })
+    }
   }
 }
