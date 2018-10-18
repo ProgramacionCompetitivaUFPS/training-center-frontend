@@ -5,12 +5,12 @@ export class Material {
  * @param {any} router - Enrutador principal de la aplicación
  */
   configureRouter (config, router) {
-    config.title = 'UFPS Training Center'
     config.map([
       {
         route: '',
         name: 'material',
         moduleId: 'modules/material/category-material/category-material',
+        title: 'Material',
         settings: {
           roles: ['admin', 'coach', 'student']
         }
@@ -19,6 +19,7 @@ export class Material {
         route: '/material/:id',
         name: 'specificMaterial',
         moduleId: 'modules/material/specific-material/specific-material',
+        title: 'Material',
         settings: {
           roles: ['admin', 'coach', 'student']
         }

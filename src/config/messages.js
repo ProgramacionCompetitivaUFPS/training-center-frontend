@@ -53,7 +53,11 @@ export let MESSAGES = {
     type: 'success'
   },
   usernameInvalid: {
-    text: 'El username debe tener entre 6 y 30 caracteres',
+    text: 'El nombre de usuario debe tener entre 6 y 30 caracteres',
+    type: 'error'
+  },
+  emailInvalid: {
+    text: 'El correo electrónico escrito no es válido',
     type: 'error'
   },
   // RECOVERY

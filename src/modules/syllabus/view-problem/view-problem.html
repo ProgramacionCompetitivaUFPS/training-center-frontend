@@ -6,13 +6,13 @@
   <div class="container-fluid">
     <ol class="breadcrumb">
       <li>
-        <a href="#/clases">Clases</a>
+        <a href="/clases">Clases</a>
       </li>
       <li>
-        <a href="#/clases/clases/${assignment.syllabusId}">Clase actual</a>
+        <a href="/clases/clases/${assignment.syllabusId}">Clase actual</a>
       </li>
       <li>
-        <a href="#/clases/tarea/${assignmentId}">Tarea actual</a>
+        <a href="/clases/tarea/${assignmentId}">Tarea actual</a>
       </li>
       <li class="active" if.bind="lang === 'es'">Problema "${problem.titleES}"</li>
       <li class="active" if.bind="lang === 'en'">Problema "${problem.titleEN}"</li>
@@ -101,7 +101,7 @@
             <input type="submit" value="Enviar" class="btn ufps-btn-submit">
           </form>
           <p if.bind="validDate === 2">Si lo deseas, puedes enviar tu solución en modo práctica. No sumará puntos a la tarea, pero calificará tu solución.</p>
-          <a  if.bind="validDate === 2" href="/#/problemas/${problemId}/detalle" class="btn btn-submit ufps-btn-submit  ufps-btn-edit-problem">Enviar en modo práctica</a>
+          <a  if.bind="validDate === 2" href="/problemas/${problemId}/detalle" class="btn btn-submit ufps-btn-submit  ufps-btn-edit-problem">Enviar en modo práctica</a>
         </div>
       </div>
     </div>

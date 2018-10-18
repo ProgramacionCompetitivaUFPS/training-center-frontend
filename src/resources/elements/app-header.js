@@ -47,6 +47,6 @@ export class AppHeader {
   }
 
   search () {
-    if(this.query.length > 0) this.routerService.navigate('#/buscar/' + this.query.replace(/\s/g, '+'))
+    if(this.query.length > 0) this.routerService.navigate('/buscar/' + this.query.replace(/\s/g, '+'))
   }
 }

@@ -65,7 +65,7 @@ export class Signin {
         this.user.confirmPassword = ''
       }
     } else if(this.user.username.length < 6) {
-      this.alertService.showMessage(MESSAGES.signInWrongUsername)
+      this.alertService.showMessage(MESSAGES.usernameInvalid)
     }else {
       this.alertService.showMessage(MESSAGES.signInIncompleteData)
     }

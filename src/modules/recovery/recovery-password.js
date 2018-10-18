@@ -6,7 +6,7 @@ import { Alert, Auth } from 'services/services'
 /**
  * RecoveryPassword (Module)
  * Módulo para la recuperación de contraseña.
- * Accesible via /#/recuperar-password/
+ * Accesible via /recuperar-password/
  * @export
  * @class RecoveryPassword
  */

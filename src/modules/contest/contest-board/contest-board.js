@@ -46,7 +46,7 @@ export class ContestBoard {
 
   verifyShow() {
     if (this.now < this.startDate) {
-      this.router.navigate('#/maraton/' + this.id)
+      this.router.navigateToRoute('detail', {id:this.id})
       this.alertService.showMessage(MESSAGES.contestNotStarted)
     } else {
       this.flagProblems = true
@@ -83,7 +83,7 @@ export class ContestBoard {
       .then(data => {
         this.status = data.status
         if(this.status !== 'registered' && !this.contest.privacy) {
-          this.router.navigate('#/maraton/' + this.id)
+          this.router.navigateToRoute('detail', {id:this.id})
           this.alertService.showMessage(MESSAGES.contestBoardNotRegistered)
         } else this.getScore()
       })
@@ -209,7 +209,6 @@ export class ContestBoard {
         }
       })
       .catch(error => {
-        console.log(error)
         if (error.status === 401) {
           this.alertService.showMessage(MESSAGES.permissionsError)
         } else {

@@ -5,12 +5,12 @@ export class Problem {
    * @param {any} router - Enrutador principal de la aplicación
    */
   configureRouter (config, router) {
-    config.title = 'UFPS Training Center'
     config.map([
       {
         route: '',
         name: 'problems',
         moduleId: 'modules/problems/general-problems/general-problems',
+        title: 'Problemas',
         settings: {
           roles: ['admin', 'coach', 'student']
         }
@@ -19,6 +19,7 @@ export class Problem {
         name: 'category',
         route: 'categoria/:id',
         moduleId: 'modules/problems/category-problems/category-problems',
+        title: 'Problemas',
         settings: {
           roles: ['admin', 'coach', 'student']
         }
@@ -27,6 +28,7 @@ export class Problem {
         name: 'problems-creator',
         route: 'nuevo',
         moduleId: 'modules/problems/problems-creator/problems-creator',
+        title: 'Nuevo problema',
         settings: {
           roles: ['admin', 'coach']
         }
@@ -35,6 +37,7 @@ export class Problem {
         name: 'edit-problem',
         route: ':id/editar',
         moduleId: 'modules/problems/problems-creator/problems-editor',
+        title: 'Editar problema',
         settings: {
           roles: ['admin', 'coach']
         }
@@ -43,6 +46,7 @@ export class Problem {
         name: 'view-problem',
         route: [':id/detalle', ':id/detalle/:lang'],
         moduleId: 'modules/problems/view-problem/view-problem',
+        title: 'Problema',
         settings: {
           roles: ['admin', 'coach', 'student']
         }

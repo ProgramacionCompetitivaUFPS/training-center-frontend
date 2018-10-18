@@ -11,12 +11,12 @@ export class Syllabus {
    * @param {any} router - Enrutador principal de la aplicación
    */
   configureRouter (config, router) {
-    config.title = 'UFPS Training Center'
     config.map([
       {
         route: '',
         name: 'syllabus',
         moduleId: 'modules/syllabus/home-syllabus/home-syllabus',
+        title: 'Clases',
         settings: {
           roles: ['coach', 'student']
         }
@@ -25,6 +25,7 @@ export class Syllabus {
         name: 'SyllabusDetail',
         route: 'clases/:id',
         moduleId: 'modules/syllabus/syllabus-detail/syllabus-detail',
+        title: 'Clase',
         settings: {
           roles: ['coach', 'student']
         }
@@ -33,6 +34,7 @@ export class Syllabus {
         name: 'SyllabusStatistics',
         route: 'clases/:id/estadisticas',
         moduleId: 'modules/syllabus/syllabus-statistics/syllabus-statistics',
+        title: 'Estadísticas de la clase',
         settings: {
           roles: ['coach']
         }
@@ -41,6 +43,7 @@ export class Syllabus {
         name: 'CreateAssignment',
         route: 'nueva-tarea/:id',
         moduleId: 'modules/syllabus/create-assignment/create-assignment',
+        title: 'Nueva tarea',
         settings: {
           roles: ['coach']
         }
@@ -49,6 +52,7 @@ export class Syllabus {
         name: 'EditAssignment',
         route: 'editar-tarea/:id',
         moduleId: 'modules/syllabus/create-assignment/edit-assignment',
+        title: 'Editar tarea',
         settings: {
           roles: ['coach']
         }
@@ -57,6 +61,7 @@ export class Syllabus {
         name: 'StatsAssignment',
         route: 'estadisticas/:id',
         moduleId: 'modules/syllabus/assignment-stats/assignment-stats',
+        title: 'Estadísticas de la tarea',
         settings: {
           roles: ['coach']
         }
@@ -65,6 +70,7 @@ export class Syllabus {
         name: 'AssignmentDetail',
         route: 'estadisticas/:idAssignment/problema/:idAssignmentProblem/:idProblem',
         moduleId: 'modules/syllabus/assignment-detail/assignment-detail',
+        title: 'Tarea',
         settings: {
           roles: ['coach']
         }
@@ -73,6 +79,7 @@ export class Syllabus {
         name: 'ViewAssignment',
         route: 'tarea/:id',
         moduleId: 'modules/syllabus/view-assignment/view-assignment',
+        title: 'Tarea',
         settings: {
           roles: ['student']
         }
@@ -81,6 +88,7 @@ export class Syllabus {
         name: 'ViewProblem',
         route: ['tarea/:assignmentId/problema/:problemId/:assignmentProblemId', 'tarea/:assignmentId/problema/:problemId/:assignmentProblemId/:lang'],
         moduleId: 'modules/syllabus/view-problem/view-problem',
+        title: 'Problema',
         settings: {
           roles: ['student']
         }

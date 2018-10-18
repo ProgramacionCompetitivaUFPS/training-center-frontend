@@ -3,7 +3,7 @@
   <div class="container container-contest">
     <ol class="breadcrumb">
       <li>
-        <a href="#/maraton">Maratones</a>
+          <a route-href="route: contest;">Maratones</a>
       </li>
       <li class="active">${contest.title}</li>
     </ol>
@@ -18,10 +18,10 @@
         <a>Problemas</a>
       </li>
       <li role="presentation" if.bind="(status === 'registered' || authService.getUserId() === creatorId || contest.privacy) && dateValid">
-        <a href="#/maraton/${contest.id}/problemas">Problemas</a>
+          <a route-href="route: problems; params.bind: {id:id}">Problemas</a>
       </li>
       <li role="presentation" if.bind="(contest.privacy || status === 'registered' || authService.getUserId() === creatorId) && dateValid">
-        <a href="#/maraton/${contest.id}/resultados">Resultados</a>
+          <a route-href="route: board; params.bind: {id:id}">Resultados</a>
       </li>
       <li role="presentation" class="disabled" if.bind="(!contest.privacy && status !== 'registered' && authService.getUserId() !== creatorId) || !dateValid">
         <a>Resultados</a>

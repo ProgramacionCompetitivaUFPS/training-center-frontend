@@ -51,7 +51,7 @@ export class ContestProblems {
   validateShow() {
     if(this.dateLoaded && this.problemsLoaded) {
       if (this.now < this.startDate) {
-        this.router.navigate('#/maraton/' + this.id)
+        this.router.navigateToRoute('detail', {id:this.id})
         this.alertService.showMessage(MESSAGES.contestNotStarted)
       } else {
         this.flagProblems = true
@@ -97,7 +97,7 @@ export class ContestProblems {
       .then(data => {
         this.status = data.status
         if(this.status !== 'registered') {
-          this.router.navigate('#/maraton/' + this.id)
+          this.router.navigateToRoute('detail', {id:this.id})
           this.alertService.showMessage(MESSAGES.contestProblemsNotRegistered)
         } 
       })

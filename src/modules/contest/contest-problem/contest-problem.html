@@ -7,10 +7,10 @@
     <div class="container  container-contest">
       <ol class="breadcrumb bread-mini">
         <li>
-          <a href="#/maraton">Maratones</a>
+          <a route-href="route: contest;">Maratones</a>
         </li>
         <li>
-          <a href="#/maraton/${contestId}/problemas">${contest.title}</a>
+          <a route-href="route: problems; params.bind: {id:contestId}">${contest.title}</a>
         </li>
         <li class="active" if.bind="lang === 'es'">${problem.titleES}</li>
         <li class="active" if.bind="lang === 'en'">${problem.titleEN}</li>
@@ -21,13 +21,13 @@
       <hr>
       <ul class="nav nav-pills nav-justified nav-maraton">
         <li role="presentation">
-          <a href="#/maraton/${contest.id}">Inicio</a>
+          <a route-href="route: detail; params.bind: {id:contestId}">Inicio</a>
         </li>
         <li class="active" role="presentation">
-          <a href="#/maraton/${contest.id}/problemas">Problemas</a>
+          <a route-href="route: problems; params.bind: {id:contestId}">Problemas</a>
         </li>
         <li role="presentation" if.bind="contest.privacy || status === 'registered'">
-          <a href="#/maraton/${contest.id}/resultados">Resultados</a>
+          <a  route-href="route: board; params.bind: {id:contestId}">Resultados</a>
         </li>
         <li role="presentation" class="disabled" if.bind="!contest.privacy && status !== 'registered'">
           <a>Resultados</a>
@@ -118,7 +118,7 @@
             <input type="submit" value="Enviar" class="btn ufps-btn-submit btn-disabled" disabled.bind="status !== 'registered' || validDate > 0">
           </form>
           <p if.bind="validDate === 2">Si lo deseas, puedes enviar tu solución en modo práctica. No afectará el tablero, pero calificará tu solución.</p>
-          <a if.bind="validDate === 2" href="/#/problemas/${id}/detalle" class="btn btn-submit ufps-btn-submit  ufps-btn-edit-problem btn-disabled">Enviar en modo práctica</a>
+          <a if.bind="validDate === 2" href="/problemas/${id}/detalle" class="btn btn-submit ufps-btn-submit  ufps-btn-edit-problem btn-disabled">Enviar en modo práctica</a>
         </div>
       </div>
     </div>

@@ -61,7 +61,7 @@ export class ContestProblem {
   validateDate () {
     if (this.contestLoaded && this.dateLoaded) {
       if (this.now < this.startDate) {
-        this.routerService.navigate('#/maraton/' + this.id)
+        this.routerService.navigateToRoute('detail', {id:this.contestId})
         this.alertService.showMessage(MESSAGES.contestNotStarted)
       } else {
         this.getStatus()
@@ -169,7 +169,7 @@ export class ContestProblem {
       .then(data => {
         this.status = data.status
         if (this.status !== 'registered' && this.authService.getUserId() !== this.creatorId && !this.contest.privacy) {
-          this.routerService.navigate('#/maraton/' + this.contestId)
+          this.routerService.navigateToRoute('detail', {id:this.contestId})
           this.alertService.showMessage(MESSAGES.contestProblemsNotRegistered)
         } else {
           this.getProblem()

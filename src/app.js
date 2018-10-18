@@ -35,6 +35,8 @@ export class App {
   configureRouter (config, router) {
     config.title = 'UFPS Training Center'
     config.addPipelineStep('authorize', AuthorizeStep)
+    config.options.pushState = true
+    config.options.root = '/'
     config.map([
       {
         route: '',
@@ -92,7 +94,7 @@ export class App {
         title: 'Búsqueda',
         layoutView: './layouts/logged.html',
         nav: true,
-        href: "#/buscar/+",
+        href: '/buscar/+',
         settings: {
           roles: ['admin', 'coach', 'student']
         }
@@ -114,6 +116,7 @@ export class App {
         route: 'ranking',
         moduleId: './modules/ranking/ranking',
         layoutView: './layouts/logged.html',
+        title: 'Ranking',
         nav: true,
         settings: {
           roles: ['admin', 'coach', 'student']
@@ -124,6 +127,7 @@ export class App {
         route: 'envios',
         moduleId: './modules/submissions/submissions',
         layoutView: './layouts/logged.html',
+        title: 'Mis envios',
         nav: true,
         settings: {
           roles: ['coach', 'student']
@@ -166,6 +170,7 @@ export class App {
         route: ['material-publico'],
         moduleId: './modules/material/public-material/public-material',
         layoutView: './layouts/logged.html',
+        title: 'Material',
         nav: true,
         settings: {
           roles: ['visitor']
@@ -175,6 +180,7 @@ export class App {
         route: '/material-publico/:id',
         name: 'specific-material',
         moduleId: 'modules/material/specific-public-material/specific-public-material',
+        title: 'Material',
         settings: {
           roles: ['visitor']
         }
@@ -184,6 +190,7 @@ export class App {
         route: ['administracion'],
         moduleId: './modules/admin/admin',
         layoutView: './layouts/logged.html',
+        title: 'Administración',
         nav: true,
         settings: {
           roles: ['admin']
@@ -194,6 +201,7 @@ export class App {
         route: ['acerca-de'],
         moduleId: './modules/about/about',
         layoutView: './layouts/logged.html',
+        title: 'Acerca de',
         nav: true,
         settings: {
           roles: ['admin', 'coach', 'student']
@@ -204,6 +212,7 @@ export class App {
         route: ['perfil'],
         moduleId: './modules/profile/profile',
         layoutView: './layouts/logged.html',
+        title: 'Perfil',
         nav: true,
         settings: {
           roles: ['admin', 'coach', 'student']
@@ -212,14 +221,15 @@ export class App {
     ])
 
     const handleUnknownRoutes = (instruction) => {
-      return { 
-        route: '404', 
+      return {
+        route: '404',
         moduleId: './modules/error-404/error-404',
         layoutView: './layouts/logged.html',
+        title: 'Error 404',
         settings: {
           roles: ['admin', 'coach', 'student', 'visitor']
         }
-       }
+      }
     }
 
     config.mapUnknownRoutes(handleUnknownRoutes)

@@ -8,7 +8,7 @@ import { Alert, Auth } from 'services/services'
 /**
  * Login (Module)
  * Módulo de la aplicación para realizar el inicio de sesión
- * Accesible vía /#/iniciar-sesion/
+ * Accesible vía /iniciar-sesion/
  * @export
  * @class Login
  */

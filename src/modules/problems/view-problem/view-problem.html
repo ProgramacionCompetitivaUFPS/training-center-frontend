@@ -5,10 +5,10 @@
     <div class="col-xs-12" if.bind="lang === 'en'">
       <ol class="breadcrumb">
         <li>
-          <a href="#/">Categorías</a>
+          <a route-href="route: problems;">Categorías</a>
         </li>
         <li>
-          <a href="#/problemas/categoria/${problem.category}">Problemas en esta categoría</a>
+          <a href="/problemas/categoria/${problem.category}">Problemas en esta categoría</a>
         </li>
         <li class="active">Problema "${problem.titleEN}"</li>
       </ol>
@@ -16,10 +16,10 @@
     <div class="col-xs-12" if.bind="lang === 'es'">
       <ol class="breadcrumb">
         <li>
-          <a href="#/">Categorías</a>
+          <a route-href="route: problems;">Categorías</a>
         </li>
         <li>
-          <a href="#/problemas/categoria/${problem.category}">Problemas en esta categoría</a>
+          <a href="/problemas/categoria/${problem.category}">Problemas en esta categoría</a>
         </li>
         <li class="active">Problema "${problem.titleES}"</li>
       </ol>
