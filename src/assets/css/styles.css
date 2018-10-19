@@ -583,7 +583,9 @@ hr {
   background: #BBB !important;
 }
 
-.ufps-card-title h1 {
+.ufps-card-title h1,
+.ufps-card-title a,
+.ufps-card-title h1 a {
   margin: 0;
   font-size: 22px;
   text-align: center;

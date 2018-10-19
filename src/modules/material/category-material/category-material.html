@@ -20,9 +20,9 @@
         <div class="ufps-card-title ufps-card-material">
           <span if.bind="authService.isAdmin()" click.delegate="showRemoveMaterial(material.id, material.name)" class="ufps-remove-category glyphicon glyphicon-remove"
             data-toggle="tooltip" title="Eliminar este material" tooltip></span>
-          <a route-href="route: specificMaterial; params.bind: {id:material.id}">
-            <h1>${material.name}</h1>
-          </a>
+          
+            <h1><a route-href="route: specificMaterial; params.bind: {id:material.id}">${material.name}</a></h1>
+          
         </div>
       </div>
 
