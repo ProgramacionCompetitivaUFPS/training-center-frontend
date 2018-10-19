@@ -43,6 +43,24 @@ pre {
   .breadcrumb {
     display: none;
   }
+  .filter-left, .filter-right {
+    text-align: left!important;
+  }
+  .filter-right {
+    margin-top:13px;
+  }
+  .filter-left .btn.btn-default.dropdown-toggle,
+  .filter-right .btn.btn-default.dropdown-toggle {
+    padding-left: 0!important;
+    padding-right: 0!important;
+    padding-bottom: 0!important;
+  }
+  .ufps-navbar-search {
+    width: 95%;
+  }
+  .ufps-sign-links {
+    margin-bottom: 25px;
+  }
 }
 
 @media (max-width: 991px) {
@@ -1025,6 +1043,16 @@ tr:nth-child(2n) td .ufps-score-gold {
   position: relative;
 }
 
+.navbar-form {
+  padding-right: 0;
+}
+.ufps-btn-nav a.icon-more-a {
+  padding-left: 11px!important;
+}
+.icon-more {
+  font-size: 24px;
+  padding-top: 13px;
+}
 .username-gray {
   color: #888;
 }

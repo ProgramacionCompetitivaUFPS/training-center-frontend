@@ -21,14 +21,12 @@
             <td class="text-center">${user.accepted}</td>
             <td class="text-center">${user.total}</td>
           </tr>
-          <tr if.bind="users.length === 0">
-            <td></td>
-            <td>No hay usuarios actualmente registrados en la plataforma.</td>
-            <td>
-            </td>
-            <td>
-            </td>
+          <tr if.bind="users.length === 0 && dataLoaded">
+            <td  colspan="4">No hay usuarios actualmente registrados en la plataforma.</td>
           </tr>
+          <tr if.bind="!dataLoaded">
+              <td colspan="4">Cargando ranking...</td>
+            </tr>
         </tbody>
       </table>
       <paginator page.bind="page" total-pages.bind="totalPages"></paginator>

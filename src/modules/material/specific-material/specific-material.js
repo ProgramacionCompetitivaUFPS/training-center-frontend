@@ -1,7 +1,7 @@
 import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 
-import { MESSAGES } from 'config/config'
+import { API, MESSAGES } from 'config/config'
 import { Material } from 'models/models'
 import { Alert, Auth, Materials } from 'services/services'
 
@@ -53,7 +53,10 @@ export class SpecificMaterial {
       .then(data => {
         let tmp = data.material
         this.category = data.material.category
-        this.material = new Material(tmp.id, tmp.name, tmp.number, tmp.description, undefined, tmp.url.replace('watch?v=', 'embed/'))
+        if(tmp.url.search('youtube.com') !== -1) tmp.url =  tmp.url.replace('watch?v=', 'embed/')
+        if(tmp.url.search('youtu.be') !== -1) tmp.url = tmp.url.replace('youtu.be/', 'youtube.com/embed/')
+        if(tmp.url.search('/usr/src/app/files/materials/') !== -1) tmp.url = API.apiUrl + 'materials/pdf/' + tmp.url.replace('/usr/src/app/files/materials/', '')
+        this.material = new Material(tmp.id, tmp.name, tmp.number, tmp.description, undefined, tmp.url)
       }).catch(error => {
         if (error.status === 404) {
           this.alertService.showMessage(MESSAGES.materialDoesNotExist)
