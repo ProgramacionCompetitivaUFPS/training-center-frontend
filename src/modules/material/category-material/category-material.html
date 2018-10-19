@@ -52,7 +52,7 @@
           </button>
           <h4 class="modal-title">Añadir material</h4>
           <br>
-          <form submit.delegate="createMaterial()">
+          <form enctype="multipart/form-data" submit.delegate="createMaterial()">
             <input type="text" class="form-control" placeholder="Nombre" value.bind="newMaterial.name" required>
             <br>
             <input type="text" class="form-control" placeholder="Descripcion" value.bind="newMaterial.description">

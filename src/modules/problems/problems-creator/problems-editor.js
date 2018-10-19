@@ -355,6 +355,8 @@ export class ProblemsEditor {
       if (this.originalLanguage === 'es') {
         if (typeof (this.newProblem.titleES) === 'string' && this.newProblem.titleES !== '') {
           if (!this.doubleLanguage) {
+            this.newProblem.titleEN = undefined
+            this.newProblem.descriptionEN = undefined
             return true
           } else if (typeof (this.newProblem.titleEN) === 'string' && this.newProblem.titleEN !== '') {
             return true
@@ -369,6 +371,8 @@ export class ProblemsEditor {
       } else if (this.originalLanguage === 'en') {
         if (typeof (this.newProblem.titleEN) === 'string' && this.newProblem.titleEN !== '') {
           if (!this.doubleLanguage) {
+            this.newProblem.titleES = undefined
+            this.newProblem.descriptionES = undefined
             return true
           } else if (typeof (this.newProblem.titleES) === 'string' && this.newProblem.titleES !== '') {
             return true
