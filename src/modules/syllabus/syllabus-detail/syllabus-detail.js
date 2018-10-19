@@ -121,7 +121,8 @@ export class SyllabusDetail {
       this.syllabusService.addMaterials(this.id, this.newMaterials)
         .then(() => {
           this.newMaterials = ''
-          this.getSyllabus()  
+          this.alertService.showMessage(MESSAGES.addedMaterial)
+          this.getMaterials()  
         })
         .catch(error => {
           this.newMaterials = ''

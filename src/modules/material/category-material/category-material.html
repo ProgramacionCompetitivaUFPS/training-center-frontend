@@ -12,18 +12,20 @@
     <h1 class="text-right">${category}</h1>
     <hr>
 
-    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
-      sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange"
+      limit.bind="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
     <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
-      <a route-href="route: specificMaterial; params.bind: {id:material.id}">
-        <div class="ufps-card">
-          <div class="ufps-card-title ufps-card-material">
-            <span if.bind="authService.isAdmin()" click.delegate="showRemoveMaterial(material.id, material.name)" class="ufps-remove-category glyphicon glyphicon-remove"
-              data-toggle="tooltip" title="Eliminar este material" tooltip></span>
+
+      <div class="ufps-card">
+        <div class="ufps-card-title ufps-card-material">
+          <span if.bind="authService.isAdmin()" click.delegate="showRemoveMaterial(material.id, material.name)" class="ufps-remove-category glyphicon glyphicon-remove"
+            data-toggle="tooltip" title="Eliminar este material" tooltip></span>
+          <a route-href="route: specificMaterial; params.bind: {id:material.id}">
             <h1>${material.name}</h1>
-          </div>
+          </a>
         </div>
-      </a>
+      </div>
+
 
     </div>
     <div if.bind="authService.authenticated" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-new ufps-card-container">
@@ -43,7 +45,8 @@
     <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
   </div>
   <!--MODAL PARA AÑADIR MATERIAL-->
-  <div if.bind="authService.authenticated" class="modal fade" id="new-material" tabindex="-1" role="dialog" aria-labelledby="new-material">
+  <div if.bind="authService.authenticated" class="modal fade" id="new-material" tabindex="-1" role="dialog"
+    aria-labelledby="new-material">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -64,7 +67,8 @@
             <input if.bind="!newMaterial.isPdf" type="text" class="form-control" placeholder="Url" value.bind="newMaterial.url">
             <input if.bind="newMaterial.isPdf" type="file" class="form-control" files.bind="newMaterial.pdf" accept=".pdf">
             <br>
-            <p class="text-center" if.bind="authService.isStudent()">Aparecerá en la plataforma una vez sea aprobado por un administrador.</p>
+            <p class="text-center" if.bind="authService.isStudent()">Aparecerá en la plataforma una vez sea aprobado
+              por un administrador.</p>
             <input type="submit" class="btn btn-default ufps-btn-default" value="Añadir">
           </form>
         </div>
@@ -73,7 +77,8 @@
   </div>
 
   <!--MODAL PARA ELIMINAR MATERIAL-->
-  <div if.bind="authService.isAdmin()" class="modal fade" id="remove-material" tabindex="-1" role="dialog" aria-labelledby="remove-material">
+  <div if.bind="authService.isAdmin()" class="modal fade" id="remove-material" tabindex="-1" role="dialog"
+    aria-labelledby="remove-material">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">

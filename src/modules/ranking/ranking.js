@@ -16,6 +16,7 @@ export class Ranking {
     this.rankingService = rankingService
     this.page = 1
     this.totalPages = 1
+    this.dataLoaded = false
     this.users = []
     this.getRanking()
   }
@@ -34,7 +35,7 @@ export class Ranking {
       .then(data => {
         this.totalPages = data.meta.totalPages
         this.users = data.data
-
+        this.dataLoaded = true
       }).catch(error => {
         if (error.status === 404) {
           this.alertService.showMessage(MESSAGES.unknownError)

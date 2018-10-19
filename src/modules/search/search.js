@@ -20,6 +20,7 @@ export class Search {
     this.numberOfItems = [10, 20, 30, 50]
     this.sortOptions = ['Id', 'Nombre', 'Dificultad']
     this.filterChange = false
+    this.dataLoaded = false
     this.limit = 10
     this.sort = 'Id'
     this.by = 'Ascendente'
@@ -67,6 +68,7 @@ export class Search {
     .then(data => {
       this.totalPages = data.meta.totalPages
       this.problems = []
+      this.dataLoaded = true
       if (this.totalPages > 0) {
         for(let i = 0; i < data.data.length; i++) {
           this.problems.push(new Problem(data.data[i].id, data.data[i].title_en, data.data[i].title_es, data.data[i].level))
