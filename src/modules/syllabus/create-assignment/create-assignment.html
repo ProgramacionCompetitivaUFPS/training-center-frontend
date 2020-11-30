@@ -17,10 +17,10 @@
     <hr>
 
     <form submit.delegate="create()">
-      <div class="form-horizontal form-horizontal-assignment">
+      <div class=" -assignment">
         <div class="form-group">
-          <label class="control-label col-sm-2" for="problem-name">Nombre:</label>
-          <div class="col-sm-10 input-group ufps-input-creator">
+          <label class="col-form-label col-md-2" for="problem-name">Nombre:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
             <input type="text" class="form-control" placeholder="Nombre de la tarea" value.bind="assignment.title" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nombre que se mostrará al desplegar esta tarea">
               <span class="glyphicon glyphicon-question-sign"></span>
@@ -28,8 +28,8 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-sm-2" for="problem-name">Descripción:</label>
-          <div class="col-sm-10 input-group ufps-input-creator">
+          <label class="col-form-label col-md-2" for="problem-name">Descripción:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
             <textarea class="form-control" placeholder="Descripción de la tarea" value.bind="assignment.description"></textarea>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Descripción que se mostrará a los estudiantes al abrir esta tarea">
               <span class="glyphicon glyphicon-question-sign"></span>
@@ -37,10 +37,10 @@
           </div>
         </div>
       </div>
-      <div class="form-horizontal form-horizontal-assignment" if.bind="type === 'new'">
+      <div class=" -assignment" if.bind="type === 'new'">
         <div class="form-group">
-          <label class="control-label col-sm-2" for="problem-name">Problemas:</label>
-          <div class="col-sm-10 input-group ufps-input-creator">
+          <label class="col-form-label col-md-2" for="problem-name">Problemas:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
             <input type="text" class="form-control" placeholder="Ingrese los ID de los problemas separados por coma" value.bind="problems"
               required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede saber el ID de un problema usando la barra de busqueda superior">
@@ -49,10 +49,10 @@
           </div>
         </div>
       </div>
-      <div class="form-horizontal col-md-6">
+      <div class=" col-lg-6">
         <div class="form-group">
-          <label class="control-label col-sm-2" for="problem-name">Desde el:</label>
-          <div class="col-sm-10 input-group ufps-input-creator">
+          <label class="col-form-label col-md-2" for="problem-name">Desde el:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
             <input type="date" class="form-control" value.bind="startDate" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha de inicio desde la cual estará disponible esta tarea">
               <span class="glyphicon glyphicon-question-sign"></span>
@@ -60,10 +60,10 @@
           </div>
         </div>
       </div>
-      <div class="form-horizontal col-md-6">
+      <div class=" col-lg-6">
         <div class="form-group">
-          <label class="control-label col-sm-2" for="problem-name">a las:</label>
-          <div class="col-sm-10 input-group ufps-input-creator">
+          <label class="col-form-label col-md-2" for="problem-name">a las:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
             <input type="time" class="form-control" value.bind="startTime" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora desde la cual estará disponible esta tarea">
               <span class="glyphicon glyphicon-question-sign"></span>
@@ -72,10 +72,10 @@
         </div>
       </div>
 
-      <div class="form-horizontal col-md-6">
+      <div class=" col-lg-6">
         <div class="form-group">
-          <label class="control-label col-sm-2" for="problem-name">Hasta el:</label>
-          <div class="col-sm-10 input-group ufps-input-creator">
+          <label class="col-form-label col-md-2" for="problem-name">Hasta el:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
             <input type="date" class="form-control" value.bind="endDate" min="${startDate}" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha hasta la cual estará disponible esta tarea">
               <span class="glyphicon glyphicon-question-sign"></span>
@@ -83,10 +83,10 @@
           </div>
         </div>
       </div>
-      <div class="form-horizontal col-md-6">
+      <div class=" col-lg-6">
         <div class="form-group">
-          <label class="control-label col-sm-2" for="problem-name">a las:</label>
-          <div class="col-sm-10 input-group ufps-input-creator">
+          <label class="col-form-label col-md-2" for="problem-name">a las:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
             <input type="time" class="form-control" value.bind="endTime" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora hasta la cual estará disponible esta tarea">
               <span class="glyphicon glyphicon-question-sign"></span>
@@ -94,10 +94,10 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-12 text-center" if.bind="type === 'new'">
+      <div class="col-12 text-center" if.bind="type === 'new'">
         <input type="submit" class="btn ufps-btn-submit" value="Crear Tarea">
       </div>
-      <div class="col-xs-12 text-center" if.bind="type === 'edit'">
+      <div class="col-12 text-center" if.bind="type === 'edit'">
         <input type="submit" class="btn ufps-btn-submit" value="Guardar cambios" style="margin-bottom:30px">
       </div>
     </form>
@@ -145,11 +145,11 @@
           </tr>
         </tbody>
       </table>
-      <div class="form-horizontal form-horizontal-assignment" if.bind="type === 'edit'">
+      <div class=" -assignment" if.bind="type === 'edit'">
         <br>
         <div class="form-group">
-          <label class="control-label col-sm-2" for="problem-name">Añadir problemas:</label>
-          <div class="col-sm-9 input-group ufps-input-creator">
+          <label class="col-form-label col-md-2" for="problem-name">Añadir problemas:</label>
+          <div class="col-md-9 input-group ufps-input-creator">
             <input type="text" class="form-control" placeholder="Ingrese los ID de los problemas separados por coma" value.bind="problems"
               required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede saber el ID de un problema usando la barra de busqueda superior">
@@ -176,8 +176,8 @@
           <br>
           <p>Esto no eliminará el problema de la plataforma. Solo de la tarea actual.</p>
 
-          <button class="btn btn-default ufps-btn-default" click.delegate=removeProblem()>Si</button>
-          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeProblem()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
         </div>
       </div>
     </div>

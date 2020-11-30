@@ -1,0 +1,25 @@
+{
+    "short_name": "Training Center",
+    "name": "UFPS Training Center",
+    "description": "Evalúa tus habilidades en programación competitiva",
+    "icons": [{
+            "src": "android-icon-48x48.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "android-icon-96x96.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "android-icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "start_url": "/",
+    "background_color": "#E74C3C",
+    "theme_color": "#E74C3C",
+    "display": "standalone"
+}

@@ -34,48 +34,48 @@
         </li>
       </ul>
     </div>
-    <div class="col-md-9">
+    <div class="col-lg-9">
       <div class="ufps-separator-mini"></div>
-      <div class="panel panel-default">
-        <div class="panel-body" show.bind="lang === 'es'">
+      <div class="card">
+        <div class="card-body" show.bind="lang === 'es'">
           <h1 class="text-center ufps-problem-title">${problem.titleES}</h1>
           <p class="ufps-language text-center">
             <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
             <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
           </p>
           <p class="ufps-markdown-editor" markdown.bind="problem.descriptionES"></p>
-          <div class="col-xs-12">
-            <div class="col-md-6">
+          <div class="col-12">
+            <div class="col-lg-6">
               <h3 class="text-center">Entrada de ejemplo</h3>
-              <div class="well example-in-out">
+              <div class="card bg-light card-body mb-3 example-in-out">
                 <pre>${problem.exampleInput}</pre>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
               <h3 class="text-center">Salida de ejemplo</h3>
-              <div class="well example-in-out">
+              <div class="card bg-light card-body mb-3 example-in-out">
                 <pre>${problem.exampleOutput}</pre>
               </div>
             </div>
           </div>
         </div>
-        <div class="panel-body" show.bind="lang === 'en'">
+        <div class="card-body" show.bind="lang === 'en'">
           <h1 class="text-center ufps-problem-title">${problem.titleEN}</h1>
           <p class="ufps-language text-center">
             <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
             <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
           </p>
           <p class="ufps-markdown-editor" markdown.bind="problem.descriptionEN"></p>
-          <div class="col-xs-12">
-            <div class="col-md-6">
+          <div class="col-12">
+            <div class="col-lg-6">
               <h3 class="text-center">Entrada de ejemplo</h3>
-              <div class="well example-in-out">
+              <div class="card bg-light card-body mb-3 example-in-out">
                 <pre>${problem.exampleInput}</pre>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
               <h3 class="text-center">Salida de ejemplo</h3>
-              <div class="well example-in-out">
+              <div class="card bg-light card-body mb-3 example-in-out">
                 <pre>${problem.exampleOutput}</pre>
               </div>
             </div>
@@ -83,10 +83,10 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-lg-3">
       <div class="ufps-separator-mini"></div>
-      <div class="panel panel-default">
-        <div class="panel-body">
+      <div class="card">
+        <div class="card-body">
           <p show.bind="lang === 'en'">
             <strong>Problema:</strong> ${problem.titleEN}</p>
           <p show.bind="lang === 'es'">

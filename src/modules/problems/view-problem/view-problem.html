@@ -2,7 +2,7 @@
   <require from="../../../resources/attributes/markdown"></require>
   <require from="../../../resources/attributes/tooltip"> </require>
   <div class="container-fluid">
-    <div class="col-xs-12" if.bind="lang === 'en'">
+    <div class="col-12" if.bind="lang === 'en'">
       <ol class="breadcrumb">
         <li>
           <a route-href="route: problems;">Categorías</a>
@@ -13,7 +13,7 @@
         <li class="active">Problema "${problem.titleEN}"</li>
       </ol>
     </div>
-    <div class="col-xs-12" if.bind="lang === 'es'">
+    <div class="col-12" if.bind="lang === 'es'">
       <ol class="breadcrumb">
         <li>
           <a route-href="route: problems;">Categorías</a>
@@ -24,10 +24,10 @@
         <li class="active">Problema "${problem.titleES}"</li>
       </ol>
     </div>
-    <div class="col-md-9">
+    <div class="col-lg-9">
       <div class="ufps-separator-mini"></div>
-      <div class="panel panel-default">
-        <div class="panel-body" show.bind="lang === 'es'">
+      <div class="card">
+        <div class="card-body" show.bind="lang === 'es'">
           <h1 class="text-center ufps-problem-title">${problem.titleES} 
           </h1>
           <p class="ufps-language text-center">
@@ -35,37 +35,37 @@
             <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
           </p>
           <p class="ufps-markdown-editor" markdown.bind="problem.descriptionES"></p>
-          <div class="col-xs-12">
-            <div class="col-md-6">
+          <div class="col-12">
+            <div class="col-lg-6">
               <h3 class="text-center">Entrada de ejemplo</h3>
-              <div class="well example-in-out">
+              <div class="card bg-light card-body mb-3 example-in-out">
                 <pre>${problem.exampleInput}</pre>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
               <h3 class="text-center">Salida de ejemplo</h3>
-              <div class="well example-in-out">
+              <div class="card bg-light card-body mb-3 example-in-out">
                 <pre>${problem.exampleOutput}</pre>
               </div>
             </div>
           </div>
         </div>
-        <div class="panel-body" show.bind="lang === 'en'">
+        <div class="card-body" show.bind="lang === 'en'">
           <h1 class="text-center ufps-problem-title">${problem.titleEN}</h1>
           <p class="ufps-language text-center">
             <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
             <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
           </p>
           <p class="ufps-markdown-editor" markdown.bind="problem.descriptionEN"></p>
-          <div class="col-xs-12">
-            <div class="col-md-6">
+          <div class="col-12">
+            <div class="col-lg-6">
               <h3 class="text-center">Entrada de ejemplo</h3>
               <div class="well example-in-out">
                 <pre>${problem.exampleInput}</pre>
 
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
               <h3 class="text-center">Salida de ejemplo</h3>
               <div class="well example-in-out">
                 <pre>${problem.exampleOutput}</pre>
@@ -75,10 +75,10 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-lg-3">
       <div class="ufps-separator-mini"></div>
-      <div class="panel panel-default">
-        <div class="panel-body">
+      <div class="card">
+        <div class="card-body">
           <p show.bind="lang === 'en'">
             <strong>Problema:</strong> ${problem.titleEN}</p>
           <p show.bind="lang === 'es'">
@@ -103,8 +103,8 @@
           </form>
         </div>
       </div>
-      <div class="panel panel-default panel-resolved" if.bind="problem.resolved">
-        <div class="panel-body">
+      <div class="card panel-resolved" if.bind="problem.resolved">
+        <div class="card-body">
           <div class="media">
             <div class="media-left">
               <img class="media-object" src="./src/assets/img/logo-transparent-64px.png">

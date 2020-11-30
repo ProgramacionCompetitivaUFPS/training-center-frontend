@@ -8,3 +8,5 @@ node_modules
 /src/.sonar
 bootstrap
 scripts
+package-lock.json
+/src/config

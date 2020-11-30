@@ -1,5 +1,5 @@
-import { Redirect } from 'aurelia-router'
-import { Auth } from 'services/services'
+import { Redirect } from "aurelia-router";
+import { Auth } from "services/services";
 /**
  * AuthorizeStep
  * Clase encargada de verificar si un usuario tiene permisos para acceder a una ruta
@@ -12,16 +12,16 @@ export class AuthorizeStep {
    * @static
    * @returns Array con las dependencias a inyectar: Servicio de autenticación (Auth)
    */
-  static inject () {
-    return [Auth]
+  static inject() {
+    return [Auth];
   }
 
   /**
    * Crea una instancia de AuthorizeStep.
    * @param {service} authService - Servicio de autenticación
    */
-  constructor (authService) {
-    this.authService = authService
+  constructor(authService) {
+    this.authService = authService;
   }
 
   /**
@@ -30,27 +30,46 @@ export class AuthorizeStep {
    * @param {any} navigationInstruction - Instrucción de navegación recibida
    * @param {any} next - Enrutamento
    */
-  run (navigationInstruction, next) {
-    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('admin') !== -1) && this.authService.isAdmin()) {
-      return next()
+  run(navigationInstruction, next) {
+    if (
+      navigationInstruction
+        .getAllInstructions()
+        .some((i) => i.config.settings.roles.indexOf("admin") !== -1) &&
+      this.authService.isAdmin()
+    ) {
+      return next();
     }
-    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('coach') !== -1) && this.authService.isCoach()) {
-      return next()
+    if (
+      navigationInstruction
+        .getAllInstructions()
+        .some((i) => i.config.settings.roles.indexOf("coach") !== -1) &&
+      this.authService.isCoach()
+    ) {
+      return next();
     }
-    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('student') !== -1) && this.authService.isStudent()) {
-      return next()
+    if (
+      navigationInstruction
+        .getAllInstructions()
+        .some((i) => i.config.settings.roles.indexOf("student") !== -1) &&
+      this.authService.isStudent()
+    ) {
+      return next();
     }
-    if (navigationInstruction.getAllInstructions().some(i => i.config.settings.roles.indexOf('visitor') !== -1)) {
+    if (
+      navigationInstruction
+        .getAllInstructions()
+        .some((i) => i.config.settings.roles.indexOf("visitor") !== -1)
+    ) {
       if (!this.authService.isVisitor()) {
-        return next.cancel(new Redirect(''))
+        return next.cancel(new Redirect(""));
       } else {
-        return next()
+        return next();
       }
     }
     if (this.authService.isVisitor()) {
-      return next.cancel(new Redirect('iniciar-sesion'))
+      return next.cancel(new Redirect("bienvenido"));
     } else {
-      return next.cancel(new Redirect(''))
+      return next.cancel(new Redirect(""));
     }
   }
 }

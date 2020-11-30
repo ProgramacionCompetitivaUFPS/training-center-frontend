@@ -1,7 +1,9 @@
 <template>
-    <require from="bootstrap/css/bootstrap.css"></require>
-    <require from="./assets/css/styles.css"></require>
-    <loading-indicator loading.bind="router.isNavigating || httpService.httpClient.isRequesting"></loading-indicator>
-    <app-header if.bind="authService.authenticated"></app-header>
-    <router-view></router-view>
+  <require from="bootstrap/css/bootstrap.css"></require>
+  <!--require from="../assets/css/styles.css"></require-->
+  <loading-indicator
+    loading.bind="router.isNavigating || httpService.httpClient.isRequesting"
+  ></loading-indicator>
+  <app-header if.bind="authService.authenticated"></app-header>
+  <router-view></router-view>
 </template>

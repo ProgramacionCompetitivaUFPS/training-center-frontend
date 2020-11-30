@@ -6,13 +6,13 @@
     <br>
     <br>
     <div if.bind="totalPagesMyContests > 0">
-      <div class="col-md-3">
+      <div class="col-lg-3">
         <h1> 
-          <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+          <a route-href="create" class="btn btn-secondary ufps-btn-secondary">Crear Maratón</a>
           <!--<a click.delegate="showMessage()" class="btn btn-default ufps-btn-default">Crear Maratón</a>-->
         </h1>
       </div>
-      <div class="col-md-9">
+      <div class="col-lg-9">
         <h1 class="text-right">Mis maratones</h1>
         <div class="fix"></div>
       </div>
@@ -38,8 +38,8 @@
             <td class="text-center" if.bind="!contest.privacy">Privada</td>
             <td class="text-center">${contest.getSemanticStartDate()}</td>
             <td class="text-right">
-              <a route-href="route: edit; params.bind: {id:contest.id}" class="btn btn-default ufps-btn-default">Editar y añadir problemas</a>
-              <a route-href="route: detail; params.bind: {id:contest.id}" class="btn btn-default ufps-btn-default">Ver</a>
+              <a route-href="route: edit; params.bind: {id:contest.id}" class="btn btn-secondary ufps-btn-secondary">Editar y añadir problemas</a>
+              <a route-href="route: detail; params.bind: {id:contest.id}" class="btn btn-secondary ufps-btn-secondary">Ver</a>
             </td>
           </tr>
         </tbody>
@@ -51,13 +51,13 @@
       <div class="fix"></div>
     </div>
     <div if.bind="totalPagesMyContests === 0">
-      <div class="col-md-3">
+      <div class="col-lg-3">
         <h1>
-          <a route-href="create" class="btn btn-default ufps-btn-default">Crear Maratón</a>
+          <a route-href="create" class="btn btn-secondary ufps-btn-secondary">Crear Maratón</a>
           <!--<a click.delegate="showMessage()" class="btn btn-default ufps-btn-default">Crear Maratón</a>-->
         </h1>
       </div>
-      <div class="col-md-9">
+      <div class="col-lg-9">
         <h1 class="text-right">Maratones en ejecución y futuras</h1>
         <div class="fix"></div>
       </div>
