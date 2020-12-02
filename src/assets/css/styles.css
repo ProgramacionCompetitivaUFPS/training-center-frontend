@@ -1139,3 +1139,368 @@ tr:nth-child(2n) td .ufps-score-gold {
     height: 100%;
     z-index: 1;
 }
+/*css home*/
+.navbar {
+    background-color: rgb(231, 6, 6) !important;
+    padding: 0;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+#navbar:hover {
+    background-color: #d60420a4;
+    margin: none;
+    padding-bottom: 1.3em;
+    padding-top: 1.3em;
+    margin: 0;
+}
+
+#navbar {
+    position: relative;
+    padding-bottom: 1.3em;
+    padding-top: 1.3em;
+    color: white;
+}
+
+.menunav {
+    text-align: right;
+    padding-right: 1.3em;
+}
+
+.title {
+    color: white;
+    font-family: 'Anton', sans-serif;
+    font-size: 2em;
+    padding-left: 0.5em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+}
+
+.title:hover {
+    color: lavender;
+}
+
+#logo {
+    max-width: 3.8em;
+    padding-bottom: 0.5em;
+    padding-left: 1em;
+}
+
+#containerCards {
+    background-color: rgb(231, 6, 6) !important;
+}
+
+#menu {
+    padding-left: 49em;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
+}
+
+#cards {
+    padding-top: 2em;
+    padding-bottom: 3em;
+}
+
+.cards {
+    margin-left: 11.7em;
+    margin-top: 2em;
+}
+
+.card {
+    display: inline-block;
+    width: 12em;
+}
+
+#estadisticas {
+    padding: 4em;
+}
+
+#estadisticas h4 {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+#iconosEstad {
+    width: 5.2em;
+    height: 5.2em;
+    margin-left: 1.9em;
+}
+
+#numeros h1 {
+    text-align: center;
+    margin-top: 0.5em;
+    font-size: 3em;
+}
+
+#redes {
+    font-size: 2em;
+}
+
+.btn {
+    background-color: rgb(231, 6, 6) !important;
+}
+
+.btn:hover {
+    background-color: #d60420a4;
+}
+
+.line {
+    width: 5.5em;
+    height: 1em;
+    margin-left: 28.2em;
+    margin-top: 0;
+}
+
+.line2 {
+    width: 5.5em;
+    height: 1em;
+    margin-top: 0;
+}
+
+.lineNegra1 {
+    width: 5.5em;
+    margin-left: 25.2em;
+    height: 1em;
+    margin-top: 0;
+}
+
+.lineNegra2 {
+    width: 5.5em;
+    height: 1em;
+    margin-top: 0;
+}
+
+.interes {
+    text-align: center;
+    color: white;
+    font-family: 'Jockey One', sans-serif;
+    margin-top: 1em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+#imgEstad {
+    margin-top: 2.5em;
+}
+
+.novedades {
+    text-align: center;
+    color: black;
+    font-family: 'Jockey One', sans-serif;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.globo {
+    width: 1.5em;
+    height: 1.5em;
+    margin-top: 0;
+}
+
+#footer {
+    height: 10em;
+}
+
+.page-footer h5 {
+    font-family: 'Spectral', serif;
+}
+
+.divLinea {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.card {
+    margin-top: 3em;
+    margin-left: 2em;
+}
+
+#cardLink {
+    padding-top: 0;
+}
+
+.divRegis {
+    background-image: url("backgroundTC.png");
+    margin: 0;
+    align-content: flex-end;
+}
+
+.video {
+    height: 48em;
+    min-height: 100%;
+}
+
+#video_background {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    height: 48em;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-45%);
+    z-index: -1;
+    /*-webkit-filter: grayscale(100%);*/
+    flex-grow: 1;
+}
+
+.bienvenido {
+    text-align: center;
+    margin-top: 1em;
+}
+
+.cajas {
+    margin-left: 15em;
+    margin-top: 3em;
+    margin-right: 8em;
+}
+
+.caja {
+    background-color: rgb(231, 6, 6);
+    padding-left: 2em;
+    padding-right: 2em;
+    border-radius: 10px;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    margin-inline-end: 6em;
+    display: inline-block;
+}
+
+.caja h3 {
+    color: lavender;
+    text-align: center;
+}
+
+.caja pre {
+    color: lavender;
+    text-align: center;
+}
+
+.pensamiento {
+    height: 13em;
+    width: 17em;
+    margin-left: 32em;
+    margin-top: 2em;
+}
+
+.buho {
+    height: 10em;
+    width: 10em;
+    margin-left: 40em;
+}
+
+.btn {
+    width: 12em;
+    padding: 0;
+    margin: 0;
+}
+
+.tablas {
+    padding: 3em 5em 2em 5em;
+}
+
+#busqueda h5 {
+    padding: 2em;
+}
+
+.lbl {
+    background-color: rgb(245, 131, 131);
+    margin-left: 5em;
+    text-align: center;
+    padding: 0em 1em 0em 0em;
+}
+
+.lbl1,
+.lbl2,
+.lbl3 {
+    background-color: rgb(245, 131, 131);
+    margin-left: 0.5em;
+    padding: 0em 1em 0em 1em;
+    border-radius: 0.2em;
+}
+
+.etiquetas {
+    text-align: center;
+}
+
+.cuerpoEjercicio {
+    margin: 3em 5em 1em 5em;
+}
+
+.form-group {
+    width: 25em;
+    display: inline-block;
+    padding-left: 5em;
+    margin-top: 2em;
+}
+
+.textos {
+    margin-left: 1em;
+}
+
+#navEjercicio {
+    padding-left: 5em;
+}
+
+.table {
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+.mensajeEnvios {
+    height: 4em;
+    background-color: rgb(245, 131, 131);
+    border-radius: 1em;
+    width: 50em;
+    margin: 2em 10em 2em 10em;
+    border-style: solid;
+    text-align: center;
+}
+
+.mensajeEnvios label {
+    padding-top: 1em;
+}
+
+#enviarSol {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    color: seashell;
+}
+
+.TituloMedio {
+    margin-top: 2em;
+}
+
+.bloquesMenu {
+    display: inline-block;
+    width: 10em;
+    padding-right: 1em;
+    height: 22em;
+    position: relative;
+    bottom: 1.7em;
+    left: 1.5em;
+}
+
+.bloques {
+    display: inline-block;
+    width: 45em;
+    margin-top: 5em;
+    border-style: solid;
+    height: 25em;
+    position: relative;
+    bottom: 0.5em;
+}
+
+.flex-column {
+    padding: 0;
+    margin: 0;
+}
+
+.flex-column a {
+    border-style: solid;
+}
