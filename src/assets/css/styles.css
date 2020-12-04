@@ -193,13 +193,16 @@ pre {
 }
 
 .ufps-sign-links {
-    margin-top: 1.25em;
+    display: inline;
     margin-left: 0;
     margin-right: 0;
-    padding-left: 0;
+    padding-left: 1em;
     padding-right: 0;
+    
 }
-
+.linksign{
+    margin-top: 1.2em;
+}
 .ufps-sign-links,
 .ufps-sign-links a {
     color: #fff;
@@ -208,6 +211,7 @@ pre {
 
 .ufps-sign-about {
     margin-top: 2.5em;
+    padding-bottom: 1em;
 }
 
 .ufps-sign-about p {
@@ -725,10 +729,10 @@ th {
 
 /*BOTONES*/
 
-.ufps-btn-default,
-.ufps-btn-default:hover,
-.ufps-btn-default:focus,
-.ufps-btn-default:active {
+.ufps-btn-secondary,
+.ufps-btn-secondary:hover,
+.ufps-btn-secondary:focus,
+.ufps-btn-secondary:active {
     background-color: #e74c3c;
     border-color: #e74c3c;
     color: #fff;
@@ -1241,11 +1245,11 @@ tr:nth-child(2n) td .ufps-score-gold {
     font-size: 2em;
 }
 
-.btn {
+.btn-danger {
     background-color: rgb(231, 6, 6) !important;
 }
 
-.btn:hover {
+.btn-danger:hover {
     background-color: #d60420a4;
 }
 
@@ -1432,10 +1436,10 @@ tr:nth-child(2n) td .ufps-score-gold {
 }
 
 .form-group {
-    width: 25em;
+    width: 20em;
     display: inline-block;
-    padding-left: 5em;
-    margin-top: 2em;
+    padding-left: 0em;
+    margin-top: 0.5em;
 }
 
 .textos {
