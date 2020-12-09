@@ -1,18 +1,17 @@
 <template>
-  <nav class="navbar navbar-fixed-top ufps-navbar">
+  <nav class="navbar fixed-top ufps-navbar navbar-expand-md">
     <div class="container">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand ufps-brand" href="/">
           <img alt="UFPS Training Center" src="src/assets/img/logo-transparent.png">
         </a>
       </div>
-      <div class="collapse navbar-collapse" id="menu">
+      <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-left">
           <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isVisitor()">
             <a route-href="route: problems">Material</a>
@@ -24,7 +23,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               Problemas
             </a>
-            <ul class="dropdown-menu ufps-dropdown-menu">
+            <ul class="dropdown-item ufps-dropdown-menu">
               <li>
                 <a route-href="route: problems">Administrar Categorías</a>
               </li>
@@ -45,23 +44,48 @@
           <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
             <a route-href="route: admin">Administración</a>
           </li>
-          <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.isCoach() || authService.isStudent()">
+          <li class="ufps-btn-nav d-md-none d-block" if.bind="authService.isCoach() || authService.isStudent()">
             <a href="/envios">Mis envios</a>
           </li>
-          <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.authenticated">
+          <li class="ufps-btn-nav d-md-none d-block" if.bind="authService.authenticated">
               <a href="/perfil">Perfil</a>
             </li>
-            <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.authenticated">
+            <li class="ufps-btn-nav d-md-none d-block" if.bind="authService.authenticated">
                 <a href="/acerca-de">Acerca de</a>
               </li>
-          <li class="ufps-btn-nav hidden-md hidden-lg" if.bind="authService.authenticated">
+          <li class="ufps-btn-nav d-md-none d-block" if.bind="authService.authenticated">
             <a click.delegate="logOut()">Cerrar Sesión</a>
           </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right hidden-sm hidden-xs" if.bind="authService.authenticated">
+        <form class="form-inline ml-auto" submit.delegate="search()" if.bind="authService.authenticated">
+          <div class="ufps-navbar-search">
+            <div class="input-group">
+              <input type="text" value.bind="query" class="form-control ufps-navbar-input" placeholder="Buscar problema...">
+              <div class="input-group-addon ufps-input-navbar-addon" id="lupa">
+                <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-search"  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                  <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                </svg>
+                <input type="submit" value="" class="search-btn">
+              </div>
+              
+            </div>
+            
+          </div>
+        </form>
+        <ul class="nav navbar-nav ml-auto" if.bind="!authService.authenticated">
+          <li class="ufps-btn-nav ">
+            <a href="/iniciar-sesion">Iniciar sesión</a>
+          </li>
+        </ul>
+        
+      
+        <ul class="nav navbar-nav" if.bind="authService.authenticated">
           <li class="dropdown ufps-btn-nav ufps-dropdown-user">
-            <a href="#" class="dropdown-toggle icon-more-a" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-option-vertical icon-more"></span> 
+            <a href="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <svg width="3em" height="2em" viewBox="0 0 16 16" class="bi bi-three-dots-vertical" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+              </svg>
             </a>
             <ul class="dropdown-menu ufps-dropdown-menu">
               <li if.bind="authService.isCoach() || authService.isStudent()">
@@ -80,22 +104,7 @@
             </ul>
           </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right" if.bind="!authService.authenticated">
-          <li class="ufps-btn-nav ">
-            <a href="/iniciar-sesion">Iniciar sesión</a>
-          </li>
-        </ul>
-        <form class="navbar-form navbar-right" submit.delegate="search()" if.bind="authService.authenticated">
-          <div class="form-group ufps-navbar-search">
-            <div class="input-group">
-              <input type="text" value.bind="query" class="form-control ufps-navbar-input" placeholder="Buscar problema...">
-              <div class="input-group-addon ufps-input-navbar-addon">
-                <span class="glyphicon glyphicon-search"></span>
-              </div>
-            </div>
-            <input type="submit" value="" class="search-btn">
-        </form>
-        </div>
+        
       </div>
   </nav>
   <div repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">

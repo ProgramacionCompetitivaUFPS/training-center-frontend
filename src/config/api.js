@@ -9,7 +9,7 @@ export let API = {
     /**
      * apiUrl debe reemplazarse por la dirección del backend
      */
-    apiUrl: "http://104.155.145.99:3000/",
+    apiUrl: "http://127.0.0.1:3000/",
     endpoints: {
         addMaterials: "add-materials",
         addProblemAssignment: "add-problems",

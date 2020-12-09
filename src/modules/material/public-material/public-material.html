@@ -6,7 +6,7 @@
     <div class="container">
       <br>
       <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind = "filterChange" limit.bind ="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
-      <div repeat.for="material of materials" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
+      <div repeat.for="material of materials" class="col-sm-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
         <a href="/material-publico/${material.id}">
           <div class="ufps-card">
             <div class="ufps-card-title ufps-card-material">
