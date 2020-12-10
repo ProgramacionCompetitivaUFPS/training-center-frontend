@@ -85,7 +85,7 @@
           <td class="text-center" if.bind="!contest.privacy">Privada</td>
           <td class="text-center">${contest.getSemanticStartDate()}</td>
           <td class="text-right">
-            <a route-href="route: detail; params.bind: {id:contest.id}" class="btn btn-default ufps-btn-default">Abrir</a>
+            <a route-href="route: detail; params.bind: {id:contest.id}" class="btn btn-secondary ufps-btn-secondary">Abrir</a>
           </td>
         </tr>
         <tr if.bind="totalPagesAllContest === 0">

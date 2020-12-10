@@ -162,7 +162,9 @@ pre {
 .ufps-navbar-input {
     box-shadow: none;
 }
-
+.ufps-container-logged{
+    margin-top: 1em;
+}
 .ufps-input-navbar-addon {
     background-color: #fff;
     border: none;
@@ -319,7 +321,7 @@ pre {
     background-color: #344958;
     border-radius: 0;
     border: none;
-    height: 4.0625em;
+    height: 4em;
 }
 
 .ufps-brand {
@@ -330,12 +332,15 @@ pre {
 .ufps-brand img {
     height: 3em;
 }
-
+.puntos a{
+    color: #fff;
+}
 .ufps-btn-nav a {
     height: 4.0625em;
-   /* padding-left: 1.125em !important;*/
+    padding-left: 1.125em !important;
     padding-right: 1.125em !important;
     line-height: 2.1875em !important;
+    padding-bottom: 0.8em;
     font-size: 1em;
     color: #acb2b6;
     transition: all 0.3s ease;
@@ -616,7 +621,7 @@ hr {
 .ufps-card-title a,
 .ufps-card-title h1 a {
     margin: 0;
-    font-size: 22px;
+    font-size: 1.4em;
     text-align: center;
     position: relative;
     color: #fff !important;
@@ -644,6 +649,7 @@ hr {
 .ufps-card-link a:hover {
     color: #555;
     text-decoration: none;
+    font-size: 0.93em;
 }
 
 table {
@@ -768,10 +774,14 @@ th {
 .ufps-input-creator input.form-control,
 textarea.form-control {
     border-right: 0;
+    margin-top: 0.5em;
+    
 }
 
 .ufps-input-creator .form-control {
     border-color: #ccc;
+    display: inline-block;
+   
 }
 
 .ufps-input-creator textarea.form-control {
@@ -781,9 +791,18 @@ textarea.form-control {
 .ufps-input-creator span.input-group-addon,
 .ufps-input-creator span.input-group-addon:hover,
 .ufps-input-creator span.input-group-addon:active {
-    background-color: #fff !important;
-    border-left: none !important;
-    border-radius: 0.125em !important;
+    position: relative;
+    float: right;
+    line-height: 2em;
+    border-radius: 0 0.2em 0.2em 0;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding-right: 0.5em;
+    margin-top: 0.5em;
+    
+   
 }
 
 .nav-pills.nav-maraton>li>a,
@@ -1000,9 +1019,17 @@ iframe {
     width: 100%;
     height: 100%;
 }
-
-.form-horizontal-assignment .control-label {
+.-assignment{
+    margin-top: 1em;
+}
+#clave{
+    margin-bottom: 1em;
+}
+.-assignment .col-form-label {
     text-align: left !important;
+    font-size: 0.8em;
+    font-weight: 700;
+    
 }
 
 .ufps-font-size-small {
@@ -1087,15 +1114,20 @@ tr:nth-child(2n) td .ufps-score-gold {
 .form-group.ufps-navbar-search {
     position: relative;
 }
-
+.text-center .crearM{
+    margin-bottom: 1em;
+}
 .form-inline {
     padding-right: 0;
+    margin-bottom: 0.5em;
 }
 
 .ufps-btn-nav .bi-three-dots-vertical{
     padding-left: 0.6875em !important;
 }
-
+.bi-question-circle-fill{
+    float: right;
+}
 .icon-more {
     font-size: 1.5em;
     padding-top: 0.8125em;
@@ -1121,7 +1153,6 @@ tr:nth-child(2n) td .ufps-score-gold {
 .container-contest .breadcrumb {
     margin-bottom: 0 !important;
 }
-
 .container-contest h2 {
     margin-top: 0 !important;
 }
