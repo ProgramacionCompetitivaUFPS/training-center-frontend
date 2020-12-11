@@ -7,16 +7,16 @@
     <div class="text-center" if.bind="!enrolledSyllabusesLoaded">
       <p>Actualmente no tienes ninguna clase inscrita.</p>
     </div>
-    <div repeat.for="syllabus of enrolledSyllabuses" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
+    <div repeat.for="syllabus of enrolledSyllabuses" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
       <a route-href="route: SyllabusDetail; params.bind: {id:syllabus.id}">
         <div class="ufps-card">
           <div class="ufps-card-title">
             <h1>${syllabus.tittle}</h1>
           </div>
-          <div class="col-xs-6 ufps-card-link">
+          <div class="col-6 ufps-card-link">
             <a route-href="route: SyllabusDetail; params.bind: {id:syllabus.id}">Ver clase</a>
           </div>
-          <div class="col-xs-6 ufps-card-link">
+          <div class="col-6 ufps-card-link">
             <a route-href="route: SyllabusStatistics; params.bind: {id:syllabus.id}">Detalle</a>
           </div>
           <div class="fix"></div>
@@ -28,7 +28,7 @@
     <h1 class="text-right" if.bind="authService.isStudent()">Clases disponibles</h1>
     <h1 class="text-right" if.bind="authService.isCoach()">Mis clases</h1>
     <hr>
-    <div repeat.for="syllabus of syllabuses" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
+    <div repeat.for="syllabus of syllabuses" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
       <div class="ufps-card">
         <div class="ufps-card-title">
           <span if.bind="authService.isCoach()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar los datos de la clase"
@@ -37,13 +37,13 @@
             click.delegate="showRemoveSyllabus(syllabus.id, syllabus.tittle)" tooltip></span>
           <h1>${syllabus.tittle}</h1>
         </div>
-        <div if.bind="authService.isCoach()" class="col-xs-6 ufps-card-link">
+        <div if.bind="authService.isCoach()" class="col-6 ufps-card-link">
           <a route-href="route: SyllabusDetail; params.bind: {id:syllabus.id}">Detalle</a>
         </div>
-        <div if.bind="authService.isCoach()" class="col-xs-6 ufps-card-link">
+        <div if.bind="authService.isCoach()" class="col-6 ufps-card-link">
           <a route-href="route: SyllabusStatistics; params.bind: {id:syllabus.id}">Estadísticas</a>
         </div>
-        <div if.bind="authService.isStudent()" class="col-xs-6 ufps-card-link">
+        <div if.bind="authService.isStudent()" class="col-6 ufps-card-link">
           <span if.bind="syllabus.public">Público</span>
           <span if.bind="!syllabus.public">Privado</span>
         </div>
@@ -56,14 +56,14 @@
         <div class="fix"></div>
       </div>
     </div>
-    <div if.bind="authService.isCoach()" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-new ufps-card-container">
+    <div if.bind="authService.isCoach()" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-new ufps-card-container">
       <div class="ufps-card" data-toggle="modal" data-target="#new-syllabus">
         <div class="ufps-card-title">
           <h1>
             <span class="glyphicon glyphicon-plus"></span>
           </h1>
         </div>
-        <div class="col-xs-12 ufps-card-link">
+        <div class="col-12 ufps-card-link">
           Nueva clase
         </div>
         <div class="fix"></div>
@@ -92,12 +92,12 @@
               <label>Descripción</label>
               <input type="text" class="form-control" placeholder="Descripión de la clase" value.bind="newSyllabus.description" required>
             </div>
-            <div class="radio">
+            <div class="form-check">
               <label>
                 <input type="radio" name="privacy" model.bind="true" checked.bind="newSyllabus.privacy" checked> Público
               </label>
             </div>
-            <div class="radio">
+            <div class="form-check">
               <label>
                 <input type="radio" name="privacy" model.bind="false" checked.bind="newSyllabus.privacy" checked> Privado
                 <span>(requiere clave)</span>
@@ -109,7 +109,7 @@
                 required>
             </div>
             <div class="text-right">
-              <input type="submit" class="btn btn-default ufps-btn-default" value="Registrar clase">
+              <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Registrar clase">
             </div>
           </form>
         </div>
@@ -136,12 +136,12 @@
               <label>Descripción</label>
               <input type="text" class="form-control" placeholder="Descripión del syllabus" value.bind="editSyllabus.description" required>
             </div>
-            <div class="radio">
+            <div class="form-check">
               <label>
                 <input type="radio" name="privacy" model.bind="true" checked.bind="editSyllabus.privacy"> Público
               </label>
             </div>
-            <div class="radio">
+            <div class="form-check">
               <label>
                 <input type="radio" name="privacy" model.bind="false" checked.bind="editSyllabus.privacy"> Privado
                 <span>(requiere clave)</span>
@@ -173,8 +173,8 @@
           <br>
           <p>Esta operación no se puede deshacer</p>
 
-          <button class="btn btn-default ufps-btn-default" click.delegate=removeSyllabus()>Si</button>
-          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeSyllabus()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
         </div>
       </div>
     </div>
@@ -198,8 +198,8 @@
               </div>
             </div>
 
-            <input type="submit" class="btn btn-default ufps-btn-default" value="Si">
-            <input type="submit" class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close" value="No">
+            <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Si">
+            <input type="submit" class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close" value="No">
           </form>
         </div>
       </div>

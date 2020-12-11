@@ -1,8 +1,8 @@
 <template>
-  <div class="col-md-6 col-sm-5 col-xs-12 text-left filter-left">
+  <div class="col-lg-6 col-md-5 col-12 float-left filter-left">
     Mostrar
     <div class="dropdown dropdown-inline ufps-dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="showNoItems" data-toggle="dropdown" aria-haspopup="true"
+      <button class="btn dropdown-toggle" type="button" id="showNoItems" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="true">
         ${limit}
         <span class="caret"></span>
@@ -16,7 +16,7 @@
     </div>
     ${textToShow} <span if.bind="languageFlag">en </span>
     <div if.bind="languageFlag" class="dropdown dropdown-inline ufps-dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="showLanguage" data-toggle="dropdown" aria-haspopup="true"
+      <button class="btn dropdown-toggle" type="button" id="showLanguage" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="true">
         ${language}
         <span class="caret"></span>
@@ -28,10 +28,10 @@
         </ul>
     </div>
   </div>
-  <div class="col-md-6 col-sm-7 col-xs-12 text-right filter-right">
+  <div class="col-lg-6 col-md-7 col-12 float-right filter-right">
     Ordenar por
     <div class="dropdown dropdown-inline ufps-dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <button class="btn dropdown-toggle" type="button" id="sortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         ${sort}
         <span class="caret"></span>
       </button>
@@ -43,7 +43,7 @@
     </div>
     en forma
     <div class="dropdown dropdown-inline ufps-dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="orderBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <button class="btn dropdown-toggle" type="button" id="orderBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         ${by}
         <span class="caret"></span>
       </button>

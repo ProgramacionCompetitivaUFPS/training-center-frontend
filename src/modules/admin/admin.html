@@ -9,19 +9,19 @@
         desde la página inicial.</p>
       <form submit.delegate="createUser()">
         <div class="text-center">
-          <label class="radio-inline">
+          <label class="form-check-inline">
             <input type="radio" name="type-user" checked.bind="newUser.type" model.bind="2" required> Administrador
           </label>
-          <label class="radio-inline">
+          <label class="form-check-inline">
             <input type="radio" name="type-user" checked.bind="newUser.type" model.bind="1" required> Coach o docente
           </label>
         </div>
         <br>
-        <div class="form-horizontal col-md-6">
+        <div class=" col-lg-6">
           <div class="form-group">
             <div class="form-group">
-              <label class="control-label col-sm-3" for="new-user-name">Nombre:</label>
-              <div class="col-sm-9 input-group ufps-input-creator">
+              <label class="col-form-label col-md-3" for="new-user-name">Nombre:</label>
+              <div class="col-md-9 input-group ufps-input-creator">
                 <input type="text" class="form-control" id="new-user-name" value.bind="newUser.name" required>
                 <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nombre completo del usuario">
                   <span class="glyphicon glyphicon-question-sign"></span>
@@ -29,8 +29,8 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-sm-3" for="new-user-email">Email:</label>
-              <div class="col-sm-9 input-group ufps-input-creator">
+              <label class="col-form-label col-md-3" for="new-user-email">Email:</label>
+              <div class="col-md-9 input-group ufps-input-creator">
                 <input type="email" class="form-control" id="new-user-email" value.bind="newUser.email" required>
                 <span class="input-group-addon" tooltip data-toggle="tooltip" title="Email del usuario">
                   <span class="glyphicon glyphicon-question-sign"></span>
@@ -38,8 +38,8 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-sm-3" for="new-user-password">Contraseña:</label>
-              <div class="col-sm-9 input-group ufps-input-creator">
+              <label class="col-form-label col-md-3" for="new-user-password">Contraseña:</label>
+              <div class="col-md-9 input-group ufps-input-creator">
                 <input type="password" class="form-control" id="new-user-password" value.bind="newUser.password" required>
                 <span class="input-group-addon" tooltip data-toggle="tooltip" title="Contraseña del usuario">
                   <span class="glyphicon glyphicon-question-sign"></span>
@@ -48,11 +48,11 @@
             </div>
           </div>
         </div>
-        <div class="form-horizontal col-md-6">
+        <div class=" col-lg-6">
           <div class="form-group">
             <div class="form-group">
-              <label class="control-label col-sm-3" for="new-user-name">Código:</label>
-              <div class="col-sm-9 input-group ufps-input-creator">
+              <label class="col-form-label col-md-3" for="new-user-name">Código:</label>
+              <div class="col-md-9 input-group ufps-input-creator">
                 <input type="number" class="form-control" id="new-user-code" value.bind="newUser.code">
                 <span class="input-group-addon" tooltip data-toggle="tooltip" title="Código del usuario en la Universidad">
                   <span class="glyphicon glyphicon-question-sign"></span>
@@ -61,7 +61,7 @@
             </div>
             <div class="form-group">
               <label class="control-label col-sm-3" for="new-user-username">Username:</label>
-              <div class="col-sm-9 input-group ufps-input-creator">
+              <div class="col-md-9 input-group ufps-input-creator">
                 <input type="text" class="form-control" id="new-user-username" value.bind="newUser.username">
                 <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nickname del usuario (sin espacios)">
                   <span class="glyphicon glyphicon-question-sign"></span>
@@ -69,8 +69,8 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="control-label col-sm-3" for="new-user-password">Contraseña:</label>
-              <div class="col-sm-9 input-group ufps-input-creator">
+              <label class="control-label col-md-3" for="new-user-password">Contraseña:</label>
+              <div class="col-md-9 input-group ufps-input-creator">
                 <input type="password" class="form-control" id="new-user-password" value.bind="newUser.confirmPassword" required>
                 <span class="input-group-addon" tooltip data-toggle="tooltip" title="Repite la contraseña">
                   <span class="glyphicon glyphicon-question-sign"></span>
@@ -108,7 +108,7 @@
             <td if.bind="user.type === 2">Administrador</td>
             <td>${user.email}</td>
             <td class="text-right">
-              <button class="ufps-btn btn ufps-btn-default" click.delegate="showRemoveUser(user.id)">Revocar</button>
+              <button class="ufps-btn btn ufps-btn-secondary" click.delegate="showRemoveUser(user.id)">Revocar</button>
             </td>
           </tr>
           <tr if.bind="users.length === 0">
@@ -150,9 +150,9 @@
             <td>${material.name}</td>
             <td>${material.categoryString}</td>
             <td class="text-right">
-              <a class="ufps-btn btn ufps-btn-default" href="${material.url}" target="blank">Abrir</a>
-              <button class="ufps-btn btn ufps-btn-default" click.delegate="approveMaterial(material.id)">Aprobar</button>
-              <button class="ufps-btn btn ufps-btn-default" click.delegate="showRemoveMaterial(material.id)">Descartar</button>
+              <a class="ufps-btn btn ufps-btn-secondary" href="${material.url}" target="blank">Abrir</a>
+              <button class="ufps-btn btn ufps-btn-secondary" click.delegate="approveMaterial(material.id)">Aprobar</button>
+              <button class="ufps-btn btn ufps-btn-secondary" click.delegate="showRemoveMaterial(material.id)">Descartar</button>
             </td>
           </tr>
           <tr if.bind="materials.length === 0">
@@ -178,8 +178,8 @@
             <br>
             <p>Esta acción no puede ser revertida</p>
 
-            <button class="btn btn-default ufps-btn-default" click.delegate=removeMaterial()>Si</button>
-            <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
+            <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeMaterial()>Si</button>
+            <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
           </div>
         </div>
       </div>
@@ -196,8 +196,8 @@
               <br>
               <p>Esta acción no puede ser revertida. El usuario será eliminado del sistema. Utilice esta opción solo por petición del mismo usuario, o en caso de detectar cuentas fraudulentas o vandálicas.</p>
   
-              <button class="btn btn-default ufps-btn-default" click.delegate=removeUser()>Si</button>
-              <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
+              <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeUser()>Si</button>
+              <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
             </div>
           </div>
         </div>

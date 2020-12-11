@@ -1,6 +1,6 @@
 <template>
-  <nav aria-label="Navegación" class="text-center">
-    <ul class="pagination">
+  <nav aria-label="Navegación">
+    <ul class="pagination justify-content-center">
       <li class="${page === 1 ? 'disabled' : ''}">
         <a click.delegate="goToFirstPage()" aria-label="Primero">
           <span aria-hidden="true">Inicio</span>
@@ -11,7 +11,7 @@
           <span aria-hidden="true">Anterior</span>
         </a>
       </li> 
-      <li repeat.for="i of pagination" class="${i === page ? 'active' : 'hidden-xs'}">
+      <li repeat.for="i of pagination" class="${i === page ? 'active' : 'hidden-xsd-none d-sm-block'}">
         <a click.delegate="goToPage(i)">${i}</a>
       </li>
       <li class="${page >= totalPages ? 'disabled' : ''}">

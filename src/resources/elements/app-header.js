@@ -31,6 +31,7 @@ export class AppHeader {
   attached () {
     // Banderas para validar el botón activo en el navbar
     this.problems = this.routerService.navigation.find(i => i.config.name.indexOf('problems') !== -1)
+    //this.principal = this.routerService.navigation.find(i => i.config.name.indexOf('principal') == -1)
     this.searchB = this.routerService.navigation.find(i => i.config.name.indexOf('search') !== -1)
     this.ranking = this.routerService.navigation.find(i => i.config.name.indexOf('ranking') !== -1)
     this.classes = this.routerService.navigation.find(i => i.config.name.indexOf('classes') !== -1)

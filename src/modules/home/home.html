@@ -1,0 +1,266 @@
+<template>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a href=""><img src="./src/assets/img/logo-transparent.png" alt="" id="logo" /></a>
+    <a class="title" href="#">Training Center</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="menu">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" id="navbar" href="/home">Home<span class="sr-only">(current)</span></a>
+        </li>
+        <a class="nav-link" id="navbar" href="/registro">Registro</a>
+        <a class="nav-link" id="navbar" href="/iniciar-sesion">Login</a>
+
+      </ul>
+    </div>
+  </nav>
+
+  <div id="demo" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ul class="carousel-indicators">
+      <li data-target="#demo" data-slide-to="0" class="active"></li>
+      <li data-target="#demo" data-slide-to="1"></li>
+      <li data-target="#demo" data-slide-to="2"></li>
+      <li data-target="#demo" data-slide-to="3"></li>
+    </ul>
+
+    <!-- The slideshow -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="./src/assets/img/Maraton2016.png" />
+      </div>
+      <div class="carousel-item">
+        <img src="./src/assets/img/Maraton2017.png" />
+      </div>
+      <div class="carousel-item">
+        <img src="./src/assets/img/Maraton2018.png" />
+      </div>
+      <div class="carousel-item">
+        <img src="./src/assets/img/Maraton2019.png" />
+      </div>
+    </div>
+  </div>
+
+  <div class="container section" id="estadisticas">
+    <div class="headline-center-v2">
+      <h4 class="novedades">Novedades</h4>
+      <img class="lineNegra1" src="./src/assets/img/lineaNegra.png" />
+      <img class="globo" src="./src/assets/img/medalla.png" />
+      <img class="lineNegra2" src="./src/assets/img/lineaNegra.png" />
+    </div>
+    <div class="row" id="imgEstad">
+      <div class="col-md-2">
+        <svg id="iconosEstad" viewBox="0 0 16 16" class="bi bi-clipboard-check" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          />
+          <path fill-rule="evenodd"
+            d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+          <path fill-rule="evenodd"
+            d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3zm4.354 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+        </svg>
+        <h4>Problemas</h4>
+      </div>
+      <div class="col-md-1" id="numeros">
+        <h1 id="num1"></h1>
+        <script>
+          var contador1 = 1;
+          document.getElementById("num1").innerHTML = contador1;
+        </script>
+      </div>
+
+      <div class="col-md-2">
+        <svg id="iconosEstad" viewBox="0 0 16 16" class="bi bi-building" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694L1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z" />
+          <path
+            d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z" />
+        </svg>
+        <h4>Universidades</h4>
+      </div>
+      <div class="col-md-1" id="numeros">
+        <h1 id="num2"></h1>
+
+        <script>
+          var contador2 = 1;
+          document.getElementById("num2").innerHTML = contador2;
+        </script>
+      </div>
+
+      <div class="col-md-2">
+        <img src="./src/assets/img/persona.png" id="iconosEstad" alt="http://www.freepik.com/" />
+        <h4>Comunidad</h4>
+      </div>
+      <div class="col-md-1" id="numeros">
+        <h1 id="num3"></h1>
+        <script>
+          var contador3 = 1;
+          document.getElementById("num3").innerHTML = contador3;
+        </script>
+      </div>
+
+      <div class="col-md-2">
+        <img src="./src/assets/img/premio.png" id="iconosEstad" alt="http://www.freepik.com/" />
+
+        <h4>Competencias</h4>
+      </div>
+      <div class="col-md-1" id="numeros">
+        <h1 id="num"></h1>
+        <script>
+          var contador = 1;
+          document.getElementById("num").innerHTML = contador;
+        </script>
+      </div>
+    </div>
+  </div>
+  <div id="containerCards">
+    <div class="container section" id="cards">
+      <div class="divLinea">
+        <h4 class="interes">Temas de interés</h4>
+        <img class="line" src="./src/assets/img/linea.png" />
+        <img class="globo" src="./src/assets/img/globo.png" />
+        <img class="line2" src="./src/assets/img/linea.png" />
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="./src/assets/img/silux.jpeg" alt="Card image cap" />
+            <div class="card-body">
+              <h5 class="card-title">Silux</h5>
+              <p class="card-text">
+                Semillero de investigación de software libre y Linux de la UFPS
+              </p>
+            </div>
+            <div class="card-body" id="cardLink">
+              <a href="#" class="card-link">Ver más</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="./src/assets/img/bloques.png " alt="Card image cap" />
+            <div class="card-body">
+              <h5 class="card-title">Lo último</h5>
+              <p class="card-text">
+                Programación con bloques. ¿Aún no conoces la manera facil y
+                divertida de programar?
+              </p>
+            </div>
+            <div class="card-body" id="cardLink">
+              <a href="#" class="card-link">Ver más</a>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="./src/assets/img/maratones.jpeg" alt="Card image cap" />
+          <div class="card-body">
+            <h5 class="card-title">Programación Competitiva</h5>
+            <p class="card-text">
+              El grupo de estudio de nuestra universidad esta en movimiento.
+            </p>
+          </div>
+          <div class="card-body" id="cardLink">
+            <a href="#" class="card-link">Ver más</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!--
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+-->
+  <!-- Footer -->
+  <footer class="page-footer font-small stylish-color-dark pt-4">
+    <!-- Footer Links -->
+    <div class="container text-center text-md-left">
+      <!-- Grid row -->
+      <div class="row">
+        <!-- Grid column -->
+        <div class="col-md-6 mx-auto">
+          <!-- Content -->
+          <h5 class="font-weight-bold text-uppercase mt-3 mb-4">
+            Programación Competitiva
+          </h5>
+          <p>
+            Únete, práctica y aprende junto a nosotros. ¡Supérate a ti mismo!
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <hr class="clearfix w-100 d-md-none" />
+
+        <!-- Grid column -->
+        <div class="col-md-6 mx-auto">
+          <!-- Links -->
+          <h5 class="font-weight-bold text-uppercase mt-3 mb-4">
+            Enlaces de interés
+          </h5>
+
+          <ul class="list-unstyled">
+            </li>
+            <li>
+              <a href="https://ww2.ufps.edu.co">UFPS</a>
+            </li>
+            <li>
+              <a href="https://github.com/ProgramacionCompetitivaUFPS">Repositorio Programación competitiva UFPS</a>
+            </li>
+            <li>
+              <a href="https://ingsistemas.cloud.ufps.edu.co">Ingeniería de Sistemas UFPS</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Grid row -->
+    </div>
+    <!-- Footer Links -->
+
+    <div class="divRegis">
+      <hr />
+
+      <!-- Call to action -->
+      <ul class="list-unstyled list-inline text-center py-2">
+        <li class="list-inline-item">
+          <h5 class="mb-1">Registrate gratis</h5>
+        </li>
+        <li class="list-inline-item">
+          <a href="#!" class="btn btn-danger btn-rounded" id="btn">Sign Up</a>
+        </li>
+      </ul>
+      <!-- Call to action -->
+      <hr />
+    </div>
+
+    <!-- Social buttons -->
+    <ul class="list-unstyled list-inline text-center">
+      <li class="list-inline-item">
+        <a href="https://www.youtube.com/channel/UC4sY2EC2d9rgAeGSw7iwjbg" target="_blank"
+          class="btn-floating btn-gplus mx-1">
+          <i class="fab fa-youtube" id="redes"></i>
+        </a>
+      </li>
+      <li class="list-inline-item">
+        <a href="https://www.facebook.com/groups/1403963166573403" target="_blank" class="btn-floating btn-fb mx-1">
+          <i class="fab fa-facebook-f" id="redes"> </i>
+        </a>
+      </li>
+    </ul>
+    <!-- Social buttons -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">
+      © 2020 Copyright:
+      <a href="https://mdbootstrap.com/"> Grupo de Estudio</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+
+</template>
