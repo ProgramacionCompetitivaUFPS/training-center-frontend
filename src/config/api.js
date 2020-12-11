@@ -23,7 +23,7 @@ export let API = {
         enrolledSyllabus: "users/{1}/syllabus",
         materials: "materials",
         problems: "problems",
-        principal: "principal", //se agrego 3/11
+        principal: "principal",
         ranking: "ranking",
         recovery: "recovery",
         removeMaterialSyllabus: "remove-materials",

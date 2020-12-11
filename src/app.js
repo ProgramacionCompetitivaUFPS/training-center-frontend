@@ -1,6 +1,7 @@
-import 'bootstrap';
 import { Auth, Http } from "services/services";
 import { AuthorizeStep } from "./authorize-step";
+require('bootstrap/dist/css/bootstrap.min.css');
+//require('bootstrap');
 
 /**
  * App (Main Module)
@@ -17,22 +18,21 @@ export class App {
      * Servicio de conexión http (Http)
      */
     static inject() {
-            return [Auth, Http];
-        }
-        /**
-         * Crea una instancia de App.
-         * @param {service} authService - Servicio de Autenticación
-         * @param {service} httpService - Servicio de conexión http
-         */
+        return [Auth, Http];
+    }
+
+
+
+    /**
+     * Crea una instancia de App.
+     * @param {service} authService - Servicio de Autenticación
+     * @param {service} httpService - Servicio de conexión http
+     */
     constructor(authService, httpService) {
-            this.httpService = httpService;
-            this.authService = authService;
-        }
-        /**
-         * Se encarga del enrutamiento dentro de la aplicación
-         * @param {any} config - Configuración de la aplicación
-         * @param {any} router - Enrutador principal de la aplicación
-         */
+        this.httpService = httpService;
+        this.authService = authService;
+    }
+
     configureRouter(config, router) {
         config.title = "UFPS Training Center";
         config.addPipelineStep("authorize", AuthorizeStep);
@@ -46,7 +46,7 @@ export class App {
             {
                 name: "home",
                 route: "bienvenido",
-                moduleId: "./modules/home/home",
+                moduleId: PLATFORM.moduleName("./modules/home/home"),
                 title: "Bienvenidos a Training Center",
                 settings: {
                     roles: ["visitor"]
@@ -57,9 +57,9 @@ export class App {
             {
                 name: "login",
                 route: "iniciar-sesion",
-                moduleId: "./modules/login/login",
+                moduleId: PLATFORM.moduleName("./modules/login/login"),
                 title: "Iniciar Sesión",
-                layoutView: "./layouts/not-logged.html",
+                layoutView: PLATFORM.moduleName("layouts/not-logged.html"),
                 settings: {
                     roles: ["visitor"]
                 }
@@ -68,9 +68,9 @@ export class App {
             {
                 name: "signin",
                 route: "registro",
-                moduleId: "./modules/signin/signin",
+                moduleId: PLATFORM.moduleName("./modules/signin/signin"),
                 title: "Regístrate",
-                layoutView: "./layouts/not-logged.html",
+                layoutView: PLATFORM.moduleName("layouts/not-logged.html"),
                 settings: {
                     roles: ["visitor"]
                 }
@@ -79,9 +79,9 @@ export class App {
             {
                 name: "recovery-password",
                 route: "recuperar-password",
-                moduleId: "./modules/recovery/recovery-password",
+                moduleId: PLATFORM.moduleName("./modules/recovery/recovery-password"),
                 title: "Recuperar Contraseña",
-                layoutView: "./layouts/not-logged.html",
+                layoutView: PLATFORM.moduleName("layouts/not-logged.html"),
                 settings: {
                     roles: ["visitor"]
                 }
@@ -90,9 +90,9 @@ export class App {
             {
                 name: "reset-password",
                 route: "cambiar-password/:token",
-                moduleId: "./modules/recovery/reset-password",
+                moduleId: PLATFORM.moduleName("./modules/recovery/reset-password"),
                 title: "Recuperar Contraseña",
-                layoutView: "./layouts/not-logged.html",
+                layoutView: PLATFORM.moduleName("layouts/not-logged.html"),
                 settings: {
                     roles: ["visitor"]
                 }
@@ -101,8 +101,8 @@ export class App {
             {
                 name: "principal",
                 route: "principal",
-                moduleId: "./modules/principal/principal",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/principal/principal"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 nav: true,
                 settings: {
                     roles: ["admin", "coach", "student"]
@@ -112,9 +112,9 @@ export class App {
             {
                 name: "search",
                 route: "buscar/:query",
-                moduleId: "./modules/search/search",
+                moduleId: PLATFORM.moduleName("./modules/search/search"),
                 title: "Búsqueda",
-                layoutView: "./layouts/logged.html",
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 nav: true,
                 href: "/buscar/+",
                 settings: {
@@ -126,8 +126,8 @@ export class App {
             {
                 name: "problems",
                 route: "problemas",
-                moduleId: "./modules/problems/problem",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/problems/problem"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 nav: true,
                 settings: {
                     roles: ["admin", "coach", "student"]
@@ -137,8 +137,8 @@ export class App {
             {
                 name: "ranking",
                 route: "ranking",
-                moduleId: "./modules/ranking/ranking",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/ranking/ranking"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 title: "Ranking",
                 nav: true,
                 settings: {
@@ -148,8 +148,8 @@ export class App {
             {
                 name: "submissions",
                 route: "envios",
-                moduleId: "./modules/submissions/submissions",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/submissions/submissions"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 title: "Mis envios",
                 nav: true,
                 settings: {
@@ -160,8 +160,8 @@ export class App {
             {
                 name: "contest",
                 route: "maraton",
-                moduleId: "./modules/contest/contest",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/contest/contest"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 nav: true,
                 settings: {
                     roles: ["admin", "coach", "student"]
@@ -171,8 +171,8 @@ export class App {
             {
                 name: "classes",
                 route: "clases",
-                moduleId: "./modules/syllabus/syllabus",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/syllabus/syllabus"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 nav: true,
                 settings: {
                     roles: ["coach", "student"]
@@ -181,8 +181,8 @@ export class App {
             {
                 name: "material",
                 route: ["materiales"],
-                moduleId: "./modules/material/material",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/material/material"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 nav: true,
                 settings: {
                     roles: ["admin", "coach", "student", "visitor"]
@@ -191,8 +191,8 @@ export class App {
             /*{
                     name: "material",
                     route: ["materials", "materials/:id"],
-                    moduleId: "./modules/material/material",
-                    layoutView: "./layouts/logged.html",
+                    moduleId: PLATFORM.moduleName("./modules/material/material"),
+                    layoutView: PLATFORM.moduleName("layouts/logged.html"),
                     nav: true,
                     settings: {
                         roles: ["admin", "coach", "student", "visitor"]
@@ -201,8 +201,8 @@ export class App {
             {
                 name: "public-material",
                 route: ["material-publico"],
-                moduleId: "./modules/material/public-material/public-material",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/material/public-material/public-material"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 title: "Material",
                 nav: true,
                 settings: {
@@ -212,7 +212,7 @@ export class App {
             {
                 route: "/material-publico/:id",
                 name: "specific-material",
-                moduleId: "modules/material/specific-public-material/specific-public-material",
+                moduleId: PLATFORM.moduleName("modules/material/specific-public-material/specific-public-material"),
                 title: "Material",
                 settings: {
                     roles: ["visitor"]
@@ -221,8 +221,8 @@ export class App {
             {
                 name: "admin",
                 route: ["administracion"],
-                moduleId: "./modules/admin/admin",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/admin/admin"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 title: "Administración",
                 nav: true,
                 settings: {
@@ -232,8 +232,8 @@ export class App {
             {
                 name: "about",
                 route: ["acerca-de"],
-                moduleId: "./modules/about/about",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/about/about"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 title: "Acerca de",
                 nav: true,
                 settings: {
@@ -243,8 +243,8 @@ export class App {
             {
                 name: "profile",
                 route: ["perfil"],
-                moduleId: "./modules/profile/profile",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/profile/profile"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 title: "Perfil",
                 nav: true,
                 settings: {
@@ -256,8 +256,8 @@ export class App {
         const handleUnknownRoutes = (instruction) => {
             return {
                 route: "404",
-                moduleId: "./modules/error-404/error-404",
-                layoutView: "./layouts/logged.html",
+                moduleId: PLATFORM.moduleName("./modules/error-404/error-404"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 title: "Error 404",
                 settings: {
                     roles: ["admin", "coach", "student", "visitor"]
@@ -269,4 +269,9 @@ export class App {
 
         this.router = router;
     }
+
+
+
+
+
 }

@@ -8,7 +8,7 @@ export class Principal {
         config.map([{
                 route: '',
                 name: 'principal-index',
-                moduleId: 'modules/principal/principal-index/principal-index',
+                moduleId: PLATFORM.moduleName('modules/principal/principal-index/principal-index'),
                 title: 'Training center Principal',
                 settings: {
                     roles: ['admin', 'coach', 'student']
@@ -17,7 +17,7 @@ export class Principal {
             {
                 name: 'high-school',
                 route: 'colegios',
-                moduleId: 'modules/principal/principal-high-school/principal-high-school',
+                moduleId: PLATFORM.moduleName('modules/principal/principal-high-school/principal-high-school'),
                 title: 'Training center High School - Principal',
                 settings: {
                     roles: ['admin', 'coach', 'student']
