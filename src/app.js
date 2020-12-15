@@ -1,7 +1,8 @@
-import { Auth, Http } from "services/services";
-import { AuthorizeStep } from "./authorize-step";
-require('bootstrap/dist/css/bootstrap.min.css');
-//require('bootstrap');
+import { Auth, Http } from "services/services"
+import { AuthorizeStep } from "./authorize-step"
+import { $ } from 'jquery'
+require('bootstrap/dist/css/bootstrap.min.css')
+    //require('bootstrap');
 
 /**
  * App (Main Module)
