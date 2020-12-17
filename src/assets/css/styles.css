@@ -1444,7 +1444,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 }
 
 .divRegis {
-    background-image: url("backgroundTC.png");
+    background-image: url("../img/backgroundTC.png");
     margin: 0;
     align-content: flex-end;
 }
