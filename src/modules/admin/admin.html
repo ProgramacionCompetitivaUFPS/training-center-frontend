@@ -17,63 +17,65 @@
           </label>
         </div>
         <br>
-        <div class=" col-lg-6">
-          <div class="form-group">
-            <div class="form-group">
-              <label class="col-form-label col-md-3" for="new-user-name">Nombre:</label>
-              <div class="col-md-9 input-group ufps-input-creator">
-                <input type="text" class="form-control" id="new-user-name" value.bind="newUser.name" required>
-                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nombre completo del usuario">
-                  <span class="glyphicon glyphicon-question-sign"></span>
-                </span>
+        <div class="row">
+          <div class=" col-lg-6">
+           
+              <div class="row">
+                <label class="col-form-label col-md-3" for="new-user-name">Nombre:</label>
+                <div class="col-md-9 input-group ufps-input-creator">
+                  <input type="text" class="form-control" id="new-user-name" value.bind="newUser.name" required>
+                  <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nombre completo del usuario">
+                    <span class="fas fa-question-circle"></span>
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-form-label col-md-3" for="new-user-email">Email:</label>
-              <div class="col-md-9 input-group ufps-input-creator">
-                <input type="email" class="form-control" id="new-user-email" value.bind="newUser.email" required>
-                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Email del usuario">
-                  <span class="glyphicon glyphicon-question-sign"></span>
-                </span>
+              <div class="row">
+                <label class="col-form-label col-md-3" for="new-user-email">Email:</label>
+                <div class="col-md-9 input-group ufps-input-creator">
+                  <input type="email" class="form-control" id="new-user-email" value.bind="newUser.email" required>
+                  <span class="input-group-addon" tooltip data-toggle="tooltip" title="Email del usuario">
+                    <span class="fas fa-question-circle"></span>
+                  </span>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-form-label col-md-3" for="new-user-password">Contraseña:</label>
-              <div class="col-md-9 input-group ufps-input-creator">
-                <input type="password" class="form-control" id="new-user-password" value.bind="newUser.password" required>
-                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Contraseña del usuario">
-                  <span class="glyphicon glyphicon-question-sign"></span>
-                </span>
+              <div class="row">
+                <label class="col-form-label col-md-3" for="new-user-password">Contraseña:</label>
+                <div class="col-md-9 input-group ufps-input-creator">
+                  <input type="password" class="form-control" id="new-user-password" value.bind="newUser.password" required>
+                  <span class="input-group-addon" tooltip data-toggle="tooltip" title="Contraseña del usuario">
+                    <span class="fas fa-question-circle"></span>
+                  </span>
+                </div>
               </div>
-            </div>
+           
           </div>
-        </div>
-        <div class=" col-lg-6">
-          <div class="form-group">
-            <div class="form-group">
+        
+          <div class=" col-lg-6">
+          
+            <div class="row">
               <label class="col-form-label col-md-3" for="new-user-name">Código:</label>
               <div class="col-md-9 input-group ufps-input-creator">
                 <input type="number" class="form-control" id="new-user-code" value.bind="newUser.code">
                 <span class="input-group-addon" tooltip data-toggle="tooltip" title="Código del usuario en la Universidad">
-                  <span class="glyphicon glyphicon-question-sign"></span>
+                  <span class="fas fa-question-circle"></span>
                 </span>
               </div>
             </div>
-            <div class="form-group">
+            <div class="row">
               <label class="control-label col-sm-3" for="new-user-username">Username:</label>
               <div class="col-md-9 input-group ufps-input-creator">
                 <input type="text" class="form-control" id="new-user-username" value.bind="newUser.username">
                 <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nickname del usuario (sin espacios)">
-                  <span class="glyphicon glyphicon-question-sign"></span>
+                  <span class="fas fa-question-circle"></span>
                 </span>
               </div>
             </div>
-            <div class="form-group">
+            <div class="row">
               <label class="control-label col-md-3" for="new-user-password">Contraseña:</label>
               <div class="col-md-9 input-group ufps-input-creator">
                 <input type="password" class="form-control" id="new-user-password" value.bind="newUser.confirmPassword" required>
                 <span class="input-group-addon" tooltip data-toggle="tooltip" title="Repite la contraseña">
-                  <span class="glyphicon glyphicon-question-sign"></span>
+                  <span class="fas fa-question-circle"></span>
                 </span>
               </div>
             </div>
@@ -186,16 +188,20 @@
     </div>
 
     <div if.bind="authService.isAdmin()" class="modal fade" id="remove-user" tabindex="-1" role="dialog" aria-labelledby="remove-user">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header text-center">
+              <h4 class="modal-title">¿Estás seguro de revocar el acceso de este usuario?</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <h4 class="modal-title">¿Estás seguro de revocar el acceso de este usuario?</h4>
               <br>
+            </div>
+            <div class="modal-body">
+              
               <p>Esta acción no puede ser revertida. El usuario será eliminado del sistema. Utilice esta opción solo por petición del mismo usuario, o en caso de detectar cuentas fraudulentas o vandálicas.</p>
-  
+            </div>
+            <div class="modal-footer">
               <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeUser()>Si</button>
               <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
             </div>

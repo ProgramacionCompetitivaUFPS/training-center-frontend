@@ -4,7 +4,6 @@ import { MESSAGES } from 'config/config'
 import { Problem } from 'models/models'
 import { Alert, Problems } from 'services/services'
 import SimpleMDE from 'simplemde'
-import '../../../assets/css/simplemde.min.css'
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),
 // y Servicio de obtención y manejo de problemas (Problems)
@@ -151,76 +150,76 @@ export class ProblemsCreator {
             return [{
                     name: 'bold',
                     action: SimpleMDE.toggleBold,
-                    className: 'glyphicon glyphicon-bold',
+                    className: 'fas fa-bold',
                     title: 'Negrilla'
                 },
                 {
                     name: 'italic',
                     action: SimpleMDE.toggleItalic,
-                    className: 'glyphicon glyphicon-italic',
+                    className: 'fas fa-italic',
                     title: 'Cursiva'
                 },
                 '|',
                 {
                     name: 'heading',
                     action: SimpleMDE.toggleHeadingSmaller,
-                    className: 'glyphicon glyphicon-header',
+                    className: 'fas fa-heading',
                     title: 'Título (Pulsa varias veces para cambiar tamaño)'
                 },
                 {
                     name: 'quote',
                     action: SimpleMDE.toggleBlockquote,
-                    className: 'glyphicon glyphicon-bookmark',
+                    className: 'fas fa-bookmark',
                     title: 'Cita'
                 },
                 {
                     name: 'unordered-list',
                     action: SimpleMDE.toggleUnorderedList,
-                    className: 'glyphicon glyphicon-th-list',
+                    className: 'fas fa-th-list',
                     title: 'Lista'
                 },
                 {
                     name: 'ordered-list',
                     action: SimpleMDE.toggleOrderedList,
-                    className: 'glyphicon glyphicon-list-alt',
+                    className: 'fas fa-clipboard-list',
                     title: 'Lista numerada'
                 },
                 '|',
                 {
                     name: 'link',
                     action: SimpleMDE.drawLink,
-                    className: 'glyphicon glyphicon-link',
+                    className: 'fas fa-link',
                     title: 'Insertar enlace'
                 },
                 {
                     name: 'image',
                     action: SimpleMDE.drawImage,
-                    className: 'glyphicon glyphicon-picture',
+                    className: 'fas fa-image',
                     title: 'Insertar imagen'
                 },
                 {
                     name: 'code',
                     action: SimpleMDE.toggleCodeBlock,
-                    className: 'glyphicon glyphicon-console',
+                    className: 'fas fa-terminal',
                     title: 'Insertar código'
                 },
                 '|',
                 {
                     name: 'preview',
                     action: SimpleMDE.togglePreview,
-                    className: 'glyphicon glyphicon-eye-open no-disable',
+                    className: 'glyphicon fas fa-eye no-disable',
                     title: 'Vista previa'
                 },
                 {
                     name: 'side-by-side',
                     action: SimpleMDE.toggleSideBySide,
-                    className: 'glyphicon glyphicon-adjust no-disable no-mobile',
+                    className: 'glyphicon fas fa-adjust no-disable no-mobile',
                     title: 'Dividir Pantalla'
                 },
                 {
                     name: 'fullscreen',
                     action: SimpleMDE.toggleFullScreen,
-                    className: 'glyphicon glyphicon-fullscreen no-disable no-mobile',
+                    className: 'glyphicon fas fa-expand-arrows-alt no-disable no-mobile',
                     title: 'Pantalla Completa'
                 },
                 '|',
@@ -229,7 +228,7 @@ export class ProblemsCreator {
                     action: function customFunction(editor) {
                         window.$('#markdown-help').modal('show')
                     },
-                    className: 'glyphicon glyphicon-question-sign',
+                    className: 'fas fa-question-circle',
                     title: 'Guía de Markdown'
                 }
 

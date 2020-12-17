@@ -4,7 +4,6 @@ import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
 import { Category } from 'models/models'
 import { Alert, Auth, Problems } from 'services/services'
-import '../../../resources/attributes/tooltip'
 
 /**
  * CategoryProblems (Module)

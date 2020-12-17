@@ -1,89 +1,94 @@
 <template>
   <div class="container">
     <ol class="breadcrumb">
-      <li>
+      <li class="breadcrumb-item">
           <a route-href="route: contest;">Maratones</a>
       </li>
-      <li class="active">Editar maratón "${contest.title}"</li>
+      <li class="breadcrumb-item active">Editar maratón "${contest.title}"</li>
     </ol>
     <h2 class="text-right">Editar maratón "${contest.title}"</h2>
     <hr>
     <form submit.delegate="edit()">
       <div class=" -assignment">
-        <div class="form-group">
-          <label class="col-form-label col-md-2">Nombre:</label>
-          <div class="col-md-10 input-group ufps-input-creator">
-            <input type="text" class="form-control" placeholder="Nombre de la maratón" value.bind="contest.title" required>
-            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Título de la maratón. Por ejemplo 'II Maratón de Programación UFPS'">
-              <span class="glyphicon glyphicon-question-sign"></span>
-            </span>
+        <div class="row">
+            <label class="col-form-label col-md-2">Nombre:</label>
+            <div class="col-md-10 input-group ufps-input-creator">
+              <input type="text" class="form-control" placeholder="Nombre de la maratón" value.bind="contest.title" required>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Título de la maratón. Por ejemplo 'II Maratón de Programación UFPS'">
+                <span class="fas fa-question-circle"></span>
+              </span>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-md-2">Descripción:</label>
+            <div class="col-md-10 input-group ufps-input-creator">
+              <textarea class="form-control" placeholder="Descripción de la maratón" value.bind="contest.description"></textarea>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Descripción que se mostrará a los estudiantes al ingresar a la maratón">
+                <span class="fas fa-question-circle"></span>
+              </span>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-form-label col-md-2">Reglas:</label>
+            <div class="col-md-10 input-group ufps-input-creator">
+              <textarea class="form-control" placeholder="En este espacio puede indicar reglas especificas sobre el horario de competencia, premios, información adicional, etc."
+                value.bind="contest.rules"></textarea>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Reglas de la maratón">
+                <span class="fas fa-question-circle"></span>
+              </span>
+            </div>
+        </div>
+      </div>
+    <div class="-assignment">
+      <div class="row">
+        <div class=" col-lg-6">
+          <div class="form-inline">
+            <label class="col-form-label col-md-2">Desde el:</label>
+            <div class="col-md-10 input-group ufps-input-creator">
+              <input type="date" class="form-control" value.bind="startDate" required>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha de inicio de la maratón">
+                <span class="fas fa-question-circle"></span>
+              </span>
+            </div>
           </div>
         </div>
-        <div class="form-group">
-          <label class="col-form-label col-md-2">Descripción:</label>
-          <div class="col-md-10 input-group ufps-input-creator">
-            <textarea class="form-control" placeholder="Descripción de la maratón" value.bind="contest.description"></textarea>
-            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Descripción que se mostrará a los estudiantes al ingresar a la maratón">
-              <span class="glyphicon glyphicon-question-sign"></span>
-            </span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-form-label col-md-2">Reglas:</label>
-          <div class="col-md-10 input-group ufps-input-creator">
-            <textarea class="form-control" placeholder="En este espacio puede indicar reglas especificas sobre el horario de competencia, premios, información adicional, etc."
-              value.bind="contest.rules"></textarea>
-            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Reglas de la maratón">
-              <span class="glyphicon glyphicon-question-sign"></span>
-            </span>
+        <div class=" col-lg-6">
+          <div class="form-inline">
+            <label class="col-form-label col-md-2">a las:</label>
+            <div class="col-md-10 input-group ufps-input-creator">
+              <input type="time" class="form-control" value.bind="startTime" required>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora de inicio de la maratón">
+                <span class="fas fa-question-circle"></span>
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <div class=" col-lg-6">
-        <div class="form-group">
-          <label class="col-form-label col-md-2">Desde el:</label>
-          <div class="col-md-10 input-group ufps-input-creator">
-            <input type="date" class="form-control" value.bind="startDate" required>
-            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha de inicio de la maratón">
-              <span class="glyphicon glyphicon-question-sign"></span>
-            </span>
+      <div class="row">
+        <div class=" col-lg-6">
+          <div class="form-inline">
+            <label class="col-form-label col-md-2">Hasta el:</label>
+            <div class="col-md-10 input-group ufps-input-creator">
+              <input type="date" class="form-control" value.bind="endDate" min="${startDate}" required>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha de terminación de la maratón">
+                <span class="fas fa-question-circle"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class=" col-lg-6">
+          <div class="form-inline">
+            <label class="col-form-label col-md-2">a las:</label>
+            <div class="col-md-10 input-group ufps-input-creator">
+              <input type="time" class="form-control" value.bind="endTime" required>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora de terminación de la maratón">
+                <span class="fas fa-question-circle"></span>
+              </span>
+            </div>
           </div>
         </div>
       </div>
-      <div class=" col-lg-6">
-        <div class="form-group">
-          <label class="col-form-label col-md-2">a las:</label>
-          <div class="col-md-10 input-group ufps-input-creator">
-            <input type="time" class="form-control" value.bind="startTime" required>
-            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora de inicio de la maratón">
-              <span class="glyphicon glyphicon-question-sign"></span>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class=" col-lg-6">
-        <div class="form-group">
-          <label class="col-form-label col-md-2">Hasta el:</label>
-          <div class="col-md-10 input-group ufps-input-creator">
-            <input type="date" class="form-control" value.bind="endDate" min="${startDate}" required>
-            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha de terminación de la maratón">
-              <span class="glyphicon glyphicon-question-sign"></span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class=" col-lg-6">
-        <div class="form-group">
-          <label class="col-form-label col-md-2">a las:</label>
-          <div class="col-md-10 input-group ufps-input-creator">
-            <input type="time" class="form-control" value.bind="endTime" required>
-            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora de terminación de la maratón">
-              <span class="glyphicon glyphicon-question-sign"></span>
-            </span>
-          </div>
-        </div>
-      </div>
+    </div>
       <div class="text-center">
         <p>Esta maratón será: </p>
         <label class="form-check-inline">
@@ -94,12 +99,13 @@
         </label>
       </div>
       <br>
+    
       <div class=" -assignment" if.bind="!contest.privacy">
         <label class="col-form-label col-md-2">Nueva Clave:</label>
         <div class="col-md-10 input-group ufps-input-creator">
           <input type="text" class="form-control" placeholder="Clave para entrar a la maratón" value.bind="contest.key" required>
           <span class="input-group-addon" tooltip data-toggle="tooltip" title="asigne una clave e informela a los usuarios que participarán.">
-            <span class="glyphicon glyphicon-question-sign"></span>
+            <span class="fas fa-question-circle"></span>
           </span>
         </div>
         <br>
@@ -112,18 +118,20 @@
     <hr>
     <div class="form-horizontal">
       <form submit.delegate="addProblems()">
-        <div class="form-group col-md-10">
-          <label class="col-form-label col-md-3" for="problem-id">Añadir:</label>
-          <div class="col-md-9 input-group ufps-input-creator">
-            <input type="text" class="form-control" placeholder="Ingresa el id de los problemas a añadir separados por comas" value.bind="newProblems"
-              required>
-            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede encontrar el id de los problemas en la sección problemas">
-              <span class="glyphicon glyphicon-question-sign"></span>
-            </span>
+        <div class="row">
+          <div class="form-inline col-md-10">
+            <label class="col-form-label col-md-3" for="problem-id">Añadir:</label>
+            <div class="col-md-9 input-group ufps-input-creator">
+              <input type="text" class="form-control" placeholder="Ingresa el id de los problemas a añadir separados por comas" value.bind="newProblems"
+                required>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede encontrar el id de los problemas en la sección problemas">
+                <span class="fas fa-question-circle"></span>
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="col-md-2 text-center">
-          <input type="submit" value="Añadir" class="btn btn-secondary ufps-btn-secondary">
+          <div class="col-md-2 text-center">
+            <input type="submit" value="Añadir" class="btn btn-secondary ufps-btn-secondary">
+          </div>
         </div>
       </form>
       <br>
@@ -153,7 +161,7 @@
               <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
                 <a href="/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
               </p>
-              <span class="ufps-edit-problem-list glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar problema de la tarea"
+              <span class="ufps-edit-problem-list fas fa-times" data-toggle="tooltip" title="Eliminar problema de la tarea"
                 click.delegate="showRemoveProblem(problem.id)" tooltip></span>
             </td>
             <td class="text-center ufps-language">
@@ -177,13 +185,16 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
+          <h4 class="modal-title">¿Estás seguro de eliminar este problema de la maratón?</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">¿Estás seguro de eliminar este problema de la maratón?</h4>
           <br>
+        </div>
+        <div class="modal-body">
           <p>Esto no eliminará el problema de la plataforma. Solo de la maratón actual.</p>
-
+        </div>
+        <div class="modal-footer">
           <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeProblem()>Si</button>
           <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
         </div>
