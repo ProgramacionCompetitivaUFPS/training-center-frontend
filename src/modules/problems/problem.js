@@ -6,10 +6,10 @@ export class Problem {
      */
     configureRouter(config, router) {
         config.map([{
-                route: '', //tc or tchs
-                name: 'problems',
-                moduleId: PLATFORM.moduleName('modules/problems/general-problems/general-problems'),
-                title: 'Problemas',
+                route: 'universidades',
+                name: 'problems-universities',
+                moduleId: PLATFORM.moduleName('modules/problems/general-problems-universities/general-problems-universities'),
+                title: 'Problemas Training Center',
                 settings: {
                     roles: ['admin', 'coach', 'student']
                 }

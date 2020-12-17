@@ -149,6 +149,10 @@ pre {
     color: #fff;
 }
 
+.row {
+    padding-left: 1em;
+}
+
 .ufps-container-sign .ufps-sign-input,
 .ufps-navbar-input {
     box-shadow: 0 0 0.0625em #c0392b;
@@ -372,18 +376,18 @@ pre {
     margin: 0;
 }
 
-.ufps-dropdown-menu>li {
+.ufps-dropdown-menu>button {
     text-align: center;
-    padding: 0.5em;
+    padding: 0.4em;
 }
 
-.ufps-dropdown-menu>li:hover {
+.ufps-dropdown-menu>button:hover {
     background-color: #e74c3c !important;
     color: #fff !important;
 }
 
-.ufps-dropdown-menu>li>a {
-    height: 1em;
+.ufps-dropdown-menu>button>a {
+    height: 0.6em;
     line-height: 2.1875em;
     color: #444 !important;
     border-bottom: 0px !important;
@@ -630,7 +634,7 @@ hr {
 .ufps-card-title a,
 .ufps-card-title h1 a {
     margin: 0;
-    font-size: 1.4em;
+    font-size: 1.2em;
     text-align: center;
     position: relative;
     color: #fff !important;
@@ -752,6 +756,26 @@ th {
 
 /*FIXES*/
 
+.modal-title {
+    text-align: center;
+    width: 100%;
+}
+
+.modal-header {
+    border: none;
+}
+
+.modal-body {
+    text-align: center;
+    padding-bottom: 0;
+}
+
+.modal-footer {
+    justify-content: center;
+    border: none;
+    padding-top: 0;
+}
+
 .modal-backdrop.in {
     filter: alpha(opacity=90);
     opacity: 0.9;
@@ -796,6 +820,10 @@ textarea.form-control {
     height: 6.25em;
 }
 
+#lbltime {
+    padding-left: 61%;
+}
+
 .ufps-input-creator span.input-group-addon,
 .ufps-input-creator span.input-group-addon:hover,
 .ufps-input-creator span.input-group-addon:active {
@@ -816,16 +844,20 @@ textarea.form-control {
 .nav-maraton.nav-pills>li>a:focus {
     color: #444;
     cursor: pointer;
+    text-decoration: none;
 }
 
-.nav-pills.nav-maraton>li.active>a,
-.nav-maraton.nav-pills>li.active>a:hover,
-.nav-maraton.nav-pills>li.active>a:focus {
+.nav-pills.nav-maraton>li.nav-item.nav-link.active,
+.nav-pills.nav-maraton>li.nav-item.nav-link.active:hover,
+.nav-pills.nav-maraton>li.nav-item.nav-link.active:focus,
+.nav-pills.nav-maraton>li.nav-item.nav-link.active>a,
+.nav-pills.nav-maraton>li.nav-item.nav-link.active>a:hover,
+.nav-pills.nav-maraton>li.nav-item.nav-link.active>a:focus {
     background-color: #e74c3c !important;
     color: #fff !important;
 }
 
-.nav>li.disabled>a {
+.nav>li.nav-item.disabled>a {
     cursor: not-allowed !important;
 }
 
@@ -833,6 +865,7 @@ textarea.form-control {
     border-color: #ccc;
     border-radius: 0.125em;
     border-right: 0;
+    margin-top: 0.5em;
 }
 
 .inputfile-btn {
@@ -938,6 +971,7 @@ a.inactive {
     color: #000;
     transition: all 0.3s ease;
     margin-left: 0.625em;
+    margin-top: 0.3em;
 }
 
 .ufps-td-problem:hover .ufps-edit-problem-list {
@@ -1028,6 +1062,10 @@ iframe {
 
 .-assignment {
     margin-top: 1em;
+}
+
+.clave {
+    text-align: center;
 }
 
 #clave {
@@ -1184,6 +1222,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 }
 
 .panel-resolved {
+    margin-top: 1em;
     background-color: #e74c3c;
     color: #fff;
 }
@@ -1288,10 +1327,11 @@ tr:nth-child(2n) td .ufps-score-gold {
     margin-top: 2em;
 }
 
-.card {
+
+/*.card {
     display: inline-block;
     width: 12em;
-}
+}*/
 
 #estadisticas {
     padding: 4em;
@@ -1392,17 +1432,19 @@ tr:nth-child(2n) td .ufps-score-gold {
     margin-bottom: 0;
 }
 
-.card {
+
+/*.card {
     margin-top: 3em;
     margin-left: 2em;
 }
+*/
 
 #cardLink {
     padding-top: 0;
 }
 
 .divRegis {
-    background-image: url("../img/backgroundTC.png");
+    background-image: url("backgroundTC.png");
     margin: 0;
     align-content: flex-end;
 }
@@ -1506,6 +1548,12 @@ tr:nth-child(2n) td .ufps-score-gold {
 
 .cuerpoEjercicio {
     margin: 3em 5em 1em 5em;
+}
+
+.input-clave {
+    padding-left: 20%;
+    width: 80%;
+    padding-bottom: 0.5em;
 }
 
 .form-group {

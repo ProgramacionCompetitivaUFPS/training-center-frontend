@@ -7,7 +7,7 @@
           <span class="navbar-toggler-icon"></span>
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand ufps-brand" href="/">
+        <a class="navbar-brand ufps-brand" click.delegate="changeMessageMain()" href="/">
           <img alt="UFPS Training Center" src="../../assets/img/logo-transparent.png">
         </a>
       </div>
@@ -16,11 +16,19 @@
           <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isVisitor()">
             <a route-href="route: problems">Material</a>
           </li>
-          <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isStudent()">
-            <a route-href="route: problems">Problemas</a>
+
+          <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${(main.isActive) ? 'active' : ''}" if.bind="(authService.isStudent() || authService.isCoach() || authService.isAdmin())">
+            <a href="#" class="dropdown-toggler" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${messageMain}</a>
+            <div class="dropdown-menu ufps-dropdown-menu" aria-labelledby="dropdownMenu2">
+              
+              <button repeat.for= "message of messages" class="dropdown-item" type="button" route-href="route: problems">
+                <a href="${message.href}" click.delegate="changeMessageMain()" >${message.description}</a>
+              </button>
+            </div>
           </li>
+
           <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isStudent()">
-            <a href="problemas/1/crear-solucion">Editor Blockly</a>
+            <a href="problemas/universidades">Problemas</a>
           </li>
           <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${problems.isActive ? 'active' : ''}" if.bind="authService.isCoach() || authService.isAdmin()">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -42,7 +50,7 @@
             <a route-href="route: ranking">Ranking</a>
           </li>
           <li class="ufps-btn-nav ${contest.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
-            <a route-href="route: contest">Maratones</a>
+            <a route-href="route: contest">|  Maratones</a>
           </li>
           <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
             <a route-href="route: admin">Administración</a>
