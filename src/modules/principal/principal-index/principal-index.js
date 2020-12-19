@@ -59,7 +59,7 @@ export class Principal {
                   
                     
                 } else if (this.esEstePlaneta(this.PLANETA2)) {
-                    this.routerService.navigate('../problemas/universidades');
+                    this.routerService.navigate('../../problemas/universidades');
                 }
             }, false);
 

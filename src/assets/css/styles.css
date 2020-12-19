@@ -1448,13 +1448,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 
 .bienvenido {
     text-align: center;
-    margin-top: 1em;
-}
-
-.cajas {
-    margin-left: 15em;
-    margin-top: 3em;
-    margin-right: 8em;
+    margin-bottom: 1em;
 }
 
 .caja {
@@ -1468,9 +1462,12 @@ tr:nth-child(2n) td .ufps-score-gold {
     display: inline-block;
 }
 
-.caja h3 {
-    color: lavender;
+.caja>h3 {
     text-align: center;
+}
+.caja>h3>a {
+    color: lavender;
+
 }
 
 .caja pre {
