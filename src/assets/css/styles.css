@@ -527,7 +527,6 @@ body {
 
 hr {
     border-top: 0.0625em solid #e74c3c;
-    margin: 0;
 
 }
 
@@ -1362,7 +1361,6 @@ tr:nth-child(2n) td .ufps-score-gold {
 .line {
     width: 5.5em;
     height: 1em;
-    margin-left: 28.2em;
     margin-top: 0;
 }
 
@@ -1374,7 +1372,6 @@ tr:nth-child(2n) td .ufps-score-gold {
 
 .lineNegra1 {
     width: 5.5em;
-    margin-left: 25.2em;
     height: 1em;
     margin-top: 0;
 }
@@ -1430,11 +1427,11 @@ tr:nth-child(2n) td .ufps-score-gold {
 }
 
 
-/*.card {
+.card {
     margin-top: 3em;
-    margin-left: 2em;
+    margin-left: 1em;
 }
-*/
+
 
 #cardLink {
     padding-top: 0;
@@ -1444,6 +1441,7 @@ tr:nth-child(2n) td .ufps-score-gold {
     background-image: url("../img/backgroundTC.png");
     margin: 0;
     align-content: flex-end;
+   
 }
 
 .bienvenido {

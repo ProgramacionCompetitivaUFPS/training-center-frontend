@@ -2,19 +2,22 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a href=""><img src="../../assets/img/logo-transparent.png" alt="" id="logo" /></a>
     <a class="title" href="#">Training Center</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
+    
     <div class="collapse navbar-collapse" id="menu">
-      <ul class="navbar-nav mr-auto">
+      
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item active">
           <a class="nav-link" id="navbar" href="/home">Home<span class="sr-only">(current)</span></a>
         </li>
-        <a class="nav-link" id="navbar" href="/registro">Registro</a>
-        <a class="nav-link" id="navbar" href="/iniciar-sesion">Login</a>
-
+        <li class="nav-item active">
+          <a class="nav-link" id="navbar" href="/registro">Registro</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" id="navbar" href="/iniciar-sesion">Login</a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -46,7 +49,7 @@
   </div>
 
   <div class="container section" id="estadisticas">
-    <div class="headline-center-v2">
+    <div class="headline-center-v2 text-center">
       <h4 class="novedades">Novedades</h4>
       <img class="lineNegra1" src="../../assets/img/lineaNegra.png" />
       <img class="globo" src="../../assets/img/medalla.png" />
@@ -56,7 +59,7 @@
       <div class="col-md-2">
         <svg id="iconosEstad" viewBox="0 0 16 16" class="bi bi-clipboard-check" fill="currentColor"
           xmlns="http://www.w3.org/2000/svg">
-          />
+          
           <path fill-rule="evenodd"
             d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
           <path fill-rule="evenodd"
@@ -119,7 +122,7 @@
   </div>
   <div id="containerCards">
     <div class="container section" id="cards">
-      <div class="divLinea">
+      <div class="divLinea text-center">
         <h4 class="interes">Temas de interés</h4>
         <img class="line" src="../../assets/img/linea.png" />
         <img class="globo" src="../../assets/img/globo.png" />
@@ -155,16 +158,18 @@
             </div>
           </div>
         </div>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="../../assets/img/maratones.jpeg" alt="Card image cap" />
-          <div class="card-body">
-            <h5 class="card-title">Programación Competitiva</h5>
-            <p class="card-text">
-              El grupo de estudio de nuestra universidad esta en movimiento.
-            </p>
-          </div>
-          <div class="card-body" id="cardLink">
-            <a href="#" class="card-link">Ver más</a>
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="../../assets/img/maratones.jpeg" alt="Card image cap" />
+            <div class="card-body">
+              <h5 class="card-title">Programación Competitiva</h5>
+              <p class="card-text">
+                El grupo de estudio de nuestra universidad esta en movimiento.
+              </p>
+            </div>
+            <div class="card-body" id="cardLink">
+              <a href="#" class="card-link">Ver más</a>
+            </div>
           </div>
         </div>
       </div>
@@ -223,7 +228,7 @@
     <!-- Footer Links -->
 
     <div class="divRegis">
-      <hr />
+      <hr>
 
       <!-- Call to action -->
       <ul class="list-unstyled list-inline text-center py-2">
@@ -235,7 +240,7 @@
         </li>
       </ul>
       <!-- Call to action -->
-      <hr />
+      <hr>
     </div>
 
     <!-- Social buttons -->
