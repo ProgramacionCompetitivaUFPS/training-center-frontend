@@ -18,30 +18,10 @@ export class AppHeader {
      * @param {service} routerService - Servicio de enrutamiento
      */
 
-    messages = [
-        { title: 'Training Center', description: 'Ir a principal', href: '/' },
-        { title: 'Colegios', description: 'Ir a Training Center High School', href: 'principal/colegios' },
-        { title: 'Universidades', description: 'Ir a Training Center Universities', href: 'problemas/universidades' },
-    ];
-
     constructor(authService, routerService) {
         this.authService = authService
         this.routerService = routerService
         this.query = ''
-        this.changeMessageMain()
-    }
-
-    /**
-     * Cambia el contenido del item main en el navbar, verificando si el usuario está en principal, colegios u universidades
-     * @param {title} título del elemento del navbar main
-     */
-    changeMessageMain() {
-        this.messageMain = this.routerService.currentInstruction.params.childRoute
-        if (!this.messageMain) {
-            this.messageMain = 'Training Center'
-        } else {
-            this.messageMain = this.messageMain.charAt(0).toUpperCase() + this.messageMain.slice(1)
-        }
     }
 
 
@@ -53,7 +33,7 @@ export class AppHeader {
     attached() {
 
         // Banderas para validar el botón activo en el navbar
-        this.main = (this.routerService.navigation.find(i => i.config.name.indexOf('principal') !== -1))
+        this.schools = (this.routerService.navigation.find(i => i.config.name.indexOf('schools') !== -1))
         this.problems = this.routerService.navigation.find(i => i.config.name.indexOf('problems') !== -1)
         this.searchB = this.routerService.navigation.find(i => i.config.name.indexOf('search') !== -1)
         this.ranking = this.routerService.navigation.find(i => i.config.name.indexOf('ranking') !== -1)

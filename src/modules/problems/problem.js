@@ -6,6 +6,15 @@ export class Problem {
      */
     configureRouter(config, router) {
         config.map([{
+                route: 'colegios',
+                name: 'problems-high-school',
+                moduleId: PLATFORM.moduleName('modules/problems/general-problems-high-school/general-problems-high-school'),
+                title: 'Problemas Training Center High School',
+                settings: {
+                    roles: ['admin', 'coach', 'student']
+                }
+            },
+            {
                 route: 'universidades',
                 name: 'problems-universities',
                 moduleId: PLATFORM.moduleName('modules/problems/general-problems-universities/general-problems-universities'),
