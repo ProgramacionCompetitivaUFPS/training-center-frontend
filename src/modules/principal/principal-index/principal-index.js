@@ -1,6 +1,5 @@
 import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
-import { CONTROLS_FLOW_STATEMENTS_HELPURL } from '../../../../node_modules/blockly/msg/en';
 
 /**
  * Principal(Module)
@@ -40,6 +39,9 @@ export class Principal {
         this.cargar();
     }
 
+
+
+
     /*
     =====================================================================================================
     */
@@ -53,13 +55,10 @@ export class Principal {
 
             // Add event listener for `click` events.
             this.CANVAS.addEventListener('click', (event) => {
-                
-                if (this.esEstePlaneta(this.PLANETA1)) {
-                    this.routerService.navigate('colegios');
-                  
-                    
-                } else if (this.esEstePlaneta(this.PLANETA2)) {
-                    this.routerService.navigate('../../problemas/universidades');
+                if (esEstePlaneta(PLANETA1)) {
+                    alert("Saludos de parte del planeta " + PLANETA1.nombre);
+                } else if (esEstePlaneta(PLANETA2)) {
+                    alert("Saludos de parte del planeta " + PLANETA2.nombre);
                 }
             }, false);
 
