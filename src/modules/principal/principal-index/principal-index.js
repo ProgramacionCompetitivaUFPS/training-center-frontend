@@ -55,10 +55,13 @@ export class Principal {
 
             // Add event listener for `click` events.
             this.CANVAS.addEventListener('click', (event) => {
-                if (esEstePlaneta(PLANETA1)) {
-                    alert("Saludos de parte del planeta " + PLANETA1.nombre);
-                } else if (esEstePlaneta(PLANETA2)) {
-                    alert("Saludos de parte del planeta " + PLANETA2.nombre);
+
+                if (this.esEstePlaneta(this.PLANETA1)) {
+                    this.routerService.navigate('colegios');
+
+
+                } else if (this.esEstePlaneta(this.PLANETA2)) {
+                    this.routerService.navigate('/problemas/universidades');
                 }
             }, false);
 
