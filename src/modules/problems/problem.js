@@ -15,7 +15,7 @@ export class Problem {
                 }
             },
             {
-                route: 'universidades',
+                route: '',
                 name: 'problems-universities',
                 moduleId: PLATFORM.moduleName('modules/problems/general-problems-universities/general-problems-universities'),
                 title: 'Problemas Training Center',

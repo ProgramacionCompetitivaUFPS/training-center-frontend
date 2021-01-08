@@ -32,11 +32,14 @@
               <button class="dropdown-item" type="button">
                 <a href="problemas/colegios" >Resolver ejercicios</a>
               </button>
+              <button class="dropdown-item" type="button">
+                <a href="clases/colegios" >Ir a las clases</a>
+              </button>
             </div>
           </li>
 
           <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isStudent()">
-            <a href="problemas/universidades">Problemas</a>
+            <a href="problemas">Problemas</a>
           </li>
           <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${problems.isActive ? 'active' : ''}" if.bind="authService.isCoach() || authService.isAdmin()">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

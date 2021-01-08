@@ -42,7 +42,7 @@ export class HomeSyllabus {
         this.syllabusToEnroll = new Syllabus()
 
         this.options = [true, false]
-        this.type = 0
+        this.type = 1
     }
 
     /**

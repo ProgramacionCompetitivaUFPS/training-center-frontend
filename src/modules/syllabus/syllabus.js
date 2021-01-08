@@ -21,6 +21,15 @@ export class Syllabus {
                 }
             },
             {
+                route: 'colegios',
+                name: 'syllabus-schools',
+                moduleId: PLATFORM.moduleName('modules/syllabus/syllabus-schools/syllabus-schools'),
+                title: 'Clases Training Center High School',
+                settings: {
+                    roles: ['coach', 'student']
+                }
+            },
+            {
                 name: 'SyllabusDetail',
                 route: 'clases/:id',
                 moduleId: PLATFORM.moduleName('modules/syllabus/syllabus-detail/syllabus-detail'),
