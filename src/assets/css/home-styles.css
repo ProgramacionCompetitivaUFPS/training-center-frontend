@@ -1,4 +1,4 @@
-.navbar {
+/*.navbar {
     background-color: rgb(231, 6, 6) !important;
     padding: 0;
 }
@@ -26,7 +26,7 @@
     text-align: right;
     padding-right: 1.3em;
 }
-
+*/
 .title {
     color: white;
     font-family: 'Anton', sans-serif;
@@ -183,7 +183,7 @@
 }
 
 .divRegis {
-    background-image: url("backgroundTC.png");
+    background-image: url("./src/assets/img/backgroundTC.png");
     margin: 0;
     align-content: flex-end;
 }
