@@ -77,8 +77,8 @@ export class CanvasPrincipal {
         //0.3291326908821349   0.5928057553956835
         this.planet1 = {
             name: "Training Center High School",
-            w: 150,
-            h: 150,
+            w: 170,
+            h: 170,
             x: 0,
             y: 0,
             bottom: 1,
@@ -95,8 +95,8 @@ export class CanvasPrincipal {
         //0.6723498888065234   0.4316546762589928
         this.planet2 = {
             name: "Training Center University",
-            w: 150,
-            h: 150,
+            w: 170,
+            h: 170,
             x: 0,
             y: 0,
             bottom: -1,
