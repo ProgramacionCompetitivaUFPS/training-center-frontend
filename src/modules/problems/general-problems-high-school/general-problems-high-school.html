@@ -10,14 +10,14 @@
     <div repeat.for="category of categories" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
       <div class="ufps-card">
         <div class="ufps-card-title">
-          <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar el nombre de la categoría"
+          <span if.bind="authService.isAdmin()" class="ufps-edit-category fas fa-pencil-alt" data-toggle="tooltip" title="Editar el nombre de la categoría"
             click.delegate="showEditCategory(category.id, category.name)" tooltip></span>
-          <span if.bind="authService.isAdmin()" class="ufps-remove-category glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar categoría"
+          <span if.bind="authService.isAdmin()" class="ufps-remove-category far fa-times-circle" data-toggle="tooltip" title="Eliminar categoría"
             click.delegate="showRemoveCategory(category.id, category.name)" tooltip></span>
           <h1>${category.name}</h1>
         </div>
         <div class="col-6 ufps-card-link">
-          <a route-href="route: category; params.bind: {id:category.id}">Problemas</a>
+          <a route-href="route: schools_category; params.bind: {id:category.id}">Problemas</a>
         </div>
         <div class="col-6 ufps-card-link my-auto">
           <a route-href="route: material; params.bind: {id:category.id}">Material</a>

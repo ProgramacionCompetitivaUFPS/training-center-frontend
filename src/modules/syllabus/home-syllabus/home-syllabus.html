@@ -31,10 +31,10 @@
     <div repeat.for="syllabus of syllabuses" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
       <div class="ufps-card">
         <div class="ufps-card-title">
-          <span if.bind="authService.isCoach()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar los datos de la clase"
-            click.delegate="showEditSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)" tooltip></span>
-          <span if.bind="authService.isCoach()" class="ufps-remove-category glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar la clase"
-            click.delegate="showRemoveSyllabus(syllabus.id, syllabus.tittle)" tooltip></span>
+          <span if.bind="authService.isCoach()" class="ufps-edit-category fas fa-pencil-alt" data-toggle="tooltip" title="Editar los datos de la clase"
+                click.delegate="showEditSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)" tooltip></span>
+          <span if.bind="authService.isCoach()" class="ufps-remove-category far fa-times-circle" data-toggle="tooltip" title="Eliminar la clase"
+                click.delegate="showRemoveSyllabus(syllabus.id, syllabus.tittle)" tooltip></span>
           <h1>${syllabus.tittle}</h1>
         </div>
         <div if.bind="authService.isCoach()" class="col-6 ufps-card-link">
@@ -60,7 +60,7 @@
       <div class="ufps-card" data-toggle="modal" data-target="#new-syllabus">
         <div class="ufps-card-title">
           <h1>
-            <span class="glyphicon glyphicon-plus"></span>
+            <i class="fas fa-plus-circle"></i>
           </h1>
         </div>
         <div class="col-12 ufps-card-link">

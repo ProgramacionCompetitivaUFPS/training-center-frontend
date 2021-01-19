@@ -43,6 +43,11 @@ export class HomeSyllabus {
 
         this.options = [true, false]
         this.type = 0
+
+        console.log(this.authService.isStudent())
+        console.log(this.authService.isCoach())
+        console.log(this.authService.isAdmin())
+
     }
 
     /**
@@ -151,7 +156,7 @@ export class HomeSyllabus {
      */
     showEditSyllabus(id, title, description, privacy) {
         this.editSyllabus = new Syllabus(id, title, description, privacy, '')
-        window.$('#edit-syllabus').modal('show')
+        $('#edit-syllabus').modal('show')
     }
 
     /**

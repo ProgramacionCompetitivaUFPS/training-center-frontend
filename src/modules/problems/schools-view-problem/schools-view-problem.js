@@ -9,10 +9,10 @@ import { Alert, Auth, Problems } from 'services/services'
 // dependencias a inyectar: Servicio de notificaciones (Alert),
 // Servicio de problemas (Problems), servicio de enrutamiento (Router)
 @inject(Alert, Auth, Problems, Router)
-export class ViewProblem {
+export class SchoolsViewProblem {
   
   /**
-   * Crea una instancia de ViewProblem.
+   * Crea una instancia de ViewProblem para colegios.
    * @param {service} alertService - Servicio de notificaciones
    * @param {service} problemService - Servicio de problemas
    * @param {service} routerService - Servicio de enrutamiento
@@ -29,9 +29,7 @@ export class ViewProblem {
   }
 
   /**
-   * Método que toma los parametros enviados en el link y configura la página para adaptarse
-   * al contenido solicitado. Este método hace parte del ciclo de vida de la aplicación y se
-   * ejecuta automáticamente luego de lanzar el constructor.
+   * Método que toma los parametros enviados en el link y configura la página para adaptarse al contenido solicitado. Este método hace parte del ciclo de vida de la aplicación y se ejecuta automáticamente luego de lanzar el constructor.
    * @param {any} params
    * @param {any} routeConfig
    */
@@ -39,8 +37,6 @@ export class ViewProblem {
     this.routeConfig = routeConfig
     this.id = params.id
     this.lang = params.lang || 'en'
-
-    this.validateTypeCategory();
 
     this.problemService.getProblem(this.id)
       .then(problem => {
@@ -115,25 +111,6 @@ export class ViewProblem {
       }
     }
      
-  }
-
-  /*Valida que el problema se esté mostrando en tipo de categoría correcta, para este caso, problemas de TC university */
-  validateTypeCategory(){
-    this.problemService.validateTypeCategory(this.id)
-      .then(typeCategory => {
-        console.log(typeCategory)
-      })
-      .catch(error => {
-        if (error.status === 401 || error.status === 403) {
-          this.alertService.showMessage(MESSAGES.permissionsError)
-        } else if (error.status === 500) {
-          this.alertService.showMessage(MESSAGES.serverError)
-        } else {
-          this.alertService.showMessage(MESSAGES.unknownError)
-        }
-        this.routerService.navigate('')
-      })
-    
   }
 
   submit() {

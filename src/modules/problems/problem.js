@@ -33,6 +33,15 @@ export class Problem {
                 }
             },
             {
+                name: 'schools_category',
+                route: 'colegios/categoria/:id',
+                moduleId: PLATFORM.moduleName('modules/problems/category-problems-schools/category-problems-schools'),
+                title: 'Problemas - Colegios',
+                settings: {
+                    roles: ['admin', 'coach', 'student']
+                }
+            },
+            {
                 name: 'problems-creator',
                 route: 'nuevo',
                 moduleId: PLATFORM.moduleName('modules/problems/problems-creator/problems-creator'),
@@ -60,14 +69,14 @@ export class Problem {
                 }
             },
             {
-                name: 'code-solutions',
-                route: [':id/crear-solucion'],
-                moduleId: PLATFORM.moduleName('modules/problems/code-solutions/code-solutions'),
-                title: 'Crea tu solución',
+                name: 'schools-view-problem',
+                route: ['colegios/:id/detalle', 'colegios/:id/detalle/:lang'],
+                moduleId: PLATFORM.moduleName('modules/problems/schools-view-problem/schools-view-problem'),
+                title: 'Problema - Colegios',
                 settings: {
                     roles: ['admin', 'coach', 'student']
                 }
-            }
+            },
         ])
         this.router = router
     }

@@ -1,14 +1,13 @@
-import * as Blockly from 'blockly';
+import * as Blockly from 'Blockly';
 
 /**
- * Code Solutions (Module)
- * Módulo encargado de la creación de soluciones en lenguaje de bloques
- * Accesible vía /problemas/:id/crear-solucion
+ * BlocklyEditor (Element)
+ * Clase encargada de la creación de un editor en el lenguaje Blockly
  * @export
- * @class CodeSolution
+ * @class BlocklyEditor
  */
 
-export class GeneralProblems {
+export class BlocklyEditor {
 
     constructor() {
         setTimeout(() => {
@@ -46,8 +45,8 @@ export class GeneralProblems {
         }, 3000);
     }
 
-    activate(params, ) {
+   /* activate(params ) {
 
-    }
+    }*/
 
 }

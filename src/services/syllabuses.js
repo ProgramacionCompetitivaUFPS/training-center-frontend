@@ -102,7 +102,8 @@ export class Syllabuses {
                     tittle: syllabus.title,
                     description: syllabus.description,
                     public: syllabus.privacy,
-                    key: syllabus.key
+                    key: syllabus.key,
+                    type: syllabus.type
                 })
             })
             .then(this.httpService.checkStatus)
