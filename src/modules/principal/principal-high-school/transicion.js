@@ -22,7 +22,9 @@ export class Transicion {
 
     constructor(routerService) {
         this.routerService = routerService;
-        setTimeout(this.routerService.navigate('transicion'), 5000);
+        setTimeout(() => {
+            this.routerService.navigate('colegios');
+        }, 5000);
         //this.routerService.navigate('colegios');
       
     }
