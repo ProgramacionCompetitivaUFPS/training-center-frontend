@@ -22,6 +22,15 @@ export class Principal {
                 settings: {
                     roles: ['admin', 'coach', 'student']
                 }
+            },
+            {
+                name: 'transicion',
+                route: 'transicion',
+                moduleId: PLATFORM.moduleName('modules/principal/principal-high-school/transicion'),
+                title: 'Training center High School - Aquí vamos',
+                settings: {
+                    roles: ['admin', 'coach', 'student']
+                }
             }
         ])
         this.router = router

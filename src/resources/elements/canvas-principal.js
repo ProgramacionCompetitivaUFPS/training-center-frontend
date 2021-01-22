@@ -54,7 +54,7 @@ export class CanvasPrincipal {
         this.CANVAS.addEventListener('click', (event) => {
 
             if (this.its_this_planet(this.planet1)) {
-                this.routerService.navigate('colegios');
+                setTimeout(this.routerService.navigate('transicion'), 5000);
 
 
             } else if (this.its_this_planet(this.planet2)) {
