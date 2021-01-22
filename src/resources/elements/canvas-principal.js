@@ -54,7 +54,6 @@ export class CanvasPrincipal {
         this.CANVAS.addEventListener('click', (event) => {
 
             if (this.its_this_planet(this.planet1)) {
-                
                 this.routerService.navigate('transicion');
 
 

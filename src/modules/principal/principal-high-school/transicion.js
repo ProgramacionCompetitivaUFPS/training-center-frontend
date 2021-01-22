@@ -25,7 +25,7 @@ export class Transicion {
         setTimeout(() => {
             this.routerService.navigate('colegios');
         }, 5000);
-        //this.routerService.navigate('colegios');
+        
       
     }
 

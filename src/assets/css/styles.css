@@ -1615,6 +1615,7 @@ tr:nth-child(2n) td .ufps-score-gold {
     display:flex;
     justify-content: center;
     align-items: center;
+    
    
     
 }
@@ -1623,5 +1624,19 @@ tr:nth-child(2n) td .ufps-score-gold {
     width: 14em;
     height: 15em;
     text-align: center;
+    animation-duration: 5s;
+    animation-name: slidein;
+    animation-delay: 1.5s;
+}
+@keyframes slidein{
+    from {
+        margin-top: 7%;
+        width: 17%
+      }
+    
+      to {
+        margin-bottom: 70%;
+        width: 17%;
+      }
 }
 
