@@ -292,11 +292,9 @@ export class Problems {
     /**
      * Valida que el problema se esté mostrando en tipo de categoría correcta, para este caso, problemas de TC university
      * @param {number} problemId - Identificador del problema
-     * 
+     * @returns {Promise} promesa con la id de la categoría. 
      * */
     validateTypeCategory(id){
-        //se está validando para que no se carguen problemas en vistas con el typecategory equivocado
-        //creando la peticion para retorcar el type category
 
         return this.httpService.httpClient
             .fetch(API.endpoints.problems + '/' + id + '/validateCategory', {

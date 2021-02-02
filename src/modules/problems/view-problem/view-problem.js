@@ -40,7 +40,23 @@ export class ViewProblem {
     this.id = params.id
     this.lang = params.lang || 'en'
 
-    this.validateTypeCategory();
+    this.problemService.validateTypeCategory(this.id)
+      .then(dataCategory => {
+        console.log(dataCategory)
+        if (dataCategory.type == 2 || dataCategory.type == 0){
+           this.routerService.navigate('/');
+        }
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+        this.routerService.navigate('')
+      })
 
     this.problemService.getProblem(this.id)
       .then(problem => {
@@ -115,25 +131,6 @@ export class ViewProblem {
       }
     }
      
-  }
-
-  /*Valida que el problema se esté mostrando en tipo de categoría correcta, para este caso, problemas de TC university */
-  validateTypeCategory(){
-    this.problemService.validateTypeCategory(this.id)
-      .then(typeCategory => {
-        console.log(typeCategory)
-      })
-      .catch(error => {
-        if (error.status === 401 || error.status === 403) {
-          this.alertService.showMessage(MESSAGES.permissionsError)
-        } else if (error.status === 500) {
-          this.alertService.showMessage(MESSAGES.serverError)
-        } else {
-          this.alertService.showMessage(MESSAGES.unknownError)
-        }
-        this.routerService.navigate('')
-      })
-    
   }
 
   submit() {

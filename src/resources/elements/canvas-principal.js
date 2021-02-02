@@ -58,7 +58,7 @@ export class CanvasPrincipal {
 
 
             } else if (this.its_this_planet(this.planet2)) {
-                this.routerService.navigate('/problemas/universidades');
+                this.routerService.navigate('/problemas');
             }
         }, false);
 
@@ -123,7 +123,6 @@ export class CanvasPrincipal {
     }
 
     adjustCanvasResolution() {
-        // If it's resolution does not match change it
 
         if (this.CANVAS.width !== this.CANVAS.clientWidth || this.CANVAS.height !== this.CANVAS.clientHeight) {
             this.CANVAS.width = this.CANVAS.clientWidth;
@@ -133,7 +132,6 @@ export class CanvasPrincipal {
 
     iterate() {
 
-        //Si ya se cargaron las imágenes, hágale con confianza, al infinito y más allá
         let grados = 0;
         if (this.img_mutex == 0) {
             setInterval(() => {
@@ -155,8 +153,6 @@ export class CanvasPrincipal {
         }
     }
 
-
-
     turn(planet, grados) {
         var rad = Math.PI / 180;
         var theta = 170 * rad;
@@ -169,9 +165,9 @@ export class CanvasPrincipal {
 
     check_highlights() {
         if (this.its_this_planet(this.planet1)) {
-            this.agregarResaltado(this.planet1);
+            this.addHighlight(this.planet1);
         } else if (this.its_this_planet(this.planet2)) {
-            this.agregarResaltado(this.planet2);
+            this.addHighlight(this.planet2);
         } else {
             this.CANVAS.style.cursor = "initial";
         }
@@ -186,7 +182,7 @@ export class CanvasPrincipal {
         this.ctx.fill();
     }
 
-    agregarResaltado(planet) {
+    addHighlight(planet) {
         this.ctx.beginPath();
         this.ctx.arc(planet.x + planet.w / 2, planet.y + 5 * planet.h / 8, 100, 0, 2 * Math.PI);
         this.ctx.lineWidth = 15;
