@@ -77,11 +77,14 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header text-center">
+            
+            <h4 class="modal-title">Editar perfil</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title">Editar perfil</h4>
+          </div>
             <br>
+          <div class="modal-body">
             <form submit.delegate="editProfile()" class="text-left">
               <label>Nombre:</label>
               <input type="text" class="form-control" placeholder="Nombre" value.bind="newUser.name" required>
@@ -107,11 +110,13 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header text-center">
+            <h4 class="modal-title">Editar contraseña</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title">Editar contraseña</h4>
+          </div>
             <br>
+          <div class="modal-body">
             <form submit.delegate="editPassword()" class="text-left">
               <label>Contraseña actual:</label>
               <input type="password" class="form-control" placeholder="Contraseña actual" value.bind="oldPassword" required>

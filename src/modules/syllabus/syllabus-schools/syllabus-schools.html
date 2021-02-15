@@ -78,11 +78,13 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          <h4 class="modal-title">Nueva clase</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Nueva clase</h4>
+        </div>
           <br>
+        <div class="modal-body">
           <form submit.delegate="createSyllabus()">
             <div class="form-group">
               <label>Titulo</label>
@@ -122,11 +124,13 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          <h4 class="modal-title">Editar Syllabus</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Editar Syllabus</h4>
+        </div>
           <br>
+        <div class="modal-body">
           <form submit.delegate="modifySyllabus()">
             <div class="form-group">
               <label>Titulo</label>
@@ -166,13 +170,16 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
+          <h4 class="modal-title">¿Estás seguro de eliminar la clase ${syllabusToRemove.title}?</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">¿Estás seguro de eliminar la clase ${syllabusToRemove.title}?</h4>
+        </div>
           <br>
+        <div class="modal-body">
           <p>Esta operación no se puede deshacer</p>
-
+        </div>
+        <div class="modal-footer">
           <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeSyllabus()>Si</button>
           <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
         </div>
@@ -185,11 +192,13 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
+          <h4 class="modal-title">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>
+        </div>
           <br>
+        <div class="modal-body">
           <form submit.delegate="enrollSyllabus()">
             <div if.bind="!syllabusToEnroll.privacy">
               <p>Ingresa la clave de esta clase (si no la tienes, comunicate con el profesor/coach a cargo)</p>
@@ -197,7 +206,8 @@
                 <input type="text" class="form-control" value.bind="syllabusToEnroll.key">
               </div>
             </div>
-
+        </div>
+        <div class="modal-footer">
             <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Si">
             <input type="submit" class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close" value="No">
           </form>

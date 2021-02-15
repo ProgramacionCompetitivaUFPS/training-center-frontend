@@ -3,14 +3,14 @@
   <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="false"></clock>
   <div class="container ufps-container-logged">
     <ol class="breadcrumb">
-      <li>
+      <li class="breadcrumb-item">
         <a href="/clases">Clases</a>
       </li>
-      <li>
+      <li class="breadcrumb-item">
         <a href="/clases/clases/${assignment.syllabusId}">Detalle de la clase actual</a>
       </li>
-      <li class="active" if.bind="type === 'edit'">${assignment.title}</li>
-      <li class="active" if.bind="type === 'new'">Nueva tarea</li>
+      <li class="breadcrumb-item active" if.bind="type === 'edit'">${assignment.title}</li>
+      <li class="breadcrumb-item active" if.bind="type === 'new'">Nueva tarea</li>
     </ol>
     <h2 class="text-right" if.bind="type === 'edit'">${assignment.title}</h2>
     <h2 class="text-right" if.bind="type === 'new'">Nueva Tarea</h2>
@@ -169,13 +169,16 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
+          <h4 class="modal-title">¿Estás seguro de eliminar este problema de la tarea?</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">¿Estás seguro de eliminar este problema de la tarea?</h4>
+        </div>
           <br>
+        <div class="modal-body">
           <p>Esto no eliminará el problema de la plataforma. Solo de la tarea actual.</p>
-
+        </div>
+        <div class="modal-footer">
           <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeProblem()>Si</button>
           <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
         </div>
