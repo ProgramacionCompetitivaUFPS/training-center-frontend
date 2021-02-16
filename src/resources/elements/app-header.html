@@ -7,10 +7,12 @@
           <span class="navbar-toggler-icon"></span>
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand ufps-brand" href="/">
-          <img alt="UFPS Training Center" src="../../assets/img/logo-transparent.png">
+      <div class="title">
+        <a href="/">
+          <img alt="UFPS Training Center" src="../../assets/img/logo-transparent.png" id="logo">
         </a>
         <a if.bind="!authService.isAuthenticated()" class="title" href="#">Training Center</a>
+      </div>
       </div>
       <div class="collapse navbar-collapse">
         <div class="nav navbar-nav navbar-left">

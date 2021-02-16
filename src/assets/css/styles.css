@@ -330,7 +330,7 @@ pre {
     background-color: #344958;
     border-radius: 0;
     border: none;
-    height: 4em;
+    height: 3.5em;
 }
 
 .ufps-brand {
@@ -1250,7 +1250,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 /*css home*/
 
 .navbar {
-    background-color: rgb(231, 6, 6) !important;
+    background-color: #e74c3c !important;
     padding: 0;
 }
 
@@ -1259,7 +1259,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 }
 
 #navbar:hover {
-    background-color: #d60420a4;
+    background-color: #a91b0d;
     margin: none;
     padding-bottom: 1.3em;
     padding-top: 1.3em;
@@ -1281,10 +1281,8 @@ tr:nth-child(2n) td .ufps-score-gold {
 .title {
     color: white;
     font-family: 'Anton', sans-serif;
-    font-size: 2em;
-    padding-left: 0.5em;
+    font-size: 1.3em;
     padding-top: 0.3em;
-    padding-bottom: 0.3em;
 }
 
 .title:hover {
@@ -1292,13 +1290,14 @@ tr:nth-child(2n) td .ufps-score-gold {
 }
 
 #logo {
-    max-width: 3.8em;
-    padding-bottom: 0.5em;
-    padding-left: 1em;
+    max-width: 2.3em;
+    max-height: 2.7em;
+    padding-bottom: 0.4em;
+    
 }
 
 #containerCards {
-    background-color: rgb(231, 6, 6) !important;
+    background-color: #e74c3c !important;
 }
 
 #menu {
@@ -1352,11 +1351,11 @@ tr:nth-child(2n) td .ufps-score-gold {
 }
 
 .btn-danger {
-    background-color: rgb(231, 6, 6) !important;
+    background-color: #e74c3c !important;
 }
 
 .btn-danger:hover {
-    background-color: #d60420a4;
+    background-color: #a91b0d;
 }
 
 .line {
@@ -1451,7 +1450,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 }
 
 .caja {
-    background-color: rgb(231, 6, 6);
+    background-color: #e74c3c !important;
     padding-left: 2em;
     padding-right: 2em;
     border-radius: 10px;
