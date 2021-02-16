@@ -9,7 +9,6 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
-
 html,
 body {
     height: 100%;
@@ -521,7 +520,7 @@ body {
 }
 
 .body-slot {
-    padding-top: 4.0625em;
+    /*padding-top: 4.0625em;*/
     background-color: #ecf0f1
     
 }
@@ -1235,14 +1234,14 @@ tr:nth-child(2n) td .ufps-score-gold {
 /*Video Principal*/
 .canvas-container{
 	width: 101%;
-    height: 40em;
+    height: 50em;
     
 }
 
 #canvas{
     border: none;
 	width: 100%;
-    height: 40em;
+    height: 50em;
     margin: 0;
 }
 
