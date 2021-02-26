@@ -47,7 +47,7 @@ export class AppHeader {
     logOut() {
         this.authService.logout()
         this.messageMain = 'Training Center'
-        this.routerService.navigate('iniciar-sesion')
+        this.routerService.navigate('bienvenido')
 
     }
 

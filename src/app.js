@@ -55,7 +55,7 @@ export class App {
             },
 
             // Login
-            {
+            /*{
                 name: "login",
                 route: "iniciar-sesion",
                 moduleId: PLATFORM.moduleName("./modules/login/login"),
@@ -64,7 +64,7 @@ export class App {
                 settings: {
                     roles: ["visitor"]
                 }
-            },
+            },*/
             // Signin
             {
                 name: "signin",
