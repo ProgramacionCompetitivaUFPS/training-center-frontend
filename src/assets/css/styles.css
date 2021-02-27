@@ -120,15 +120,20 @@ pre {
 
 
 /*Estilos not-logged*/
-
+.login-titulo{
+    padding-bottom: 1em;
+    color: white;
+}
 .ufps-container-sign {
     min-height: 100%;
     background-color: #e74c3c;
+    padding-top: 1em;
+    
 }
 
 .ufps-container-sign .ufps-logo-sign {
-    margin-top: 2.5em;
-    height: 7.5em;
+    margin-top: 1em;
+    height: 5em;
 }
 
 .ufps-container-sign .ufps-logo-sign-in {
@@ -137,7 +142,7 @@ pre {
 }
 
 .ufps-form-sign {
-    margin-top: 1.875em;
+    margin-top: 1.6em;
 }
 
 .ufps-container-sign h1 {
@@ -186,14 +191,14 @@ pre {
     box-shadow: none;
 }
 
-.ufps-container-sign .ufps-btn-sign {
+.ufps-btn-sign {
     width: 100%;
     height: 2.8125em;
     border: 0.0625em solid #ecf0f1;
     color: #fff;
     font-size: 1em;
     border-radius: 0.125em;
-    background-color: transparent;
+    background-color: #e74c3c;
     margin-top: 1.25em;
     transition: all 0.3s ease;
 }
@@ -223,6 +228,7 @@ pre {
 
 .linksign {
     margin-top: 1.2em;
+    padding-bottom: 3em;
 }
 
 .ufps-sign-links,
