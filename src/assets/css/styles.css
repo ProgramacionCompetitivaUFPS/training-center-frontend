@@ -203,10 +203,10 @@ pre {
     transition: all 0.3s ease;
 }
 
-.ufps-container-sign .ufps-btn-sign:hover,
-.ufps-container-sign .ufps-btn-sign:active,
-.ufps-container-sign .ufps-btn-sign:hover:active,
-.ufps-container-sign .ufps-btn-sign:focus {
+.ufps-btn-sign:hover,
+.ufps-btn-sign:active,
+.ufps-btn-sign:hover:active,
+.ufps-btn-sign:focus {
     background-color: #fff;
     color: #c0392b;
     box-shadow: 0 0 0.625em #c0392b;

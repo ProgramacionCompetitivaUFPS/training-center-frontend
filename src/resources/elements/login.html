@@ -1,5 +1,6 @@
 <template>
-    
+    <require from="../attributes/tooltip"></require>
+    <require from="../elements/paginator"></require>
         <div class="col-12 text-center ufps-container-sign">
             <img class="ufps-logo-sign"
                 src="../../assets/img/logo-transparent.png"
@@ -37,12 +38,23 @@
             </form>
                 <div class="linksign row text-center">
                     <div class="col-5 text-left">
-                        <a route-href="route: signin">¡Regístrate!</a>
+                        <a data-toggle="modal" data-target="#registro" href="">¡Regístrate!</a>
                     </div>
                     <div class="col-7 text-right">
                         <a route-href="route: recovery-password">¿Olvidaste tu contraseña?</a>
                     </div>
                 </div>
         </div>
+
+        <!--modal registro-->
+        <div class="modal fade" id="registro" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <signin></signin>
+              </div>
+            </div>
+          </div>
+        </div>
+       
    
 </template>
