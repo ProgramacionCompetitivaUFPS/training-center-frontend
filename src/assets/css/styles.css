@@ -66,9 +66,9 @@ pre {
     .ufps-navbar-search {
         width: 95%;
     }
-    .ufps-sign-links {
-        margin-bottom: 1.5625em;
-    }
+  /*  .ufps-sign-links {
+       margin-bottom: 1.5625em;
+    }*/
 }
 
 @media (max-width: 61.9375em) {
@@ -136,13 +136,24 @@ pre {
     height: 5em;
 }
 
-.ufps-container-sign .ufps-logo-sign-in {
+.ufps-logo-sign-in {
     margin-top: 1.25em;
     height: 5em;
 }
 
 .ufps-form-sign {
     margin-top: 1.6em;
+    padding-bottom: 1em;
+}
+.container-sign{
+    background-color: #e74c3c;
+}
+.container-registro{
+    padding: 1em;
+}
+.titulo-registro{
+    margin-top: 1em;
+    color: #e74c3c;
 }
 
 .ufps-container-sign h1 {
@@ -219,11 +230,8 @@ pre {
 }
 
 .ufps-sign-links {
-    display: inline;
-    margin-left: 0;
-    margin-right: 0;
+    display: inline;    
     padding-left: 1em;
-    padding-right: 0;
 }
 
 .linksign {
@@ -261,9 +269,9 @@ pre {
 }
 
 .ufps-form-inline input {
-    font-size: 0.875em;
-    padding: 0.3125em 0.625em 0.4375em 0.3125em;
-    background: transparent;
+    font-size: 0.87em;
+    padding: 0.3125em 0.625em 0.8em 0.3125em;
+    background: transparent !important;
     display: block;
     width: 100%;
     border: none;
@@ -277,12 +285,12 @@ pre {
 
 .ufps-form-inline label {
     color: #fff;
-    font-size: 0.875em;
+    font-size: 0.9em;
     font-weight: normal;
     position: absolute;
     pointer-events: none;
     left: 0.3125em;
-    top: 0.625em;
+    top: 0.2em;
     transition: 0.2s ease all;
     -moz-transition: 0.2s ease all;
     -webkit-transition: 0.2s ease all;
@@ -290,7 +298,7 @@ pre {
 
 .ufps-form-inline input:focus~label,
 .ufps-form-inline input:valid~label {
-    top: -0.875em;
+    top: -1.3em;
     font-size: 0.75em;
     font-weight: bold;
     color: #fff;

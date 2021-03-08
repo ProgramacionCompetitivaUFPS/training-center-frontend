@@ -1,18 +1,16 @@
-<template>
-    <div slot="content">
-        <div class="col-12 text-center ufps-container-sign">
-          <img class="ufps-logo-sign" src="../../assets/img/logo-transparent.png" alt="">
-          <h3 class="login-titulo">Regístrate</h3>
-        </div>
-        <div class="col-10 offset-1 text-center">
-          
-          <form submit.delegate = "signin()" class="text-left ufps-form-sign text-center">
-            <div class="form-group text-left">
+<template>  
+      <require from="../attributes/tooltip"></require>
+      <require from="../elements/paginator"></require>
+          <div class="col-12 text-center container-registro">
+            <h3 class="titulo-registro">Regístrate</h3>
+          </div>
+          <form submit.delegate = "signin()" class="text-center ufps-form-sign ufps-container-sign">
+            <div class="form-group ufps-form-inline">
                 
               <input type="text" class="ufps-form-text" id="name" value.bind="user.name" required>
               <label for="name">
                 Nombre
-                <span if.bind="user.name !== '' && user.name !== null" class="ufps-sign-in-correct glyphicon glyphicon-ok" aria-hidden="true"></span>
+                <span if.bind="user.name !== '' && user.name !== null" aria-hidden="true"><i class="fas fa-check"></i></span>
               </label>
               <span class="ufps-form-bar"></span>
             </div>
@@ -28,7 +26,7 @@
               <input type="number" class="ufps-form-text" id="code" required value.bind="user.code">
               <label for="code">
                 Código (0 si no eres estudiante UFPS)
-                <span class="ufps-sign-in-correct glyphicon glyphicon-ok" aria-hidden="true"></span>
+                <span aria-hidden="true"><i class="fas fa-check"></i></span>
               </label>
               <span class="ufps-form-bar"></span>
             </div>
@@ -36,7 +34,7 @@
               <input keyup.trigger="validEmail()" type="email" class="ufps-form-text" id="email"  value.bind="user.email" required>
               <label for="email">
                 Correo Electrónico
-                <span if.bind="isValidEmail" class="ufps-sign-in-correct glyphicon glyphicon-ok" aria-hidden="true"></span>
+                <span if.bind="isValidEmail" aria-hidden="true"><i class="fas fa-check"></i></span>
               </label>
               <span class="ufps-form-bar"></span>
             </div>
@@ -56,12 +54,20 @@
               </label>
               <span class="ufps-form-bar"></span>
             </div>
-            <input type="submit" class="btn ufps-btn-sign" value="Regístrate">
+            <div>
+              <input type="submit" class="btn ufps-btn-sign form-group" value="Regístrate">
+            </div>
+            <div class="col-10 text-center ufps-sign-links">
+              <a data-toggle="modal" data-target="#iniciar-sesion" href="">¿Ya tienes una cuenta? ¡Inicia Sesión!</a>
+            </div>
           </form>
-    
-          <div class="col-12 text-center ufps-sign-links">
-            <a route-href="route: login">¿Ya tienes una cuenta? ¡Inicia Sesión!</a>
+          
+          <div class="modal fade" id="iniciar-sesion" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <login></login>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        
 </template>
