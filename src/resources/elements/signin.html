@@ -58,11 +58,11 @@
               <input type="submit" class="btn ufps-btn-sign form-group" value="Regístrate">
             </div>
             <div class="col-10 text-center ufps-sign-links">
-              <a data-toggle="modal" data-target="#iniciar-sesion" href="">¿Ya tienes una cuenta? ¡Inicia Sesión!</a>
+              <a data-dismiss="modal" data-target="#iniciar-sesion" href="">¿Ya tienes una cuenta? ¡Inicia Sesión!</a>
             </div>
           </form>
           
-          <div class="modal fade" id="iniciar-sesion" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
+          <div class="modal fade" if.bind="authService.isVisitor" id="iniciar-sesion" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <login></login>

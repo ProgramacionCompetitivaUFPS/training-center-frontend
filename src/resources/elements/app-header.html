@@ -123,17 +123,31 @@
           <li class="ufps-btn-nav" if.bind="authService.isVisitor()">
             <a data-toggle="modal" data-target="#iniciar-sesion" href="">Iniciar sesión</a>
           </li>
+          <li class="ufps-btn-nav" if.bind="authService.isVisitor()">
+            <a data-toggle="modal" data-target="#registro" href="">Registrarse</a>
+          </li>
         </div>
       </div>
     </div>
   </nav>
-  <div if.bind="authService.isVisitor" class="modal" id="iniciar-sesion" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
+  <!--modal registro-->
+  <div  class="modal" id="registro" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <signin></signin>
+      </div>
+    </div>
+  </div>
+  <!--modal Login-->
+  <div if.bind="authService.isVisitor"  class="modal" id="iniciar-sesion" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <login></login>
       </div>
     </div>
   </div>
+  
+  
   <div repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
     ${row}
   </div>

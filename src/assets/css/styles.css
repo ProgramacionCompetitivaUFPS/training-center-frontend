@@ -800,6 +800,7 @@ th {
 
 .modal-content {
     border-radius: 0em;
+    z-index: 1000;
 }
 
 .form-control,
