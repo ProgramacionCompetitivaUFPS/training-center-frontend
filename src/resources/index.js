@@ -6,7 +6,6 @@ export function configure(config) {
         PLATFORM.moduleName('./elements/app-header'),
         PLATFORM.moduleName('./elements/canvas-principal'),
         PLATFORM.moduleName('./elements/blockly-editor/blockly-editor'),
-        PLATFORM.moduleName('./elements/login'),
-        PLATFORM.moduleName('./elements/signin')
+        PLATFORM.moduleName('./elements/login-signin'),
     ])
 }

@@ -139,7 +139,7 @@ export class ViewProblem {
     } else if (this.language === null) {
       this.alertService.showMessage(MESSAGES.invalidLanguage)
     } else {
-      this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0])
+      this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0], undefined)
         .then((data) => {
           this.alertService.showMessage(MESSAGES.submittedSolution)
           this.language = null

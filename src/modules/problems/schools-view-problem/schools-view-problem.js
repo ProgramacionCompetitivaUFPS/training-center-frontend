@@ -4,6 +4,7 @@ import { Router } from 'aurelia-router'
 import { MESSAGES, SETTINGS, API } from 'config/config'
 import { Problem } from 'models/models'
 import { Alert, Auth, Problems } from 'services/services'
+//import { BlocklyEditor } from 'resources/elements/blockly-editor/blockly-editor'
 
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),
@@ -132,11 +133,38 @@ export class SchoolsViewProblem {
   }
 
   submit() {
-    if (!this.sourceValid) {
+
+    //Preparar archivo .py y .XML a partir de blockly
+    this.code = new File([sessionStorage.getItem('pythonCode')], "main.py", {type: "text/x-python"})
+    let XML = new File([sessionStorage.getItem('xmlCode')], "main.xml", {type: "text/xml"})
+    this.language = 'Python'
+
+    this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code, XML)
+        .then((data) => {
+          this.alertService.showMessage(MESSAGES.submittedSolution)
+          this.language = null
+          this.code = null
+          this.sourceValid = false
+        })
+        .catch(error => {
+          if (error.status === 401 || error.status === 403) {
+            this.alertService.showMessage(MESSAGES.permissionsError)
+          } else if (error.status === 500) {
+            this.alertService.showMessage(MESSAGES.serverError)
+          } else {
+            this.alertService.showMessage(MESSAGES.unknownError)
+          }
+        })
+
+   /* if (!this.sourceValid) {
       this.alertService.showMessage(MESSAGES.invalidCode)
     } else if (this.language === null) {
       this.alertService.showMessage(MESSAGES.invalidLanguage)
     } else {
+
+      //Preparar archivo xml y archivo a evaluar
+
+      /*
       this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0])
         .then((data) => {
           this.alertService.showMessage(MESSAGES.submittedSolution)
@@ -153,6 +181,7 @@ export class SchoolsViewProblem {
             this.alertService.showMessage(MESSAGES.unknownError)
           }
         })
-    }
+        
+    }*/
   }
 }

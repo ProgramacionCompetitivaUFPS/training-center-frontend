@@ -63,7 +63,9 @@
       </table>
       <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
     </div>
-    <div class="modal fade" id="submission-detail" tabindex="-1" role="dialog" aria-labelledby="submission-detail">
+
+    <!---Modal para detalle del envío--->
+    <div class="modal fade" id="submission-detail" ref="submissionDetail" tabindex="-1" role="dialog" aria-labelledby="submission-detail">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">

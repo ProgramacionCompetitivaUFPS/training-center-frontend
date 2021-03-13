@@ -74,7 +74,6 @@ export class CanvasPrincipal {
             this.iterate();
         }
 
-        //0.3291326908821349   0.5928057553956835
         this.planet1 = {
             name: "Training Center High School",
             w: 170,
@@ -92,7 +91,6 @@ export class CanvasPrincipal {
             this.iterate();
         }
 
-        //0.6723498888065234   0.4316546762589928
         this.planet2 = {
             name: "Training Center University",
             w: 170,

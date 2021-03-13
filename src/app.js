@@ -66,7 +66,7 @@ export class App {
                 }
             },*/
             // Signin
-            {
+            /*{
                 name: "signin",
                 route: "registro",
                 moduleId: PLATFORM.moduleName("./modules/signin/signin"),
@@ -75,7 +75,7 @@ export class App {
                 settings: {
                     roles: ["visitor"]
                 }
-            },
+            },*/
             // Recovery Password
             {
                 name: "recovery-password",
@@ -179,6 +179,7 @@ export class App {
                     roles: ["coach", "student"]
                 }
             },
+            // Materiales
             {
                 name: "material",
                 route: ["materiales"],
