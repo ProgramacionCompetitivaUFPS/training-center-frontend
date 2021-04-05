@@ -121,7 +121,10 @@
             <a route-href="route: public-material">Material público</a>
           </li>
           <li class="ufps-btn-nav" if.bind="authService.isVisitor()">
-            <a data-toggle="modal" data-target="#iniciar-sesion" href="">Iniciar sesión</a>
+            <a data-toggle="modal" data-target="#iniciar-sesion"  href="">Iniciar sesión</a>
+          </li>
+          <li class="ufps-btn-nav" if.bind="authService.isVisitor()">
+            <a data-toggle="modal" data-target="#iniciar-sesion" href="">Registrarse</a>
           </li>
         </div>
       </div>

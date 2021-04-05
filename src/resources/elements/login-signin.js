@@ -1,5 +1,6 @@
 import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
+import { Modal } from 'bootstrap'
 
 import { MESSAGES } from 'config/config'
 import { UserSignIn, UserLogIn } from 'models/models'

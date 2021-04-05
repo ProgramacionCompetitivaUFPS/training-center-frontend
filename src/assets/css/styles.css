@@ -447,7 +447,7 @@ pre {
 
 .alert {
     position: fixed;
-    z-index: 100;
+    z-index: 10000000;
     font-family: Helvetica Neue, Helvetica, san-serif;
     font-size: 1em;
     top: 4.0625em;
@@ -793,10 +793,10 @@ th {
     padding-top: 0;
 }
 
-.modal-backdrop.in {
+/*.modal-backdrop.in {
     filter: alpha(opacity=90);
     opacity: 0.9;
-}
+}*/
 
 .modal-content {
     border-radius: 0em;
