@@ -1,6 +1,10 @@
 import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
+require('bootstrap/dist/css/bootstrap.min.css')
 import { Modal } from 'bootstrap'
+//import $ from 'jquery';
+  
+
 
 import { MESSAGES } from 'config/config'
 import { UserSignIn, UserLogIn } from 'models/models'
@@ -20,6 +24,7 @@ export class LoginSignin {
 
   isLoginModalVisible = true
   isSignInModalVisible = false
+  isRecoveryModalVisible= false
 
   /**
    * Crea una instancia de Signin.
@@ -31,6 +36,10 @@ export class LoginSignin {
     this.alertService = alertService
     this.authorizationService = authorizationService
     this.router = router
+    
+    /*//para recovery
+    this.authService = authService
+    this.email = ''*/
 
     //Usuario para login
     this.userLogin = new UserLogIn()
@@ -110,6 +119,26 @@ export class LoginSignin {
       this.alertService.showMessage(MESSAGES.signInIncompleteData)
     }
   }
+  requestRecovery () {
+    if (this.email !== '') {
+      this.authService.requestRecovery(this.email)
+        .then(() => {
+          this.alertService.showMessage(MESSAGES.recoveryEmailSent)
+        })
+        .catch(error => {
+          switch (error.status) {
+            case 400:
+              this.alertService.showMessage(MESSAGES.recoveryMailDoesNotExist)
+              break
+            case 500:
+              this.alertService.showMessage(MESSAGES.serverError)
+              break
+            default:
+              this.alertService.showMessage(MESSAGES.unknownError)
+          }
+        })
+    }
+  }
 
   validEmail() {
     if (/^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(this.UserSignIn.email)) this.isValidEmail = true
@@ -122,6 +151,7 @@ export class LoginSignin {
   activateLoginModal() {
     this.isLoginModalVisible = true
     this.isSignInModalVisible = false
+    this.isRecoveryModalVisible= false
 
   }
 
@@ -131,6 +161,13 @@ export class LoginSignin {
   activateSignInModal() {
     this.isLoginModalVisible = false
     this.isSignInModalVisible = true
+    this.isRecoveryModalVisible= false
+
+  }
+  activateRecoveryModal() {
+    this.isLoginModalVisible = false
+    this.isSignInModalVisible = false
+    this.isRecoveryModalVisible= true
 
   }
 }

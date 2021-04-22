@@ -23,6 +23,9 @@ pre {
 .navbar-toggler {
     margin-top: 0.75em;
     margin-bottom: 0.8125em;
+    background-color: #fff;
+    margin-left: 6.5em;
+    
 }
 
 .navbar-toggler .icon-bar {
@@ -82,9 +85,9 @@ pre {
     .ml-auto {
         float: none !important;
     }
-    .navbar-toggler {
+    /*.navbar-toggler {
         display: block;
-    }
+    }*/
     .navbar-collapse {
         border-top: 0.0625em solid transparent;
         box-shadow: inset 0 0.0625em 0 rgba(255, 255, 255, 0.1);

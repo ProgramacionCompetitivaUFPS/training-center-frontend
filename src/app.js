@@ -1,9 +1,11 @@
 import { Auth, Http } from "services/services"
 import { AuthorizeStep } from "./authorize-step"
-//require('bootstrap');
-import { $ } from 'jquery'
+import 'bootstrap';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+//require('bootstrap/dist/css/bootstrap.min.css')
+import 'jquery'
 //require('jquery/dist/jquery.js')
-require('bootstrap/dist/css/bootstrap.min.css')
+
 
 
 /**

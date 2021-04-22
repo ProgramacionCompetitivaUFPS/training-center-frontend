@@ -2,7 +2,6 @@ import * as environment from '../config/environment.json'
 import { PLATFORM } from 'aurelia-pal'
 import { Promise } from "bluebird";
 import 'whatwg-fetch'
-
 // Configure Bluebird Promises.
 Promise.config({
     longStackTraces: environment.debug,

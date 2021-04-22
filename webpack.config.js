@@ -48,7 +48,8 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
             // Uncomment next line if you need to support IE11
             // 'promise-polyfill/src/polyfill',
             'aurelia-bootstrapper'
-        ]
+        ],
+        vendors: ['jquery','jquery-validation','bootstrap'] //le añadi esto
     },
     mode: production ? 'production' : 'development',
     output: {
@@ -251,6 +252,7 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
         new ModuleDependenciesPlugin({
             'aurelia-testing': ['./compile-spy', './view-spy']
         }),
+        
         new HtmlWebpackPlugin({
             template: 'index.ejs',
             metadata: {
