@@ -7,6 +7,7 @@ const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+var webpack = require('webpack');
 
 // config helpers:
 const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
@@ -251,6 +252,11 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
         new AureliaPlugin(),
         new ModuleDependenciesPlugin({
             'aurelia-testing': ['./compile-spy', './view-spy']
+        }),
+
+        new webpack.ProvidePlugin({
+            'window.jQuery': 'jquery',
+            'window.$': 'jquery',
         }),
         
         new HtmlWebpackPlugin({
