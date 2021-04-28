@@ -2,6 +2,7 @@
   <require from="../../resources/attributes/tooltip"></require>
   <require from="../../resources/elements/paginator"></require>
   <app-header></app-header>
+  <img src="../../assets/img/homeimg.png" alt="" class="fondoHome">
   <div id="demo" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ul class="carousel-indicators">
@@ -255,7 +256,5 @@
       </div>
     </div>
   </div>
-  <div repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
-    ${row}
-  </div>
+  
 </template>

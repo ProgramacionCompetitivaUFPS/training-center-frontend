@@ -796,10 +796,10 @@ th {
     padding-top: 0;
 }
 
-/*.modal-backdrop.in {
+.modal-backdrop.in {
     filter: alpha(opacity=90);
     opacity: 0.9;
-}*/
+}
 
 .modal-content {
     border-radius: 0em;
@@ -1252,6 +1252,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 .canvas-container{
 	width: 101%;
     height: 50em;
+
     
 }
 
@@ -1266,7 +1267,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 /*css home*/
 
 .navbar {
-    background-color: #e74c3c !important;
+    background-color:  #9e0c24 !important;
     padding: 0;
 }
 
@@ -1323,6 +1324,15 @@ tr:nth-child(2n) td .ufps-score-gold {
 .carousel-inner img {
     width: 100%;
     height: 100%;
+}
+.fondoHome{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display:block;
+    display:inline-block;
+    line-height:0;
 }
 
 #cards {

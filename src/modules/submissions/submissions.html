@@ -64,14 +64,12 @@
       <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
     </div>
 
-    <!---Modal para detalle del envío--->
-    <div class="modal fade" id="submission-detail" ref="submissionDetail" tabindex="-1" role="dialog" aria-labelledby="submission-detail">
+    <!---Modal para detalle del envío-->
+    <div class="modal" id="submission-detail" ref="submissionDetail" tabindex="-1" role="dialog" aria-labelledby="submission-detail">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+              
             <table>
               <thead>
                 <tr>
@@ -83,6 +81,13 @@
                   <th class="text-center">Lenguaje</th>
                 </tr>
               </thead>
+              
+            </table>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
               <tbody>
                 <tr>
                   <td class="text-center">
@@ -114,7 +119,6 @@ ${submissionLoaded.code}</code>
                   </td>
                 </tr>
               </tbody>
-            </table>
           </div>
         </div>
       </div>

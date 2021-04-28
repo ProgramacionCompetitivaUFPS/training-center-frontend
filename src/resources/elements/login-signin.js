@@ -57,12 +57,13 @@ export class LoginSignin {
     * Valida los datos e intenta iniciar sesión
     */
   login() {
-
+     
     if (this.userLogin.email !== '' && this.userLogin.password !== '' && this.userLogin.email != null && this.userLogin.password !== null) {
       this.authorizationService.auth(this.userLogin)
         .then((data) => {
           this.authorizationService.login(data.token)
           this.router.navigate('')
+          location.reload();
         }) // Si el inicio es valido, guarda el token y redirige al inicio
         .catch(error => {
           switch (error.status) {
@@ -80,7 +81,9 @@ export class LoginSignin {
     } else {
       this.alertService.showMessage(MESSAGES.loginIncompleteData)
     }
+    
   }
+  
 
   /**
    * Envia al servidor los datos del nuevo usuario a registrar.

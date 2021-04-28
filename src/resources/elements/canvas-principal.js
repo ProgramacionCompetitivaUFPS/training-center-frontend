@@ -45,7 +45,6 @@ export class CanvasPrincipal {
 
 
     load() {
-
         this.ctx = this.CANVAS.getContext("2d");
 
         this.adjustCanvasResolution();
