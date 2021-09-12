@@ -24,7 +24,7 @@ export class CanvasPrincipal {
 
         this.CANVAS = HTMLCanvasElement;
         this.ctx = null;
-        this.img_mutex = -3;
+        //this.img_mutex = -1;
 
         this.mouseX = 0;
         this.mouseY = 0;
@@ -54,7 +54,7 @@ export class CanvasPrincipal {
         this.CANVAS.addEventListener('click', (event) => {
 
             if (this.its_this_planet(this.planet1)) {
-                this.routerService.navigate('transicion');
+                this.routerService.navigate('colegios');
 
 
             } else if (this.its_this_planet(this.planet2)) {
@@ -70,12 +70,12 @@ export class CanvasPrincipal {
 
         this.background.onload = () => {
 
-            this.img_mutex++;
-            this.iterate();
+            //this.img_mutex++;
+            //this.iterate();
         }
 
         this.planet1 = {
-            name: "Training Center High School",
+            name: "Training Center",
             w: 500,
             h: 500,
             x: 0,
@@ -84,15 +84,15 @@ export class CanvasPrincipal {
             right: 1
         }
         this.planet1.x = 0.1091326908821349 * this.CANVAS.width - this.planet1.w / 2;
-        this.planet1.y = 0.6528057553956835 * this.CANVAS.height - 5 * this.planet1.h / 8;
+        this.planet1.y = 0.6528057553956835 * this.CANVAS.height - 2.8 * this.planet1.h / 8;
 
         this.planet1_IMG.onload = () => {
-            this.img_mutex++;
-            this.iterate();
+            //this.img_mutex++;
+            //this.iterate();
         }
 
         this.planet2 = {
-            name: "Training Center University",
+            name: "Training Center",
             w: 500,
             h: 500,
             x: 0,
@@ -105,12 +105,12 @@ export class CanvasPrincipal {
 
 
         this.planet2_IMG.onload = () => {
-            this.img_mutex++;
-            this.iterate();
+            //this.img_mutex++;
+            //this.iterate();
 
         }
         this.nave = {
-            name: "Nave",
+            name: " Nave",
             w: 280,
             h: 180,
             x: 0,
@@ -118,13 +118,15 @@ export class CanvasPrincipal {
             bottom: -1,
             right: -1
         }
-        this.nave.x = 0.9423498888065234 * this.CANVAS.width - this.nave.w / 2;
-        this.nave.y = 0.5616546762589928 * this.CANVAS.height - 5 * this.nave.h / 8;
+        //this.nave.x = 0.9423498888065234 * this.CANVAS.width - this.nave.w / 2;
+        //this.nave.y = 0.6016546762589928 * this.CANVAS.height - 4 * this.nave.h / 8;
+        this.nave.x = 1.2423498888065234 * this.CANVAS.width - this.nave.w / 2;
+        this.nave.y = 0.816546762589928 * this.CANVAS.height - 4 * this.nave.h / 8;
 
 
-        this.nave.onload = () => {
-            this.img_mutex++;
-            this.iterate();
+        this.Nave.onload = () => {
+           // this.img_mutex++;
+           this.iterate();
 
         }
     }
@@ -137,6 +139,23 @@ export class CanvasPrincipal {
         this.ctx.drawImage(this.planet1_IMG, this.planet1.x, this.planet1.y, this.planet1.w, this.planet1.h);
         this.ctx.drawImage(this.planet2_IMG, this.planet2.x, this.planet2.y, this.planet2.w, this.planet2.h);
         this.ctx.drawImage(this.Nave, this.nave.x, this.nave.y, this.nave.w, this.nave.h);
+
+        this.ctx.shadowBlur = 10;
+        this.ctx.shadowColor = "#a91b0d";
+        this.ctx.font = "bold 35px CroxoxoianText";
+        this.ctx.fillStyle = "rgb(255, 255, 255)";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(this.planet1.name, (this.planet1.x +25) + this.planet1.w / 2, (this.planet1.y - 20) + this.planet1.h -280);
+        this.ctx.fillText("High School", (this.planet1.x +25) + this.planet1.w / 2, (this.planet1.y - 20) + this.planet1.h -240);
+        
+
+        this.ctx.shadowBlur = 10;
+        this.ctx.shadowColor = "#a91b0d";
+        this.ctx.font = "bold 35px CroxoxoianText";
+        this.ctx.fillStyle = "rgb(255, 255, 255)";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(this.planet2.name, (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y + 30) + this.planet2.h + -220);
+        this.ctx.fillText("University", (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y + 30) + this.planet2.h + -180);
     }
 
     adjustCanvasResolution() {
@@ -148,40 +167,41 @@ export class CanvasPrincipal {
     }
 
     iterate() {
-
-        let grados = 180;
-        if (this.img_mutex == 0) {
-            
+      
+        this.draw();
+        this.adjustCanvasResolution();
+        this.check_highlights();
             setInterval(() => {
-                if (this.CANVAS != null) {
-                    if (grados >= 60) {
-                        
+                
+                let grados = 4;
+                
+                        setInterval(() => {
+                            if (this.CANVAS != null) {
+                                
+                                this.adjustCanvasResolution();
+                                if(grados >-60){
+                                    this.turn(this.nave, grados);
+                                    this.draw();
+                                    this.check_highlights();
+                                    grados -=1;
+                                }
+                                
+                            }
+                        }, 50);
+                        this.nave.x = 1.2423498888065234 * this.CANVAS.width - this.nave.w / 2;
+                        this.nave.y = 1.116546762589928 * this.CANVAS.height - 4 * this.nave.h / 8;
+                        grados = 0;
                         this.turn(this.nave, grados);
-                    }
-                    this.adjustCanvasResolution();
-                   /* this.turn(this.planet1, grados);
-                    this.turn(this.planet2, grados + 180);*/
-                    //this.turn(this.nave, grados);
-                    this.draw();
-                    //this.draw_sun();
-                    this.check_highlights();
-
-                    grados -=1;
-
-                }
-            }, 50);
-
-        }
+            }, 4500);
+        
+        
+        
     }
 
     turn(planet, grados) {
-        var rad = Math.PI / 180;
-        var theta = 170;
-        var rx = (-1.8) * this.CANVAS.width;
-        var ry = 0;
-        var a = grados;
-        planet.x = this.CANVAS.width / 2 + rx * Math.cos(a * rad) * Math.cos(theta) - ry * Math.sin(a * rad) * Math.sin(theta) - planet.w / 8;
-        planet.y = this.CANVAS.height / 2 + rx * Math.cos(a * rad) * Math.sin(theta) + ry * Math.sin(a * rad) * Math.cos(theta) - 5 * planet.h / 5;
+        planet.x += grados;
+        planet.y += grados / 2.5;
+        
     }
 
     check_highlights() {
@@ -215,25 +235,23 @@ export class CanvasPrincipal {
         this.ctx.font = "30px Comic Sans MS";
         this.ctx.fillStyle = "rgb(241, 196, 15)";
         this.ctx.textAlign = "center";
-        this.ctx.fillText(planet.name, (planet.x +70) + planet.w / 2, (planet.y - 20) + planet.h -520);
+        //this.ctx.fillText(planet.name, (planet.x +70) + planet.w / 2, (planet.y - 20) + planet.h -520);
 
-        this.CANVAS.style.cursor = "pointer";
     }
     addHighlight2(planet) {
         this.ctx.beginPath();
         this.ctx.arc(planet.x + planet.w / 2, planet.y + 4 * planet.h / 8, 270, 0, 2 * Math.PI);
         this.ctx.lineWidth = 15;
         this.ctx.strokeStyle = "rgba(255, 255, 0, .2)";
-        this.ctx.stroke();
+        this.ctx.stroke(); // esto es el circulo
 
         this.ctx.shadowBlur = 10;
         this.ctx.shadowColor = "#000";
         this.ctx.font = "30px Comic Sans MS";
         this.ctx.fillStyle = "rgb(241, 196, 15)";
         this.ctx.textAlign = "center";
-        this.ctx.fillText(planet.name, (planet.x - 70) + planet.w / 2, (planet.y + 30) + planet.h + 25);
+        //this.ctx.fillText(planet.name, (planet.x - 70) + planet.w / 2, (planet.y + 30) + planet.h + 25);
 
-        this.CANVAS.style.cursor = "pointer";
     }
 
     its_this_planet(planet) {

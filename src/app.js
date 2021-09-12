@@ -141,6 +141,17 @@ export class App {
                 roles: ["admin", "coach", "student"]
             }
         },
+        // Niveles
+        {
+            name: "levels",
+            route: "niveles",
+            moduleId: PLATFORM.moduleName("./modules/levels/niveles"),
+            layoutView: PLATFORM.moduleName("layouts/logged.html"),
+            nav: true,
+            settings: {
+                roles: ["admin", "coach", "student"]
+            }
+        },
         // Ranking
         {
             name: "ranking",
