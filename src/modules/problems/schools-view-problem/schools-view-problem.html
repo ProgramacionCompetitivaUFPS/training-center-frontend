@@ -26,7 +26,8 @@
     </div>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-7">
+        <!--div class="col-lg-7"></div-->
+        <div class="col-lg-12">
           <div class="ufps-separator-mini"></div>
           <div class="card">
             <div class="card-body">
@@ -74,13 +75,48 @@
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="my-submissions" role="tabpanel" aria-labelledby="my-submissions-tab">Etsy mixtape wayfarers,
-                    ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi
-                    farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore
-                    carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred
-                    pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk
-                    vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork
-                    sustainable tofu synth chambray yr.
+                  <div class="tab-pane fade" id="my-submissions" role="tabpanel" aria-labelledby="my-submissions-tab">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="ufps-separator-mini"></div>
+                        <div class="card">
+                          <div class="card-body">
+                            <blockly-editor></blockly-editor>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="ufps-separator-mini"></div>
+                      <div class="card">
+                        <div class="card-body">
+                          <p show.bind="lang === 'en'">
+                            <strong>Problema:</strong> ${problem.titleEN}</p>
+                          <p show.bind="lang === 'es'">
+                            <strong>Problema:</strong> ${problem.titleES}</p>
+                          <p>
+                            <strong>Dificultad:</strong> ${problem.level}</p>
+                          <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
+                          <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
+                          <button click.delegate="submit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
+                        </div>
+                      </div>
+                      <div class="card panel-resolved" if.bind="problem.resolved">
+                        <div class="card-body">
+                          <div class="media">
+                            <div class="media-left">
+                              <img class="media-object" src="../../../assets/img/logo-transparent-64px.png">
+                            </div>
+                            <div class="media-body">
+                              <h5 class="media-heading">¡Felicitaciones!</h5>
+                              <p>Ya has resuelto este problema anteriormente.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
                   </div>
                   <div class="tab-pane fade" id="forum" role="tabpanel" aria-labelledby="forum-tab">Etsy mixtape wayfarers,
                     ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi
@@ -160,17 +196,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-5">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="ufps-separator-mini"></div>
-              <div class="card">
-                <div class="card-body">
-                  <blockly-editor></blockly-editor>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!--div class="col-lg-5">
           <div class="row">
             <div class="ufps-separator-mini"></div>
             <div class="card">
@@ -200,7 +226,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div-->
       </div>
     </div>
   </div>

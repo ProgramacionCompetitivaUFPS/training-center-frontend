@@ -41,7 +41,8 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
             // https://github.com/aurelia/binding/issues/702
             // Enforce single aurelia-binding, to avoid v1/v2 duplication due to
             // out-of-date dependencies on 3rd party aurelia plugins
-            'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding')
+            'aurelia-binding': path.resolve(__dirname, 'node_modules/aurelia-binding'),
+            'isarray': path.resolve(__dirname, 'node_modules/isarray')
         }
     },
     entry: {
@@ -50,7 +51,7 @@ module.exports = ({ production } = {}, { extractCss, analyze, tests, hmr, port, 
             // 'promise-polyfill/src/polyfill',
             'aurelia-bootstrapper'
         ],
-        vendors: ['jquery','jquery-validation','bootstrap'] //le añadi esto
+        vendors: ['jquery','bootstrap']
     },
     mode: production ? 'production' : 'development',
     output: {

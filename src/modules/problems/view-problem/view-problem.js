@@ -42,7 +42,7 @@ export class ViewProblem {
 
     this.problemService.validateTypeCategory(this.id)
       .then(dataCategory => {
-        console.log(dataCategory)
+
         if (dataCategory.type == 2 || dataCategory.type == 0){
            this.routerService.navigate('/');
         }
@@ -104,7 +104,7 @@ export class ViewProblem {
    */
   validateCode () {
     if (this.code.length === 1) {
-      if (this.code[0].type.startsWith('text/') || this.code[0].name.endsWith('.java') || this.code[0].name.endsWith('.cpp') || this.code[0].name.endsWith('.c') || this.code[0].name.endsWith('.cc') || this.code[0].name.endsWith('.cp') || this.code[0].name.endsWith('.cxx') || this.code[0].name.endsWith('.py')) {
+      if (this.code[0].name.endsWith('.java') || this.code[0].name.endsWith('.cpp') || this.code[0].name.endsWith('.c') || this.code[0].name.endsWith('.cc') || this.code[0].name.endsWith('.cp') || this.code[0].name.endsWith('.cxx') || this.code[0].name.endsWith('.py')) {
         this.sourceValid = true
         if(this.code[0].name.endsWith('.java')) {
           this.language = 'Java'

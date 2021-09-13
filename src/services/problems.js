@@ -258,13 +258,19 @@ export class Problems {
         if (contestId !== undefined) data.append('data[contest_problem_id]', contestId)
 
         data.append('code', code)
-        if (XMLCode !== undefined) data.append('XMLCode', XMLCode)
+
+        let blocklySubmission = 0;
+        if (XMLCode !== undefined){
+            data.append('XMLCode', XMLCode)
+            blocklySubmission = 1
+        } 
         
         return this.httpService.httpClient
             .fetch(API.endpoints.problems + '/' + problemId + '/submit', {
                 method: 'post',
                 headers: {
-                    'Authorization': 'Bearer ' + this.jwtService.token
+                    'Authorization': 'Bearer ' + this.jwtService.token,
+                    blocklySubmission
                 },
                 body: data
             })

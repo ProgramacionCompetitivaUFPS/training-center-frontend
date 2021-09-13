@@ -111,10 +111,17 @@
                         <a click.delegate="downloadCode()" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center" if.bind="downloadActive">Descargar código</a>
                         <div class="ufps-separator-mini"></div>
                     </div>
-                    <pre>
-                      <code>
-${submissionLoaded.code}</code>
-                    </pre>
+                    <div show.bind="!isABlocklyCode">
+                      <pre>
+                        <code>
+                          ${submissionLoaded.code}
+                        </code>
+                      </pre>
+                    </div>
+                    <div show.bind="isABlocklyCode">
+                      <blockly-editor>
+                      </blockly-editor>
+                    </div>
                     
                   </td>
                 </tr>

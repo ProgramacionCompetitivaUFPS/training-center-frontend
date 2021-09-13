@@ -2,11 +2,7 @@ import { Auth, Http } from "services/services"
 import { AuthorizeStep } from "./authorize-step"
 import 'bootstrap';
 
-//import $ from 'jquery';
 require('jquery');
-
-
-
 
 /**
  * App (Main Module)

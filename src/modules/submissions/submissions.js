@@ -40,6 +40,7 @@ export class Submissions {
     this.page = 1
     this.downloadActive = false
     this.totalPages = 1
+    this.isABlocklyCode = false
     this.veredictOptions = [
       {value : 'ALL', text : 'Cualquier veredicto'},
       {value : 'ACC', text : 'Correcto'},
@@ -140,11 +141,12 @@ export class Submissions {
     window.$('#submission-detail').modal('show')
     this.problemService.getSubmission(this.submissionLoaded.file_name)
       .then(data => {
+        console.log('OBTENIENDO SUBMISSION',data)
         this.codeDownload = data
         this.downloadActive = true
         let reader  = new FileReader()
         reader.onload = () => {
-          this.submissionLoaded.code = reader.result
+          this.validateSourceCode(reader.result, data.type)
         }
         reader.readAsText(data)
       })
@@ -175,5 +177,17 @@ export class Submissions {
         elem.click()
         document.body.removeChild(elem)
     }
+  }
+
+  validateSourceCode(code, sourceType){
+    
+    if(!sourceType.endsWith('xml')){
+      this.isABlocklyCode = false
+      this.submissionLoaded.code = code
+    }else{
+      sessionStorage.setItem('xmlCode', code)
+      this.isABlocklyCode = true
+    }
+    
   }
 }
