@@ -1,4 +1,6 @@
 <template>
+  <require from="../../resources/attributes/tooltip"></require>
+  <require from="../../resources/elements/paginator"></require>
   <require from="swiper/swiper-bundle.css"></require>
   <require from="../../assets/css/home-styles.css"></require>
   <!---Boton subir--->
@@ -11,8 +13,8 @@
       <nav>
         <a href="#">Principal</a>
         <a href="#" class="text_dark">Material público</a>
-        <a href="#" class="text_dark">Iniciar sesión</a>
-        <a href="#" class="text_dark">Registrarse</a>
+        <a data-toggle="modal" data-target="#iniciar-sesion" href="" class="text_dark">Iniciar sesión</a>
+        <a data-toggle="modal" data-target="#iniciar-sesion" href="" class="text_dark">Registrarse</a>
       </nav>
 
       <!--.textos-header-->
@@ -101,7 +103,7 @@
       <div class="row row-slides">
         <div class="main-container-slides">
           <!-- Swiper -->
-          <div class="swiper mySwiper">
+          <div ref="mySwiper" class="swiper mySwiper">
             <div class="swiper-wrapper">
               <!--Slide-->
               <div class="swiper-slide">
@@ -209,7 +211,7 @@
                 </div>
               </div>
             </div>
-            <div class="swiper-pagination"></div>
+            <div ref="swiperPagination" class="swiper-pagination"></div>
           </div>
         </div>
       </div>
@@ -279,11 +281,11 @@
   </footer>
   <!-- Footer -->
   <!-- modal para inicio de sesion-->
-  <!--div if.bind="authService.isVisitor" class="modal" id="iniciar-sesion" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
+  <div if.bind="authService.isVisitor()" class="modal" id="iniciar-sesion" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <login-signin></login-signin>
       </div>
     </div>
-  </div-->
+  </div>
 </template>
