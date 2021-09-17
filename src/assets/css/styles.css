@@ -9,6 +9,18 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+@import url('http://fonts.cdnfonts.com/css/croxoxoiantext');
+
+@font-face {
+     font-family: 'CroxoxoianText', sans-serif;
+     src: url('http://fonts.cdnfonts.com/css/croxoxoiantext');
+ }
+ @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+ @font-face {
+    font-family: 'Ubuntu', sans-serif;
+    src:url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
+ }
+
 body {
     height: 101%;
     width: 100%;
@@ -1190,6 +1202,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 
 .ufps-btn-nav .bi-three-dots-vertical {
     padding-left: 0.6875em !important;
+    margin-top: 0.5em;
 }
 
 .bi-question-circle-fill {
@@ -1248,7 +1261,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 
 /*Cnvas Principal*/
 .canvas-container{
-	height: 35.3em;
+	height: 37em;
     width: 100%;
     overflow:hidden;
     padding: 0;
@@ -1265,17 +1278,6 @@ tr:nth-child(2n) td .ufps-score-gold {
   width: 100%;
 
 }
-@import url('http://fonts.cdnfonts.com/css/croxoxoiantext');
-
-@font-face {
-     font-family: 'CroxoxoianText', sans-serif;
-     src: url('http://fonts.cdnfonts.com/css/croxoxoiantext');
- }
- @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
- @font-face {
-    font-family: 'Ubuntu', sans-serif;
-    src:url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
- }
 
 
 /*css home*/
@@ -1283,6 +1285,7 @@ tr:nth-child(2n) td .ufps-score-gold {
 .navbar {
     background-color:  #9e0c24 !important;
     padding: 0;
+    height: 4em;
 }
 
 .navbar a {
@@ -1313,7 +1316,8 @@ tr:nth-child(2n) td .ufps-score-gold {
     color: white;
     font-family: 'Anton', sans-serif;
     font-size: 1.3em;
-    padding-top: 0.3em;
+    padding-top: 3em;
+    padding-right: 0.3em;
 }
 
 .title:hover {
@@ -1719,7 +1723,6 @@ tr:nth-child(2n) td .ufps-score-gold {
     left : 53rem;
     z-index: 1;
 }
-@import url('http://fonts.cdnfonts.com/css/croxoxoiantext');
      
 .niveles>h1.base1{
     position: absolute;
@@ -1733,7 +1736,6 @@ tr:nth-child(2n) td .ufps-score-gold {
     -webkit-text-stroke: 2px black;
     color: transparent;
 }
-@import url('http://fonts.cdnfonts.com/css/croxoxoiantext');
 .niveles>h1.base2{
     position: absolute;
     height:auto;
@@ -1746,7 +1748,6 @@ tr:nth-child(2n) td .ufps-score-gold {
     -webkit-text-stroke: 2px black;
     color: transparent;
 }
-@import url('http://fonts.cdnfonts.com/css/croxoxoiantext');
 .niveles>h1.base3{
     position: absolute;
     height:auto;

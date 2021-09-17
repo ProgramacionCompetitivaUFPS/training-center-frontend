@@ -3,6 +3,7 @@
   <require from="../elements/paginator"></require>
   
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    
     <div class="container">
       <div class="navbar-header row">
         <div class="title">
@@ -11,13 +12,14 @@
           </a>
           <a if.bind="!authService.isAuthenticated()" class="title" href="#">Training Center</a>
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        
       </div>
-      <div class="collapse navbar-collapse">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <div class="nav navbar-nav navbar-left">
-
+          <ul class="navbar-nav mr-auto">
           <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${(schools.isActive) ? 'active' : ''}" if.bind="(authService.isStudent() || authService.isCoach() || authService.isAdmin())">
             <a href="#" class="dropdown-toggler" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Colegios
             </a>
@@ -67,7 +69,7 @@
           <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
             <a route-href="route: admin">Administración</a>
           </li>
-        
+        </ul>
         </div>
         <div class="nav ml-auto">
 
