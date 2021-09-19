@@ -1,3 +1,3 @@
-export class niveles {
-
+export class Niveles {
+  
 }

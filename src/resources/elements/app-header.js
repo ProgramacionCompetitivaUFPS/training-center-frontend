@@ -55,5 +55,13 @@ export class AppHeader {
     search() {
         if (this.query.length > 0) this.routerService.navigate('/buscar/' + this.query.replace(/\s/g, '+'))
     }
+    show(){
+        var mostrar = document.getElementById('btn-toggle').getAttribute("aria-expanded");
+        if (mostrar = "false"){
+            mostrar = "true";
+        }else{
+            mostrar = "false";
+        }
+    }
 
 }

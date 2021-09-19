@@ -6,7 +6,7 @@
     
     <div class="container">
       <div class="navbar-header row">
-        <div class="title">
+        <div>
           <a href="/">
             <img alt="UFPS Training Center" src="../../assets/img/logo-transparent.png" id="logo">
           </a>
@@ -14,63 +14,61 @@
         </div>
         
       </div>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button id="btn-toggle" click.delegate="show()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div class="nav navbar-nav navbar-left">
           <ul class="navbar-nav mr-auto">
-          <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${(schools.isActive) ? 'active' : ''}" if.bind="(authService.isStudent() || authService.isCoach() || authService.isAdmin())">
-            <a href="#" class="dropdown-toggler" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Colegios
-            </a>
-            <div class="dropdown-menu ufps-dropdown-menu" aria-labelledby="dropdownMenu2">
-              
-              <button class="dropdown-item" type="button">
-                <a href="principal/colegios" >Ir a Training Center High School</a>
-              </button>
-              <button class="dropdown-item" type="button">
-                <a href="materiales/colegios" >Estudiar una lección</a>
-              </button>
-              <button class="dropdown-item" type="button">
-                <a href="problemas/colegios" >Resolver ejercicios</a>
-              </button>
-              <button class="dropdown-item" type="button">
-                <a href="clases/colegios" >Ir a las clases</a>
-              </button>
-            </div>
-          </li>
+            <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${(schools.isActive) ? 'active' : ''}" if.bind="(authService.isStudent() || authService.isCoach() || authService.isAdmin())">
+              <a href="#" data-toggle="dropdown" role="button">Colegios
+              </a>
+              <div class="dropdown-menu ufps-dropdown-menu" aria-labelledby="dropdownMenu2">
+                
+                <button class="dropdown-item" type="button">
+                  <a href="principal/colegios" >Ir a Training Center High School</a>
+                </button>
+                <button class="dropdown-item" type="button">
+                  <a href="materiales/colegios" >Estudiar una lección</a>
+                </button>
+                <button class="dropdown-item" type="button">
+                  <a href="problemas/colegios" >Resolver ejercicios</a>
+                </button>
+                <button class="dropdown-item" type="button">
+                  <a href="clases/colegios" >Ir a las clases</a>
+                </button>
+              </div>
+            </li>
 
-          <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isStudent()">
-            <a href="problemas">Problemas</a>
-          </li>
-          <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${problems.isActive ? 'active' : ''}" if.bind="authService.isCoach() || authService.isAdmin()">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              Problemas
-            </a>
-            <div class="dropdown-menu ufps-dropdown-menu" aria-labelledby="dropdownMenu2">
-              <button class="dropdown-item" type="button">
-                <a route-href="route: problems">Administrar Categorías</a>
-              </button>
-              <button class="dropdown-item" type="button">
-                <a href="/problemas/nuevo">Añadir problemas</a>
-              </button>
-            </div>
-          </li>
+            <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isStudent()">
+              <a href="problemas">Problemas</a>
+            </li>
+            <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${problems.isActive ? 'active' : ''}" if.bind="authService.isCoach() || authService.isAdmin()">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Problemas
+              </a>
+              <div class="dropdown-menu ufps-dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button class="dropdown-item" type="button">
+                  <a route-href="route: problems">Administrar Categorías</a>
+                </button>
+                <button class="dropdown-item" type="button">
+                  <a href="/problemas/nuevo">Añadir problemas</a>
+                </button>
+              </div>
+            </li>
 
-          <li class="ufps-btn-nav ${classes.isActive ? 'active' : ''}" if.bind="authService.isStudent() || authService.isCoach()">
-            <a route-href="route: classes">Clases</a>
-          </li>
-          <li class="ufps-btn-nav ${ranking.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
-            <a route-href="route: ranking">Ranking</a>
-          </li>
-          <li class="ufps-btn-nav ${contest.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
-            <a route-href="route: contest">|  Maratones</a>
-          </li>
-          <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
-            <a route-href="route: admin">Administración</a>
-          </li>
-        </ul>
-        </div>
+            <li class="ufps-btn-nav ${classes.isActive ? 'active' : ''}" if.bind="authService.isStudent() || authService.isCoach()">
+              <a route-href="route: classes">Clases</a>
+            </li>
+            <li class="ufps-btn-nav ${ranking.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
+              <a route-href="route: ranking">Ranking</a>
+            </li>
+            <li class="ufps-btn-nav ${contest.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
+              <a route-href="route: contest">|  Maratones</a>
+            </li>
+            <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
+              <a route-href="route: admin">Administración</a>
+            </li>
+          </ul>
         <div class="nav ml-auto">
 
           <form class="form-inline ml-auto" submit.delegate="search()" if.bind="authService.authenticated">

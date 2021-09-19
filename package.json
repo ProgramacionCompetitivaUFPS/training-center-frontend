@@ -9,6 +9,7 @@
     "license": "MIT",
     "dependencies": {
         "@babel/polyfill": "^7.4.4",
+        "@ng-bootstrap/ng-bootstrap": "^10.0.0",
         "animate.css": "^4.1.1",
         "aurelia-animator-css": "^1.0.4",
         "aurelia-bootstrapper": "^2.3.3",

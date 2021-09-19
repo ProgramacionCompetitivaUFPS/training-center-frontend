@@ -179,7 +179,7 @@ export class CanvasPrincipal {
                             if (this.CANVAS != null) {
                                 
                                 this.adjustCanvasResolution();
-                                if(grados >-60){
+                                if(grados >-80){
                                     this.turn(this.nave, grados);
                                     this.draw();
                                     this.check_highlights();
