@@ -1,5 +1,7 @@
 //import * as Blockly from 'Blockly'
 //import 'Blockly/python'
+//https://gist.github.com/thomasdenney/aa76acb36d47120ee338b3bd96459556
+//REVISAR ESTE https://github.com/Program-AR/blockly-to-svg/blob/master/Blockly-to-SVG.js
 import * as Blockly from 'blockly/core'
 import 'blockly/blocks'
 import 'blockly/python'
