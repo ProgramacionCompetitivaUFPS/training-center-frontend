@@ -23,7 +23,7 @@ export class AppHeader {
         this.routerService = routerService
         
     }
-
+        
 
     /**
      * Genera las banderas que indican a los botones del navbar cuando deben activarse.
@@ -41,7 +41,6 @@ export class AppHeader {
         this.admin = this.routerService.navigation.find(i => i.config.name.indexOf('admin') !== -1)
         this.contest = this.routerService.navigation.find(i => i.config.name.indexOf('contest') !== -1)
     }
-
     /**
      * Cierra sesión en la aplicación
      */

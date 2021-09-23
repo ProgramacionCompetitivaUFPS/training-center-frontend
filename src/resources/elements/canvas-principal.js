@@ -1,6 +1,7 @@
 import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 import { Auth } from 'services/services'
+import Tour from 'bootstrap-tour'
 
 /**
  * CanvasPrincipal (Element)
@@ -43,8 +44,6 @@ export class CanvasPrincipal {
     attached() {
         this.load();
     }
-
-
     load() {
         this.ctx = this.CANVAS.getContext("2d");
 
