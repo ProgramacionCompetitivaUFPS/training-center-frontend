@@ -1,19 +1,19 @@
 <template>
   <require from="../../../resources/attributes/tooltip"> </require>
-  <div data-step="1" data-intro="Hello step one!" slot="content" class="body-slot">
+  <div data-step="1" data-intro="Bienvenido a Training Center High School" slot="content" class="body-slot">
     <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button">Tour</a>
     <br>
-    <h1 data-step="2" data-intro="Hello step two!" class="bienvenido">Bienvenido. ¿Qué vamos a hacer hoy?</h1>
+    <h1 class="bienvenido">Bienvenido. ¿Qué vamos a hacer hoy?</h1>
       <div class="row">
         <div class="col-md-6 text-right">
-          <div class="caja">
+          <div data-step="2" data-intro="Aqui podrás encontrar todo el material necesario para este viaje" class="caja">
             <h3 id="paso1"><a href="materiales/colegios">Practica una lección</a></h3>
             <pre>Revisa el repositorio de lecciones,
 ¡nunca dejes de aprender!</pre>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="caja">
+          <div data-step="3" data-intro="Aquí podrás empezar a entrenar para ser el mejor" class="caja">
             <h3 id="paso2"><a href="niveles/niveles">Resolver ejercicios</a></h3>
             <pre>Es importante apropiar el conocimiento
 resolviendo algunos ejercicios,¡Vamos!</pre>

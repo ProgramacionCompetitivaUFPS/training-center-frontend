@@ -3,7 +3,7 @@
   <require from="../../resources/elements/paginator"></require>
   <require from="swiper/swiper-bundle.css"></require>
   <require from="../../assets/css/home-styles.css"></require>
-  <!---Boton subir--->
+  <!---Boton subir-->
   <a href="#" id="js_up" class="up-button">
     <i class="fa fa-rocket" aria-hidden="true"></i>
   </a>
@@ -12,19 +12,22 @@
       <a href="#" class="a_logo"><img src="../../assets/img/logo-transparent.png" class="logo"></a>
       <nav>
         <a href="#">Principal</a>
-        <a href="#" class="text_dark">Material público</a>
-        <a data-toggle="modal" data-target="#iniciar-sesion" href="" class="text_dark">Iniciar sesión</a>
-        <a data-toggle="modal" data-target="#iniciar-sesion" href="" class="text_dark">Registrarse</a>
+        <a href="#" data-step="4" data-intro="Aquí podrás encontrar todo el material publico necesario para este viaje"class="text_dark">Material público</a>
+        <a data-step="3" data-intro="Si ya tienes una cuenta, aquí puedes empezar tu viaje"data-toggle="modal" data-target="#iniciar-sesion" href="" class="text_dark">Iniciar sesión</a>
+        <a data-step="2" data-intro="Registrate y haz parte de esta aventura"data-toggle="modal" data-target="#iniciar-sesion" href="" class="text_dark">Registrarse</a>
+        <a data-step="1" data-intro="Bienvenido a Training Center, conoce lo nuevo" class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button">Tour</a>
       </nav>
 
       <!--.textos-header-->
-      <div class="texts-header">
         <!--section.textos-header-->
+        
         <section class="text-header">
+          
           <h1 class="h11">Haz volar tu</h1>
           <h1 class="h12">imaginación</h1>
           <h2>Con los mejores competidores de la región</h2>
         </section>
+        
         <div class="div_img_craft">
           <img src="../../assets/img/Recurso_4.png" class="img_craft">
         </div>
@@ -34,17 +37,17 @@
         <div class="div_img_craft">
           <img src="../../assets/img/Recurso_5.png" class="img_separator">
         </div>
+        
         <!--div class="custom-shape-divider-bottom-1623101527">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                     <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill" style="stroke: none; fill: #fff;"></path>
                 </svg>
             </div-->
-      </div>
     </header>
   </section>
 
   <main>
-    <div class="container-fluid container-icons">
+    <div data-step="5" data-intro="Nuestras estadísticas" class="container-fluid container-icons">
       <div class="row">
         <div class="col-sm-3 card-01 text-center">
           <div class="row">
@@ -96,7 +99,7 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid marathons-section">
+    <div data-step="6" data-intro="Lo último en noticias sobre esta aventura" class="container-fluid marathons-section">
       <div class="row novedades">
         Novedades
       </div>
@@ -219,7 +222,7 @@
         Temas de Interés
       </div>
     </div>
-    <div class="container-fluid cards-section">
+    <div data-step="7" data-intro="Nuestra seccion de temas que te pueden interesar"class="container-fluid cards-section">
       <div class="row row-cards">
         <div class="col-sm-4 text-center card-item">
           <div class="card card-section">

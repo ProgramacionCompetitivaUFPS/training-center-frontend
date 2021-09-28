@@ -2,6 +2,8 @@ import Swiper from 'swiper/swiper-bundle.min.js'
 import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 import { Auth } from 'services/services'
+import introJs from 'intro.js';
+import 'intro.js/introjs.css';
 
 /**
  * Home (Module)
@@ -29,4 +31,7 @@ export class Home {
             },
           })
     }
+    tour(){
+      introJs().start();
+  }
 }

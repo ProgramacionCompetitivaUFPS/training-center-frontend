@@ -100,7 +100,7 @@ export class CanvasPrincipal {
             right: -1
         }
         this.planet2.x = 0.8923498888065234 * this.CANVAS.width - this.planet2.w / 2;
-        this.planet2.y = 0.1616546762589928 * this.CANVAS.height - 5 * this.planet2.h / 8;
+        this.planet2.y = 0.2916546762589928 * this.CANVAS.height - 5 * this.planet2.h / 8;
 
 
         this.planet2_IMG.onload = () => {
@@ -153,8 +153,8 @@ export class CanvasPrincipal {
         this.ctx.font = "bold 35px CroxoxoianText";
         this.ctx.fillStyle = "rgb(255, 255, 255)";
         this.ctx.textAlign = "center";
-        this.ctx.fillText(this.planet2.name, (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y + 30) + this.planet2.h + -220);
-        this.ctx.fillText("University", (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y + 30) + this.planet2.h + -180);
+        this.ctx.fillText(this.planet2.name, (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y + 10) + this.planet2.h + -220);
+        this.ctx.fillText("University", (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y + 10) + this.planet2.h + -180);
     }
 
     adjustCanvasResolution() {
@@ -255,6 +255,9 @@ export class CanvasPrincipal {
 
     its_this_planet(planet) {
         return (this.mouseY > planet.y && this.mouseY < planet.y + planet.h && this.mouseX > planet.x && this.mouseX < planet.x + planet.w)
+    }
+    tour(){
+        introJs().start();
     }
 
 }

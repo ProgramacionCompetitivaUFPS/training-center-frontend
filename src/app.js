@@ -1,6 +1,8 @@
 import { Auth, Http } from "services/services"
 import { AuthorizeStep } from "./authorize-step"
 import 'bootstrap';
+import introJs from 'intro.js';
+import 'intro.js/introjs.css';
 
 require('jquery');
 
