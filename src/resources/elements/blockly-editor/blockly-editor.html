@@ -1,5 +1,6 @@
 <template>
-  <div ref="blocklyDiv" id="blockly-editor" style="height: 480px; width: 440px;">
+    <require from="../../../assets/css/blockly-element.css"></require>
+  <div ref="blocklyDiv" id="blockly-editor">
     <xml xmlns="https://developers.google.com/blockly/xml" ref="workspaceBlocks" style="display: none">
         <category name="Input" colour="#5ba55b">
             <block type="prompt_for">
@@ -186,8 +187,8 @@
         </category>
         <sep></sep>
         <!--custom="VARIABLE"-->
-        <category name="Typed Variables" custom="CREATE_TYPED_VARIABLE" id="typed_variables" colour="#a55b80">
-        </category>
+        <!--category name="Typed Variables" custom="CREATE_TYPED_VARIABLE" id="typed_variables" colour="#a55b80">
+        </category-->
         <category name="Dynamic Variables" custom="VARIABLE" colour="#995ba5">
 
 

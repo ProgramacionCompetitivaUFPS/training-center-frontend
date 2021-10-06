@@ -4,7 +4,6 @@ import { Router } from 'aurelia-router'
 import { MESSAGES, SETTINGS, API } from 'config/config'
 import { Problem } from 'models/models'
 import { Alert, Auth, Problems } from 'services/services'
-//import { BlocklyEditor } from 'resources/elements/blockly-editor/blockly-editor'
 
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),

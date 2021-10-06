@@ -2,13 +2,17 @@
 //import 'Blockly/python'
 //https://gist.github.com/thomasdenney/aa76acb36d47120ee338b3bd96459556
 //REVISAR ESTE https://github.com/Program-AR/blockly-to-svg/blob/master/Blockly-to-SVG.js
+import { inject } from 'aurelia-framework'
+import { BlocklytoSvg } from './blockly-to-svg'
+import * as Es from 'blockly/msg/es'
 import * as Blockly from 'blockly/core'
 import 'blockly/blocks'
 import 'blockly/python'
 import 'blockly/javascript'
-import * as Es from 'blockly/msg/es';
+
 
 import { define_panda_variable_blocks } from './typed_variables.js'
+import { exportSVG } from './blockly-to-svg'
 
 /**
  * BlocklyEditor (Element)
@@ -17,11 +21,13 @@ import { define_panda_variable_blocks } from './typed_variables.js'
  * @class BlocklyEditor
  */
 
+ //@inject(Something)
 export class BlocklyEditor {
 
     constructor() {
-        setTimeout(() => {
-        //window.$(function() {
+
+        document.addEventListener('aurelia-composed', () => {
+
             Blockly.setLocale(Es);
 
 
@@ -47,16 +53,22 @@ export class BlocklyEditor {
                     snap: false
                 }
             };
-            console.log("acá estoy")
-            var obj = document.getElementById('blockly-editor');
-            var workspace = Blockly.inject(obj, options)
+           
+            //var obj = window.$('#blockly-editor')[0];
+            //var obj = document.querySelector('#blockly-editor');
+
+            //console.log("acá estoy", obj)
+            console.log("OTROOOO", this.blocklyDiv)
+            var workspace = Blockly.inject(this.blocklyDiv, options)
+
+            console.log("workspace", workspace)
             
             //this.createBlocksCustomized()
-            //.createGeneratorCodes()
+            this.createGeneratorCodes()
 
-
+            /*
             const createFlyout = function (workspace) {
-
+                console.log("createFlyout");
                 let xmlList = [];
                 // Add your button and give it a callback name.
 
@@ -81,6 +93,7 @@ export class BlocklyEditor {
             }
 
             workspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout)
+            */
 
             Blockly.Xml.domToWorkspace(this.workspaceBlocks, workspace);
 
@@ -95,6 +108,8 @@ export class BlocklyEditor {
                 // Almacena la información en sessionStorage
                 sessionStorage.setItem('xmlCode', xml_example_text)
             }
+
+            //console.log(Blockly.mainWorkspace.svgBlockCanvas_.cloneNode(true));
 
 
             let xml_example = Blockly.Xml.textToDom(xml_example_text)
@@ -132,13 +147,13 @@ export class BlocklyEditor {
                       alert(e)
                   }*/
 
+                  //exportSVG();
+
 
             }, 2000)
 
-        // })
-            
-
-        }, 3000)
+        });
+        
 
     }
 
