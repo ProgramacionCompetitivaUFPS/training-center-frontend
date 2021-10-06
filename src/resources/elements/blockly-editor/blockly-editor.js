@@ -21,15 +21,15 @@ import { exportSVG } from './blockly-to-svg'
  * @class BlocklyEditor
  */
 
- //@inject(Something)
 export class BlocklyEditor {
 
     constructor() {
 
-        document.addEventListener('aurelia-composed', () => {
+    }
+
+    attached(){
 
             Blockly.setLocale(Es);
-
 
             var options = {
                 toolbox: this.workspaceBlocks,
@@ -53,19 +53,15 @@ export class BlocklyEditor {
                     snap: false
                 }
             };
-           
-            //var obj = window.$('#blockly-editor')[0];
-            //var obj = document.querySelector('#blockly-editor');
-
-            //console.log("acá estoy", obj)
-            console.log("OTROOOO", this.blocklyDiv)
+    
             var workspace = Blockly.inject(this.blocklyDiv, options)
 
-            console.log("workspace", workspace)
             
             //this.createBlocksCustomized()
             this.createGeneratorCodes()
 
+
+            //registrar los bloques personalizados
             /*
             const createFlyout = function (workspace) {
                 console.log("createFlyout");
@@ -109,8 +105,6 @@ export class BlocklyEditor {
                 sessionStorage.setItem('xmlCode', xml_example_text)
             }
 
-            //console.log(Blockly.mainWorkspace.svgBlockCanvas_.cloneNode(true));
-
 
             let xml_example = Blockly.Xml.textToDom(xml_example_text)
 
@@ -147,12 +141,10 @@ export class BlocklyEditor {
                       alert(e)
                   }*/
 
-                  //exportSVG();
+                  exportSVG();
 
 
             }, 2000)
-
-        });
         
 
     }
