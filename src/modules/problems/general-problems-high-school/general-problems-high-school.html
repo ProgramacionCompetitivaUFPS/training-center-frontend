@@ -1,6 +1,7 @@
 <template>
   <require from="../../../resources/attributes/tooltip"></require>
-  <div class="container ufps-container-logged">
+  <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour">Tour</a>
+  <div data-step="1" data-intro="Aquí encontrarás las categorias de problemas que podrás encontrar segun el nivel" class="container ufps-container-logged">
     <h1 class="text-right">Problemas Training Center High School</h1>
     <p class="ufps-language text-right">
       <span class="active selected">Categorías</span> |
@@ -16,10 +17,10 @@
             click.delegate="showRemoveCategory(category.id, category.name)" tooltip></span>
           <h1>${category.name}</h1>
         </div>
-        <div class="col-6 ufps-card-link">
+        <div data-step="2" data-intro="Aquí podrás ver los problemas dentro de esta categoría" class="col-6 ufps-card-link">
           <a route-href="route: schools_category; params.bind: {id:category.id}">Problemas</a>
         </div>
-        <div class="col-6 ufps-card-link my-auto">
+        <div data-step="3" data-intro="Aquí podrás ir directamente al material de esta categoría" class="col-6 ufps-card-link my-auto">
           <a route-href="route: material; params.bind: {id:category.id}">Material</a>
 
         </div>

@@ -2,7 +2,8 @@
   <require from="../../../resources/attributes/tooltip"></require>
   <require from="../../../resources/elements/filter"></require>
   <require from="../../../resources/elements/paginator"></require>
-  <div class="container ufps-container-logged">
+  <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour">Tour</a>
+  <div data-step="1" data-intro="Aquí podras estudiar los temas que hay según la categoría que elegiste" class="container ufps-container-logged">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="/">Categorías</a>
@@ -16,7 +17,7 @@
       limit.bind="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
     <div repeat.for="material of materials" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
 
-      <div class="ufps-card">
+      <div data-step="2" data-intro="Puedes elegir el tema que quieras o necesites" class="ufps-card">
         <div class="ufps-card-title ufps-card-material">
           <span if.bind="authService.isAdmin()" click.delegate="showRemoveMaterial(material.id, material.name)" class="ufps-remove-category glyphicon glyphicon-remove"
             data-toggle="tooltip" title="Eliminar este material" tooltip></span>

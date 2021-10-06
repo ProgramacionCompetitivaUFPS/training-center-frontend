@@ -66,4 +66,7 @@ export class SpecificMaterial {
         this.routerService.navigate('')
       })
   }
+  tour(){
+    introJs().start();
+  }
 }

@@ -159,4 +159,7 @@ export class GeneralMaterialsHighSchool {
                 window.$('#remove-category').modal('hide')
             })
     }
+    tour(){
+        introJs().start();
+    }
 }

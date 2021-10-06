@@ -158,4 +158,7 @@ export class GeneralProblemsHighSchool {
                 window.$('#remove-category').modal('hide')
             })
     }
+    tour(){
+        introJs().start();
+    }
 }

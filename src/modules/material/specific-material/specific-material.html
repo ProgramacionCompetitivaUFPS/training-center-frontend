@@ -1,4 +1,5 @@
 <template>
+  <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour">Tour</a>
   <div class="container text-center">
     <ol class="breadcrumb text-left">
       <li class="breadcrumb-item">
@@ -9,7 +10,7 @@
         </li>
       <li class="breadcrumb-item active">${material.name}</li>
     </ol>
-    <div class="row">
+    <div data-step="1" data-intro="Aquí podras visualizar el material del tema y llenarte de conocimiento" class="row">
       <div class="col-xl-10 offset-lg-1">
         <h2>${material.name}</h2>
         <p>${material.description}</p>

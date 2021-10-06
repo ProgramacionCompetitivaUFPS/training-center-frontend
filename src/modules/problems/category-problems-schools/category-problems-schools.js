@@ -134,4 +134,7 @@ export class CategoryProblemsSchools {
                 window.$('#remove-problem').modal('hide')
             })
     }
+    tour(){
+        introJs().start();
+    }
 }

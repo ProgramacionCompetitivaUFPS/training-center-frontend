@@ -1,12 +1,13 @@
 <template>
   <require from="../../../resources/attributes/tooltip"></require>
-  <div class="container ufps-container-logged">
+  <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour">Tour</a>
+  <div data-step="1" data-intro="Aquí encontrarás todo el material necesario para tu apredizaje" class="container ufps-container-logged">
     <h1 class="text-right">Materiales Training Center High School</h1>
     <hr>
     <div repeat.for="category of categories" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
       <a route-href="route: material; params.bind: {id:category.id}">
 
-        <div class="ufps-card">
+        <div data-step="2" data-intro="El material lo encontrarás dividido en categorias como está" class="ufps-card">
           <div class="ufps-card-title">
             <span if.bind="authService.isAdmin()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar el nombre de la categoría"
               click.delegate="showEditCategory(category.id, category.name)" tooltip></span>
