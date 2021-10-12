@@ -1,6 +1,7 @@
 <template>
   <require from="../../../resources/attributes/markdown"></require>
   <require from="../../../resources/attributes/tooltip"> </require>
+  <require from="../../../resources/elements/disqus"></require>
   <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour" style="margin-left: 80em;">Tour</a>
   <div class="container-fluid">
     <div class="col-12" if.bind="lang === 'en'">
@@ -76,7 +77,7 @@
                     </div>
                     <h1>Soluciona tu problema</h1>
                     <div class="row">
-                      <div class="col-lg-12">
+                      <div data-step="7" data-intro="Este es tu espacio de trabajo para ressolver el problema" class="col-lg-12">
                             <blockly-editor></blockly-editor>
                       </div>
                     </div>
@@ -114,13 +115,8 @@
                     </div>
                     
                   </div>
-                  <div class="tab-pane fade" id="forum" role="tabpanel" aria-labelledby="forum-tab">Etsy mixtape wayfarers,
-                    ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi
-                    farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore
-                    carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred
-                    pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk
-                    vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork
-                    sustainable tofu synth chambray yr.
+                  <div class="tab-pane fade" id="forum" role="tabpanel" aria-labelledby="forum-tab">
+                    <disqus></disqus>
                   </div>
                 </div>
 
