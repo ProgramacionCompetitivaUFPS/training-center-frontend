@@ -1,5 +1,3 @@
-//import * as Blockly from 'Blockly'
-//import 'Blockly/python'
 //https://gist.github.com/thomasdenney/aa76acb36d47120ee338b3bd96459556
 //REVISAR ESTE https://github.com/Program-AR/blockly-to-svg/blob/master/Blockly-to-SVG.js
 import { inject } from 'aurelia-framework'
@@ -10,9 +8,10 @@ import 'blockly/blocks'
 import 'blockly/python'
 import 'blockly/javascript'
 
+import { BlocklyToSvg } from './blockly-to-svg'
+
 
 import { define_panda_variable_blocks } from './typed_variables.js'
-import { exportSVG } from './blockly-to-svg'
 
 /**
  * BlocklyEditor (Element)
@@ -21,9 +20,13 @@ import { exportSVG } from './blockly-to-svg'
  * @class BlocklyEditor
  */
 
+
+@inject(BlocklyToSvg)
 export class BlocklyEditor {
 
-    constructor() {
+    constructor(blocklyToSvg) {
+
+        this.blocklyToSvg = blocklyToSvg
 
     }
 
@@ -140,13 +143,9 @@ export class BlocklyEditor {
                   } catch (e) {
                       alert(e)
                   }*/
-
-                  exportSVG();
-
-
             }, 2000)
         
-
+            this.blocklyToSvg.exportSVG();
     }
 
     /**
