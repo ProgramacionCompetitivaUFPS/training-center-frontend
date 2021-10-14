@@ -186,4 +186,5 @@ export class SchoolsViewProblem {
   tour(){
     introJs().start();
 }
+
 }

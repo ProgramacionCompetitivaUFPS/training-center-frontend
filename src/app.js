@@ -289,7 +289,10 @@ export class App {
     }
 
 
-
+    attached() {
+        let dsq = document.getElementById('disqus_thread');
+        dsq.parentNode.removeChild(dsq);
+      }
 
 
 }
