@@ -1,14 +1,9 @@
-//https://gist.github.com/thomasdenney/aa76acb36d47120ee338b3bd96459556
-//REVISAR ESTE https://github.com/Program-AR/blockly-to-svg/blob/master/Blockly-to-SVG.js
-import { inject } from 'aurelia-framework'
-import { BlocklytoSvg } from './blockly-to-svg'
+import { inject, bindable, bindingMode } from 'aurelia-framework'
 import * as Es from 'blockly/msg/es'
 import * as Blockly from 'blockly/core'
 import 'blockly/blocks'
 import 'blockly/python'
 import 'blockly/javascript'
-
-import { BlocklyToSvg } from './blockly-to-svg'
 
 
 import { define_panda_variable_blocks } from './typed_variables.js'
@@ -21,21 +16,22 @@ import { define_panda_variable_blocks } from './typed_variables.js'
  */
 
 
-@inject(BlocklyToSvg)
 export class BlocklyEditor {
 
-    constructor(blocklyToSvg) {
+    @bindable processWithoutBlocklyWorkSpace = false;
 
-        this.blocklyToSvg = blocklyToSvg
+    constructor() {
+
+        this.DOMURL = self.URL || self.webkitURL || self;
 
     }
 
     attached(){
-
+            console.log(this.processWithoutBlocklyWorkSpace)
             Blockly.setLocale(Es);
 
             var options = {
-                toolbox: this.workspaceBlocks,
+                //toolbox: this.workspaceBlocks,
                 collapse: true,
                 comments: true,
                 disable: true,
@@ -58,7 +54,7 @@ export class BlocklyEditor {
             };
     
             var workspace = Blockly.inject(this.blocklyDiv, options)
-
+            
             
             //this.createBlocksCustomized()
             this.createGeneratorCodes()
@@ -116,14 +112,19 @@ export class BlocklyEditor {
 
             //ejemplo de generador de código
             Blockly.Python.addReservedWords('code')
+
+            
             setInterval(() => {
 
+                
                 // Extraer xml del código del código en un tablero
                 var xml = Blockly.Xml.workspaceToDom(workspace)
 
                 //convertir xml a texto plano
                 var xml_text = Blockly.Xml.domToText(xml)
-                //console.log(typeof(xml_text))
+                
+               // console.log("xml_text",(xml_text))
+                
                 //console.log(xml_text)
 
                 // convertir texto plano a xml
@@ -144,8 +145,10 @@ export class BlocklyEditor {
                       alert(e)
                   }*/
             }, 2000)
-        
-            this.blocklyToSvg.exportSVG();
+
+
+            this.exportSVG();
+            
     }
 
     /**
@@ -218,5 +221,40 @@ export class BlocklyEditor {
             return code;
         };
     }
+
+    //metodos para exportar a svg
+
+    svg(){
+        var canvas = Blockly.mainWorkspace.svgBlockCanvas_.cloneNode(true);
+        if (canvas.children[0] === undefined) throw "Couldn't find Blockly canvas"
+    
+        canvas.removeAttribute("transform");
+    
+        var css = '<defs><style type="text/css" xmlns="http://www.w3.org/1999/xhtml"><![CDATA[' + Blockly.Css.CONTENT.join('') + ']]></style></defs>';
+        var bbox = document.getElementsByClassName("blocklyBlockCanvas")[0].getBBox();
+        var content = new XMLSerializer().serializeToString(canvas);
+    
+        var xml = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="'
+            + bbox.width + '" height="' + bbox.height + '" viewBox=" ' + bbox.x + ' ' + bbox.y + ' ' + bbox.width + ' ' + bbox.height + '">' +
+            css + '">' + content + '</svg>';    
+    
+        return new Blob([xml], { type: 'image/svg+xml;base64' });
+    }
+
+    exportSVG() {
+        var DOMURL = self.URL || self.webkitURL || self;
+        this.download(DOMURL.createObjectURL(this.svg()),'blocks.svg');
+    }
+
+    download(url, filename){
+        let element = document.createElement('a')
+        element.href = url
+        element.download = filename;
+        element.click();
+        var DOMURL = self.URL || self.webkitURL || self;
+        DOMURL.revokeObjectURL(element.href)
+    }
+
+    
 
 }
