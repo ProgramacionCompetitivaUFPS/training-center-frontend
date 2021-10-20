@@ -2,7 +2,7 @@
   <require from="../../../resources/attributes/markdown"></require>
   <require from="../../../resources/attributes/tooltip"> </require>
   <require from="../../../resources/elements/disqus"></require>
-  <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour" style="margin-left: 80em;">Tour</a>
+  <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour">Tour</a>
   <div class="container-fluid">
     <div class="col-12" if.bind="lang === 'en'">
       <ol class="breadcrumb">
@@ -52,7 +52,7 @@
                   <li data-step="4" data-intro="Aquí encontrarás los problemas que hayas enviado" class="nav-item waves-effect waves-light">
                     <a class="nav-link" id="my-submissions-tab" data-toggle="tab" href="#my-submissions" role="tab" aria-controls="my-submissions" aria-selected="false">Mis envíos</a>
                   </li>
-                  <li data-step="5" data-intro="Foro?" class="nav-item waves-effect waves-light">
+                  <li data-step="5" data-intro="Aquí puedes interactuar sobre el problema y resolver dudas" class="nav-item waves-effect waves-light">
                     <a class="nav-link" id="forum-tab" data-toggle="tab" href="#forum" role="tab" aria-controls="forum" aria-selected="false">Foro</a>
                   </li>
                 </ul>
@@ -77,8 +77,8 @@
                     </div>
                     <h1>Soluciona tu problema</h1>
                     <div class="row">
-                      <div data-step="7" data-intro="Este es tu espacio de trabajo para ressolver el problema" class="col-lg-12">
-                            <blockly-editor></blockly-editor>
+                      <div class="col-lg-12">
+                            <blockly-editor data-step="7" data-intro="Este es el espacio para crear la solución del problema" ></blockly-editor>
                       </div>
                     </div>
                   </div>

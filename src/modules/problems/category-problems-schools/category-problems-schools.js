@@ -136,5 +136,6 @@ export class CategoryProblemsSchools {
     }
     tour(){
         introJs().start();
+        introJs().addHints();
     }
 }

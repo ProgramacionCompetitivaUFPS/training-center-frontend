@@ -31,7 +31,7 @@ export class BlocklyEditor {
             Blockly.setLocale(Es);
 
             var options = {
-                //toolbox: this.workspaceBlocks,
+                toolbox: this.workspaceBlocks,
                 collapse: true,
                 comments: true,
                 disable: true,
@@ -254,7 +254,8 @@ export class BlocklyEditor {
         var DOMURL = self.URL || self.webkitURL || self;
         DOMURL.revokeObjectURL(element.href)
     }
-
-    
+    tour(){
+        introJs().start();
+    }
 
 }

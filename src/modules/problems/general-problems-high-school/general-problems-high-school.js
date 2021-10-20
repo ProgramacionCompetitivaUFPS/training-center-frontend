@@ -2,6 +2,7 @@ import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
+import introJs from 'intro.js'
 import { Alert, Auth, Problems } from 'services/services'
 
 /**
@@ -160,5 +161,6 @@ export class GeneralProblemsHighSchool {
     }
     tour(){
         introJs().start();
+        introJs().addHints();
     }
 }
