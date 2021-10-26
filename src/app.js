@@ -216,6 +216,18 @@ export class App {
                     roles: ["admin", "coach", "student", "visitor"]
                 }
             },*/
+
+            //Ayuda
+        {
+            name: "ayuda",
+            route: ["ayuda"],
+            moduleId: PLATFORM.moduleName("./modules/ayuda/ayuda"),
+            layoutView: PLATFORM.moduleName("layouts/logged.html"),
+            nav: true,
+            settings: {
+                roles: ["admin", "coach", "student"]
+            }
+        },
         {
             name: "public-material",
             route: ["material-publico"],
