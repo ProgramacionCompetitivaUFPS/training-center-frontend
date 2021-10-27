@@ -141,7 +141,6 @@ export class Submissions {
     window.$('#submission-detail').modal('show')
     this.problemService.getSubmission(this.submissionLoaded.file_name)
       .then(data => {
-        console.log('OBTENIENDO SUBMISSION',data)
         this.codeDownload = data
         this.downloadActive = true
         let reader  = new FileReader()
@@ -163,9 +162,16 @@ export class Submissions {
 
   downloadCode () {
     let filename
+    //if(this.isABlocklyCode) filename = 'Blocks.svg'
+    //else 
     if(this.submissionLoaded.language === 'Java') filename = 'Main.java'
     else if(this.submissionLoaded.language === 'C++') filename = 'main.cpp'
     else if(this.submissionLoaded.language === 'Python') filename = 'main.py'
+
+    if(this.isABlocklyCode){
+      //this.codeDownload = sessionStorage.getItem('pythonCode')
+      console.log("descarga de submission en blockly", this.codeDownload)
+    }
     if(window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(this.codeDownload, filename)
     }

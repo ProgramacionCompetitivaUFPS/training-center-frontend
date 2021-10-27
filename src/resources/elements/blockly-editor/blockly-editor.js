@@ -31,7 +31,7 @@ export class BlocklyEditor {
             Blockly.setLocale(Es);
 
             var options = {
-                toolbox: this.workspaceBlocks,
+                //toolbox: this.workspaceBlocks,
                 collapse: true,
                 comments: true,
                 disable: true,
@@ -113,7 +113,7 @@ export class BlocklyEditor {
             //ejemplo de generador de código
             Blockly.Python.addReservedWords('code')
 
-            
+            Blockly.svgResize(workspace);
             setInterval(() => {
 
                 
@@ -147,7 +147,7 @@ export class BlocklyEditor {
             }, 2000)
 
 
-            this.exportSVG();
+           // this.exportSVG();
             
     }
 
@@ -254,8 +254,7 @@ export class BlocklyEditor {
         var DOMURL = self.URL || self.webkitURL || self;
         DOMURL.revokeObjectURL(element.href)
     }
-    tour(){
-        introJs().start();
-    }
+
+    
 
 }

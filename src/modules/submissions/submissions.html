@@ -81,8 +81,6 @@
                   <th class="text-center">Lenguaje</th>
                 </tr>
               </thead>
-              
-            </table>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -111,21 +109,22 @@
                         <a click.delegate="downloadCode()" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center" if.bind="downloadActive">Descargar código</a>
                         <div class="ufps-separator-mini"></div>
                     </div>
-                    <div show.bind="!isABlocklyCode">
-                      <pre>
-                        <code>
-                          ${submissionLoaded.code}
-                        </code>
-                      </pre>
+                    <div class="col-12">
+                      <div show.bind="!isABlocklyCode">
+                        <pre>
+                          <code>
+                            ${submissionLoaded.code}
+                          </code>
+                        </pre>
+                      </div>
+                      <div show.bind="isABlocklyCode">
+                        <img src="../../assets/img/blocksDefault.svg">
+                      </div>
                     </div>
-                    <div show.bind="isABlocklyCode">
-                      <blockly-editor allow-processWithoutBlocklyWorkSpace.bind="true">
-                      </blockly-editor>
-                    </div>
-                    
                   </td>
                 </tr>
               </tbody>
+            </table>
           </div>
         </div>
       </div>
