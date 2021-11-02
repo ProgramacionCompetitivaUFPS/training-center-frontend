@@ -156,7 +156,7 @@ export class HomeSyllabus {
      */
     showEditSyllabus(id, title, description, privacy) {
         this.editSyllabus = new Syllabus(id, title, description, privacy, '')
-        $('#edit-syllabus').modal('show')
+        window.$('#edit-syllabus').modal('show')
     }
 
     /**

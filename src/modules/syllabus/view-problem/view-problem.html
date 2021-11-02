@@ -92,7 +92,7 @@
                   <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()" accept=".py, .java, .cpp"
                     files.bind="code">
                   <label for="${validDate > 0 ? '' : 'input-file'}" tooltip data-toggle="tooltip" title="Archivo con la solución al problema">Seleccionar
-                    <span class="glyphicon glyphicon-ok-sign" show.bind="sourceValid"></span>
+                    <span class="fas fa-check" show.bind="sourceValid"></span>
                   </label>
                   <div class="input-group">
                     <select class="form-control" value.bind="language">

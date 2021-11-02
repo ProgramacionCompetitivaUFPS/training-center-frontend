@@ -31,7 +31,7 @@ export class BlocklyEditor {
             Blockly.setLocale(Es);
 
             var options = {
-                //toolbox: this.workspaceBlocks,
+                toolbox: this.workspaceBlocks,
                 collapse: true,
                 comments: true,
                 disable: true,

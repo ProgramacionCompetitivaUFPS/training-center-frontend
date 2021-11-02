@@ -18,82 +18,85 @@
 
     <form submit.delegate="create()">
       <div class=" -assignment">
-        <div class="form-group">
+        <div class="row">
           <label class="col-form-label col-md-2" for="problem-name">Nombre:</label>
           <div class="col-md-10 input-group ufps-input-creator">
             <input type="text" class="form-control" placeholder="Nombre de la tarea" value.bind="assignment.title" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nombre que se mostrará al desplegar esta tarea">
-              <span class="glyphicon glyphicon-question-sign"></span>
+              <span class="fas fa-question-circle"></span>
             </span>
           </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <label class="col-form-label col-md-2" for="problem-name">Descripción:</label>
           <div class="col-md-10 input-group ufps-input-creator">
             <textarea class="form-control" placeholder="Descripción de la tarea" value.bind="assignment.description"></textarea>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Descripción que se mostrará a los estudiantes al abrir esta tarea">
-              <span class="glyphicon glyphicon-question-sign"></span>
+              <span class="fas fa-question-circle"></span>
             </span>
           </div>
         </div>
       </div>
       <div class=" -assignment" if.bind="type === 'new'">
-        <div class="form-group">
+        <div class="row">
           <label class="col-form-label col-md-2" for="problem-name">Problemas:</label>
           <div class="col-md-10 input-group ufps-input-creator">
             <input type="text" class="form-control" placeholder="Ingrese los ID de los problemas separados por coma" value.bind="problems"
               required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede saber el ID de un problema usando la barra de busqueda superior">
-              <span class="glyphicon glyphicon-question-sign"></span>
+              <span class="fas fa-question-circle"></span>
             </span>
           </div>
         </div>
       </div>
+      <div class="row">
       <div class=" col-lg-6">
-        <div class="form-group">
+        <div class="form-inline">
           <label class="col-form-label col-md-2" for="problem-name">Desde el:</label>
           <div class="col-md-10 input-group ufps-input-creator">
             <input type="date" class="form-control" value.bind="startDate" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha de inicio desde la cual estará disponible esta tarea">
-              <span class="glyphicon glyphicon-question-sign"></span>
+              <span class="fas fa-question-circle"></span>
             </span>
           </div>
         </div>
       </div>
       <div class=" col-lg-6">
-        <div class="form-group">
+        <div class="form-inline">
           <label class="col-form-label col-md-2" for="problem-name">a las:</label>
           <div class="col-md-10 input-group ufps-input-creator">
             <input type="time" class="form-control" value.bind="startTime" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora desde la cual estará disponible esta tarea">
-              <span class="glyphicon glyphicon-question-sign"></span>
+              <span class="fas fa-question-circle"></span>
             </span>
           </div>
         </div>
       </div>
-
+    </div>
+    <div class="row">
       <div class=" col-lg-6">
-        <div class="form-group">
+        <div class="form-inline">
           <label class="col-form-label col-md-2" for="problem-name">Hasta el:</label>
           <div class="col-md-10 input-group ufps-input-creator">
             <input type="date" class="form-control" value.bind="endDate" min="${startDate}" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha hasta la cual estará disponible esta tarea">
-              <span class="glyphicon glyphicon-question-sign"></span>
+              <span class="fas fa-question-circle"></span>
             </span>
           </div>
         </div>
       </div>
       <div class=" col-lg-6">
-        <div class="form-group">
+        <div class="form-inline">
           <label class="col-form-label col-md-2" for="problem-name">a las:</label>
           <div class="col-md-10 input-group ufps-input-creator">
             <input type="time" class="form-control" value.bind="endTime" required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora hasta la cual estará disponible esta tarea">
-              <span class="glyphicon glyphicon-question-sign"></span>
+              <span class="fas fa-question-circle"></span>
             </span>
           </div>
         </div>
       </div>
+    </div>
       <div class="col-12 text-center" if.bind="type === 'new'">
         <input type="submit" class="btn ufps-btn-submit" value="Crear Tarea">
       </div>
@@ -130,7 +133,7 @@
               <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
                 <a href="/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
               </p>
-              <span if.bind="authService.isCoach()" class="ufps-edit-problem-list glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar problema de la tarea"
+              <span if.bind="authService.isCoach()" class="ufps-edit-problem-list fas fa-times-circle" data-toggle="tooltip" title="Eliminar problema de la tarea"
                 click.delegate="showRemoveProblem(problem.id)" tooltip></span>
             </td>
             <td class="text-center">${problem.level}</td>
@@ -147,13 +150,13 @@
       </table>
       <div class=" -assignment" if.bind="type === 'edit'">
         <br>
-        <div class="form-group">
+        <div class="row">
           <label class="col-form-label col-md-2" for="problem-name">Añadir problemas:</label>
           <div class="col-md-9 input-group ufps-input-creator">
             <input type="text" class="form-control" placeholder="Ingrese los ID de los problemas separados por coma" value.bind="problems"
               required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede saber el ID de un problema usando la barra de busqueda superior">
-              <span class="glyphicon glyphicon-question-sign"></span>
+              <span class="fas fa-question-circle"></span>
             </span>
             <span class="input-group-addon btn" click.delegate="addProblems()">
               <span>Añadir</span>

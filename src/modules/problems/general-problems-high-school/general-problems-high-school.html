@@ -13,7 +13,7 @@
         <div class="ufps-card-title">
           <span if.bind="authService.isAdmin()" class="ufps-edit-category fas fa-pencil-alt" data-toggle="tooltip" title="Editar el nombre de la categoría"
             click.delegate="showEditCategory(category.id, category.name)" tooltip></span>
-          <span if.bind="authService.isAdmin()" class="ufps-remove-category far fa-times-circle" data-toggle="tooltip" title="Eliminar categoría"
+          <span if.bind="authService.isAdmin()" class="ufps-remove-category fas fa-times-circle" data-toggle="tooltip" title="Eliminar categoría"
             click.delegate="showRemoveCategory(category.id, category.name)" tooltip></span>
           <h1>${category.name}</h1>
         </div>
@@ -31,7 +31,7 @@
       <div class="ufps-card" data-toggle="modal" data-target="#new-category">
         <div class="ufps-card-title">
           <h1>
-            <span class="glyphicon glyphicon-plus"></span>
+            <i class="fas fa-plus-circle"></i>
           </h1>
         </div>
         <div class="col-12 ufps-card-link">

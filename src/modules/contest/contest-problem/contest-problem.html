@@ -112,7 +112,7 @@
                   files.bind="code" disabled.bind="status !== 'registered' || validDate > 0">
                 <label for="${status !== 'registered' || validDate > 0 ? '' : 'input-file'}" tooltip data-toggle="tooltip" title="Archivo con la solución al problema"
                   class="${status !== 'registered' || validDate > 0 ? 'disabled-select' : ''}">Seleccionar
-                  <span class="glyphicon glyphicon-ok-sign" show.bind="sourceValid"></span>
+                  <span class="fas fa-check" show.bind="sourceValid"></span>
                 </label>
                 <div class="input-group">
                   <select class="form-control" value.bind="language" disabled.bind="status !== 'registered' || validDate > 0">

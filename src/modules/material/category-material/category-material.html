@@ -19,7 +19,7 @@
 
       <div data-step="2" data-intro="Puedes elegir el tema que quieras o necesites" class="ufps-card">
         <div class="ufps-card-title ufps-card-material">
-          <span if.bind="authService.isAdmin()" click.delegate="showRemoveMaterial(material.id, material.name)" class="ufps-remove-category glyphicon glyphicon-remove"
+          <span if.bind="authService.isAdmin()" click.delegate="showRemoveMaterial(material.id, material.name)" class="ufps-remove-category fas fa-times-circle"
             data-toggle="tooltip" title="Eliminar este material" tooltip></span>
           
             <h1><a route-href="route: specificMaterial; params.bind: {id:material.id}">${material.name}</a></h1>

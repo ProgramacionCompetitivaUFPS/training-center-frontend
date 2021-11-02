@@ -812,7 +812,7 @@ th {
 
 .modal-body {
   text-align: center;
-  padding-bottom: 0;
+  padding-bottom: 1em;
 }
 
 .modal-footer {
