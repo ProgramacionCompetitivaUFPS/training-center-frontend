@@ -1422,6 +1422,10 @@ tr:nth-child(2n) td .ufps-score-gold {
 .btn-danger {
   background-color: #e74c3c !important;
 }
+.btn2 {
+  padding-left: 0.4em;
+  cursor: pointer;
+}
 
 .btn-danger:hover {
   background-color: #a91b0d;

@@ -152,13 +152,13 @@
         <br>
         <div class="row">
           <label class="col-form-label col-md-2" for="problem-name">Añadir problemas:</label>
-          <div class="col-md-9 input-group ufps-input-creator">
+          <div class="col-md-10 input-group ufps-input-creator">
             <input type="text" class="form-control" placeholder="Ingrese los ID de los problemas separados por coma" value.bind="problems"
               required>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Puede saber el ID de un problema usando la barra de busqueda superior">
-              <span class="fas fa-question-circle"></span>
+              <i class="fas fa-question-circle"></i>
             </span>
-            <span class="input-group-addon btn" click.delegate="addProblems()">
+            <span class="input-group-addon btn2" click.delegate="addProblems()">
               <span>Añadir</span>
             </span>
           </div>
