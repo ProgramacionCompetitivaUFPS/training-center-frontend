@@ -146,7 +146,7 @@ export class CanvasPrincipal {
         this.ctx.textAlign = "center";
         this.ctx.fillText(this.planet1.name, (this.planet1.x +25) + this.planet1.w / 2, (this.planet1.y - 20) + this.planet1.h -280);
         this.ctx.fillText("High School", (this.planet1.x +25) + this.planet1.w / 2, (this.planet1.y - 20) + this.planet1.h -240);
-        
+
 
         this.ctx.shadowBlur = 10;
         this.ctx.shadowColor = "#a91b0d";
@@ -168,8 +168,6 @@ export class CanvasPrincipal {
     iterate() {
       
         this.draw();
-        this.adjustCanvasResolution();
-        this.check_highlights();
             setInterval(() => {
                 
                 let grados = 4;
@@ -178,6 +176,7 @@ export class CanvasPrincipal {
                             if (this.CANVAS != null) {
                                 
                                 this.adjustCanvasResolution();
+                                
                                 if(grados >-80){
                                     this.turn(this.nave, grados);
                                     this.draw();
@@ -206,21 +205,14 @@ export class CanvasPrincipal {
     check_highlights() {
         if (this.its_this_planet(this.planet1)) {
             this.addHighlight1(this.planet1);
+            this.CANVAS.style.cursor = "pointer";
         } else if (this.its_this_planet(this.planet2)) {
             this.addHighlight2(this.planet2);
+            this.CANVAS.style.cursor = "pointer";
         } else {
             this.CANVAS.style.cursor = "initial";
         }
     }
-
-    /*draw_sun() {
-        this.ctx.shadowBlur = 10;
-        this.ctx.shadowColor = "#fff";
-        this.ctx.beginPath();
-        this.ctx.arc(this.CANVAS.width / 2, this.CANVAS.height / 2, 15, 0, 2 * Math.PI);
-        this.ctx.fillStyle = "rgba(255, 255, 150, 0.8)";
-        this.ctx.fill();
-    }*/
 
     addHighlight1(planet) {
         this.ctx.beginPath();
@@ -234,7 +226,6 @@ export class CanvasPrincipal {
         this.ctx.font = "30px Comic Sans MS";
         this.ctx.fillStyle = "rgb(241, 196, 15)";
         this.ctx.textAlign = "center";
-        //this.ctx.fillText(planet.name, (planet.x +70) + planet.w / 2, (planet.y - 20) + planet.h -520);
 
     }
     addHighlight2(planet) {
@@ -242,14 +233,13 @@ export class CanvasPrincipal {
         this.ctx.arc(planet.x + planet.w / 2, planet.y + 4 * planet.h / 8, 270, 0, 2 * Math.PI);
         this.ctx.lineWidth = 15;
         this.ctx.strokeStyle = "rgba(255, 255, 0, .2)";
-        this.ctx.stroke(); // esto es el circulo
+        this.ctx.stroke();
 
         this.ctx.shadowBlur = 10;
         this.ctx.shadowColor = "#000";
         this.ctx.font = "30px Comic Sans MS";
         this.ctx.fillStyle = "rgb(241, 196, 15)";
         this.ctx.textAlign = "center";
-        //this.ctx.fillText(planet.name, (planet.x - 70) + planet.w / 2, (planet.y + 30) + planet.h + 25);
 
     }
 
