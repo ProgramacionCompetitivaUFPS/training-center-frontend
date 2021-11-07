@@ -14,7 +14,6 @@ import {bindable, customElement} from 'aurelia-framework';
   
     // Conventional method that gets called when the bindable property post changes.
     attached() { // oldPost is null in this case
-      console.log("algo ta pasando aki")
    
       DISQUS.reset({
         reload: true,
