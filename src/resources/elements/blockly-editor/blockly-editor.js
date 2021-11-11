@@ -27,7 +27,7 @@ export class BlocklyEditor {
     }
 
     attached(){
-            console.log(this.processWithoutBlocklyWorkSpace)
+            console.log("process.env", process.env)
             Blockly.setLocale(Es);
 
             var options = {

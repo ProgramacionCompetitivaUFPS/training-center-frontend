@@ -3,13 +3,12 @@
  * Archivo con todos los datos para la conexión al backend
  * @exports API - Objeto JSON con datos de conexión a Backend
  */
+import environment from './../environment';
 export let API = {
-    // API
-
     /**
      * apiUrl debe reemplazarse por la dirección del backend
      */
-    apiUrl: "http://127.0.0.1:3000/api/",
+    apiUrl: environment.API_BACKEND_URL_DEVELOPMENT,
     endpoints: {
         addMaterials: "add-materials",
         addProblemAssignment: "add-problems",

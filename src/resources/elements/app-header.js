@@ -40,6 +40,8 @@ export class AppHeader {
         this.classes = this.routerService.navigation.find(i => i.config.name.indexOf('classes') !== -1)
         this.admin = this.routerService.navigation.find(i => i.config.name.indexOf('admin') !== -1)
         this.contest = this.routerService.navigation.find(i => i.config.name.indexOf('contest') !== -1)
+
+        //probar menu dinámico acá
     }
     /**
      * Cierra sesión en la aplicación
