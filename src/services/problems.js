@@ -248,22 +248,28 @@ export class Problems {
      * @param {string} languaje - lenguaje en el que está el formato de la submission
      * @param {number} assignmentId - Identificador de la tarea
      * @param {number} contestId - Identificador del contest
-     * @param {file} code - Código a evaluat
+     * @param {file} code - Código a evaluar
      * @param {file} XMLCode - submission en formato XML, para los envíos vía Blockly
      */
-    submitSolution(problemId, language, assignmentId, contestId, code, XMLCode) {
+    submitSolution(problemId, language, assignmentId, contestId, files) {
+
         var data = new window.FormData()
         data.append('data[language]', language)
         if (assignmentId !== undefined) data.append('data[assignment_problem_id]', assignmentId)
         if (contestId !== undefined) data.append('data[contest_problem_id]', contestId)
 
-        data.append('code', code)
+        data.append('code', files.codeFile)
 
         let blocklySubmission = 0;
-        if (XMLCode !== undefined){
-            data.append('XMLCode', XMLCode)
+        
+        /*if (files.xmlBlocklyFile !== undefined){
+            data.append('XMLCode', files.xmlBlocklyFile)
             blocklySubmission = 1
-        } 
+        }*/
+        if (files.svgBlocklyCode !== undefined){
+            data.append('svgBlocklyCode', files.svgBlocklyCode)
+            blocklySubmission = 1
+        }  
         
         return this.httpService.httpClient
             .fetch(API.endpoints.problems + '/' + problemId + '/submit', {

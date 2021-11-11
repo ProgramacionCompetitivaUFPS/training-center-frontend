@@ -26,6 +26,7 @@ export class ViewProblem {
     this.language
     this.code
     this.sourceValid = false
+    this.files = {}
   }
 
   /**
@@ -139,7 +140,10 @@ export class ViewProblem {
     } else if (this.language === null) {
       this.alertService.showMessage(MESSAGES.invalidLanguage)
     } else {
-      this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0], undefined)
+
+      this.files.codeFile = this.code[0]
+
+      this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.files)
         .then((data) => {
           this.alertService.showMessage(MESSAGES.submittedSolution)
           this.language = null
@@ -157,4 +161,5 @@ export class ViewProblem {
         })
     }
   }
+
 }

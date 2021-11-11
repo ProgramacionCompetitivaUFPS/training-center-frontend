@@ -18,16 +18,11 @@ import { define_panda_variable_blocks } from './typed_variables.js'
 
 export class BlocklyEditor {
 
-    @bindable processWithoutBlocklyWorkSpace = false;
-
     constructor() {
-
         this.DOMURL = self.URL || self.webkitURL || self;
-
     }
 
     attached(){
-            console.log("process.env", process.env)
             Blockly.setLocale(Es);
 
             var options = {
@@ -147,7 +142,7 @@ export class BlocklyEditor {
             }, 2000)
 
 
-           // this.exportSVG();
+            this.generateSVG();
             
     }
 
@@ -242,18 +237,27 @@ export class BlocklyEditor {
     }
 
     exportSVG() {
-        var DOMURL = self.URL || self.webkitURL || self;
-        this.download(DOMURL.createObjectURL(this.svg()),'blocks.svg');
+        var DOMURL = self.URL || self.webkitURL || self
+        this.download(DOMURL.createObjectURL(this.svg()),'blocks.svg')
+    }
+
+    generateSVG(){
+        var DOMURL = self.URL || self.webkitURL || self
+        var url = DOMURL.createObjectURL(this.svg())
+        sessionStorage.setItem('svgBlocklyUrl', url)
     }
 
     download(url, filename){
         let element = document.createElement('a')
         element.href = url
-        element.download = filename;
-        element.click();
-        var DOMURL = self.URL || self.webkitURL || self;
+        element.download = filename
+        element.click()
+        var DOMURL = self.URL || self.webkitURL || self
         DOMURL.revokeObjectURL(element.href)
     }
+
+    
+      
 
     
 

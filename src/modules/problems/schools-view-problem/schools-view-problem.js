@@ -25,6 +25,7 @@ export class SchoolsViewProblem {
     this.languages = SETTINGS.languages
     this.language
     this.code
+    this.files = {}
     this.sourceValid = false
   }
 
@@ -131,14 +132,24 @@ export class SchoolsViewProblem {
      
   }
 
-  submit() {
-
-    //Preparar archivo .py y .XML a partir de blockly
+  /**
+   * Preparar archivo .py, .XML y svg a partir de blockly toolbox
+   */
+  preSubmit(){
     this.code = new File([sessionStorage.getItem('pythonCode')], "main.py", {type: "text/x-python"})
-    let XML = new File([sessionStorage.getItem('xmlCode')], "main.xml", {type: "text/xml"})
+    const XML = new File([sessionStorage.getItem('xmlCode')], "main.xml", {type: "text/xml"})
+
+    this.files.codeFile = this.code
+    this.files.xmlBlocklyFile = XML
     this.language = 'Python'
 
-    this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code, XML)
+    const urlBlobSvg = sessionStorage.getItem('svgBlocklyUrl')
+    this.createFileSvg(urlBlobSvg, 'blocks.svg')
+  }
+
+  submit() { 
+
+    this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.files)
         .then((data) => {
           this.alertService.showMessage(MESSAGES.submittedSolution)
           this.language = null
@@ -154,37 +165,25 @@ export class SchoolsViewProblem {
             this.alertService.showMessage(MESSAGES.unknownError)
           }
         })
-
-   /* if (!this.sourceValid) {
-      this.alertService.showMessage(MESSAGES.invalidCode)
-    } else if (this.language === null) {
-      this.alertService.showMessage(MESSAGES.invalidLanguage)
-    } else {
-
-      //Preparar archivo xml y archivo a evaluar
-
-      /*
-      this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0])
-        .then((data) => {
-          this.alertService.showMessage(MESSAGES.submittedSolution)
-          this.language = null
-          this.code = null
-          this.sourceValid = false
-        })
-        .catch(error => {
-          if (error.status === 401 || error.status === 403) {
-            this.alertService.showMessage(MESSAGES.permissionsError)
-          } else if (error.status === 500) {
-            this.alertService.showMessage(MESSAGES.serverError)
-          } else {
-            this.alertService.showMessage(MESSAGES.unknownError)
-          }
-        })
-        
-    }*/
   }
   tour(){
     introJs().start();
-}
+  }
+
+  createFileSvg(url, filename){
+    fetch(url)
+    .then(response => {
+        response.blob()
+        .then(data => {
+            let metadata = {
+                type: 'image/svg+xml'
+            }
+            let file = new File([data], filename, metadata)
+            this.files.svgBlocklyCode = file
+            this.submit()
+        })
+    })
+  }
+
 
 }

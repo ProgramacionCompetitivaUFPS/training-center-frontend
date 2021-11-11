@@ -96,7 +96,7 @@
                             <strong>Dificultad:</strong> ${problem.level}</p>
                           <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
                           <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
-                          <button click.delegate="submit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
+                          <button click.delegate="preSubmit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
                         </div>
                       </div>
                       <div class="card panel-resolved" if.bind="problem.resolved">
@@ -201,7 +201,7 @@
                   <strong>Dificultad:</strong> ${problem.level}</p>
                 <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
                 <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
-                <button click.delegate="submit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
+                <button click.delegate="preSubmit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
               </div>
             </div>
             <div class="card panel-resolved" if.bind="problem.resolved">
