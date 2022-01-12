@@ -34,8 +34,6 @@ export class SchoolsViewProblem {
     this.code;
     this.files = {};
     this.sourceValid = false;
-
-    this.DOMURL = self.URL || self.webkitURL || self;
   }
 
   /**
@@ -184,8 +182,8 @@ export class SchoolsViewProblem {
     var xml_return = Blockly.Xml.textToDom(xml_text);
 
     const pythonCode = Blockly.Python.workspaceToCode(this.workspace);
-    console.log("generando svg...");
     //this.exportSVG();
+    //this.exportPNG();
     const urlSVG = this.generateSVG();
 
     return {
@@ -200,8 +198,6 @@ export class SchoolsViewProblem {
    */
   preSubmit() {
     const sources = this.processSources();
-    console.log("sources", sources)
-    //invocar evento en blockly editor para generar url del svg
 
     this.code = new File([sources.pythonCode], "main.py", {
       type: "text/x-python",
@@ -406,8 +402,6 @@ export class SchoolsViewProblem {
           "TEXT",
           Blockly.JavaScript.ORDER_NONE
         ) || "''";
-      // var code = 'console.log('+msg+')';
-      //  if(msg === undefined) msg = ""
       var code = `document.getElementById('output').innerText = document.getElementById('output').innerText + ${msg};\n`;
       return code;
     };
@@ -422,12 +416,21 @@ export class SchoolsViewProblem {
     canvas.removeAttribute("transform");
 
     var css =
-      '<defs><style type="text/css" xmlns="http://www.w3.org/1999/xhtml"><![CDATA[' +
-      Blockly.Css.CONTENT.join("") +
+      '<defs><style type="text/css" xmlns="http://www.w3.org/1999/xhtml">' +
+      '<![CDATA[' +
+      `rect {
+        height: 0;
+      }
+      .blocklyDropdownText{
+        font-weight: bold;
+      }
+      `+
+      'color: blue;' + 
       "]]></style></defs>";
     var bbox = document
       .getElementsByClassName("blocklyBlockCanvas")[0]
       .getBBox();
+      //bbox.style.color = 'blue';
     var content = new XMLSerializer().serializeToString(canvas);
 
     var xml =
@@ -456,6 +459,26 @@ export class SchoolsViewProblem {
     var DOMURL = self.URL || self.webkitURL || self;
     this.download(DOMURL.createObjectURL(this.svg()), "blocks.svg");
   }
+
+  exportPNG(){
+    var img = new Image();
+    var DOMURL = self.URL || self.webkitURL || self;
+    img.onload = function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = 800;
+        canvas.height = 600;
+        canvas.getContext("2d").drawImage(img, 0, 0);
+
+        let element = document.createElement("a");
+        element.href = canvas.toDataURL("image/png");
+        element.download = 'blocks.png';
+        element.click();
+        var DOMURL = self.URL || self.webkitURL || self;
+        DOMURL.revokeObjectURL(element.href);
+    };
+    img.src = DOMURL.createObjectURL(this.svg());
+}
+
 
   generateSVG() {
     var DOMURL = self.URL || self.webkitURL || self;
