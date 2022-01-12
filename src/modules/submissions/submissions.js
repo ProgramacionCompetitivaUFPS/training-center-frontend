@@ -137,6 +137,7 @@ export class Submissions {
   viewCode (submission) {
     this.downloadActive = false
     this.submissionLoaded = submission
+    //falta svg
     this.submissionLoaded.code = 'Cargando código...'
     window.$('#submission-detail').modal('show')
     this.problemService.getSubmission(this.submissionLoaded.file_name)
@@ -145,9 +146,34 @@ export class Submissions {
         this.downloadActive = true
         let reader  = new FileReader()
         reader.onload = () => {
-          this.validateSourceCode(reader.result, data.type)
+          if(submission.blockly_file_name !== undefined && submission.blockly_file_name !== null){
+            this.isABlocklyCode = true
+            this.viewSvgSubmission(submission)
+            console.log("SI ES BLOCKLY SUBMISSION")
+          }else{
+            this.isABlocklyCode = false
+            this.submissionLoaded.code = reader.result
+            console.log("NO ES BLOCKLY SUBMISSION")
+          }
+          
         }
         reader.readAsText(data)
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+      }) 
+  }
+
+  viewSvgSubmission(submission){
+    this.problemService.getSvgSubmission(this.submissionLoaded.blockly_file_name)
+      .then(data => {
+        this.submissionLoaded.svgUrl = URL.createObjectURL(data)
       })
       .catch(error => {
         if (error.status === 401 || error.status === 403) {
@@ -183,17 +209,5 @@ export class Submissions {
         elem.click()
         document.body.removeChild(elem)
     }
-  }
-
-  validateSourceCode(code, sourceType){
-    
-    if(!sourceType.endsWith('xml')){
-      this.isABlocklyCode = false
-      this.submissionLoaded.code = code
-    }else{
-      sessionStorage.setItem('xmlCode', code)
-      this.isABlocklyCode = true
-    }
-    
   }
 }

@@ -7,8 +7,8 @@
       <div class="col-lg-12">
         <hr> Mostrar solo envios con veredicto:
         <div class="dropdown dropdown-inline ufps-dropdown">
-          <button class="btn dropdown-toggle" type="button" id="selectVeredict" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="true">
+          <button class="btn dropdown-toggle" type="button" id="selectVeredict" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true">
             ${veredict.text}
             <span class="caret"></span>
           </button>
@@ -20,8 +20,9 @@
         </div>
         <div class="fix"></div>
       </div>
-      <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
-        sort.bind="sort" by.bind="by" text-to-show.bind="'envios'" language-flag.bind="false"></filter>
+      <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange"
+        limit.bind="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'envios'" language-flag.bind="false">
+      </filter>
       <table>
         <thead>
           <tr>
@@ -68,13 +69,13 @@
     <div class="modal fade" id="submission-detail" ref="submissionDetail" tabindex="-1" role="dialog"
       aria-labelledby="submission-detail">
       <div class="modal-dialog modal-lg" role="document">
-    
-    
+
+
         <div class="modal-content">
-    
+
           <div class="modal-header">
             <div>
-    
+
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -89,19 +90,21 @@
                     <th class="text-center">Lenguaje</th>
                   </tr>
                 </thead>
-    
+
             </div>
-    
+
             <tbody>
               <tr>
                 <td class="text-center">
                   <p if.bind="submissionLoaded.problem.title_es !== null"
                     class="ufps-name-problem-list ufps-name-problem-list-l">
-                    <a href="/problemas/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
+                    <a
+                      href="/problemas/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
                   </p>
                   <p if.bind="submissionLoaded.problem.title_es === null"
                     class="ufps-name-problem-list ufps-name-problem-list-l">
-                    <a href="/problemas/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
+                    <a
+                      href="/problemas/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
                   </p>
                 </td>
                 <td class="text-center">${submissionLoaded.problem.level}</td>
@@ -126,17 +129,17 @@
                               <code>
                                 ${submissionLoaded.code}
                               </code>
-                            </pre>
+                      </pre>
                     </div>
                     <div show.bind="isABlocklyCode">
-                      <img src="../../assets/img/blocksDefault.svg">
+                      <img src="${submissionLoaded.svgUrl}">
                     </div>
                   </div>
                 </td>
               </tr>
             </tbody>
             </table>
-    
+
           </div>
         </div>
       </div>

@@ -164,6 +164,18 @@ export class Problems {
             .then(this.httpService.parseBlob)
     }
 
+    getSvgSubmission(name) {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.submissions + '/' + name + '/svgSubmission', {
+                method: 'get',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseBlob)
+    }
+
     /**
      * Envia un nuevo problema en el servidor
      * @param {Problem} problem - Problema a subir en el servidor
