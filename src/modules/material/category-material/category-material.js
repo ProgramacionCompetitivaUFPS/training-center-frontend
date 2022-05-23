@@ -145,4 +145,7 @@ export class CategoryMaterial {
         window.$('#remove-material').modal('hide')
       })
   }
+  tour(){
+    introJs().start();
+  }
 }

@@ -40,6 +40,7 @@ export class Submissions {
     this.page = 1
     this.downloadActive = false
     this.totalPages = 1
+    this.isABlocklyCode = false
     this.veredictOptions = [
       {value : 'ALL', text : 'Cualquier veredicto'},
       {value : 'ACC', text : 'Correcto'},
@@ -136,6 +137,7 @@ export class Submissions {
   viewCode (submission) {
     this.downloadActive = false
     this.submissionLoaded = submission
+    //falta svg
     this.submissionLoaded.code = 'Cargando código...'
     window.$('#submission-detail').modal('show')
     this.problemService.getSubmission(this.submissionLoaded.file_name)
@@ -144,7 +146,16 @@ export class Submissions {
         this.downloadActive = true
         let reader  = new FileReader()
         reader.onload = () => {
-          this.submissionLoaded.code = reader.result
+          if(submission.blockly_file_name !== undefined && submission.blockly_file_name !== null){
+            this.isABlocklyCode = true
+            this.viewSvgSubmission(submission)
+            console.log("SI ES BLOCKLY SUBMISSION")
+          }else{
+            this.isABlocklyCode = false
+            this.submissionLoaded.code = reader.result
+            console.log("NO ES BLOCKLY SUBMISSION")
+          }
+          
         }
         reader.readAsText(data)
       })
@@ -159,11 +170,34 @@ export class Submissions {
       }) 
   }
 
+  viewSvgSubmission(submission){
+    this.problemService.getSvgSubmission(this.submissionLoaded.blockly_file_name)
+      .then(data => {
+        this.submissionLoaded.svgUrl = URL.createObjectURL(data)
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+      }) 
+  }
+
   downloadCode () {
     let filename
+    //if(this.isABlocklyCode) filename = 'Blocks.svg'
+    //else 
     if(this.submissionLoaded.language === 'Java') filename = 'Main.java'
     else if(this.submissionLoaded.language === 'C++') filename = 'main.cpp'
     else if(this.submissionLoaded.language === 'Python') filename = 'main.py'
+
+    if(this.isABlocklyCode){
+      //this.codeDownload = sessionStorage.getItem('pythonCode')
+      console.log("descarga de submission en blockly", this.codeDownload)
+    }
     if(window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(this.codeDownload, filename)
     }

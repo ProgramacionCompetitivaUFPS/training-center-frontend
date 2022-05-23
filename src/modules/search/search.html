@@ -6,7 +6,7 @@
       <h2 if.bind="query !== ' '" class="text-right">Resultados para "${query}"</h2>
       <h2 if.bind="query === ' '" class="text-right">Problemas</h2>
       <p if.bind="query === ' '" class="ufps-language text-right">
-        <a route-href="route: problems;"><span class="active">Categorías</span></a> |
+        <a href="problemas/universidades"><span class="active">Categorías</span></a> |
         <span class="active selected">Lista completa</span>
       </p>
       <hr>
@@ -31,7 +31,7 @@
               <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
                 <a href="/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
               </p>
-              <span if.bind="problem.resolved" class="ufps-edit-problem-list glyphicon glyphicon-ok" data-toggle="tooltip" title="Ya solucionaste este problema" tooltip></span>            
+              <span if.bind="problem.resolved" class="ufps-edit-problem-list fas fa-check" data-toggle="tooltip" title="Ya solucionaste este problema" tooltip></span>            
             </td>
             <td class="text-center">${problem.level}</td>
             <td class="text-center ufps-language">

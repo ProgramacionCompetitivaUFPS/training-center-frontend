@@ -2,28 +2,28 @@
   <require from="../../../resources/elements/clock"></require>
   <div class="container container-contest">
     <ol class="breadcrumb">
-      <li>
+      <li class="breadcrumb-item">
         <a route-href="route: contest;">Maratones</a>
       </li>
-      <li>
+      <li class="breadcrumb-item">
         <a route-href="route: detail; params.bind: {id:id}">${contest.title}</a>
       </li>
-      <li class="active">Resultados</li>
+      <li class="breadcrumb-item active">Resultados</li>
     </ol>
     <h2 class="text-right">${contest.title}</h2>
     <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="true" start-date.bind="startDate" end-date.bind="endDate"></clock>
     <hr>
     <ul class="nav nav-pills nav-justified nav-maraton">
-      <li role="presentation">
+      <li class="breadcrumb-item" role="presentation">
         <a route-href="route: detail; params.bind: {id:id}">Inicio</a>
       </li>
-      <li role="presentation" class="disabled" if.bind="(status !== 'registered' && !contest.privacy && authService.getUserId() !== creatorId)">
+      <li class="breadcrumb-item" role="presentation" class="disabled" if.bind="(status !== 'registered' && !contest.privacy && authService.getUserId() !== creatorId)">
         <a>Problemas</a>
       </li>
-      <li role="presentation" if.bind="(status === 'registered' || authService.getUserId() === creatorId || contest.privacy)">
+      <li class="breadcrumb-item" role="presentation" if.bind="(status === 'registered' || authService.getUserId() === creatorId || contest.privacy)">
         <a route-href="route: problems; params.bind: {id:id}">Problemas</a>
       </li>
-      <li role="presentation" class="active">
+      <li class="breadcrumb-item active" role="presentation">
         <a>Resultados</a>
       </li>
     </ul>

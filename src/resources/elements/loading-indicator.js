@@ -1,15 +1,16 @@
 import * as nprogress from 'nprogress'
-import {bindable, noView, decorators} from 'aurelia-framework'
+import { bindable, noView } from 'aurelia-framework'
+import 'nprogress/nprogress.css'
 
-export let LoadingIndicator = decorators(
-  noView(['nprogress/nprogress.css']),
-  bindable({name: 'loading', defaultValue: false})
-).on(class {
-  loadingChanged (newValue) {
-    if (newValue) {
-      nprogress.start()
-    } else {
-      nprogress.done()
+@noView
+export class LoadingIndicator {
+    @bindable loading = false;
+
+    loadingChanged(newValue) {
+        if (newValue) {
+            nprogress.start();
+        } else {
+            nprogress.done();
+        }
     }
-  }
-})
+}

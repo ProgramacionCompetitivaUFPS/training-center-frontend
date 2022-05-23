@@ -2,23 +2,24 @@
   <require from="../../../resources/attributes/tooltip"></require>
   <require from="../../../resources/elements/filter"></require>
   <require from="../../../resources/elements/paginator"></require>
-  <div class="container ufps-container-logged">
+  <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour">Tour</a>
+  <div data-step="1" data-intro="Aquí podras estudiar los temas que hay según la categoría que elegiste" class="container ufps-container-logged">
     <ol class="breadcrumb">
-      <li>
+      <li class="breadcrumb-item">
         <a href="/">Categorías</a>
       </li>
-      <li class="active">Materiales de "${category}"</li>
+      <li class="breadcrumb-item active">Materiales de "${category}"</li>
     </ol>
     <h1 class="text-right">${category}</h1>
     <hr>
 
     <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange"
       limit.bind="limit" sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
-    <div repeat.for="material of materials" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
+    <div repeat.for="material of materials" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
 
-      <div class="ufps-card">
+      <div data-step="2" data-intro="Puedes elegir el tema que quieras o necesites" class="ufps-card">
         <div class="ufps-card-title ufps-card-material">
-          <span if.bind="authService.isAdmin()" click.delegate="showRemoveMaterial(material.id, material.name)" class="ufps-remove-category glyphicon glyphicon-remove"
+          <span if.bind="authService.isAdmin()" click.delegate="showRemoveMaterial(material.id, material.name)" class="ufps-remove-category fas fa-times-circle"
             data-toggle="tooltip" title="Eliminar este material" tooltip></span>
           
             <h1><a route-href="route: specificMaterial; params.bind: {id:material.id}">${material.name}</a></h1>
@@ -28,14 +29,14 @@
 
 
     </div>
-    <div if.bind="authService.authenticated" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-new ufps-card-container">
+    <div if.bind="authService.authenticated" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-new ufps-card-container">
       <div class="ufps-card" data-toggle="modal" data-target="#new-material">
         <div class="ufps-card-title">
           <h1>
-            <span class="glyphicon glyphicon-plus"></span>
+            <i class="fas fa-plus-circle fa-2x fa-lg"></i>
           </h1>
         </div>
-        <div class="col-xs-12 ufps-card-link">
+        <div class="col-12 ufps-card-link">
           Subir material
         </div>
         <div class="fix"></div>
@@ -47,30 +48,35 @@
   <!--MODAL PARA AÑADIR MATERIAL-->
   <div if.bind="authService.authenticated" class="modal fade" id="new-material" tabindex="-1" role="dialog"
     aria-labelledby="new-material">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          <h4 class="modal-title">Añadir material</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Añadir material</h4>
           <br>
-          <form enctype="multipart/form-data" submit.delegate="createMaterial()">
-            <input type="text" class="form-control" placeholder="Nombre" value.bind="newMaterial.name" required>
-            <br>
-            <input type="text" class="form-control" placeholder="Descripcion" value.bind="newMaterial.description">
-            <br>
-            <label for="selectType">Tipo:</label>
-            <input type="radio" name="selectType" checked.bind="newMaterial.isPdf" model.bind="true"> PDF
-            <input type="radio" name="selectType" checked.bind="newMaterial.isPdf" model.bind="false"> URL
-            <br>
-            <input if.bind="!newMaterial.isPdf" type="text" class="form-control" placeholder="Url" value.bind="newMaterial.url">
-            <input if.bind="newMaterial.isPdf" type="file" class="form-control" files.bind="newMaterial.pdf" accept=".pdf">
-            <br>
-            <p class="text-center" if.bind="authService.isStudent()">Aparecerá en la plataforma una vez sea aprobado
-              por un administrador.</p>
-            <input type="submit" class="btn btn-default ufps-btn-default" value="Añadir">
-          </form>
+        </div>
+        <div class="modal-body">
+            <form enctype="multipart/form-data" submit.delegate="createMaterial()">
+              <input type="text" class="form-control" placeholder="Nombre" value.bind="newMaterial.name" required>
+              <br>
+              <input type="text" class="form-control" placeholder="Descripcion" value.bind="newMaterial.description">
+              <br>
+              <label for="selectType">Tipo:</label>
+              <input type="radio" name="selectType" checked.bind="newMaterial.isPdf" model.bind="true"> PDF
+              <input type="radio" name="selectType" checked.bind="newMaterial.isPdf" model.bind="false"> URL
+              <br>
+              <input if.bind="!newMaterial.isPdf" type="text" class="form-control" placeholder="Url" value.bind="newMaterial.url">
+              <input if.bind="newMaterial.isPdf" type="file" class="form-control-file" files.bind="newMaterial.pdf" accept=".pdf">
+              <br>
+              <div class="modal-footer">
+              <p class="text-center" if.bind="authService.isStudent()">Aparecerá en la plataforma una vez sea aprobado
+                por un administrador.</p>
+              <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Añadir">
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -82,15 +88,18 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
+          <h4 class="modal-title">¿Estás seguro de eliminar el material '${materialToRemoveName}'?</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">¿Estás seguro de eliminar el material '${materialToRemoveName}'?</h4>
           <br>
+        </div>
+        <div class="modal-body">
           <p>Esta acción no puede ser revertida.</p>
-
-          <button class="btn btn-default ufps-btn-default" click.delegate=removeMaterial()>Si</button>
-          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeMaterial()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
         </div>
       </div>
     </div>

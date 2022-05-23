@@ -26,6 +26,7 @@ export class ViewProblem {
     this.language
     this.code
     this.sourceValid = false
+    this.files = {}
   }
 
   /**
@@ -39,6 +40,24 @@ export class ViewProblem {
     this.routeConfig = routeConfig
     this.id = params.id
     this.lang = params.lang || 'en'
+
+    this.problemService.validateTypeCategory(this.id)
+      .then(dataCategory => {
+
+        if (dataCategory.type == 2 || dataCategory.type == 0){
+           this.routerService.navigate('/');
+        }
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+        this.routerService.navigate('')
+      })
 
     this.problemService.getProblem(this.id)
       .then(problem => {
@@ -86,7 +105,7 @@ export class ViewProblem {
    */
   validateCode () {
     if (this.code.length === 1) {
-      if (this.code[0].type.startsWith('text/') || this.code[0].name.endsWith('.java') || this.code[0].name.endsWith('.cpp') || this.code[0].name.endsWith('.c') || this.code[0].name.endsWith('.cc') || this.code[0].name.endsWith('.cp') || this.code[0].name.endsWith('.cxx') || this.code[0].name.endsWith('.py')) {
+      if (this.code[0].name.endsWith('.java') || this.code[0].name.endsWith('.cpp') || this.code[0].name.endsWith('.c') || this.code[0].name.endsWith('.cc') || this.code[0].name.endsWith('.cp') || this.code[0].name.endsWith('.cxx') || this.code[0].name.endsWith('.py')) {
         this.sourceValid = true
         if(this.code[0].name.endsWith('.java')) {
           this.language = 'Java'
@@ -121,7 +140,10 @@ export class ViewProblem {
     } else if (this.language === null) {
       this.alertService.showMessage(MESSAGES.invalidLanguage)
     } else {
-      this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.code[0])
+
+      this.files.codeFile = this.code[0]
+
+      this.problemService.submitSolution(this.id, this.language, undefined, undefined, this.files)
         .then((data) => {
           this.alertService.showMessage(MESSAGES.submittedSolution)
           this.language = null
@@ -139,4 +161,5 @@ export class ViewProblem {
         })
     }
   }
+
 }

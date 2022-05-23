@@ -1,0 +1,83 @@
+<template>
+  <require from="../../../resources/attributes/tooltip"></require>
+  <require from="../../../resources/elements/filter"></require>
+  <require from="../../../resources/elements/paginator"></require>
+  <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour">Tour</a>
+  <div data-step="1" data-intro="Aquí encontrarás la lista de problemas que puedes desarrollar" class="container ufps-container-logged">
+
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="problemas/colegios">Categorías</a>
+      </li>
+      <li class="breadcrumb-item active">Problemas de "${category.name}"</li>
+    </ol>
+    <h1 class="text-right">${category.name}</h1>
+    <hr>
+
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
+      sort.bind="sort" by.bind="by" text-to-show.bind="'problemas'" language-flag.bind="true" language.bind="language"></filter>
+    <table>
+      <thead>
+        <tr>
+          <th class="text-center" style="width:5%">Id</th>
+          <th class="text-center" style="width:70%">Problema</th>
+          <th data-step="2" data-intro="Los problemas estan calificados por dificultad donde 1 es la más facil y 5 la más difícil" class="text-center" style="width:10%">Dificultad</th>
+          <th class="text-center" style="width:15%">Idioma</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="problem of category.problemsLoaded">
+          <td class="text-center">${problem.id}</td>
+          <td class="text-left ufps-td-problem">
+            <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list">
+              <a route-href="route: schools-view-problem; params.bind: {id:problem.id, lang:'es'}">${problem.titleES}</a>
+            </p>
+            <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
+              <a route-href="route: schools-view-problem; params.bind: {id:problem.id, lang:'en'}">${problem.titleEN}</a>
+            </p>
+            <span if.bind="problem.resolved" class="ufps-edit-problem-list fas fa-check" data-toggle="tooltip" title="Ya solucionaste este problema" tooltip></span>            
+            <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}">
+              <span class="ufps-edit-problem-list fas fa-pencil-alt" data-toggle="tooltip"
+                title="Editar problema" tooltip></span>
+            </a>
+            <span if.bind="authService.isAdmin()" class="ufps-edit-problem-list fas fa-times" data-toggle="tooltip" title="Eliminar problema"
+              click.delegate="showRemoveProblem(problem.id)" tooltip></span>
+          </td>
+          <td class="text-center">${problem.level}</td>
+          <td class="text-center ufps-language">
+            <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
+              <a route-href="route: schools-view-problem; params.bind: {id:problem.id, lang:'es'}">ES</a>
+            </span>
+            |
+            <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
+              <a route-href="route: schools-view-problem; params.bind: {id:problem.id, lang: 'en'}">EN</a>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+  </div>
+
+  <!--MODAL PARA ELIMINAR PROBLEMA-->
+  <div if.bind="authService.isAdmin()" class="modal fade" id="remove-problem" tabindex="-1" role="dialog" aria-labelledby="remove-problem">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4 class="modal-title">¿Estás seguro de eliminar este problema?</h4>
+          <br>
+          <p>Esta acción no puede ser revertida</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeProblem()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

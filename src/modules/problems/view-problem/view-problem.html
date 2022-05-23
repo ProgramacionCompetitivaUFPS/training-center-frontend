@@ -2,116 +2,124 @@
   <require from="../../../resources/attributes/markdown"></require>
   <require from="../../../resources/attributes/tooltip"> </require>
   <div class="container-fluid">
-    <div class="col-xs-12" if.bind="lang === 'en'">
+    <div class="col-12" if.bind="lang === 'en'">
       <ol class="breadcrumb">
-        <li>
+        <li class="breadcrumb-item">
           <a route-href="route: problems;">Categorías</a>
         </li>
-        <li>
+        <li class="breadcrumb-item">
           <a href="/problemas/categoria/${problem.category}">Problemas en esta categoría</a>
         </li>
-        <li class="active">Problema "${problem.titleEN}"</li>
+        <li class="breadcrumb-item active">Problema "${problem.titleEN}"</li>
       </ol>
     </div>
-    <div class="col-xs-12" if.bind="lang === 'es'">
+    <div class="col-12" if.bind="lang === 'es'">
       <ol class="breadcrumb">
-        <li>
+        <li class="breadcrumb-item active">
           <a route-href="route: problems;">Categorías</a>
         </li>
-        <li>
+        <li class="breadcrumb-item active">
           <a href="/problemas/categoria/${problem.category}">Problemas en esta categoría</a>
         </li>
-        <li class="active">Problema "${problem.titleES}"</li>
+        <li class="breadcrumb-item active">Problema "${problem.titleES}"</li>
       </ol>
     </div>
-    <div class="col-md-9">
-      <div class="ufps-separator-mini"></div>
-      <div class="panel panel-default">
-        <div class="panel-body" show.bind="lang === 'es'">
-          <h1 class="text-center ufps-problem-title">${problem.titleES} 
-          </h1>
-          <p class="ufps-language text-center">
-            <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
-            <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
-          </p>
-          <p class="ufps-markdown-editor" markdown.bind="problem.descriptionES"></p>
-          <div class="col-xs-12">
-            <div class="col-md-6">
-              <h3 class="text-center">Entrada de ejemplo</h3>
-              <div class="well example-in-out">
-                <pre>${problem.exampleInput}</pre>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="ufps-separator-mini"></div>
+          <div class="card">
+            <div class="card-body" show.bind="lang === 'es'">
+              <h2 class="text-center ufps-problem-title">${problem.titleES} 
+              </h2>
+              <p class="ufps-language text-center">
+                <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
+                <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
+              </p>
+              <p class="ufps-markdown-editor" markdown.bind="problem.descriptionES"></p>
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4 class="text-center">Entrada de ejemplo</h4>
+                  <div class="card bg-light card-body mb-3 example-in-out">
+                    <pre>${problem.exampleInput}</pre>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <h4 class="text-center">Salida de ejemplo</h4>
+                  <div class="card bg-light card-body mb-3 example-in-out">
+                    <pre>${problem.exampleOutput}</pre>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <h3 class="text-center">Salida de ejemplo</h3>
-              <div class="well example-in-out">
-                <pre>${problem.exampleOutput}</pre>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="panel-body" show.bind="lang === 'en'">
-          <h1 class="text-center ufps-problem-title">${problem.titleEN}</h1>
-          <p class="ufps-language text-center">
-            <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
-            <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
-          </p>
-          <p class="ufps-markdown-editor" markdown.bind="problem.descriptionEN"></p>
-          <div class="col-xs-12">
-            <div class="col-md-6">
-              <h3 class="text-center">Entrada de ejemplo</h3>
-              <div class="well example-in-out">
-                <pre>${problem.exampleInput}</pre>
+        
+            <div class="card-body" show.bind="lang === 'en'">
+              <h2 class="text-center ufps-problem-title">${problem.titleEN}</h2>
+              <p class="ufps-language text-center">
+                <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
+                <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
+              </p>
+              <p class="ufps-markdown-editor" markdown.bind="problem.descriptionEN"></p>
+      
+              <div class="container">
+                <div class="row row-cols-2">    
+                    <div class="col-lg-6">
+                      <h3 class="text-center">Entrada de ejemplo</h3>
+                      <div class="well example-in-out">
+                        <pre>${problem.exampleInput}</pre>
 
-              </div>
-            </div>
-            <div class="col-md-6">
-              <h3 class="text-center">Salida de ejemplo</h3>
-              <div class="well example-in-out">
-                <pre>${problem.exampleOutput}</pre>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <h4 class="text-center">Salida de ejemplo</h4>
+                      <div class="well example-in-out">
+                        <pre>${problem.exampleOutput}</pre>
+                      </div>
+                    </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="ufps-separator-mini"></div>
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p show.bind="lang === 'en'">
-            <strong>Problema:</strong> ${problem.titleEN}</p>
-          <p show.bind="lang === 'es'">
-            <strong>Problema:</strong> ${problem.titleES}</p>
-          <p>
-            <strong>Dificultad:</strong> ${problem.level}</p>
-          <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
-          <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
-          <form if.bind="!authService.isAdmin()" class="ufps-submit-form" submit.delegate="submit()" enctype="multipart/form-data">
-            <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()" accept=".py, .java,.cpp, .c, .cc, .cp, .cxx"
-              files.bind="code">
-            <label for="input-file" tooltip data-toggle="tooltip" title="Archivo con la solución al problema">Seleccionar
-              <span class="glyphicon glyphicon-ok-sign" show.bind="sourceValid"></span>
-            </label>
-            <div class="input-group">
-              <select class="form-control" value.bind="language">
-                <option required model.bind="null">Lenguaje...</option>
-                <option repeat.for="lg of languages" model.bind="lg">${lg}</option>
-              </select>
+        <div class="col-lg-3">
+          <div class="ufps-separator-mini"></div>
+          <div class="card">
+            <div class="card-body">
+              <p show.bind="lang === 'en'">
+                <strong>Problema:</strong> ${problem.titleEN}</p>
+              <p show.bind="lang === 'es'">
+                <strong>Problema:</strong> ${problem.titleES}</p>
+              <p>
+                <strong>Dificultad:</strong> ${problem.level}</p>
+              <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
+              <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
+              <form if.bind="!authService.isAdmin()" class="ufps-submit-form" submit.delegate="submit()" enctype="multipart/form-data">
+                <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()" accept=".py, .java,.cpp, .c, .cc, .cp, .cxx"
+                  files.bind="code">
+                <label for="input-file" tooltip data-toggle="tooltip" title="Archivo con la solución al problema">Seleccionar
+                  <span class="fas fa-check" show.bind="sourceValid"></span>
+                </label>
+                <div class="input-group">
+                  <select class="form-control" value.bind="language">
+                    <option required model.bind="null">Lenguaje...</option>
+                    <option repeat.for="lg of languages" model.bind="lg">${lg}</option>
+                  </select>
+                </div>
+                <input type="submit" value="Enviar" class="btn ufps-btn-submit">
+              </form>
             </div>
-            <input type="submit" value="Enviar" class="btn ufps-btn-submit">
-          </form>
-        </div>
-      </div>
-      <div class="panel panel-default panel-resolved" if.bind="problem.resolved">
-        <div class="panel-body">
-          <div class="media">
-            <div class="media-left">
-              <img class="media-object" src="./src/assets/img/logo-transparent-64px.png">
-            </div>
-            <div class="media-body">
-              <h4 class="media-heading">¡Felicitaciones!</h4>
-              <p>Ya has resuelto este problema anteriormente.</p>
+          </div>
+          <div class="card panel-resolved" if.bind="problem.resolved">
+            <div class="card-body">
+              <div class="media">
+                <div class="media-left">
+                  <img class="media-object" src="../../../assets/img/logo-transparent-64px.png">
+                </div>
+                <div class="media-body">
+                  <h5 class="media-heading">¡Felicitaciones!</h5>
+                  <p>Ya has resuelto este problema anteriormente.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,8 +1,10 @@
-export function configure (config) {
-  config.globalResources([
-    './attributes/markdown',
-    './attributes/tooltip',
-    './elements/loading-indicator',
-    './elements/app-header'
-  ])
+export function configure(config) {
+    config.globalResources([
+        PLATFORM.moduleName('./attributes/markdown'),
+        PLATFORM.moduleName('./attributes/tooltip'),
+        PLATFORM.moduleName('./elements/loading-indicator'),
+        PLATFORM.moduleName('./elements/app-header'),
+        PLATFORM.moduleName('./elements/canvas-principal'),
+        PLATFORM.moduleName('./elements/login-signin'),
+    ])
 }

@@ -1,0 +1,35 @@
+<template>
+    <require from="../../resources/attributes/tooltip"></require>
+    <require from="../../resources/elements/paginator"></require>
+    <app-header></app-header>
+    <div data-step="1" data-intro="Niveles" slot="content" class="body-slot">
+        <a class="btn btn-outline-info" id="boton" click.delegate="tour()" role="button" ref="botonTour">Tour</a>
+        <img src="../../assets/img/fondo-cielo.png" alt="" class="fondoHome">
+        <div class="niveles" id="nivel1">
+            <h1 class="base1">Básico</h1>
+            <a href="problemas/colegios"><img src="../../assets/img/BaseNivel1.png" alt="" data-step="2" data-intro="Si nunca has resuelto ningun ejercicio, este nivel es para ti" class="base1"></a>
+            <div class="naveNivel1">
+                <a href="problemas/colegios"><img src="../../assets/img/NaveNivel.png" alt=""></a>
+            </div>
+        </div>
+        
+        
+        <div class="niveles" id="nivel2">
+            <h1 class="base2">Intermedio</h1>
+            <a href="problemas/colegios"><img src="../../assets/img/BaseNivel2.png" alt="" data-step="3" data-intro="Si ya has resuelto los problemas del nivel 1, este nivel es para ti" class="base2"></a>
+            <div class="naveNivel2">
+                <a href="problemas/colegios"><img src="../../assets/img/NaveNivel.png" alt=""></a>
+            </div>
+        </div>
+        
+        <div class="niveles" id="nivel3">
+            <h1 class="base3">Avanzado</h1>
+            <a href="problemas/colegios"><img src="../../assets/img/BaseNivel3.png" alt="" data-step="4" data-intro="Si ya has resuelto los problemas del nivel 2, este nivel es para ti" class="base3"></a>
+            <div class="naveNivel3">
+                <a href="problemas/colegios"><img src="../../assets/img/NaveNivel.png" alt=""></a>
+            </div>
+        </div>
+        
+    </div>
+    
+</template>

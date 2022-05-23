@@ -7,16 +7,16 @@
     <div class="text-center" if.bind="!enrolledSyllabusesLoaded">
       <p>Actualmente no tienes ninguna clase inscrita.</p>
     </div>
-    <div repeat.for="syllabus of enrolledSyllabuses" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
+    <div repeat.for="syllabus of enrolledSyllabuses" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
       <a route-href="route: SyllabusDetail; params.bind: {id:syllabus.id}">
         <div class="ufps-card">
           <div class="ufps-card-title">
             <h1>${syllabus.tittle}</h1>
           </div>
-          <div class="col-xs-6 ufps-card-link">
+          <div class="col-6 ufps-card-link">
             <a route-href="route: SyllabusDetail; params.bind: {id:syllabus.id}">Ver clase</a>
           </div>
-          <div class="col-xs-6 ufps-card-link">
+          <div class="col-6 ufps-card-link">
             <a route-href="route: SyllabusStatistics; params.bind: {id:syllabus.id}">Detalle</a>
           </div>
           <div class="fix"></div>
@@ -28,22 +28,22 @@
     <h1 class="text-right" if.bind="authService.isStudent()">Clases disponibles</h1>
     <h1 class="text-right" if.bind="authService.isCoach()">Mis clases</h1>
     <hr>
-    <div repeat.for="syllabus of syllabuses" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-container">
+    <div repeat.for="syllabus of syllabuses" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
       <div class="ufps-card">
         <div class="ufps-card-title">
-          <span if.bind="authService.isCoach()" class="ufps-edit-category glyphicon glyphicon-pencil" data-toggle="tooltip" title="Editar los datos de la clase"
-            click.delegate="showEditSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)" tooltip></span>
-          <span if.bind="authService.isCoach()" class="ufps-remove-category glyphicon glyphicon-remove" data-toggle="tooltip" title="Eliminar la clase"
-            click.delegate="showRemoveSyllabus(syllabus.id, syllabus.tittle)" tooltip></span>
+          <span if.bind="authService.isCoach()" class="ufps-edit-category fas fa-pencil-alt" data-toggle="tooltip" title="Editar los datos de la clase"
+                click.delegate="showEditSyllabus(syllabus.id, syllabus.tittle, syllabus.description, syllabus.public)" tooltip></span>
+          <span if.bind="authService.isCoach()" class="ufps-remove-category fas fa-times-circle" data-toggle="tooltip" title="Eliminar la clase"
+                click.delegate="showRemoveSyllabus(syllabus.id, syllabus.tittle)" tooltip></span>
           <h1>${syllabus.tittle}</h1>
         </div>
-        <div if.bind="authService.isCoach()" class="col-xs-6 ufps-card-link">
+        <div if.bind="authService.isCoach()" class="col-6 ufps-card-link">
           <a route-href="route: SyllabusDetail; params.bind: {id:syllabus.id}">Detalle</a>
         </div>
-        <div if.bind="authService.isCoach()" class="col-xs-6 ufps-card-link">
+        <div if.bind="authService.isCoach()" class="col-6 ufps-card-link">
           <a route-href="route: SyllabusStatistics; params.bind: {id:syllabus.id}">Estadísticas</a>
         </div>
-        <div if.bind="authService.isStudent()" class="col-xs-6 ufps-card-link">
+        <div if.bind="authService.isStudent()" class="col-6 ufps-card-link">
           <span if.bind="syllabus.public">Público</span>
           <span if.bind="!syllabus.public">Privado</span>
         </div>
@@ -56,14 +56,14 @@
         <div class="fix"></div>
       </div>
     </div>
-    <div if.bind="authService.isCoach()" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-new ufps-card-container">
+    <div if.bind="authService.isCoach()" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-new ufps-card-container">
       <div class="ufps-card" data-toggle="modal" data-target="#new-syllabus">
         <div class="ufps-card-title">
           <h1>
-            <span class="glyphicon glyphicon-plus"></span>
+            <i class="fas fa-plus-circle fa-2x fa-lg"></i>
           </h1>
         </div>
-        <div class="col-xs-12 ufps-card-link">
+        <div class="col-12 ufps-card-link">
           Nueva clase
         </div>
         <div class="fix"></div>
@@ -78,11 +78,14 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          <h4 class="modal-title">Nueva clase</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Nueva clase</h4>
+
           <br>
+        </div>
+        <div class="modal-body">
           <form submit.delegate="createSyllabus()">
             <div class="form-group">
               <label>Titulo</label>
@@ -92,12 +95,12 @@
               <label>Descripción</label>
               <input type="text" class="form-control" placeholder="Descripión de la clase" value.bind="newSyllabus.description" required>
             </div>
-            <div class="radio">
+            <div class="form-check">
               <label>
                 <input type="radio" name="privacy" model.bind="true" checked.bind="newSyllabus.privacy" checked> Público
               </label>
             </div>
-            <div class="radio">
+            <div class="form-check">
               <label>
                 <input type="radio" name="privacy" model.bind="false" checked.bind="newSyllabus.privacy" checked> Privado
                 <span>(requiere clave)</span>
@@ -108,8 +111,9 @@
               <input type="text" class="form-control" placeholder="clave que deben ingresar los estudiantes para acceder a la clase" value.bind="newSyllabus.key"
                 required>
             </div>
-            <div class="text-right">
-              <input type="submit" class="btn btn-default ufps-btn-default" value="Registrar clase">
+        
+            <div class="text-center">
+              <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Registrar clase">
             </div>
           </form>
         </div>
@@ -119,29 +123,31 @@
 
   <!--MODAL PARA EDITAR SYLLABUS-->
   <div if.bind="authService.isCoach()" class="modal fade" id="edit-syllabus" tabindex="-1" role="dialog" aria-labelledby="edit-syllabus">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
+          <h4 class="modal-title">Editar Syllabus</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Editar Syllabus</h4>
           <br>
+        </div>
+        <div class="modal-body">
           <form submit.delegate="modifySyllabus()">
-            <div class="form-group">
+            <div class="">
               <label>Titulo</label>
               <input type="text" class="form-control" placeholder="Nombre del syllabus" value.bind="editSyllabus.title" required>
             </div>
-            <div class="form-group">
+            <div class="">
               <label>Descripción</label>
               <input type="text" class="form-control" placeholder="Descripión del syllabus" value.bind="editSyllabus.description" required>
             </div>
-            <div class="radio">
+            <div class="form-check">
               <label>
                 <input type="radio" name="privacy" model.bind="true" checked.bind="editSyllabus.privacy"> Público
               </label>
             </div>
-            <div class="radio">
+            <div class="form-check">
               <label>
                 <input type="radio" name="privacy" model.bind="false" checked.bind="editSyllabus.privacy"> Privado
                 <span>(requiere clave)</span>
@@ -152,8 +158,8 @@
               <input type="text" class="form-control" placeholder="clave que deben ingresar los estudiantes para acceder a la clase" value.bind="editSyllabus.key"
                 required>
             </div>
-            <div class="text-right">
-              <input type="submit" class="btn btn-default ufps-btn-default" value="Editar clase">
+            <div class="text-center">
+              <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Editar clase">
             </div>
           </form>
         </div>
@@ -166,15 +172,18 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
+          <h4 class="modal-title">¿Estás seguro de eliminar la clase ${syllabusToRemove.title}?</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">¿Estás seguro de eliminar la clase ${syllabusToRemove.title}?</h4>
           <br>
+          </div>
+        <div class="modal-body">
           <p>Esta operación no se puede deshacer</p>
-
-          <button class="btn btn-default ufps-btn-default" click.delegate=removeSyllabus()>Si</button>
-          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeSyllabus()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
         </div>
       </div>
     </div>
@@ -185,11 +194,12 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
+          <h4 class="modal-title">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>
           <br>
+        <div class="modal-body">
           <form submit.delegate="enrollSyllabus()">
             <div if.bind="!syllabusToEnroll.privacy">
               <p>Ingresa la clave de esta clase (si no la tienes, comunicate con el profesor/coach a cargo)</p>
@@ -197,9 +207,10 @@
                 <input type="text" class="form-control" value.bind="syllabusToEnroll.key">
               </div>
             </div>
-
-            <input type="submit" class="btn btn-default ufps-btn-default" value="Si">
-            <input type="submit" class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close" value="No">
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Si">
+            <input type="submit" class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close" value="No">
           </form>
         </div>
       </div>

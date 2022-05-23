@@ -2,25 +2,25 @@
   <require from="../../../resources/elements/clock"></require>
   <div class="container container-contest">
     <ol class="breadcrumb">
-      <li>
+      <li class="breadcrumb-item">
           <a route-href="route: contest;">Maratones</a>
       </li>
-      <li>
+      <li  class="breadcrumb-item">
           <a route-href="route: detail; params.bind: {id:id}">${contest.title}</a>
       </li>
-      <li class="active">Problemas</li>
+      <li class="breadcrumb-item active">Problemas</li>
     </ol>
     <h2 class="text-right">${contest.title}</h2>
     <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="true" start-date.bind="startDate" end-date.bind="endDate"></clock>
     <hr>
     <ul class="nav nav-pills nav-justified nav-maraton">
-      <li role="presentation">
+      <li class="breadcrumb-item" role="presentation">
         <a route-href="route: detail; params.bind: {id:id}">Inicio</a>
       </li>
-      <li class="active" role="presentation">
+      <li class="breadcrumb-item active" role="presentation">
         <a>Problemas</a>
       </li>
-      <li role="presentation" if.bind="(contest.privacy || status === 'registered' || authService.getUserId() === creatorId)">
+      <li class="breadcrumb-item" role="presentation" if.bind="(contest.privacy || status === 'registered' || authService.getUserId() === creatorId)">
           <a route-href="route: board; params.bind: {id:id}">Resultados</a>
         </li>
         <li role="presentation" class="disabled" if.bind="(!contest.privacy && status !== 'registered' && authService.getUserId() !== creatorId)">
@@ -67,20 +67,25 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
+          <h4 class="modal-title">Regístrate</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Regístrate</h4>
+          
           <br>
-          <p>¿Deseas participar en esta competencia?</p>
-          <div if.bind="!contest.privacy">
-            <p>Esta competencia es privada. Para ingresar, debes tener una clave, que debe ser indicada por el administrador.</p>
-            <div class="form-group">
-              <input type="text" class="form-control" value.bind="key" placeholder="Ingresa la clave de la competencia">
+        </div>
+        <div class="modal-body">
+            <p>¿Deseas participar en esta competencia?</p>
+            <div if.bind="!contest.privacy">
+              <p>Esta competencia es privada. Para ingresar, debes tener una clave, que debe ser indicada por el administrador.</p>
+              <div class="form-group">
+                <input type="text" class="form-control" value.bind="key" placeholder="Ingresa la clave de la competencia">
+              </div>
             </div>
-          </div>
-          <button class="btn btn-default ufps-btn-default" click.delegate=register()>Registrarme</button>
-          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">Cancelar</button>
+        </div>
+        
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=register()>Registrarme</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">Cancelar</button>
         </div>
       </div>
     </div>
@@ -90,14 +95,18 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header text-center">
+          <h4 class="modal-title">Anular registro</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <h4 class="modal-title">Anular registro</h4>
           <br>
+        </div>
+        <div class="modal-body">
           <p>¿Estas seguro de salir de esta maratón?</p>
-          <button class="btn btn-default ufps-btn-default" click.delegate=unregister()>Anular registro</button>
-          <button class="btn btn-default ufps-btn-default" data-dismiss="modal" aria-label="Close">Cancelar</button>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=unregister()>Anular registro</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">Cancelar</button>
         </div>
       </div>
     </div>
