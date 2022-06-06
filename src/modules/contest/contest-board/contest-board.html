@@ -1,0 +1,62 @@
+<template>
+  <require from="../../../resources/elements/clock"></require>
+  <div class="container container-contest">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a route-href="route: contest;">Maratones</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a route-href="route: detail; params.bind: {id:id}">${contest.title}</a>
+      </li>
+      <li class="breadcrumb-item active">Resultados</li>
+    </ol>
+    <h2 class="text-right">${contest.title}</h2>
+    <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="true" start-date.bind="startDate" end-date.bind="endDate"></clock>
+    <hr>
+    <ul class="nav nav-pills nav-justified nav-maraton">
+      <li class="breadcrumb-item" role="presentation">
+        <a route-href="route: detail; params.bind: {id:id}">Inicio</a>
+      </li>
+      <li class="breadcrumb-item" role="presentation" class="disabled" if.bind="(status !== 'registered' && !contest.privacy && authService.getUserId() !== creatorId)">
+        <a>Problemas</a>
+      </li>
+      <li class="breadcrumb-item" role="presentation" if.bind="(status === 'registered' || authService.getUserId() === creatorId || contest.privacy)">
+        <a route-href="route: problems; params.bind: {id:id}">Problemas</a>
+      </li>
+      <li class="breadcrumb-item active" role="presentation">
+        <a>Resultados</a>
+      </li>
+    </ul>
+    <br>
+    <div class="row">
+      <table class="ufps-score" if.bind="flagProblems">
+        <thead>
+          <tr>
+            <th class="text-center" style="width:5%">Posición</th>
+            <th class="text-center" style="width:15%">Usuario</th>
+            <th repeat.for="i of totalProblems" class="text-center">${letterValue(i)}</th>
+            <th class="text-center">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="user of score">
+            <td class="text-center">${$index + 1}</td>
+            <td>${user.name}
+              <span class="username-gray">(${user.username})</span>
+              </span>
+              <td repeat.for="result of user.results" class="text-center">
+                <div class="ufps-score-correct" if.bind="result.first !== -1 && result.second !== -1 && result.third === 0"></div>
+                <div class="ufps-score-incorrect" if.bind="result.first !== -1 && result.second === -1  && result.third === 0"></div>
+                <div class="ufps-score-first" if.bind="result.third === 1"></div>
+                <div class="ufps-score-gold" if.bind="result.third === 2"></div>
+                <span if.bind="result.first !== -1">${result.first}/</span><span if.bind="result.second !== -1">${result.second}</span><span if.bind="result.first !== -1 && result.second === -1">-</span>
+              </td>
+              <td class="text-center">${user.total}
+                <span class="username-gray">(${user.penalization})</span>
+                </span>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>

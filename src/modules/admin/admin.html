@@ -1,0 +1,241 @@
+<template>
+  <require from="../../resources/elements/filter"></require>
+  <require from="../../resources/elements/paginator"></require>
+  <div slot="content" class="body-slot">
+    <div class="container" if.bind="authService.isAdmin()">
+      <h1 class="text-right">Usuarios</h1>
+      <hr>
+      <p class="text-center">Desde esta sección puede añadir docentes (coachs) o administradores. Los estudiantes pueden crear sus propias cuentas
+        desde la página inicial.</p>
+      <form submit.delegate="createUser()">
+        <div class="text-center">
+          <label class="form-check-inline">
+            <input type="radio" name="type-user" checked.bind="newUser.type" model.bind="2" required> Administrador
+          </label>
+          <label class="form-check-inline">
+            <input type="radio" name="type-user" checked.bind="newUser.type" model.bind="1" required> Coach o docente
+          </label>
+        </div>
+        <br>
+        <div class="row">
+          <div class=" col-lg-6">
+           
+              <div class="row">
+                <label class="col-form-label col-md-3" for="new-user-name">Nombre:</label>
+                <div class="col-md-9 input-group ufps-input-creator">
+                  <input type="text" class="form-control" id="new-user-name" value.bind="newUser.name" required>
+                  <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nombre completo del usuario">
+                    <span class="fas fa-question-circle"></span>
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-form-label col-md-3" for="new-user-email">Email:</label>
+                <div class="col-md-9 input-group ufps-input-creator">
+                  <input type="email" class="form-control" id="new-user-email" value.bind="newUser.email" required>
+                  <span class="input-group-addon" tooltip data-toggle="tooltip" title="Email del usuario">
+                    <span class="fas fa-question-circle"></span>
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-form-label col-md-3" for="new-user-password">Contraseña:</label>
+                <div class="col-md-9 input-group ufps-input-creator">
+                  <input type="password" class="form-control" id="new-user-password" value.bind="newUser.password" required>
+                  <span class="input-group-addon" tooltip data-toggle="tooltip" title="Contraseña del usuario">
+                    <span class="fas fa-question-circle"></span>
+                  </span>
+                </div>
+              </div>
+           
+          </div>
+        
+          <div class=" col-lg-6">
+          
+            <div class="row">
+              <label class="col-form-label col-md-3" for="new-user-name">Código:</label>
+              <div class="col-md-9 input-group ufps-input-creator">
+                <input type="number" class="form-control" id="new-user-code" value.bind="newUser.code">
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Código del usuario en la Universidad">
+                  <span class="fas fa-question-circle"></span>
+                </span>
+              </div>
+            </div>
+            <div class="row">
+              <label class="control-label col-sm-3" for="new-user-username">Username:</label>
+              <div class="col-md-9 input-group ufps-input-creator">
+                <input type="text" class="form-control" id="new-user-username" value.bind="newUser.username">
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Nickname del usuario (sin espacios)">
+                  <span class="fas fa-question-circle"></span>
+                </span>
+              </div>
+            </div>
+            <div class="row">
+              <label class="control-label col-md-3" for="new-user-password">Contraseña:</label>
+              <div class="col-md-9 input-group ufps-input-creator">
+                <input type="password" class="form-control" id="new-user-password" value.bind="newUser.confirmPassword" required>
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Repite la contraseña">
+                  <span class="fas fa-question-circle"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <input type="submit" class="btn ufps-btn-submit" value="Crear usuario">
+        </div>
+      </form>
+
+      <p>
+        Filtrar por instución:
+        <select change.delegate="cambiarInstitucion($event.target.value)" name="" id="">
+        <option value=" ">Seleccione</option>
+        <option value="Colegio">Colegio</option>
+        <option value="Universidad">Universidad</option>
+        </select>
+
+      <p>
+        Elegir ${institucion} :
+        <select change.delegate="filterByInstitution($event.target.value)" name="" id="">
+        <option value=" ">Seleccione</option>
+        <option if.bind="institucion" repeat.for="university of universities" value.bind="university.id">${university.name}</option>
+      </select></p>
+      
+      <filter number-of-items.bind="numberOfUsersToShow" sort-options.bind="sortOptions" filter-change.bind="filterChangeUser"
+        limit.bind="limitUsers" sort.bind="sortUsers" by.bind="byUsers" text-to-show.bind="'usuarios'" language-flag.bind="false"></filter>
+        <table>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Código</th>
+            <th>Tipo</th>
+            <th>Email</th>
+            <th>Institución</th>
+            <th>Inst. Tipo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="user of users">
+            <td>${user.id}</td>
+            <td>${user.name}</td>
+            <td>${user.username}</td>
+            <td>${user.code}</td>
+            <td if.bind="user.type === 0">Estudiante</td>
+            <td if.bind="user.type === 1">Coach</td>
+            <td if.bind="user.type === 2">Administrador</td>
+            <td>${user.email}</td>
+            <td>
+              <p if.bind = "user.institution.shortName!==null"> ${user.institution.shortName}</p>
+              <p if.bind = "user.institution.shortName===null"> ${user.institution.name}</p>
+            </td>
+            
+            <td>
+              <p if.bind="user.institution.institution===0">Universidad</p>
+              <p if.bind="user.institution.institution===1">Colegio</p>
+            </td>
+            <td class="text-right">
+              <button class="ufps-btn btn ufps-btn-secondary" click.delegate="showRemoveUser(user.id)">Revocar</button>
+            </td>
+          </tr>
+          <tr if.bind="users.length === 0 || users === null || users ===undefined">
+            <td></td>
+            <td>No hay usuarios en la plataforma.</td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <paginator page.bind="pageUsers" total-pages.bind="totalPagesUsers"></paginator>
+
+      <h1 class="text-right">Materiales</h1>
+      <hr>
+      <p class="text-center">Los siguientes materiales han sido añadidos por estudiantes. Para que aparezcan en la plataforma, deben ser aprobados
+        por un administrador.</p>
+      <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
+        sort.bind="sort" by.bind="by" text-to-show.bind="'materiales'" language-flag.bind="false"></filter>
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center">Id</th>
+            <th class="text-center">Nombre</th>
+            <th class="text-center">Categoría</th>
+            <th class="text-center">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="material of materials">
+            <td class="text-center">${material.id}</td>
+            <td>${material.name}</td>
+            <td>${material.categoryString}</td>
+            <td class="text-right">
+              <a class="ufps-btn btn ufps-btn-secondary" href="${material.url}" target="blank">Abrir</a>
+              <button class="ufps-btn btn ufps-btn-secondary" click.delegate="approveMaterial(material.id)">Aprobar</button>
+              <button class="ufps-btn btn ufps-btn-secondary" click.delegate="showRemoveMaterial(material.id)">Descartar</button>
+            </td>
+          </tr>
+          <tr if.bind="materials.length === 0">
+            <td></td>
+            <td>No hay materiales pendientes de aprobación.</td>
+            <td>
+            </td>
+            <td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+    </div>
+    <div if.bind="authService.isAdmin()" class="modal fade" id="remove-material" tabindex="-1" role="dialog" aria-labelledby="remove-material">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title">¿Estás seguro de eliminar este material?</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+                        <br>
+          <div class="modal-body">
+            <p>Esta acción no puede ser revertida</p>
+          </div>
+          <div class="modal-footer"></div>
+            <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeMaterial()>Si</button>              <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div if.bind="authService.isAdmin()" class="modal fade" id="remove-user" tabindex="-1" role="dialog" aria-labelledby="remove-user">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h4 class="modal-title">¿Estás seguro de revocar el acceso de este usuario?</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div> 
+              <br>
+            <div class="modal-body">
+              
+              <p>Esta acción no puede ser revertida. El usuario será eliminado del sistema. Utilice esta opción solo por petición del mismo usuario, o en caso de detectar cuentas fraudulentas o vandálicas.</p>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeUser()>Si</button>
+              <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</template>

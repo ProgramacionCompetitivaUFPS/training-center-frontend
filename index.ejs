@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>UFPS Training Center</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- LINKS -->
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/minified/introjs.min.css">
+    <!--<link rel="stylesheet" href="https://unpkg.com/intro.js/themes/introjs-modern.css">
+    <!--link rel="manifest" href="manifest.json"-->
+    <base href="<%= htmlWebpackPlugin.options.metadata.baseUrl %>">
+
+</head>
+
+<body aurelia-app="main">
+    <script src="https://unpkg.com/intro.js/minified/intro.min.js"></script>
+    <script>
+        (function () {
+          var dsq = document.createElement('div');
+          dsq.setAttribute('id', 'disqus_thread');
+          dsq.style.display = 'none';   
+          (document.head || document.body).appendChild(dsq);
+      
+          // The script below looks for a div with id disqus_thread when it runs.
+          // By creating the div above, we prevent the following error: 
+          // Uncaught TypeError: Cannot read property 'appendChild' of null
+          var s = document.createElement('script');
+          s.src = 'https://training-center-1.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (document.head || document.body).appendChild(s);
+        })();
+      </script>
+</body>
+
+</html>

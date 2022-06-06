@@ -1,0 +1,295 @@
+<template>
+  <require from="../../resources/attributes/tooltip"></require> 
+  <require from="../../resources/elements/paginator"></require>
+  <require from="swiper/swiper-bundle.css"></require>
+  <require from="../../assets/css/home-styles.css"></require>
+  <!---Boton subir-->
+  <a href="#" id="js_up" class="up-button">
+    <i class="fa fa-rocket" aria-hidden="true"></i>
+  </a>
+  <section>
+    <header class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <a href="#" class="a_logo"><img src="../../assets/img/logo-transparent.png" class="logo"></a>
+      <nav>
+        <a href="#">Principal</a>
+        <a href="/partners">Desarrolladores</a>
+        <a href="#" data-step="3" data-intro="Aquí podrás encontrar todo el material publico necesario para este viaje"class="text_dark">Material público</a>
+        <a data-step="2" data-intro="Si ya tienes una cuenta, aquí puedes empezar tu viaje"data-toggle="modal" data-target="#iniciar-sesion" href="" class="text_dark">Iniciar sesión</a>
+        <!--<a data-step="2" data-intro="Registrate y haz parte de esta aventura"data-toggle="modal" data-target="#iniciar-sesion" href="" class="text_dark">Registrarse</a>-->
+        <a data-step="1" data-intro="Bienvenido a Training Center, conoce lo nuevo" id="boton" class="text_dark" click.delegate="tour()" role="button">Tour</a>
+      </nav>
+
+      <!--.textos-header-->
+        <!--section.textos-header-->
+        
+        <section class="text-header">
+          
+          <h1 class="h11">Haz volar tu</h1>
+          <h1 class="h12">imaginación</h1>
+          <h2>Con los mejores competidores de la región</h2>
+        </section>
+        
+        <div class="div_img_craft">
+          <img src="../../assets/img/Recurso_4.png" class="img_craft">
+        </div>
+        <div class="div_img_craft">
+          <img src="../../assets/img/Recurso_6.png" class="img_planet">
+        </div>
+        <div class="div_img_craft">
+          <img src="../../assets/img/Recurso_5.png" class="img_separator">
+        </div>
+        
+        <!--div class="custom-shape-divider-bottom-1623101527">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill" style="stroke: none; fill: #fff;"></path>
+                </svg>
+            </div-->
+    </header>
+  </section>
+
+  <main>
+    <div data-step="5" data-intro="Nuestras estadísticas" class="container-fluid container-icons">
+      <div class="row">
+        <div class="card-01 text-center">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fas fa-puzzle-piece iconosEstad img-icon-1"></i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="iconosEstad icons-title">Problemas</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-01 text-center">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fas fa-university iconosEstad img-icon-2"></i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="iconosEstad icons-title">Universidades</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-01 text-center">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fas fa-users iconosEstad img-icon-3"></i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="iconosEstad icons-title">Comunidad</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-01 text-center">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fal fa-trophy-alt iconosEstad img-icon-4"></i>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="iconosEstad icons-title">Competencias</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div data-step="6" data-intro="Lo último en noticias sobre esta aventura" class="container-fluid marathons-section">
+      <div class="row novedades">
+        Novedades
+      </div>
+      <div class="row row-slides">
+        <div class="main-container-slides">
+          <!-- Swiper -->
+          <div ref="mySwiper" class="swiper mySwiper">
+            <div class="swiper-wrapper">
+              <!--Slide-->
+              <div class="swiper-slide">
+                <div class="row">
+                  <div class="col-sm-6 section-slide">
+                    <div class="container-animated">
+                      <div class="animated">
+                        <div class="wrapper">
+                          <div class="one"></div>
+                          <div class="two"></div>
+                          <div class="three"></div>
+                          <div class="four"></div>
+                          <div class="text">Maratón UFPS 2016</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 section-slide">
+                    <img src="../../assets/img/bg-pc.jpg" class="img-slide" alt="maraton2016">
+                  </div>
+                </div>
+              </div>
+              <!--Slide-->
+              <div class="swiper-slide">
+                <div class="row">
+                  <div class="col-sm-6 section-slide">
+                    <div class="container-animated">
+                      <div class="animated">
+                        <div class="wrapper">
+                          <div class="one"></div>
+                          <div class="two"></div>
+                          <div class="three"></div>
+                          <div class="four"></div>
+                          <div class="text">Maratón UFPS 2017</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 section-slide">
+                    <img src="../../assets/img/gato.jpg" alt="maraton2016">
+                  </div>
+                </div>
+              </div>
+              <!--Slide-->
+              <div class="swiper-slide">
+                <div class="row">
+                  <div class="col-sm-6 section-slide">
+                    <div class="container-animated">
+                      <div class="animated">
+                        <div class="wrapper">
+                          <div class="one"></div>
+                          <div class="two"></div>
+                          <div class="three"></div>
+                          <div class="four"></div>
+                          <div class="text">Maratón UFPS 2018</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 section-slide">
+                    <img src="../../assets/img/gato.jpg" alt="maraton2016">
+                  </div>
+                </div>
+              </div>
+              <!--Slide-->
+              <div class="swiper-slide">
+                <div class="row">
+                  <div class="col-sm-6 section-slide">
+                    <div class="container-animated">
+                      <div class="animated">
+                        <div class="wrapper">
+                          <div class="one"></div>
+                          <div class="two"></div>
+                          <div class="three"></div>
+                          <div class="four"></div>
+                          <div class="text">Maratón UFPS 2019</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 section-slide">
+                    <img src="../../assets/img/gato.jpg" alt="maraton2016">
+                  </div>
+                </div>
+              </div>
+              <!--Slide-->
+              <div class="swiper-slide">
+                <div class="row">
+                  <div class="col-sm-6 section-slide">
+                    <div class="container-animated">
+                      <div class="animated">
+                        <div class="wrapper">
+                          <div class="one"></div>
+                          <div class="two"></div>
+                          <div class="three"></div>
+                          <div class="four"></div>
+                          <div class="text">Maratón UFPS 2020</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-6 section-slide">
+                    <img src="../../assets/img/gato.jpg" alt="maraton2016">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div ref="swiperPagination" class="swiper-pagination"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row novedades">
+        Temas de Interés
+      </div>
+    </div>
+    <div data-step="7" data-intro="Nuestra seccion de temas que te pueden interesar" class="container-fluid cards-section">
+      <div class="row row-cards">
+        <div class="col-sm-4 text-center card-item">
+          <div class="card card-section">
+            <div class="img-card">
+              <img class="card-img-top img-card" src="../../assets/img/silux.jpg" alt="Card image cap">
+            </div>
+            <div class="card-body section-card-body">
+              <h5 class="card-title">SILUX</h5>
+              <p class="card-text">Semillero de investigación de software libre y Linux de la UFPS</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 text-center card-item">
+          <div class="card card-section">
+            <div class="img-card">
+              <img class="card-img-top" src="../../assets/img/bloques.png" alt="Card image cap">
+            </div>
+            <div class="card-body section-card-body">
+              <h5 class="card-title">Lo Último</h5>
+              <p class="card-text">Programación con bloques. ¿Aún no conoces la manera facil y divertida de programar?</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 text-center card-item">
+          <div class="card card-section">
+            <div class="img-card">
+              <img class="card-img-top" src="../../assets/img/maratones.jpg" alt="Card image cap">
+            </div>
+            <div class="card-body section-card-body">
+              <h5 class="card-title">Programación Competitiva</h5>
+              <p class="card-text">El grupo de estudio de nuestra universidad esta en movimiento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="container-fluid footer-container">
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <h4>GRUPO DE ESTUDIO EN PROGRAMACIÓN COMPETITIVA UFPS</h4>
+          <p>Únete, práctica y aprende junto a nosotros. ¡Supérate a ti mismo!</p>
+        </div>
+        <div class="col-sm-12 footer-section-images">
+          <div class="row">
+            <img class="footer-image" src="../../assets/img/logo.png">
+            <img class="footer-image footer-silux-img" src="../../assets/img/silux.png">
+            <img class="footer-image footer-logo-img" src="../../assets/img/logo-transparent.png">
+          </div>
+        </div>
+      </div>
+      <!--div class="row">
+            <div class="col-sm-12 text-center">
+                2020 &#169 All Rights Reserved.
+            </div>
+        </div-->
+    </div>
+  </footer>
+  <!-- Footer -->
+  <!-- modal para inicio de sesion-->
+  <div if.bind="authService.isVisitor()" class="modal" id="iniciar-sesion" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <login-signin></login-signin>
+      </div>
+    </div>
+  </div>
+</template>

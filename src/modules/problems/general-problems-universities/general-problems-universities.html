@@ -1,0 +1,108 @@
+<template>
+  <require from="../../../resources/attributes/tooltip"></require>
+  <div class="container ufps-container-logged">
+    <h1 class="text-right">Problemas</h1>
+    <p class="ufps-language text-right">
+      <span class="active selected">Categorías</span> |
+      <a href="/buscar/+"><span class="active">Lista completa</span></a>
+    </p>
+    <hr>
+    <div repeat.for="category of categories" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
+      <div class="ufps-card">
+        <div class="ufps-card-title">
+          <span if.bind="authService.isAdmin()" class="ufps-edit-category fas fa-pencil-alt" data-toggle="tooltip" title="Editar el nombre de la categoría"
+            click.delegate="showEditCategory(category.id, category.name)" tooltip></span>
+          <span if.bind="authService.isAdmin()" class="ufps-remove-category fas fa-times-circle" data-toggle="tooltip" title="Eliminar categoría"
+            click.delegate="showRemoveCategory(category.id, category.name)" tooltip></span>
+          <h1>${category.name}</h1>
+        </div>
+        <div class="col-6 ufps-card-link">
+          <a route-href="route: category; params.bind: {id:category.id}">Problemas</a>
+        </div>
+        <div class="col-6 ufps-card-link my-auto">
+          <a route-href="route: material; params.bind: {id:category.id}">Material</a>
+
+        </div>
+        <div class="fix"></div>
+      </div>
+    </div>
+    <div if.bind="authService.isAdmin()" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ufps-card-new ufps-card-container">
+      <div class="ufps-card" data-toggle="modal" data-target="#new-category">
+        <div class="ufps-card-title">
+          <h1>
+            <i class="fas fa-plus-circle"></i>
+          </h1>
+        </div>
+        <div class="col-12 ufps-card-link">
+          Nueva categoría
+        </div>
+        <div class="fix"></div>
+      </div>
+    </div>
+    <div class="fix"></div>
+    <div class="ufps-separator"></div>
+  </div>
+  <!--MODAL PARA AÑADIR CATEGORIA-->
+  <div if.bind="authService.isAdmin()" class="modal fade" id="new-category" tabindex="-1" role="dialog" aria-labelledby="new-category">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Nueva categoría</h4>
+          <br>
+          <form submit.delegate="createCategory()">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Nombre de la categoría" value.bind="newCategory" required>
+              <span class="input-group-btn">
+                <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Agregar">
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--MODAL PARA EDITAR CATEGORIA-->
+  <div if.bind="authService.isAdmin()" class="modal fade" id="edit-category" tabindex="-1" role="dialog" aria-labelledby="edit-category">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Cambiar nombre de la categoría</h4>
+          <br>
+          <form submit.delegate="editCategory()">
+            <div class="input-group">
+              <input type="text" class="form-control" value.bind="categoryEditName" required>
+              <span class="input-group-btn">
+                <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Cambiar">
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--MODAL PARA ELIMINAR CATEGORIA-->
+  <div if.bind="authService.isAdmin()" class="modal fade" id="remove-category" tabindex="-1" role="dialog" aria-labelledby="remove-category">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">¿Estás seguro de eliminar la categoría ${categoryRemoveName}?</h4>
+          <br>
+          <p>Esto no eliminará los problemas de dicha categoría, pero quedarán sin clasificar</p>
+
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeCategory()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

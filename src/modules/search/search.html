@@ -1,0 +1,58 @@
+<template>
+  <require from="../../resources/elements/filter"></require>
+  <require from="../../resources/elements/paginator"></require>
+  <div slot="content" class="body-slot">
+    <div class="container">
+      <h2 if.bind="query !== ' '" class="text-right">Resultados para "${query}"</h2>
+      <h2 if.bind="query === ' '" class="text-right">Problemas</h2>
+      <p if.bind="query === ' '" class="ufps-language text-right">
+        <a href="problemas/universidades"><span class="active">Categorías</span></a> |
+        <span class="active selected">Lista completa</span>
+      </p>
+      <hr>
+      <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
+        sort.bind="sort" by.bind="by" text-to-show.bind="'problemas'" language-flag.bind="true" language.bind="language"></filter>
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center" style="width:5%">Id</th>
+            <th class="text-center" style="width:70%">Problema</th>
+            <th class="text-center" style="width:10%">Dificultad</th>
+            <th class="text-center" style="width:15%">Idioma</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="problem of problems">
+            <td class="text-center">${problem.id}</td>
+            <td class="text-left ufps-td-problem">
+              <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list">
+                <a href="/problemas/${problem.id}/detalle/es">${problem.titleES}</a>
+              </p>
+              <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
+                <a href="/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>
+              </p>
+              <span if.bind="problem.resolved" class="ufps-edit-problem-list fas fa-check" data-toggle="tooltip" title="Ya solucionaste este problema" tooltip></span>            
+            </td>
+            <td class="text-center">${problem.level}</td>
+            <td class="text-center ufps-language">
+              <span class="${problem.isInSpanish() ? 'active' : 'inactive'}">
+                <a href="/problemas/${problem.id}/detalle/es">ES</a>
+              </span>
+              |
+              <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
+                <a href="/problemas/${problem.id}/detalle/en">EN</a>
+              </span>
+            </td>
+          </tr>
+          <tr if.bind="problems.length === 0 && dataLoaded">
+            <td colspan="4">Ningun problema coincide con el criterio de búsqueda</td>
+          </tr>
+          <tr if.bind="!dataLoaded">
+            <td colspan="4">Cargando resultados para "${query}"...</td>
+          </tr>
+        </tbody>
+      </table>
+      <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+    </div>
+  </div>
+</template>

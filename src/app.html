@@ -1,0 +1,7 @@
+<template>
+  <loading-indicator
+    loading.bind="router.isNavigating || httpService.httpClient.isRequesting"
+  ></loading-indicator>
+  <app-header if.bind="authService.authenticated"></app-header>
+  <router-view></router-view>
+</template>

@@ -1,0 +1,72 @@
+<template>
+  <require from="../../resources/elements/filter"></require>
+  <require from="../../resources/elements/paginator"></require>
+  <div slot="content" class="body-slot">
+    <div class="container">
+      <h1 class="text-right">Clasificación general</h1>
+      <hr>
+      
+      <div class="row justify-content-between">
+        <div>
+          <p>
+          Filtrar por instución:
+          <select change.delegate="cambiarInstitucion($event.target.value)" name="" id="">
+          <option value="-1">Seleccione</option>
+          <option value="Colegio">Colegio</option>
+          <option value="Universidad">Universidad</option>
+          </select></p>
+          <p>
+            Elegir ${institucion} :
+            <select change.delegate="getRankingInstitution($event.target.value)" name="" id="">
+            <option value="-1">Seleccione</option>
+            <option if.bind="institucion" repeat.for="university of universities" value.bind="university.id">${university.name}</option>
+          </select></p>
+        </div>
+        <div>
+          <p>
+            Filtrar por año:
+            <select change.delegate="getRankingAnio($event.target.value)" name="" id="">
+            <option value="-1">Seleccione</option>
+            <option repeat.for="year of años" value.bind="year">${year}</option>
+          </select></p>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center" style="width:5%">Puesto</th>
+            <th class="text-center" style="width:25%">Usuario</th>
+            <th class="text-center" style="width:25%">Institución</th>
+            <th class="text-center" style="width:25%">Inst. Tipo</th>
+            <th class="text-center" style="width:10%">Soluciones correctas</th>
+            <th class="text-center" style="width:10%">Envios realizados</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="user of users">
+            <td class="text-center">${(((page - 1) * 30) + $index + 1)}</td>
+            <td>${user.name} <span class="username-gray">(${user.username})</span></td>
+            <td class="text-center">
+              <p if.bind = "user.short!==null"> ${user.short}</p>
+              <p if.bind = "user.short===null"> ${user.institution}</p>
+            </td>
+            <td class="text-center">
+              <p if.bind="user.type_i===0">Universidad</p>
+              <p if.bind="user.type_i===1">Colegio</p>
+            </td>
+            <td class="text-center">${user.accepted}</td>
+            <td class="text-center">${user.total}</td>
+          </tr>
+          <tr if.bind="users.length === 0 && dataLoaded">
+            <td  colspan="4">No hay usuarios actualmente registrados en la plataforma.</td>
+          </tr>
+          <tr if.bind="!dataLoaded">
+              <td colspan="4">Cargando ranking...</td>
+            </tr>
+        </tbody>
+      </table>
+      <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+    </div>
+  </div>
+</template>

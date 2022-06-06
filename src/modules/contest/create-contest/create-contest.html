@@ -1,0 +1,129 @@
+<template>
+  <require from="../../../resources/elements/clock"></require>
+  <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="false"></clock>
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page">
+          <a route-href="route: contest;">Maratones</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Nueva maratón</li>
+    </ol>
+    <h2 class="text-right">Nueva Maratón</h2>
+    <hr>
+    
+    <form submit.delegate="create()">
+      <div class="-assignment">
+        <div class="row">
+          <label class="col-form-label col-md-2">Nombre:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
+            <input type="text" class="form-control" placeholder="Nombre de la maratón" value.bind="newContest.title" required>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Título de la maratón. Por ejemplo 'II Maratón de Programación UFPS'">
+              <i class="fas fa-question-circle"></i>
+            </span>
+          </div>
+        </div>
+        
+        <div class="row">
+          <label class="col-form-label col-md-2">Descripción:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
+            <textarea class="form-control" placeholder="Descripción de la maratón" value.bind="newContest.description"></textarea>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Descripción que se mostrará a los estudiantes al ingresar a la maratón">
+              <i class="fas fa-question-circle"></i>
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-form-label col-md-2">Reglas:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
+            <textarea class="form-control" placeholder="En este espacio puede indicar reglas especificas sobre el horario de competencia, premios, información adicional, etc."
+              value.bind="newContest.rules"></textarea>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Reglas de la maratón">
+              <i class="fas fa-question-circle"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="-assignment">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-inline">
+              <label class="col-form-label col-md-2">Desde el:</label>
+              <div class="col-md-10 input-group ufps-input-creator">
+                <input type="date" class="form-control" value.bind="startDate" required>
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha de inicio de la maratón">
+                  <i class="far fa-calendar"></i>
+                  <i class="fas fa-question-circle"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-lg-6">
+            <div class="form-inline">
+              <label class="col-form-label col-md-2">a las:</label>
+              <div class="col-md-10 input-group ufps-input-creator">
+                <input type="time" class="form-control" value.bind="startTime" required>
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora de inicio de la maratón">
+                  <i class="far fa-clock"></i>
+                  <i class="fas fa-question-circle"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="form-inline">
+              <label class="col-form-label col-md-2">Hasta el:</label>
+              <div class="col-md-10 input-group ufps-input-creator">
+                <input type="date" class="form-control" value.bind="endDate" min="${startDate}" required>
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Fecha de terminación de la maratón">
+                  <i class="far fa-calendar"></i>
+                  <i class="fas fa-question-circle"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-inline">
+              <label class="col-form-label col-md-2">a las:</label>
+              <div class="col-md-10 input-group ufps-input-creator">
+                <input type="time" class="form-control" value.bind="endTime" required>
+                <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora de terminación de la maratón">
+                  <i class="far fa-clock"></i>
+                  <i class="fas fa-question-circle"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <p>Esta maratón será: </p>
+        <label class="form-check-inline">
+          <input type="radio" model.bind="true" checked.bind="newContest.privacy"> Pública
+        </label>
+        <label class="form-check-inline">
+          <input type="radio" model.bind="false" checked.bind="newContest.privacy"> Privada
+        </label>
+      </div>
+      <br>
+      <div class="-assignment" if.bind="!newContest.privacy">
+        <div class="row" id="clave">
+          <label class="col-form-label col-md-2">Clave:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
+            <input type="text" class="form-control" placeholder="Clave para entrar a la maratón" value.bind="newContest.key" required>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Hora de terminación de la maratón">
+            <i class="fas fa-question-circle"></i>
+            </span>
+          </div>
+          <br>
+        </div>
+      </div>
+      <div class="text-center">
+        <input type="submit" value="Crear Maratón" class="btn btn-secondary ufps-btn-secondary crearM">
+      </div>
+    </form>
+  </div>
+
+</template>

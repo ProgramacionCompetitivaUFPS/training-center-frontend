@@ -1,0 +1,42 @@
+<template>
+  <require from="../../../resources/elements/filter"></require>
+  <require from="../../../resources/elements/paginator"></require>
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/clases">Clases</a>
+      </li>
+      <li class="breadcrumb-item active">Clasificación de la clase actual</li>
+    </ol>
+    <h1 class="text-right">Clasificación de la clase</h1>
+    <hr>
+    <table>
+      <thead>
+        <tr>
+          <th class="text-center" style="width:5%">Puesto</th>
+          <th class="text-center" style="width:75%">Usuario</th>
+          <th class="text-center" style="width:10%">Soluciones correctas</th>
+          <th class="text-center" style="width:10%">Envios realizados</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="user of users">
+          <td class="text-center">${($index + 1) + ((page - 1) * 30)}</td>
+          <td>${user.name}</td>
+          <td class="text-center">${user.accepted}</td>
+          <td class="text-center">${user.total}</td>
+        </tr>
+        <tr if.bind="users.length === 0">
+          <td></td>
+          <td>No hay usuarios actualmente registrados en esta clase.</td>
+          <td>
+          </td>
+          <td>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+  </div>
+</template>

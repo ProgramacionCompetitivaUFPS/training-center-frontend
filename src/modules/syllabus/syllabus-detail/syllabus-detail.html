@@ -1,0 +1,218 @@
+<template>
+  <require from="../../../resources/attributes/tooltip"></require>
+  <div class="container ufps-container-logged">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/clases">Clases</a>
+      </li>
+      <li class="breadcrumb-item active">${syllabus.title}</li>
+    </ol>
+    <div class="row">
+      <div class="col-lg-9">
+        <h1>${syllabus.title}</h1>
+      </div>
+      <div class="col-lg-3 text-right" if.bind="authService.isStudent()">
+        <h1>
+          <a click.delegate="showModalExit()" class="btn ufps-btn btn-secondary ufps-btn-secondary">Salir de esta clase</a>
+        </h1>
+      </div>
+    </div>
+    <div class="fix"></div>
+    <div class="col-lg-12">
+      <p>${syllabus.description}</p>
+    </div>
+    <div class="ufps-separator-mini"></div>
+    <h2 class="text-right">Tareas</h2>
+    <hr>
+    <div repeat.for="assignment of syllabus.assignments" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-container">
+
+      <div class="ufps-card">
+        <a route-href="route: ViewAssignment; params.bind: {id:assignment.id}" if.bind="authService.isStudent()">
+          <div class="ufps-card-title">
+            <h1>${assignment.title}</h1>
+          </div>
+        </a>
+        <div if.bind="authService.isCoach()" class="ufps-card-title">
+          <h1>${assignment.title}</h1>
+        </div>
+        <div if.bind="authService.isStudent()" class="col-12 ufps-card-link">
+          <a route-href="route: ViewAssignment; params.bind: {id:assignment.id}" class="ufps-font-size-small">${assignment.getStringDate()}</a>
+        </div>
+        <div if.bind="authService.isCoach()" class="col-6 ufps-card-link">
+          <a route-href="route: EditAssignment; params.bind: {id:assignment.id}">Editar tarea</a>
+        </div>
+        <div if.bind="authService.isCoach()" class="col-6 ufps-card-link">
+          <a route-href="route: StatsAssignment; params.bind: {id:assignment.id}">Estadísticas</a>
+        </div>
+        <div class="fix"></div>
+      </div>
+
+    </div>
+    <div if.bind="authService.isCoach()" class="col-12 col-md-6 col-lg-4 col-xl-3 ufps-card-new ufps-card-container">
+      <a route-href="route: CreateAssignment; params.bind: {id:id}">
+        <div class="ufps-card">
+          <div class="ufps-card-title">
+            <h1>
+              <i class="fas fa-plus-circle fa-2x fa-lg"></i>
+            </h1>
+          </div>
+          <div class="col-12 ufps-card-link">
+            Nueva tarea
+          </div>
+          <div class="fix"></div>
+        </div>
+      </a>
+    </div>
+    <div class="fix"></div>
+    <h2 class="text-right">Lecturas</h2>
+    <hr>
+    <div class=""> 
+      <form if.bind="authService.isCoach()" submit.delegate="addMaterials()">
+        <div class="row form-inline">
+          <label class="col-form-label col-md-3" for="problem-name">Añadir material:</label>
+          <div class="col-md-6 input-group ufps-input-creator">
+            <input type="text" class="form-control" placeholder="Ingresa el id de los materiales separados por comas" value.bind="newMaterials"
+              required>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Si el material no está en la plataforma, agreguelo a una categoría y luego ingrese aqui su id">
+              <span class="fas fa-question-circle"></span>
+            </span>
+          </div>
+          <div class="col-md-2 text-center">
+            <input type="submit" value="Añadir" class="btn ufps-btn ufps-btn-secondary">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="container">
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center">Id</th>
+            <th class="text-center">Nombre</th>
+            <th class="text-right">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="material of materials">
+            <td class="text-center">${material.id}</td>
+            <td class="ufps-td-problem">
+              <p class="ufps-name-problem-list">
+                  <a href="/materials/${material.category}/material/${material.id}" target="blank">${material.name}</a>
+              </p>
+              
+            </td>
+            <td class="text-right">
+              <a class="ufps-btn btn ufps-btn-secondary" href="/materials/${material.category}/material/${material.id}" target="blank">Abrir</a>
+              <a class="ufps-btn btn ufps-btn-secondary" if.bind="authService.isCoach()" click.delegate="showRemoveMaterial(material.id)">Eliminar</a>
+            </td>
+          </tr>
+          <tr if.bind="materials.length === 0">
+            <td></td>
+            <td>
+              No se ha añadido ningún material
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div if.bind="authService.isCoach()">
+      <div class="fix"></div>
+      <div class="ufps-separator"></div>
+      <h2 class="text-right">Usuarios</h2>
+      <hr>
+      <div class="container">
+        <table>
+          <thead>
+            <tr>
+              <th class="text-center" style="width:85%">Nombre</th>
+              <th class="text-center" style="width:15%">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr repeat.for="user of users">
+              <td>${user.name}</td>
+              <td class="text-center">
+                <a class="ufps-btn btn ufps-btn-secondary btn-secondary" click.delegate="showModalRemove(user.id)">Eliminar</a>
+              </td>
+            </tr>
+            <tr if.bind="users.length === 0">
+              <td>No hay usuarios actualmente registrados en esta clase.</td>
+              <td>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+      </div>
+    </div>
+  </div>
+
+
+  <!--MODAL PARA ELIMINAR PROBLEMA-->
+  <div if.bind="authService.isCoach()" class="modal fade" id="remove-material" tabindex="-1" role="dialog" aria-labelledby="remove-material">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title">¿Estás seguro de eliminar este material?</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <br>
+        </div>
+        <div class="modal-body">
+          <p>Esto solo eliminará el material de la clase actual. El material seguirá disponible en la sección pública.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeMaterial()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--MODAL PARA DESUNSCRIBIRSE-->
+  <div if.bind="authService.isStudent()" class="modal fade" id="remove-user" tabindex="-1" role="dialog" aria-labelledby="remove-user">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h5 class="modal-title">¿Estás seguro de salir de esta clase?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <br>
+        </div>
+        <div class="modal-body">
+         <p>Al desmatricularte perderás el acceso a ella, y el progreso realizado.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeUser()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--MODAL PARA DESUNSCRIBIRSE-->
+  <div if.bind="authService.isCoach()" class="modal fade" id="remove-user-coach" tabindex="-1" role="dialog" aria-labelledby="remove-user-coach">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title">¿Estás seguro de eliminar este usuario de la clase?</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <br>
+        </div>
+        <div class="modal-body">
+          <p>Esto no eliminará al usuario de la plataforma, solo de la clase actual.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeUserFromCoach()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

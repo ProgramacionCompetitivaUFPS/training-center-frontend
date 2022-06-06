@@ -1,0 +1,27 @@
+<template>
+  <div slot="content" class="body-slot">
+    <app-header></app-header>
+    <div class="container text-center">
+      <ol class="breadcrumb text-left">
+        <li class="breadcrumb-item">
+          <a href="/material-publico">Material público</a>
+        </li>
+        <li class="breadcrumb-item active">${material.name}</li>
+      </ol>
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <h2>${material.name}</h2>
+          <p>${material.description}</p>
+          <div class="ufps-container-iframe">
+            <iframe src="${material.url}" width="100%" class="ufps-iframe" title="${material.name}"></iframe>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <p class="text-center">
+          <a href="${material.url}" target="_blank">Abrir en pestaña externa</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</template>

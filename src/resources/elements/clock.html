@@ -1,0 +1,14 @@
+<template>
+  <!--
+  <p if.bind="showTimer" class="text-right">
+    <h4 class="text-right" if.bind="state === 0">Finaliza en ${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}</h4>
+    <h4 class="text-right" if.bind="state === 1">Inicia en ${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}</h4>
+    <h4 class="text-right" if.bind="state === 2">Competencia finalizada</h4>
+  </p>
+  -->
+  <p if.bind="showTimer" class="text-right">
+    <h4 class="text-right" if.bind="state === 0">Finaliza en ${hours}:${minutes}:${seconds}</h4>
+    <h4 class="text-right" if.bind="state === 1">Inicia en ${hours}:${minutes}:${seconds}</h4>
+    <h4 class="text-right" if.bind="state === 2">Competencia finalizada</h4>
+  </p>
+</template>

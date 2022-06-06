@@ -1,0 +1,51 @@
+{
+    "name": "ufps-training-center-frontend",
+    "type": "project:application",
+    "paths": {
+        "root": "src",
+        "resources": "resources",
+        "elements": "resources/elements",
+        "attributes": "resources/attributes",
+        "valueConverters": "resources/value-converters",
+        "bindingBehaviors": "resources/binding-behaviors",
+        "models": "models",
+        "services": "services",
+        "config": "config"
+    },
+    "platform": {
+        "hmr": false,
+        "open": false,
+        "port": 9000,
+        "host": "localhost",
+        "output": "dist"
+    },
+    "transpiler": {
+        "id": "babel",
+        "fileExtension": ".js"
+    },
+    "markupProcessor": {
+        "id": "none",
+        "displayName": "None",
+        "fileExtension": ".html",
+        "source": "src/**/*.html"
+    },
+    "cssProcessor": {
+        "id": "none",
+        "displayName": "None",
+        "fileExtension": ".css",
+        "source": "src/**/*.css"
+    },
+    "editor": {
+        "id": "vscode",
+        "displayName": "Visual Studio Code"
+    },
+    "unitTestRunner": {
+        "id": "karma",
+        "displayName": "Karma",
+        "source": "test/unit/**/*.js"
+    },
+    "testFramework": {
+        "id": "jasmine",
+        "displayName": "Jasmine"
+    }
+}
