@@ -25,6 +25,7 @@ body {
   height: 101%;
   width: 100%;
   font-family: "Ubuntu", sans-serif;
+  overflow-x: hidden;
 }
 
 pre {
@@ -1270,16 +1271,7 @@ tr:nth-child(2n) td .ufps-score-gold {
   color: #fff;
 }
 
-/*Cnvas Principal*/
-.canvas-container {
-  height: 37em;
-  width: 100%;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  object-fit: cover;
-  display: block;
-}
+
 
 #canvas {
   display: block;
@@ -1292,7 +1284,7 @@ tr:nth-child(2n) td .ufps-score-gold {
   z-index: 3;
   left: 93%;
 }
-.tchs {
+tchs {
   position: absolute;
   z-index: -3;
   width: 25em;
@@ -1560,7 +1552,41 @@ tr:nth-child(2n) td .ufps-score-gold {
   margin-top: 5em;
   padding-top: 0;
 }
-#principalTchs {
+@media screen and (min-width: 1920px) {
+  #principalTchs {
+    max-width: 140em;
+    min-height: 58em;
+    background-image: url("../img/fondo-cielo.png");
+    position: absolute;
+    height: 101%;
+    width: 100%;
+    margin: 0;
+    z-index: 3;
+  }
+  /*Cnvas Principal*/
+  .canvas-container {
+    height: 64em;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    object-fit: cover;
+    display: block;
+  }
+  
+}
+@media screen and (max-width: 1366px) {
+  .canvas-container {
+    height: 36em;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    object-fit: cover;
+    display: block;
+  }
+}
+/*#principalTchs {
   max-width: 140em;
   min-height: 48em;
   background-image: url("../img/fondo-cielo.png");
@@ -1569,7 +1595,7 @@ tr:nth-child(2n) td .ufps-score-gold {
   width: 100%;
   margin: 0;
   z-index: 3;
-}
+}*/
 #btn {
   width: 8em;
   padding: 0;
