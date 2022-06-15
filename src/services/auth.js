@@ -186,7 +186,15 @@ export class Auth {
             .then(this.httpService.checkStatus)
     }
 
-    editProfile(id, email, username, name, code) {
+    editProfile(id, email, username, name, code, institution) {
+        console.log(JSON.stringify({
+            email: email,
+            username: username,
+            name: name,
+            code: code,
+            institution: institution
+        }));
+
         return this.httpService.httpClient
             .fetch(API.endpoints.users + '/' + id, {
                 method: 'PUT',
@@ -198,7 +206,8 @@ export class Auth {
                     email: email,
                     username: username,
                     name: name,
-                    code: code
+                    code: code,
+                    institution: institution
                 })
             })
             .then(this.httpService.checkStatus)

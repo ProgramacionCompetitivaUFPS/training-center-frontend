@@ -73,6 +73,15 @@ export class Syllabus {
                 settings: {
                     roles: ['coach', 'student', 'admin']
                 }
+            },
+            {
+                route: ['listaenvios/:cid/:usrid'],
+                name: 'listaenvios',
+                moduleId: PLATFORM.moduleName('modules/contest/contest-listsubmissions/contest-listsubmissions'),
+                title: 'Problemas Enviados',
+                settings: {
+                    roles: ['coach', 'admin']
+                }
             }
         ])
         this.router = router

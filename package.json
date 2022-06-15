@@ -16,7 +16,7 @@
     "aurelia-chart": "^0.2.7",
     "aurelia-fetch-client": "^1.1.0",
     "aurelia-highlightjs": "^0.1.10",
-    "aurelia-notify": "^0.7.0",
+    "aurelia-notify": "^0.7.1",
     "blockly": "^3.20200924.4",
     "bluebird": "^3.4.1",
     "bootstrap": "^4.5.3",

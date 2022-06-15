@@ -97,8 +97,8 @@ export class Ranking {
             this.getColleges();
 
         }
-
     }
+    
     getUniversities() {
         this.institutionService.getUniversities()
             .then(data => {

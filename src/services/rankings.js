@@ -55,6 +55,19 @@ export class Rankings {
             .then(this.httpService.parseJSON)
     }
 
+    getSubmissionsByContest(cid, usrid) {
+        console.log(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`);
+        return this.httpService.httpClient
+          .fetch(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`, {
+            method: 'get',
+            headers: {
+              'Authorization': 'Bearer ' + this.jwtService.token
+            }
+          })
+          .then(this.httpService.checkStatus)
+          .then(this.httpService.parseJSON)
+    }
+
     getRankingInstitution(limit, page, id) {
         return this.httpService.httpClient
             .fetch(API.endpoints.users + '/ranking/' + API.endpoints.ranking2 + '?limit=' + limit + '&page=' + page + '&id=' + id, {

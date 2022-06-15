@@ -1,0 +1,128 @@
+<template>
+  <div slot="content" class="body-slot">
+    <div class="container">
+      <h1 class="text-right">Envios: ${submissions[0].name} - (${submissions[0].username})</h1>
+      <div class="col-lg-12">
+        <hr> 
+        
+      <table>
+        <thead>
+          <tr>
+            <th class="text-center">Problema</th>
+            <th class="text-center">Dificultad</th>
+            <th class="text-center">Fecha de envio</th>
+            <th class="text-center">Veredicto</th>
+            <th class="text-center">Tiempo de ejecución</th>
+            <th class="text-center">Lenguaje</th>
+            <th class="text-center">Código</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="submission of submissions">
+            <td class="text-center">
+              <p if.bind="submission.problem.title_es !== null" class="ufps-name-problem-list ufps-name-problem-list-l">
+                ${submission.title_es}
+              </p>
+              <p if.bind="submission.problem.title_es === null" class="ufps-name-problem-list ufps-name-problem-list-l">
+                ${submission.title_en}
+              </p>
+            </td>
+            <td class="text-center">${submission.level}</td>
+            <td class="text-center">${showDate(submission.created_at)}</td>
+            <td class="text-center" if.bind="submission.status !== 'executed'">${mapVeredict(submission.status)}</td>
+            <td class="text-center" if.bind="submission.status === 'executed'">${mapVeredict(submission.verdict)}</td>
+            <td class="text-center">${toFixed(submission.execution_time)}s</td>
+            <td class="text-center">${submission.language}</td>
+            <td class="text-center">
+              <p class="ufps-name-problem-list ufps-name-problem-list-l">
+                <a click.delegate="viewCode(submission)">Ver código</a>
+              </p>
+            </td>
+          </tr>
+          <tr if.bind="submissions.length === 0">
+            <td colspan="7">No has realizado ningún envio.</td>
+          </tr>
+        </tbody>
+      </table>
+      <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+    </div>
+
+    <!---Modal para detalle del envío-->
+    <div class="modal fade" id="submission-detail" ref="submissionDetail" tabindex="-1" role="dialog"
+      aria-labelledby="submission-detail">
+      <div class="modal-dialog modal-lg" role="document">
+
+
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <div>
+
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <table>
+                <thead>
+                  <tr>
+                    <th class="text-center">Problema</th>
+                    <th class="text-center">Dificultad</th>
+                    <th class="text-center">Fecha de envio</th>
+                    <th class="text-center">Veredicto</th>
+                    <th class="text-center">Tiempo de ejecución</th>
+                    <th class="text-center">Lenguaje</th>
+                  </tr>
+                </thead>
+
+            </div>
+
+            <tbody>
+              <tr>
+                <td class="text-center">
+                  <p if.bind="submissionLoaded.problem.title_es !== null"
+                    class="ufps-name-problem-list ufps-name-problem-list-l">
+                    <a href="/problemas/${submissionLoaded.pid}/detalle/es">${submissionLoaded.title_es}</a>
+                  </p>
+                  <p if.bind="submissionLoaded.problem.title_es === null"
+                    class="ufps-name-problem-list ufps-name-problem-list-l">
+                    <a href="/problemas/${submissionLoaded.pid}/detalle/en">${submissionLoaded.title_en}</a>
+                  </p>
+                </td>
+                <td class="text-center">${submissionLoaded.level}</td>
+                <td class="text-center">${showDate(submissionLoaded.created_at)}</td>
+                <td class="text-center" if.bind="submissionLoaded.status !== 'executed'">
+                  ${mapVeredict(submissionLoaded.status)}</td>
+                <td class="text-center" if.bind="submissionLoaded.status === 'executed'">
+                  ${mapVeredict(submissionLoaded.verdict)}</td>
+                <td class="text-center">${toFixed(submissionLoaded.execution_time)}s</td>
+                <td class="text-center">${submissionLoaded.language}</td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <div class="col-12 text-center">
+                    <a click.delegate="downloadCode()" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center"
+                      if.bind="downloadActive">Descargar código</a>
+                    <div class="ufps-separator-mini"></div>
+                  </div>
+                  <div class="col-12">
+                    <div show.bind="!isABlocklyCode">
+                      <pre>
+                          <code>
+                            ${submissionLoaded.code}
+                          </code>
+                  </pre>
+                    </div>
+                    <div show.bind="isABlocklyCode">
+                      <img src="${submissionLoaded.svgUrl}">
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

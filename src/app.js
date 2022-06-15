@@ -290,7 +290,7 @@ export class App {
                 settings: {
                     roles: ["admin", "coach", "student"]
                 }
-            }
+            },
         ]);
 
         const handleUnknownRoutes = (instruction) => {

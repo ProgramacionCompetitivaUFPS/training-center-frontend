@@ -66,6 +66,7 @@ export class ContestBoard {
     this.routeConfig = routeConfig
     this.id = params.id
     this.getProblems()
+    console.log(`${this.status}, --- ${this.creatorId}`);
   }
 
   deactivate () {
