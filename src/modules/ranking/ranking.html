@@ -30,6 +30,14 @@
             <option repeat.for="year of años" value.bind="year">${year}</option>
           </select></p>
         </div>
+        <div>
+          <p>
+            Filtrar por categoría:
+            <select change.delegate="getRankingCategory($event.target.value)" name="" id="">
+            <option value="-1">Seleccione</option>
+            <option repeat.for="categorie of categories" value.bind="categorie.id">${categorie.name}</option>
+          </select></p>
+        </div>
       </div>
 
       <table>
@@ -41,6 +49,7 @@
             <th class="text-center" style="width:25%">Inst. Tipo</th>
             <th class="text-center" style="width:10%">Soluciones correctas</th>
             <th class="text-center" style="width:10%">Envios realizados</th>
+            <th if.bind="authService.isCoach() || authService.isAdmin()">Ver envios</th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +66,10 @@
             </td>
             <td class="text-center">${user.accepted}</td>
             <td class="text-center">${user.total}</td>
+            <td class="text-center" if.bind="authService.isCoach() || authService.isAdmin() ">
+              <a href="/enviosEstudiante/${user.id}" if.bind="authService.getUserInstitution() == user.institution_id">Ver</a>
+              <p if.bind="authService.getUserInstitution() != user.institution_id">No disponible</p>
+            </td>
           </tr>
           <tr if.bind="users.length === 0 && dataLoaded">
             <td  colspan="4">No hay usuarios actualmente registrados en la plataforma.</td>

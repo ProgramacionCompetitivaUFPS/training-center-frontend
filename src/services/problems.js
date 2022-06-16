@@ -37,6 +37,18 @@ export class Problems {
             .then(this.httpService.parseJSON)
     }
 
+    getCategories2() {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.categories, {
+                method: 'get',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseJSON)
+    }
+
     /**
      * Crea una nueva categoría en la plataforma.
      * @param {string} name - Nombre de la categoría

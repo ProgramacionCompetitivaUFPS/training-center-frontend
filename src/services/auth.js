@@ -333,6 +333,10 @@ export class Auth {
         return this.jwtService.getUserId()
     }
 
+    getUserInstitution() {
+        return this.jwtService.getUserInstitution()
+    }
+
     /**
      * Obtiene del backend la lista de usuarios.
      * @param {Number} page - Página de materiales a obtener

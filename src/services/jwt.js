@@ -82,6 +82,14 @@ export class Jwt {
     }
   }
 
+  getUserInstitution() {
+    if (!this.tokenExists) {
+      return null
+    } else {
+      return this.data.institution
+    }
+  }
+
   /**
    * Obtiene el tipo de usuario almacenado en el token
    * @returns string - visitor, student, coach o admin según corresponda
