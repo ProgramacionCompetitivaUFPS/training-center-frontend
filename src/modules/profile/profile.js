@@ -169,7 +169,7 @@ export class Profile {
             this.alertService.showMessage(MESSAGES.emailInvalid)
             window.$('#edit-profile').modal('hide')
         } else if (!this.newUser.email.endsWith(".edu.co")){
-            this.alertService.showMessage(MESSAGES.emailNoInstitu);
+            this.alertService.showMessage(MESSAGES.emailNoInstitu); 
             window.$('#edit-profile').modal('hide');
         } else if (this.newUser.institution.id === null){
             this.alertService.showMessage(MESSAGES.noInstitution)
