@@ -26,6 +26,7 @@ export let API = {
         ranking: "ranking",
         ranking2: "ranking2",
         ranking3: "ranking3",
+        rankingCategory: "rankingCategory",
         recovery: "recovery",
         removeMaterialSyllabus: "remove-materials",
         removeProblemAssignment: "remove-problems",

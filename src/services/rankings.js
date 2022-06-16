@@ -41,33 +41,6 @@ export class Rankings {
             .then(this.httpService.parseJSON)
     }
 
-    getSubmissions(userId, limit, page, by, sort, condition) {
-        let strt = ''
-        if (condition !== null) strt = '&condition=' + condition
-        return this.httpService.httpClient
-            .fetch(API.endpoints.users + '/' + userId + '/' + API.endpoints.submissions + '?limit=' + limit + '&page=' + page + '&by=' + by + '&sort=' + sort + strt, {
-                method: 'get',
-                headers: {
-                    'Authorization': 'Bearer ' + this.jwtService.token
-                }
-            })
-            .then(this.httpService.checkStatus)
-            .then(this.httpService.parseJSON)
-    }
-
-    getSubmissionsByContest(cid, usrid) {
-        console.log(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`);
-        return this.httpService.httpClient
-          .fetch(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`, {
-            method: 'get',
-            headers: {
-              'Authorization': 'Bearer ' + this.jwtService.token
-            }
-          })
-          .then(this.httpService.checkStatus)
-          .then(this.httpService.parseJSON)
-    }
-
     getRankingInstitution(limit, page, id) {
         return this.httpService.httpClient
             .fetch(API.endpoints.users + '/ranking/' + API.endpoints.ranking2 + '?limit=' + limit + '&page=' + page + '&id=' + id, {
@@ -93,6 +66,46 @@ export class Rankings {
             .then(this.httpService.parseJSON)
 
     }
+
+    getRankingCategory(limit, page, category){
+        return this.httpService.httpClient
+        .fetch(API.endpoints.users + '/' + API.endpoints.rankingCategory + '?limit=' + limit + '&page=' + page + '&category=' + category, {
+          method: 'get',
+          headers: {
+            'Authorization': 'Bearer ' + this.jwtService.token
+          }
+        })
+        .then(this.httpService.checkStatus)
+        .then(this.httpService.parseJSON)
+    
+      }
+
+    getSubmissions(userId, limit, page, by, sort, condition) {
+        let strt = ''
+        if (condition !== null) strt = '&condition=' + condition
+        return this.httpService.httpClient
+            .fetch(API.endpoints.users + '/' + userId + '/' + API.endpoints.submissions + '?limit=' + limit + '&page=' + page + '&by=' + by + '&sort=' + sort + strt, {
+                method: 'get',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseJSON)
+    }
+
+   /* getSubmissionsByContest(cid, usrid) {
+        console.log(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`);
+        return this.httpService.httpClient
+          .fetch(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`, {
+            method: 'get',
+            headers: {
+              'Authorization': 'Bearer ' + this.jwtService.token
+            }
+          })
+          .then(this.httpService.checkStatus)
+          .then(this.httpService.parseJSON)
+    }*/
 
     loadStatsByVerdict(id) {
         return this.httpService.httpClient

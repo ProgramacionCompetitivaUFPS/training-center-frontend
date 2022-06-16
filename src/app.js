@@ -183,6 +183,16 @@ export class App {
                     roles: ["coach", "student"]
                 }
             },
+            {
+                name: "submissionsStudents",
+                route: "enviosEstudiante/:id",
+                moduleId: PLATFORM.moduleName("./modules/SubmissionsStudents/submissionsStudents"),
+                layoutView: PLATFORM.moduleName("layouts/logged.html"),
+                title: "Envios",
+                settings: {
+                    roles: ["coach", "admin"]
+                }
+            },
             // maratones
             {
                 name: "contest",
