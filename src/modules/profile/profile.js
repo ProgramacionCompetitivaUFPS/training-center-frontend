@@ -168,6 +168,9 @@ export class Profile {
         } else if (/^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(this.newUser.email) === false) {
             this.alertService.showMessage(MESSAGES.emailInvalid)
             window.$('#edit-profile').modal('hide')
+        } else if (!this.newUser.email.endsWith(".edu.co")){
+            this.alertService.showMessage(MESSAGES.emailNoInstitu);
+            window.$('#edit-profile').modal('hide');
         } else if (this.newUser.institution.id === null){
             this.alertService.showMessage(MESSAGES.noInstitution)
             window.$('#edit-profile').modal('hide')

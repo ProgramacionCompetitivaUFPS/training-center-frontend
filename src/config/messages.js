@@ -60,6 +60,10 @@ export let MESSAGES = {
     text: 'Debe seleccionar una institucion educativa',
     type: 'error'
   },
+  emailNoInstitu: {
+    text: 'El correo electrónico escrito no es institucional',
+    type: 'error'
+  },
   emailInvalid: {
     text: 'El correo electrónico escrito no es válido',
     type: 'error'

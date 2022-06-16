@@ -114,8 +114,8 @@
                   Elegir ${institucion} :
                   <select value.bind="newUser.institution" name="" id="">
                     <option model.bind="null">Seleccione</option>
-                    <option if.bind="institucion" repeat.for="university of universities" model.bind="university">
-                      ${university.name}</option>
+                    <option if.bind="institucion" repeat.for="institution of universities" model.bind="institution">
+                      ${institution.name}</option>
                   </select>
                 </p>
               </div>
