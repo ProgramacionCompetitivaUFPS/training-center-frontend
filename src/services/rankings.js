@@ -94,7 +94,7 @@ export class Rankings {
             .then(this.httpService.parseJSON)
     }
 
-   /* getSubmissionsByContest(cid, usrid) {
+    getSubmissionsByContest(cid, usrid) {
         console.log(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`);
         return this.httpService.httpClient
           .fetch(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`, {
@@ -105,7 +105,7 @@ export class Rankings {
           })
           .then(this.httpService.checkStatus)
           .then(this.httpService.parseJSON)
-    }*/
+    }
 
     loadStatsByVerdict(id) {
         return this.httpService.httpClient

@@ -37,7 +37,6 @@ export class ContestListsubmissions {
     this.routeConfig = routeConfig;
     this.cid = params.cid;
     this.usrid = params.usrid;
-    console.log(this.cid + " -> " + this.usrid);
     this.getSubmissionsbyContest();
   }
 
