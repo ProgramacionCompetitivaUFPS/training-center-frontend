@@ -1573,11 +1573,106 @@ tchs {
     object-fit: cover;
     display: block;
   }
+  .base1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 29rem;
+    left: 10rem;
+    z-index: 1;
+  }
+  .base2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 29.5rem;
+    left: 46rem;
+    z-index: 1;
+  }
+  .base3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 29.5rem;
+    left: 82rem;
+    z-index: 1;
+  }
+  
+  .niveles > h1.base1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 20.5rem;
+    left: 17rem;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  .niveles > h1.base2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 20.5rem;
+    left: 52.5rem;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  .niveles > h1.base3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 20.5rem;
+    left: 90.5rem;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  .naveNivel1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 27.6rem;
+    left: 19.3rem;
+    z-index: 2;
+    display: none;
+  }
+  
+  .naveNivel2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 27.5rem;
+    left: 56.3rem;
+    z-index: 2;
+    display: none;
+  }
+  .naveNivel3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 27.5rem;
+    left: 94.3rem;
+    z-index: 2;
+    display: none;
+  }
+  #nivel1:hover .naveNivel1 {
+    display: block;
+  }
+  #nivel2:hover .naveNivel2 {
+    display: block;
+  }
+  #nivel3:hover .naveNivel3 {
+    display: block;
+  }
   
 }
 @media screen and (max-width: 1366px) {
   .canvas-container {
-    height: 36em;
+    height: 38em;
     width: 100%;
     overflow: hidden;
     padding: 0;
@@ -1585,6 +1680,207 @@ tchs {
     object-fit: cover;
     display: block;
   }
+  .base1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 19rem;
+    left: 3rem;
+    z-index: 1;
+  }
+  .base2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 19.5rem;
+    left: 27rem;
+    z-index: 1;
+  }
+  .base3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 19.5rem;
+    left: 53rem;
+    z-index: 1;
+  }
+  
+  .niveles > h1.base1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 11.5rem;
+    left: 10rem;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  .niveles > h1.base2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 11.5rem;
+    left: 32.5rem;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  .niveles > h1.base3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 11.5rem;
+    left: 61.5rem;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  .naveNivel1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 17.6rem;
+    left: 12.3rem;
+    z-index: 2;
+    display: none;
+  }
+  .naveNivel2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 17.5rem;
+    left: 37.3rem;
+    z-index: 2;
+    display: none;
+  }
+  .naveNivel3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 17.5rem;
+    left: 65.3rem;
+    z-index: 2;
+    display: none;
+  }
+  #nivel1:hover .naveNivel1 {
+    display: block;
+  }
+  #nivel2:hover .naveNivel2 {
+    display: block;
+  }
+  #nivel3:hover .naveNivel3 {
+    display: block;
+  }
+  
+}
+@media screen and (max-width: 1024px) {
+  .canvas-container {
+    height: 50em;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    object-fit: cover;
+    display: block;
+  }
+  .base1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 19rem;
+    left: 3rem;
+    z-index: 1;
+  }
+  .base2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 19.5rem;
+    left: 27rem;
+    z-index: 1;
+  }
+  .base3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 19.5rem;
+    left: 53rem;
+    z-index: 1;
+  }
+  
+  .niveles > h1.base1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 11.5rem;
+    left: 10rem;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  .niveles > h1.base2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 11.5rem;
+    left: 32.5rem;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  .niveles > h1.base3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 11.5rem;
+    left: 61.5rem;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 2px black;
+    color: transparent;
+  }
+  .naveNivel1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 17.6rem;
+    left: 12.3rem;
+    z-index: 2;
+    display: none;
+  }
+  .naveNivel2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 17.5rem;
+    left: 37.3rem;
+    z-index: 2;
+    display: none;
+  }
+  .naveNivel3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 17.5rem;
+    left: 65.3rem;
+    z-index: 2;
+    display: none;
+  }
+  #nivel1:hover .naveNivel1 {
+    display: block;
+  }
+  #nivel2:hover .naveNivel2 {
+    display: block;
+  }
+  #nivel3:hover .naveNivel3 {
+    display: block;
+  }
+  
 }
 /*#principalTchs {
   max-width: 140em;
@@ -1745,97 +2041,4 @@ tchs {
     width: 17%;
   }
 }
-.base1 {
-  position: absolute;
-  height: auto;
-  width: auto;
-  top: 19rem;
-  left: 3rem;
-  z-index: 1;
-}
-#nivel1:hover .naveNivel1 {
-  display: block;
-}
-#nivel2:hover .naveNivel2 {
-  display: block;
-}
-#nivel3:hover .naveNivel3 {
-  display: block;
-}
-.base2 {
-  position: absolute;
-  height: auto;
-  width: auto;
-  top: 19.5rem;
-  left: 27rem;
-  z-index: 1;
-}
-.base3 {
-  position: absolute;
-  height: auto;
-  width: auto;
-  top: 19.5rem;
-  left: 53rem;
-  z-index: 1;
-}
 
-.niveles > h1.base1 {
-  position: absolute;
-  height: auto;
-  width: auto;
-  top: 11.5rem;
-  left: 10rem;
-  z-index: 1;
-  font-family: "CroxoxoianText", sans-serif;
-  -webkit-text-stroke: 2px black;
-  color: transparent;
-}
-.niveles > h1.base2 {
-  position: absolute;
-  height: auto;
-  width: auto;
-  top: 11.5rem;
-  left: 32.5rem;
-  z-index: 1;
-  font-family: "CroxoxoianText", sans-serif;
-  -webkit-text-stroke: 2px black;
-  color: transparent;
-}
-.niveles > h1.base3 {
-  position: absolute;
-  height: auto;
-  width: auto;
-  top: 11.5rem;
-  left: 61.5rem;
-  z-index: 1;
-  font-family: "CroxoxoianText", sans-serif;
-  -webkit-text-stroke: 2px black;
-  color: transparent;
-}
-.naveNivel1 {
-  position: absolute;
-  height: auto;
-  width: auto;
-  top: 17.6rem;
-  left: 12.3rem;
-  z-index: 2;
-  display: none;
-}
-.naveNivel2 {
-  position: absolute;
-  height: auto;
-  width: auto;
-  top: 17.5rem;
-  left: 37.3rem;
-  z-index: 2;
-  display: none;
-}
-.naveNivel3 {
-  position: absolute;
-  height: auto;
-  width: auto;
-  top: 17.5rem;
-  left: 65.3rem;
-  z-index: 2;
-  display: none;
-}

@@ -94,7 +94,7 @@ export class LoginSignin {
         this.authorizationService.registerStudent(this.UserSignIn)
           .then(() => {
             this.alertService.showMessage(MESSAGES.signInCorrect)
-            this.router.navigate('iniciar-sesion')
+            this.router.navigate('bienvenido')
           }) // Si el registro es correcto se redirige al inicio de sesión
           .catch((error) => {
             switch (error.status) {
@@ -124,7 +124,7 @@ export class LoginSignin {
   }
   requestRecovery () {
     if (this.email !== '') {
-      this.authService.requestRecovery(this.email)
+      this.authorizationService.requestRecovery(this.email)
         .then(() => {
           this.alertService.showMessage(MESSAGES.recoveryEmailSent)
         })
