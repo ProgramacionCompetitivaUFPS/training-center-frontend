@@ -9,12 +9,14 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-@import url("http://fonts.cdnfonts.com/css/croxoxoiantext");
 
 @font-face {
-  font-family: "CroxoxoianText", sans-serif;
-  src: url("http://fonts.cdnfonts.com/css/croxoxoiantext");
-}
+  font-family: 'CroxoxoianText';
+  font-style: normal;
+  font-weight: normal;
+  src: local('CroxoxoianText'), url('../fonts/Croxoxoiantext/CroxoxoianText.woff') format('woff');
+  }
+
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap");
 @font-face {
   font-family: "Ubuntu", sans-serif;

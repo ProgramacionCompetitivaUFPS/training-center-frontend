@@ -14,10 +14,10 @@ export function configure(aurelia) {
         .standardConfiguration()
         .developmentLogging(environment.debug ? 'debug' : 'warn')
         .feature(PLATFORM.moduleName('resources/index'))
-        //.plugin(PLATFORM.moduleName('aurelia-notify'), settings => {
-        //    settings.timeout = 40000
-        //    settings.limit = 1
-        //})
+        .plugin(PLATFORM.moduleName('aurelia-notify'), settings => {
+            settings.timeout = 40000
+            settings.limit = 1
+        })
         //aurelia.use.plugin(PLATFORM.moduleName('aurelia-chart'))
 
     if (environment.testing) {
