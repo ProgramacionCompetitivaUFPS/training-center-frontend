@@ -65,21 +65,26 @@ export class Admin {
     }
 
     cambiarInstitucion(institucion) {
-
             if (institucion == " ") {
                 this.idInstitution = " "
                 this.institucion = " "
-                this.getUsers()
+                this.users = [];
                 this.universities = []
                 return;
             }
             this.institucion = institucion;
             if (institucion === "Universidad") {
                 this.getUniversities();
+                this.users = [];
+
             } else if (institucion === "Colegio") {
                 this.getColleges();
+                this.users = [];
 
             }
+            document.getElementById("elegirInst").value = -1;
+
+
         }
         /**
          * Cuando cambia un filtro, obtiene el material con los nuevos parametros.
@@ -282,9 +287,10 @@ export class Admin {
 
     filterByInstitution(idInstitution) {
         if (idInstitution == " ") {
-            this.getUsers();
+            this.users = [];
             return;
         }
+
         this.institutionService.getUsersByInstitution(idInstitution)
             .then(data => {
                 this.users = data.data

@@ -15,9 +15,8 @@ export class Contest {
      * @param {Bool} privacy - True si es público, false si es privado
      * @param {String} key - Clave de la competencia en caso de ser privada.
      * @param {Number} id - Identificador de la maratón.
-     * @param {Number} institution - Identificador de la institucion.
      */
-    constructor(title = undefined, description = undefined, initDate = undefined, endDate = undefined, rules = undefined, privacy = true, key = undefined, id = undefined, institution = undefined) {
+    constructor(title = undefined, description = undefined, initDate = undefined, endDate = undefined, rules = undefined, privacy = true, key = undefined, id = undefined) {
         this.title = title
         this.description = description
         this.initDate = initDate
@@ -26,7 +25,6 @@ export class Contest {
         this.privacy = privacy
         this.key = key
         this.id = id
-        this.institution = institution
     }
 
     /**

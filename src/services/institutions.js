@@ -99,6 +99,7 @@ export class Institutions {
      * @param {string} [filter=null] - Selecciona por un lenguaje (null, es o en)
      * @returns {Promise} promesa de contests
      */
+
     getContestsByInstitution(idInstitution, page = null, limit = null, sort = null, by = null, filter = null) {
         let data = '?'
         if (page !== null) {
@@ -127,5 +128,4 @@ export class Institutions {
             .then(this.httpService.checkStatus)
             .then(this.httpService.parseJSON)
     }
-
 }

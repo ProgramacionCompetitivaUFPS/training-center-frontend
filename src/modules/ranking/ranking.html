@@ -11,14 +11,14 @@
           <p>
           Filtrar por instución:
           <select change.delegate="cambiarInstitucion($event.target.value)" name="" id="">
-          <option value="-1">Seleccione</option>
+          <option value=" ">Seleccione</option>
           <option value="Colegio">Colegio</option>
           <option value="Universidad">Universidad</option>
           </select></p>
           <p>
             Elegir ${institucion} :
-            <select change.delegate="getRankingInstitution($event.target.value)" name="" id="">
-            <option value="-1">Seleccione</option>
+            <select change.delegate="getRankingInstitution($event.target.value)" name="" id="elegirInst">
+            <option value=" ">Seleccione</option>
             <option if.bind="institucion" repeat.for="university of universities" value.bind="university.id">${university.name}</option>
           </select></p>
         </div>
@@ -26,7 +26,7 @@
           <p>
             Filtrar por año:
             <select change.delegate="getRankingAnio($event.target.value)" name="" id="">
-            <option value="-1">Seleccione</option>
+            <option value= " ">Seleccione</option>
             <option repeat.for="year of años" value.bind="year">${year}</option>
           </select></p>
         </div>
@@ -34,7 +34,7 @@
           <p>
             Filtrar por categoría:
             <select change.delegate="getRankingCategory($event.target.value)" name="" id="">
-            <option value="-1">Seleccione</option>
+            <option value=" ">Seleccione</option>
             <option repeat.for="categorie of categories" value.bind="categorie.id">${categorie.name}</option>
           </select></p>
         </div>
@@ -72,10 +72,10 @@
             </td>
           </tr>
           <tr if.bind="users.length === 0 && dataLoaded">
-            <td  colspan="4">No hay usuarios actualmente registrados en la plataforma.</td>
+            <td  colspan="8" style="text-align: center;">No hay usuarios actualmente registrados en la plataforma.</td>
           </tr>
           <tr if.bind="!dataLoaded">
-              <td colspan="4">Cargando ranking...</td>
+              <td colspan="8" style="text-align: center;">Cargando ranking...</td>
             </tr>
         </tbody>
       </table>
