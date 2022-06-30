@@ -4,11 +4,11 @@
     <div class="row row-cols-1 row-cols-md-4 g-4 mt-5 m-5">
       <div class="col" repeat.for="c of col">
         <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src=${c.foto} alt="...">
+          <img class="card-img-top" src=${c.foto} alt="img-perfil">
           <div class="card-body">
             <h5>${c.nombre}</h5>
-            <a href=${c.linkedin} class="btn ufps-btn-sign">Linkedin</a>
-            <a href=${c.github} class="btn ufps-btn-sign">Github</a>
+            <a href=${c.linkedin} target = _blank class="btn ufps-btn-sign">Linkedin</a>
+            <a href=${c.github} target = _blank class="btn ufps-btn-sign">Github</a>
           </div>
         </div>
       </div>

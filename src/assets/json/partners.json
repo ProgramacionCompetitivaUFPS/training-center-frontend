@@ -17,9 +17,34 @@
         "github": "https://github.com/cryselayala98"
     },
     {
-        "nombre": "Angie Gonzàlez",
+        "nombre": "Angie González",
+        "foto": "https://media-exp1.licdn.com/dms/image/C4D03AQGHceLynXuyDw/profile-displayphoto-shrink_200_200/0/1554395513249?e=1657152000&v=beta&t=-JNWK2EbGePplH4FUZKjbONmQEKSOT9_o8Md_J_4w30",
+        "linkedin": "https://www.linkedin.com/in/angie-gonz%C3%A0lez-393b29182/",
+        "github": "link de github"
+    },
+    {
+        "nombre": "Génesis Daniela Vargas Jáuregui",
+        "foto": "https://media-exp1.licdn.com/dms/image/C4E03AQGksvKGW2Kx0w/profile-displayphoto-shrink_200_200/0/1656558888674?e=1661990400&v=beta&t=jroZbFrgrk2pBKxJqswRsWmT2F9wHkn9Kb64SU9OpqQ",
+        "linkedin": "https://www.linkedin.com/in/genesis-vargas-9a3b12230/",
+        "github": "https://github.com/GenesisDaniela"
+    },
+    {
+        "nombre": "Julian Navarro",
+        "foto": "https://media-exp1.licdn.com/dms/image/C4E03AQEHhENEh6oT-A/profile-displayphoto-shrink_200_200/0/1656168364462?e=1661990400&v=beta&t=dLOp2H_qdKa0KDSzolkBGKihtDnH4DzhkRHC4_hdt6A",
+        "linkedin": "https://www.linkedin.com/in/julian-n-51a449124",
+        "github": "https://github.com/najiluc"
+    },
+    {
+        "nombre": "Cristian Duarte",
+        "foto": "https://media-exp1.licdn.com/dms/image/C5603AQHDN2l5VqEEJQ/profile-displayphoto-shrink_200_200/0/1635263996519?e=1661990400&v=beta&t=UZ0AtlPcNS16Xv8HvTzTT54oyWQL-O2mMgdmQvqcOFQ",
+        "linkedin": "https://www.linkedin.com/in/cristian-duarte-ba4379b5",
+        "github": "https://github.com/CristianDuarteM"
+    },
+    {
+        "nombre": "Johan Pineda",
         "foto": "https://media-exp1.licdn.com/dms/image/C4D03AQGHceLynXuyDw/profile-displayphoto-shrink_200_200/0/1554395513249?e=1657152000&v=beta&t=-JNWK2EbGePplH4FUZKjbONmQEKSOT9_o8Md_J_4w30",
         "linkedin": "https://www.linkedin.com/in/angie-gonz%C3%A0lez-393b29182/",
         "github": "link de github"
     }
+
 ]
