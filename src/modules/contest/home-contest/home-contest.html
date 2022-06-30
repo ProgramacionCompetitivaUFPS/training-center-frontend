@@ -28,7 +28,6 @@
             <th class="text-center">Nombre</th>
             <th class="text-center">Tipo</th>
             <th class="text-center">Fecha de inicio</th>
-            <th class="text-center">Universidad</th>
             <th class="text-center">Acción</th>
           </tr>
         </thead>
@@ -38,11 +37,7 @@
             <td>${contest.title}</td>
             <td class="text-center" if.bind="contest.privacy">Pública</td>
             <td class="text-center" if.bind="!contest.privacy">Privada</td>
-            <td class="text-center">${contest.getSemanticStartDate()}</td>
-            <td>
-              <p if.bind = "contest.institution.shortName!==null"> ${contest.institution.shortName}</p>
-              <p if.bind = "contest.institution.shortName===null"> ${contest.institution.name}</p>  
-            </td>
+            <td class="text-center">${contest.getSemanticStartDate()}</td>  
             
             <td class="text-right">
               <a route-href="route: edit; params.bind: {id:contest.id}" class="btn btn-secondary ufps-btn-secondary">Editar y añadir problemas</a>
