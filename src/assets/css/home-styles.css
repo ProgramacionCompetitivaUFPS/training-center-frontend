@@ -208,7 +208,7 @@ nav > a:hover {
   color: rgb(64, 0, 0);
   text-shadow: none;
 }
-@media screen and (max-width: 1366px) {
+@media screen and (max-width: 1919px) {
   header {
     max-height: 50em;
     background: url("../img/Recurso_7.png");

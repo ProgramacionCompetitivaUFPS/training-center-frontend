@@ -35,6 +35,19 @@
         </div>
         <div class="col-lg-5">
           <div class="form-inline">
+            <label class="col-form-label col-md-3" for="problem-category">Institución:</label>
+            <div class="col-md-9 input-group ufps-input-creator">
+              <select class="custom-select" id="problem-category" value.bind="newProblem.category">
+                <option model.bind="null">Elige una institución</option>
+                <option model.bind="1">Colegios</option>
+                <option model.bind="2">Universidades</option>
+              </select>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Temática relacionada con el problema">
+                <span class="fas fa-question-circle"></span>
+              </span>
+            </div>
+          </div>
+          <div class="form-inline">
             <label class="col-form-label col-md-3" for="problem-category">Categoría:</label>
             <div class="col-md-9 input-group ufps-input-creator">
               <select class="custom-select" id="problem-category" value.bind="newProblem.category">

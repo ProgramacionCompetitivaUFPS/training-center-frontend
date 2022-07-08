@@ -4,6 +4,7 @@ import { MESSAGES } from 'config/config'
 import { Problem } from 'models/models'
 import { Alert, Problems } from 'services/services'
 import SimpleMDE from 'simplemde'
+import { Enums } from 'models/models'
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),
 // y Servicio de obtención y manejo de problemas (Problems)
@@ -38,7 +39,7 @@ export class ProblemsCreator {
      * componente es creado.
      */
     created() {
-        this.getCategories()
+        this.getCategories(Enums.typeCategory.school)
     }
 
     /**
@@ -57,8 +58,8 @@ export class ProblemsCreator {
      * Obtiene las categorías desde el servidor y las incorpora en el atributo categories,
      * el cual se despliega en un select para la selección del usuario.
      */
-    getCategories() {
-        this.problemsService.getCategories()
+    getCategories(typeCategory) {
+        this.problemsService.getCategories(typeCategory)
             .then(data => {
                 this.categories = data.categories
             })
