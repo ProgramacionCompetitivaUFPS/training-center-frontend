@@ -208,7 +208,7 @@ export class SchoolsViewProblem {
 
     this.files.codeFile = this.code;
     this.files.xmlBlocklyFile = XML;
-    this.language = "Python";
+    this.language = "Blockly";
 
     this.createFileSvg(sources.urlSVG, "blocks.svg");
   }
