@@ -31,6 +31,8 @@ export class ProblemsCreator {
         this.templateSpanish = '# Descripción\n\nReemplaza este texto con la descripción de tu problema. Recuerda que puedes usar la sintaxis de Markdown.\n\n# Entradas\n\nReemplaza este texto con la especificación de la entrada de tu problema. Si no conoces la sintaxis markdown, puedes hacer uso de las opciones de la barra superior.\n\n# Salidas\n\nReemplaza este texto con la especificación de la salida de tu problema.'
         this.templateEnglish = '# Description\n\nReplace this text with the description of your problem. Remember that you can use the Markdown syntax.\n\n# Inputs\n\nReplace this text with the specification of the input of your problem. If you do not know the markdown syntax, you can use the options in the top bar.\n\n# Outputs\n\nReplace this text with the specification of the output of your problem.'
         this.settingsMarkdownEditor = this.loadSettingsMarkdownEditor()
+        this.enums = Enums
+        this.typeCategory = null
     }
 
     /**
@@ -39,7 +41,7 @@ export class ProblemsCreator {
      * componente es creado.
      */
     created() {
-        this.getCategories(Enums.typeCategory.school)
+        //this.getCategories(Enums.typeCategory.school)
     }
 
     /**

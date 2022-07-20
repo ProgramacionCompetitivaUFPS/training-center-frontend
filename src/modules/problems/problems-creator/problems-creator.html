@@ -37,10 +37,10 @@
           <div class="form-inline">
             <label class="col-form-label col-md-3" for="problem-category">Institución:</label>
             <div class="col-md-9 input-group ufps-input-creator">
-              <select class="custom-select" id="problem-category" value.bind="newProblem.category">
+              <select class="custom-select" id="problem-category" value.bind="typeCategory" click.delegate="getCategories(typeCategory)">
                 <option model.bind="null">Elige una institución</option>
-                <option model.bind="1">Colegios</option>
-                <option model.bind="2">Universidades</option>
+                <option model.bind="enums.typeCategory.school">Colegios</option>
+        <option model.bind="enums.typeCategory.university">Universidades</option>
               </select>
               <span class="input-group-addon" tooltip data-toggle="tooltip" title="Temática relacionada con el problema">
                 <span class="fas fa-question-circle"></span>
@@ -52,6 +52,7 @@
             <div class="col-md-9 input-group ufps-input-creator">
               <select class="custom-select" id="problem-category" value.bind="newProblem.category">
                 <option model.bind="null">Elige una categoría</option>
+                <option model.bind="null" if.bind="categories.length === 0">Primero elige una institucion</option>
                 <option repeat.for="category of categories" model.bind="category.id">${category.name}</option>
               </select>
               <span class="input-group-addon" tooltip data-toggle="tooltip" title="Temática relacionada con el problema">

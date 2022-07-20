@@ -14,16 +14,16 @@ export function configure(aurelia) {
         .standardConfiguration()
         .developmentLogging(environment.debug ? 'debug' : 'warn')
         .feature(PLATFORM.moduleName('resources/index'))
-        .plugin(PLATFORM.moduleName('aurelia-notify'), settings => {
+        .plugin(PLATFORM.moduleName('aurelia-notify/bs-notification'), settings => {
             settings.timeout = 40000
             settings.limit = 1
         })
         //aurelia.use.plugin(PLATFORM.moduleName('aurelia-chart'))
 
     if (environment.testing) {
-        aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'));
+        aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'))
     }
-
+    
     aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app')))
 
 }
