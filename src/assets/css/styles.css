@@ -1554,6 +1554,7 @@ tchs {
   margin-top: 5em;
   padding-top: 0;
 }
+@media screen and (max-width: 1920px) {
 @media screen and (min-width: 1920px) {
   #principalTchs {
     max-width: 140em;
@@ -1671,6 +1672,7 @@ tchs {
     display: block;
   }
   
+}
 }
 @media screen and (max-width: 1366px) {
   .canvas-container {
@@ -1791,25 +1793,25 @@ tchs {
   .base1 {
     position: absolute;
     height: auto;
-    width: auto;
+    width: 15em;
     top: 19rem;
-    left: 3rem;
+    left: 5rem;
     z-index: 1;
   }
   .base2 {
     position: absolute;
     height: auto;
-    width: auto;
+    width: 15em;
     top: 19.5rem;
-    left: 27rem;
+    left: 24rem;
     z-index: 1;
   }
   .base3 {
     position: absolute;
     height: auto;
-    width: auto;
+    width: 15em;
     top: 19.5rem;
-    left: 53rem;
+    left: 43rem;
     z-index: 1;
   }
   
@@ -1818,7 +1820,7 @@ tchs {
     height: auto;
     width: auto;
     top: 11.5rem;
-    left: 10rem;
+    left: 8rem;
     z-index: 1;
     font-family: "CroxoxoianText", sans-serif;
     -webkit-text-stroke: 2px black;
@@ -1829,7 +1831,7 @@ tchs {
     height: auto;
     width: auto;
     top: 11.5rem;
-    left: 32.5rem;
+    left: 24.5rem;
     z-index: 1;
     font-family: "CroxoxoianText", sans-serif;
     -webkit-text-stroke: 2px black;
@@ -1840,7 +1842,7 @@ tchs {
     height: auto;
     width: auto;
     top: 11.5rem;
-    left: 61.5rem;
+    left: 45.5rem;
     z-index: 1;
     font-family: "CroxoxoianText", sans-serif;
     -webkit-text-stroke: 2px black;
@@ -1850,17 +1852,21 @@ tchs {
     position: absolute;
     height: auto;
     width: auto;
-    top: 17.6rem;
-    left: 12.3rem;
+    top: 17.2rem;
+    left: 10rem;
     z-index: 2;
     display: none;
+  }
+  .nave{
+    max-width: 70%;
+    max-height: 70%;
   }
   .naveNivel2 {
     position: absolute;
     height: auto;
     width: auto;
-    top: 17.5rem;
-    left: 37.3rem;
+    top: 17.2rem;
+    left: 29.5rem;
     z-index: 2;
     display: none;
   }
@@ -1868,8 +1874,8 @@ tchs {
     position: absolute;
     height: auto;
     width: auto;
-    top: 17.5rem;
-    left: 65.3rem;
+    top: 17.2rem;
+    left: 49rem;
     z-index: 2;
     display: none;
   }

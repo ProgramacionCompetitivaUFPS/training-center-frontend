@@ -105,7 +105,7 @@ export class CanvasPrincipal {
             this.iterate();
  
          }
-        if (screen.width == 1024){
+        if (screen.width <= 1024){
             this.planet1.x = 0.1091326908821349 * this.CANVAS.width - this.planet1.w / 2;
             this.planet1.y = 0.7528057553956835 * this.CANVAS.height - 2.8 * this.planet1.h / 8;
 
@@ -115,7 +115,7 @@ export class CanvasPrincipal {
             this.nave.x = 1.2423498888065234 * this.CANVAS.width - this.nave.w / 2;
             this.nave.y = 0.816546762589928 * this.CANVAS.height - 4 * this.nave.h / 8;
 
-        }if (screen.width == 1366){
+        }if (screen.width <= 1366 || screen.width > 1366){
             this.planet1.x = 0.1091326908821349 * this.CANVAS.width - this.planet1.w / 2;
             this.planet1.y = 0.6528057553956835 * this.CANVAS.height - 2.8 * this.planet1.h / 8;
 
@@ -124,7 +124,8 @@ export class CanvasPrincipal {
 
             this.nave.x = 1.2423498888065234 * this.CANVAS.width - this.nave.w / 2;
             this.nave.y = 0.816546762589928 * this.CANVAS.height - 4 * this.nave.h / 8;
-        }if (screen.width == 1920){
+        
+        }if (screen.width >= 1920 || screen.width > 1366){
             this.planet1 = {
                 name: "Training Center",
                 w: 800,
@@ -135,7 +136,7 @@ export class CanvasPrincipal {
                 right: 1
             }
             this.planet1.x = 0.1091326908821349 * this.CANVAS.width - this.planet1.w / 2;
-            this.planet1.y = 0.7528057553956835 * this.CANVAS.height - 2.8 * this.planet1.h / 8;
+            this.planet1.y = 0.8028057553956835 * this.CANVAS.height - 2.8 * this.planet1.h / 8;
             
         }
 
@@ -144,7 +145,7 @@ export class CanvasPrincipal {
             //this.iterate();
         }
 
-        if (screen.width == 1920){
+        if (screen.width >= 1920 || screen.width > 1366){
             this.planet2 = {
                 name: "Training Center",
                 w: 800,
@@ -191,14 +192,14 @@ export class CanvasPrincipal {
         this.ctx.drawImage(this.planet1_IMG, this.planet1.x, this.planet1.y, this.planet1.w, this.planet1.h);
         this.ctx.drawImage(this.planet2_IMG, this.planet2.x, this.planet2.y, this.planet2.w, this.planet2.h);
         this.ctx.drawImage(this.Nave, this.nave.x, this.nave.y, this.nave.w, this.nave.h);
-        if (screen.width == 1920){
+        if (screen.width >= 1920 || screen.width > 1366){
             this.ctx.shadowBlur = 10;
             this.ctx.shadowColor = "#a91b0d";
             this.ctx.font = "bold 45px CroxoxoianText";
             this.ctx.fillStyle = "rgb(255, 255, 255)";
             this.ctx.textAlign = "center";
-            this.ctx.fillText(this.planet1.name, (this.planet1.x +45) + this.planet1.w / 2, (this.planet1.y - 220) + this.planet1.h -280);
-            this.ctx.fillText("High School", (this.planet1.x +45) + this.planet1.w / 2, (this.planet1.y - 200) + this.planet1.h -240);
+            this.ctx.fillText(this.planet1.name, (this.planet1.x +45) + this.planet1.w / 2, (this.planet1.y - 220) + this.planet1.h -310);
+            this.ctx.fillText("High School", (this.planet1.x +45) + this.planet1.w / 2, (this.planet1.y - 200) + this.planet1.h -280);
 
             this.ctx.shadowBlur = 10;
             this.ctx.shadowColor = "#a91b0d";
@@ -207,7 +208,7 @@ export class CanvasPrincipal {
             this.ctx.textAlign = "center";
             this.ctx.fillText(this.planet2.name, (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y - 70) + this.planet2.h + -220);
             this.ctx.fillText("University", (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y - 60) + this.planet2.h + -180);
-        }else if(screen.width == 1366){
+        }else if(screen.width <= 1366){
             this.ctx.shadowBlur = 10;
             this.ctx.shadowColor = "#a91b0d";
             this.ctx.font = "bold 35px CroxoxoianText";
@@ -223,7 +224,7 @@ export class CanvasPrincipal {
             this.ctx.textAlign = "center";
             this.ctx.fillText(this.planet2.name, (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y + 10) + this.planet2.h + -220);
             this.ctx.fillText("University", (this.planet2.x - 25) + this.planet2.w / 2, (this.planet2.y + 10) + this.planet2.h + -180);
-        }else if(screen.width == 1024){
+        }else if(screen.width <= 1024){
             this.ctx.shadowBlur = 10;
             this.ctx.shadowColor = "#a91b0d";
             this.ctx.font = "bold 35px CroxoxoianText";
