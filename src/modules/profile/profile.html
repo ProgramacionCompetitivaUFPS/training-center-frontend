@@ -1,6 +1,7 @@
 <template>
   <require from="../../resources/elements/paginator"></require>
   <require from="../../resources/elements/filter"></require>
+
   <div slot="content" class="body-slot">
     <div class="container">
       <h2 class="text-right">Perfil</h2>
@@ -31,8 +32,8 @@
                 <td>${user.id}</td>
               </tr>
               <tr>
-                <td>Código:</td>
-                <td>${user.code}</td>
+                <td>Institución:</td>
+                <td>${user.institution.name}</td>
               </tr>
             </tbody>
           </table>
@@ -42,7 +43,8 @@
       <div class="row">
         <div class="col-12 text-right">
           <a class="ufps-btn ufps-btn-secondary btn btn-secondary" click.delegate="showEditProfile()">Editar perfil</a>
-          <a class="ufps-btn ufps-btn-secondary btn btn-secondary" click.delegate="showEditPassword()">Cambiar contraseña</a>
+          <a class="ufps-btn ufps-btn-secondary btn btn-secondary" click.delegate="showEditPassword()">Cambiar
+            contraseña</a>
         </div>
       </div>
       <div class="ufps-separator-mini"></div>
@@ -57,7 +59,7 @@
 
               <canvas chart="type: pie; data.bind: veredicts; should-update: true; throttle: 100;"></canvas>
 
-              
+
             </div>
           </div>
         </div>
@@ -73,17 +75,18 @@
     </div>
 
 
-    <div if.bind="authService.authenticated" class="modal fade" id="edit-profile" tabindex="-1" role="dialog" aria-labelledby="edit-profile">
+    <div if.bind="authService.authenticated" class="modal fade" id="edit-profile" tabindex="-1" role="dialog"
+      aria-labelledby="edit-profile">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header text-center">
-            
+
             <h4 class="modal-title">Editar perfil</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button if.bind="newUser.institution !== null" type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-            <br>
+          <br>
           <div class="modal-body">
             <form submit.delegate="editProfile()" class="text-left">
               <label>Nombre:</label>
@@ -93,12 +96,31 @@
               <input type="text" class="form-control" placeholder="Username" value.bind="newUser.username" required>
               <br>
               <label>Correo electrónico:</label>
-              <input type="email" class="form-control" placeholder="Correo electrónico" value.bind="newUser.email" required>
+              <input type="email" class="form-control" placeholder="Correo electrónico" value.bind="newUser.email"
+                required>
               <br>
-              <label>Código:</label>
-              <input type="number" class="form-control" placeholder="Código" value.bind="newUser.code">
+              <!--<label>Institución:</label>
+              <input type="text" class="form-control" placeholder="Institución" value.bind="newUser.institution.name"> -->
+              <div>
+                <p>
+                  Seleccione instución:
+                  <select change.delegate="cambiarInstitucion($event.target.value)" name="" id="">
+                    <option value="-1">Seleccione</option>
+                    <option value="Colegio">Colegio</option>
+                    <option value="Universidad">Universidad</option>
+                  </select>
+                </p>
+                <p>
+                  Elegir ${institucion} :
+                  <select value.bind="newUser.institution" name="" id="">
+                    <option model.bind="null">Seleccione</option>
+                    <option if.bind="institucion" repeat.for="institution of universities" model.bind="institution">
+                      ${institution.name}</option>
+                  </select>
+                </p>
+              </div>
               <br>
-              <input type="submit" class="btn btn-default ufps-btn-default" value="Guardar cambios">
+              <input type="button" click.delegate="editProfile()" class="btn btn-default ufps-btn-default" value="Guardar cambios">
             </form>
           </div>
         </div>
@@ -106,7 +128,8 @@
     </div>
 
 
-    <div if.bind="authService.authenticated" class="modal fade" id="edit-password" tabindex="-1" role="dialog" aria-labelledby="edit-password">
+    <div if.bind="authService.authenticated" class="modal fade" id="edit-password" tabindex="-1" role="dialog"
+      aria-labelledby="edit-password">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header text-center">
@@ -115,17 +138,20 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-            <br>
+          <br>
           <div class="modal-body">
             <form submit.delegate="editPassword()" class="text-left">
               <label>Contraseña actual:</label>
-              <input type="password" class="form-control" placeholder="Contraseña actual" value.bind="oldPassword" required>
+              <input type="password" class="form-control" placeholder="Contraseña actual" value.bind="oldPassword"
+                required>
               <br>
               <label>Nueva contraseña:</label>
-              <input type="password" class="form-control" placeholder="Nueva contraseña" value.bind="newPassword" required>
+              <input type="password" class="form-control" placeholder="Nueva contraseña" value.bind="newPassword"
+                required>
               <br>
               <label>Repita la contraseña:</label>
-              <input type="password" class="form-control" placeholder="Repita la contraseña" value.bind="retypePassword" required>
+              <input type="password" class="form-control" placeholder="Repita la contraseña" value.bind="retypePassword"
+                required>
               <br>
               <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Guardar contraseña">
             </form>

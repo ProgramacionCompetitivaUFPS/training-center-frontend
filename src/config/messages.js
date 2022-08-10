@@ -56,6 +56,14 @@ export let MESSAGES = {
     text: 'El nombre de usuario debe tener entre 6 y 30 caracteres',
     type: 'error'
   },
+  noInstitution: {
+    text: 'Debe seleccionar una institucion educativa',
+    type: 'error'
+  },
+  emailNoInstitu: {
+    text: 'El correo electrónico escrito no es institucional',
+    type: 'error'
+  },
   emailInvalid: {
     text: 'El correo electrónico escrito no es válido',
     type: 'error'

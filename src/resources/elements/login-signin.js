@@ -61,9 +61,16 @@ export class LoginSignin {
     if (this.userLogin.email !== '' && this.userLogin.password !== '' && this.userLogin.email != null && this.userLogin.password !== null) {
       this.authorizationService.auth(this.userLogin)
         .then((data) => {
-          this.authorizationService.login(data.token)
-          this.router.navigate('')
-          location.reload();
+          this.authorizationService.login(data.token);
+
+          if(data.actualizado === -1) {
+            this.router.navigate('/perfil');
+            location.reload();
+          } else {
+            this.router.navigate('')
+            location.reload();
+          }
+          
         }) // Si el inicio es valido, guarda el token y redirige al inicio
         .catch(error => {
           switch (error.status) {
@@ -94,7 +101,7 @@ export class LoginSignin {
         this.authorizationService.registerStudent(this.UserSignIn)
           .then(() => {
             this.alertService.showMessage(MESSAGES.signInCorrect)
-            this.router.navigate('bienvenido')
+            this.router.navigate('iniciar-sesion')
           }) // Si el registro es correcto se redirige al inicio de sesión
           .catch((error) => {
             switch (error.status) {
@@ -124,7 +131,7 @@ export class LoginSignin {
   }
   requestRecovery () {
     if (this.email !== '') {
-      this.authorizationService.requestRecovery(this.email)
+      this.authService.requestRecovery(this.email)
         .then(() => {
           this.alertService.showMessage(MESSAGES.recoveryEmailSent)
         })

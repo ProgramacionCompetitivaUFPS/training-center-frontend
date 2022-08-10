@@ -12,6 +12,7 @@
  * @exports Problems (Service) - Servicio para el manejo de problemas y categorías
  * @exports Ranking (Service) - Servicio para la obtención del ranking
  * @exports Syllabuses (Service) - Servicio para el manejo de syllabus
+ * @exports Institutions (Service) - Servicio para el manejo de institutions (universities = 0 and collages = 1)
  */
 export * from './alert'
 export * from './auth'
@@ -23,3 +24,4 @@ export * from './materials'
 export * from './problems'
 export * from './rankings'
 export * from './syllabuses'
+export * from './institutions'

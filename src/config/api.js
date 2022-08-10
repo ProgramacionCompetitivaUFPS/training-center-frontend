@@ -25,6 +25,9 @@ export let API = {
         problems: "problems",
         principal: "principal",
         ranking: "ranking",
+        ranking2: "ranking2",
+        ranking3: "ranking3",
+        rankingCategory: "rankingCategory",
         recovery: "recovery",
         removeMaterialSyllabus: "remove-materials",
         removeProblemAssignment: "remove-problems",
@@ -33,7 +36,9 @@ export let API = {
         superUser: "super-user",
         syllabus: "syllabus",
         user: "user",
-        users: "users"
+        users: "users",
+        universities: "institutions/universities",
+        colleges: "institutions/colleges"
     },
 
     // SESSION
