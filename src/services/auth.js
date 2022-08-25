@@ -94,7 +94,8 @@ export class Auth {
             email: user.email,
             password: user.password,
             confirm_password: user.confirmPassword,
-            username: user.username
+            username: user.username,
+            institution_id: user.institution
         }
         return this.httpService.httpClient
             .fetch(API.endpoints.users, {

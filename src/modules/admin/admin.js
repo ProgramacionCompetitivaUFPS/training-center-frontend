@@ -29,6 +29,7 @@ export class Admin {
      * @param {service} authService - Servicio de autenticación y validación
      * @param {material} materialService - Servicio de material
      * @param {service} jwtService - Servicio de manejo de Json Web Tokens (Jwt)
+     * @param {service} institutionService - Servicio de manejo de instituciones
      */
 
 

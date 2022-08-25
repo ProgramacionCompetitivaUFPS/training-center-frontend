@@ -66,6 +66,20 @@
         </label>
         <span class="ufps-form-bar"></span>
       </div>
+      
+      <div class="form-group ufps-form-inline">
+        <select class="custom-select" value.bind="typeInstitution" click.delegate="getInstitutions(typeInstitution)">
+          <option model.bind="null">Tipo de institución</option>
+          <option model.bind="enums.typeInstitution.school">Colegios</option>
+          <option model.bind="enums.typeInstitution.university">Universidades</option>
+        </select>
+      </div>
+      <div class="form-group ufps-form-inline">
+        <select value.bind="UserSignIn.institution" class="custom-select">
+          <option model.bind="null" if.bind="this.institutions.length === 0">Institución educativa</option>
+          <option repeat.for="institution of institutions" model.bind="institution.id">${institution.name}</option>
+        </select>
+      </div>
       <div class="form-group ufps-form-inline">
         <input keyup.trigger="validEmail()" type="email" class="ufps-form-text" id="email" value.bind="UserSignIn.email" required>
         <label for="email">
@@ -91,7 +105,7 @@
         <span class="ufps-form-bar"></span>
       </div>
       <div>
-        <input type="submit" class="btn ufps-btn-sign form-group" data-dismiss="modal" data-backdrop="false" value="Regístrate">
+        <input type="submit" class="btn ufps-btn-sign form-group"  value="Regístrate">
       </div>
       <div class="col-10 text-center ufps-sign-links">
         <a href="#" click.delegate="activateLoginModal()">¿Ya tienes una cuenta? ¡Inicia Sesión!</a>

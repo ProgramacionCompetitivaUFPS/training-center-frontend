@@ -280,6 +280,15 @@ export class App {
                 }
             },
             {
+                name: 'high-school',
+                route: 'colegios',
+                moduleId: PLATFORM.moduleName('modules/principal/principal-high-school/principal-high-school'),
+                title: 'Training center High School - Principal',
+                settings: {
+                    roles: ['admin', 'coach', 'student']
+                }
+            },
+            {
                 name: "about",
                 route: ["acerca-de"],
                 moduleId: PLATFORM.moduleName("./modules/about/about"),

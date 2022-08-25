@@ -41,7 +41,6 @@ export class ProblemsCreator {
      * componente es creado.
      */
     created() {
-        //this.getCategories(Enums.typeCategory.school)
     }
 
     /**

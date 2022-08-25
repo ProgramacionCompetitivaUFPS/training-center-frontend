@@ -1,5 +1,5 @@
 {
   "debug": false,
   "testing": false,
-  "API_BACKEND_URL":"http://146.148.49.88:8080/api/"
+  "API_BACKEND_URL":"https://trainingcenter.cloud.ufps.edu.co/api/"
 }

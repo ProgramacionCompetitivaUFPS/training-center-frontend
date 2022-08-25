@@ -15,6 +15,7 @@ export class UserSignIn {
      * @param {number} [code=null] - Código del usuario
      * @param {number} [type=null] - Tipo de usuario (0 => estudiante, 1=> coach, 2=> admin)
      * @param {number} [id=null] - Identificador del usuario
+     * @param {number} [institution=null] - Institucion
      */
     constructor(email = null, password = null, confirmPassword = null, name = null, username = null, code = null, type = null, id = null, institution = null) {
         this.email = email
@@ -49,6 +50,9 @@ export class UserSignIn {
             return false
         }
         if (this.type === '' || this.type == null) {
+            return false
+        }
+        if (this.institution === '' || this.institution == null) {
             return false
         }
         return true

@@ -1,6 +1,16 @@
 export class Enums {
     static typeCategory = {
         "school" : 2,
-        "university" :1
+        "university" : 1
+    }
+
+    static typeInstitution = {
+        "school" : 1,
+        "university" : 0,
+        "getName": (id) => {
+            if (id === 1) return "school"
+            if (id === 0) return "university"
+            return null
+        }
     }
 }
