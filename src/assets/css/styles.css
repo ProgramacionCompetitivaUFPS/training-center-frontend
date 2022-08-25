@@ -1555,8 +1555,17 @@ tchs {
   margin-top: 5em;
   padding-top: 0;
 }
+#principalTchs {
+  max-width: 140em;
+  min-height: 58em;
+  background-image: url("../img/fondo-cielo.png");
+  position: absolute;
+  height: 101%;
+  width: 100%;
+  margin: 0;
+  z-index: 3;
+}
 @media screen and (max-width: 1920px) {
-@media screen and (min-width: 1920px) {
   #principalTchs {
     max-width: 140em;
     min-height: 58em;
@@ -1674,10 +1683,120 @@ tchs {
   }
   
 }
+@media screen and (min-width: 1921px) {
+  
+  /*Cnvas Principal*/
+  .canvas-container {
+    height: 50em;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    object-fit: cover;
+    display: block;
+  }
+  .base1 {
+    position: absolute;
+    height: auto;
+    width: 40em;
+    top: 32rem;
+    left: 13rem;
+    z-index: 1;
+  }
+  .base2 {
+    position: absolute;
+    height: auto;
+    width: 40em;
+    top: 32.5rem;
+    left: 59rem;
+    z-index: 1;
+  }
+  .base3 {
+    position: absolute;
+    height: auto;
+    width: 40em;
+    top: 32.5rem;
+    left: 109rem;
+    z-index: 1;
+  }
+  
+  .niveles > h1.base1 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 20.5rem;
+    left: 24rem;
+    font-size: 4em;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 3px black;
+    color: transparent;
+  }
+  .niveles > h1.base2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 20.5rem;
+    left: 67rem;
+    font-size: 4em;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 3px black;
+    color: transparent;
+  }
+  .niveles > h1.base3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 20.5rem;
+    left: 120.5rem;
+    font-size: 4em;
+    z-index: 1;
+    font-family: "CroxoxoianText", sans-serif;
+    -webkit-text-stroke: 3px black;
+    color: transparent;
+  }
+  .naveNivel1 {
+    position: absolute;
+    height: 150%;
+    width: 150%;
+    top: 34rem;
+    left: 28rem;
+    z-index: 2;
+    display: none;
+  }
+  .naveNivel2 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 33rem;
+    left: 76rem;
+    z-index: 2;
+    display: none;
+  }
+  .naveNivel3 {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 33rem;
+    left: 127.3rem;
+    z-index: 2;
+    display: none;
+  }
+  #nivel1:hover .naveNivel1 {
+    display: block;
+  }
+  #nivel2:hover .naveNivel2 {
+    display: block;
+  }
+  #nivel3:hover .naveNivel3 {
+    display: block;
+  }
+  
 }
 @media screen and (max-width: 1366px) {
   .canvas-container {
-    height: 38em;
+    height: 50em;
     width: 100%;
     overflow: hidden;
     padding: 0;
