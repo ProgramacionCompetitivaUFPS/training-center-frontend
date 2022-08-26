@@ -32,6 +32,7 @@ export class ContestProblem {
     this.status = 'registered'
     this.validDate = 0 // 0 => Valid, 1 => Prox, 2 => Pasada
     this.contTime = {}
+    this.files = {}
   }
 
   /**
@@ -142,7 +143,8 @@ export class ContestProblem {
     } else if (this.now > endDate) {
       this.alertService.showMessage(MESSAGES.contestFinished)
     } else {
-      this.problemService.submitSolution(this.id, this.language, undefined, this.contestProblemId, this.code[0])
+      this.files.codeFile = this.code[0]
+      this.problemService.submitSolution(this.id, this.language, undefined, this.contestProblemId, this.files)
         .then(() => {
           this.alertService.showMessage(MESSAGES.submittedSolution)
           this.language = null

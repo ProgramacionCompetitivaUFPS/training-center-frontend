@@ -286,10 +286,6 @@ export class Problems {
 
         let blocklySubmission = 0;
         
-        /*if (files.xmlBlocklyFile !== undefined){
-            data.append('XMLCode', files.xmlBlocklyFile)
-            blocklySubmission = 1
-        }*/
         if (files.svgBlocklyCode !== undefined){
             data.append('svgBlocklyCode', files.svgBlocklyCode)
             blocklySubmission = 1
