@@ -20,14 +20,14 @@
       <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="true" start-date.bind="startDate" end-date.bind="endDate"></clock>
       <hr>
       <ul class="nav nav-pills nav-justified nav-maraton">
-        <li role="presentation">
+        <li class="breadcrumb-item" role="presentation">
           <a route-href="route: detail; params.bind: {id:contestId}">Inicio</a>
         </li>
-        <li class="active" role="presentation">
+        <li class="breadcrumb-item active" role="presentation">
           <a route-href="route: problems; params.bind: {id:contestId}">Problemas</a>
         </li>
-        <li role="presentation" if.bind="contest.privacy || status === 'registered'">
-          <a  route-href="route: board; params.bind: {id:contestId}">Resultados</a>
+        <li class="breadcrumb-item" role="presentation" if.bind="(contest.privacy || status === 'registered' || authService.getUserId() === creatorId)">
+          <a route-href="route: board; params.bind: {id:contestId}">Resultados</a>
         </li>
         <li role="presentation" class="disabled" if.bind="!contest.privacy && status !== 'registered'">
           <a>Resultados</a>

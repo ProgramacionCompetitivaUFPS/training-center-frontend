@@ -54,7 +54,7 @@ export class Problems {
      * @param {string} name - Nombre de la categoría
      * @returns {Promise} Promesa sin body, para validar según el status.
      */
-    createCategory(name) {
+    createCategory(name, typeCategory) {
         return this.httpService.httpClient
             .fetch(API.endpoints.categories, {
                 method: 'post',
@@ -63,7 +63,8 @@ export class Problems {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: name
+                    name: name,
+                    type_category: typeCategory
                 })
             })
             .then(this.httpService.checkStatus)

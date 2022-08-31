@@ -3,6 +3,7 @@ import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
 import { Alert, Auth, Problems } from 'services/services'
+import { Enums } from 'models/models'
 
 /**
  * GeneralProblemsUniversities (Module)
@@ -27,6 +28,7 @@ export class GeneralProblemsUniversities {
     constructor(alertService, authService, problemsService, routerService) {
         this.alertService = alertService
         this.authService = authService
+        this.enums = Enums
         this.problemsService = problemsService
         this.routerService = routerService
         this.categories = []
@@ -35,7 +37,7 @@ export class GeneralProblemsUniversities {
         this.categoryEditName = ''
         this.categoryRemoveId = null
         this.categoryRemoveName = ''
-        this.typeCategory = 1
+        this.typeCategory = this.enums.typeCategory.university
     }
 
     /**
@@ -61,7 +63,7 @@ export class GeneralProblemsUniversities {
      * Crea una nueva categoría a nivel universitario en la plataforma
      */
     createCategory() {
-        this.problemsService.createCategory(this.newCategory)
+        this.problemsService.createCategory(this.newCategory, this.typeCategory)
             .then(() => {
                 this.getCategories()
                 this.alertService.showMessage(MESSAGES.categoryCreated)

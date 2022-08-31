@@ -4,6 +4,7 @@ import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
 import introJs from 'intro.js'
 import { Alert, Auth, Problems } from 'services/services'
+import { Enums } from 'models/models'
 
 /**
  * GeneralProblemsHighSchool(Module)
@@ -36,7 +37,9 @@ export class GeneralProblemsHighSchool {
         this.categoryEditName = ''
         this.categoryRemoveId = null
         this.categoryRemoveName = ''
-        this.typeCategory = 2
+
+        this.enums = Enums
+    
     }
 
     /**
@@ -62,7 +65,7 @@ export class GeneralProblemsHighSchool {
      * Crea una nueva categoría a nivel de colegios en la plataforma
      */
     createCategory() {
-        this.problemsService.createCategory(this.newCategory)
+        this.problemsService.createCategory(this.newCategory, this.enums.typeCategory.school)
             .then(() => {
                 this.getCategories()
                 this.alertService.showMessage(MESSAGES.categoryCreated)
@@ -78,7 +81,7 @@ export class GeneralProblemsHighSchool {
      * Lee la lista de categorías a nivel de colegios, disponibles en la plataforma.
      */
     getCategories() {
-        this.problemsService.getCategories(this.typeCategory)
+        this.problemsService.getCategories(this.enums.typeCategory.school)
             .then(data => {
                 this.categories = data.categories
                 if (this.categories.length === 0) {
