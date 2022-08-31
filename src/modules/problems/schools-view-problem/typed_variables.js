@@ -1,3 +1,6 @@
+/*
+Prueba para bloques personalizados
+*/
 export function define_panda_variable_blocks() {
 
 

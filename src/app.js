@@ -34,9 +34,6 @@ export class App {
     constructor(authService, httpService) {
         this.httpService = httpService;
         this.authService = authService;
-
-        //window.jQuery = $;
-        //window.$ = $;
     }
 
     configureRouter(config, router) {
@@ -58,29 +55,6 @@ export class App {
                     roles: ["visitor"]
                 }
             },
-
-            // Login
-            /*{
-                name: "login",
-                route: "iniciar-sesion",
-                moduleId: PLATFORM.moduleName("./modules/login/login"),
-                title: "Iniciar Sesión",
-                layoutView: PLATFORM.moduleName("layouts/not-logged.html"),
-                settings: {
-                    roles: ["visitor"]
-                }
-            },*/
-            // Signin
-            /*{
-                name: "signin",
-                route: "registro",
-                moduleId: PLATFORM.moduleName("./modules/signin/signin"),
-                title: "Regístrate",
-                layoutView: PLATFORM.moduleName("layouts/not-logged.html"),
-                settings: {
-                    roles: ["visitor"]
-                }
-            },*/
             // Recovery Password
             {
                 name: "recovery-password",
