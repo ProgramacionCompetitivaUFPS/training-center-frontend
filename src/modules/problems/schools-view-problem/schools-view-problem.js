@@ -55,14 +55,14 @@ export class SchoolsViewProblem {
       })
       .catch((error) => {
         if (error.status === 401 || error.status === 403) {
-          this.alertService.showMessage(MESSAGES.permissionsError);
+          this.alertService.showMessage(MESSAGES.permissionsError)
         } else if (error.status === 500) {
-          this.alertService.showMessage(MESSAGES.serverError);
+          this.alertService.showMessage(MESSAGES.serverError)
         } else {
-          this.alertService.showMessage(MESSAGES.unknownError);
+          this.alertService.showMessage(MESSAGES.unknownError)
         }
         this.routerService.navigate("");
-      });
+      })
 
     this.problemService
       .getProblem(this.id)

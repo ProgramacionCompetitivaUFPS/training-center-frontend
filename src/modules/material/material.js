@@ -14,16 +14,6 @@ export class Material {
                     roles: ['admin', 'coach', 'student']
                 }
             },
-            //Materiales para colegios
-            {
-                route: ['/colegios'],
-                name: 'general-materials-high-school',
-                moduleId: PLATFORM.moduleName('modules/material/general-materials-high-school/general-materials-high-school'),
-                title: 'Training Center High School- Materiales de estudio',
-                settings: {
-                    roles: ['admin', 'coach', 'student']
-                }
-            },
             {
                 route: '/material/:id',
                 name: 'specificMaterial',
@@ -32,7 +22,27 @@ export class Material {
                 settings: {
                     roles: ['admin', 'coach', 'student']
                 }
-            }
+            },
+            //Categorías colegios
+            {
+                route: ['/colegios/categorias'],
+                name: 'categories-high-school',
+                moduleId: PLATFORM.moduleName('modules/material/categories-high-school/categories-high-school'),
+                title: 'Training Center High School- Categorías',
+                settings: {
+                    roles: ['admin', 'coach', 'student']
+                }
+            },
+            //Materiales de cada categoría para colegios
+            {
+                route: ['/colegios/categorias/categoria/:id'],
+                name: 'category-material-high-school',
+                moduleId: PLATFORM.moduleName('modules/material/category-material-high-school/category-material-high-school'),
+                title: 'Training Center High School- Materiales de estudio',
+                settings: {
+                    roles: ['admin', 'coach', 'student']
+                }
+            },
         ])
         this.router = router
     }

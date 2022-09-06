@@ -336,7 +336,7 @@ export class Problems {
      * @param {number} problemId - Identificador del problema
      * @returns {Promise} promesa con la id de la categoría. 
      * */
-    validateTypeCategory(id){
+    validateTypeCategory(idProblem){
 
         return this.httpService.httpClient
             .fetch(API.endpoints.problems + '/' + id + '/validateCategory', {
