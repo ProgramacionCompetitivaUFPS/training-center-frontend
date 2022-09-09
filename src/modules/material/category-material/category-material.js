@@ -2,8 +2,8 @@ import { inject, observable } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 
 import { MESSAGES } from 'config/config'
-import { Material } from 'models/models'
-import { Alert, Auth, Materials } from 'services/services'
+import { Material, Enums } from 'models/models'
+import { Alert, Auth, Materials, Categories } from 'services/services'
 
 /**
  * CategoryMaterial (Module)
@@ -14,8 +14,8 @@ import { Alert, Auth, Materials } from 'services/services'
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),
 // servicio de autenticación y autorización (Auth),
-// servicio de backend de material (Material), servicio de Router (Router)
-@inject(Alert, Auth, Materials, Router)
+// servicio de backend de material (Material), servicio de Router (Router), servicio de Categorias (Categories)
+@inject(Alert, Auth, Materials, Router, Categories)
 
 export class CategoryMaterial {
 
@@ -29,12 +29,14 @@ export class CategoryMaterial {
    * @param {service} authService - Servicio de autenticación y validación
    * @param {material} materialService - Servicio de material
    * @param {service} routerService - Servicio de enrutamiento
+   * @param {service} categoryService - Servicio de categorias
    */
-  constructor (alertService, authService, materialService, routerService) {
+  constructor (alertService, authService, materialService, routerService, categoryService) {
     this.alertService = alertService
     this.authService = authService
     this.materialService = materialService
     this.routerService = routerService
+    this.categoryService = categoryService
     this.materials = []
     this.newMaterial = new Material()
     this.numberOfItems = [3, 7, 11, 15]
@@ -45,7 +47,7 @@ export class CategoryMaterial {
     this.by = 'Ascendente'
     this.page = 1
     this.totalPages = 1
-    console.log("materi")
+    this.typeCategory = Enums.typeCategory.university
   }
 
   /**
@@ -77,7 +79,30 @@ export class CategoryMaterial {
     this.routeConfig = routeConfig
     this.id = params.id
     this.newMaterial.category = this.id
+    this.validateTypeCategory()
     this.getMaterial()
+  }
+
+  /**
+   * Validar si la categoría pertenece al typeCategory correcto
+   */
+   validateTypeCategory() {
+    this.categoryService.getCategory(this.id)
+      .then((result) => {
+        if (result.category.type !== this.typeCategory){
+          this.routerService.navigate("/")
+        }
+      })
+      .catch((error) => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+        this.routerService.navigate("/")
+      })
   }
 
   /**

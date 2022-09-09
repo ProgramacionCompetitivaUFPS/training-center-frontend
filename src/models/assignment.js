@@ -3,7 +3,7 @@ import { Problem } from './problem'
  * Assignment (Model)
  * Modelo de tareas.
  * @export
- * @class Assignment
+ * @class Assignment 
  */
 export class Assignment {
   /**

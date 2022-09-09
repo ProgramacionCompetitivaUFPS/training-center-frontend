@@ -37,4 +37,21 @@ export class Categories {
       .then(this.httpService.checkStatus)
       .then(this.httpService.parseJSON);
   }
+
+  /**
+   * Obtiene del backend los atributos de una categoría específico dado.
+   * @param {Number} idCategory - Id de la categoría
+   * @returns {Promise} Promesa con el token de usuario
+   */
+   getCategory (idcategory) {
+    return this.httpService.httpClient
+      .fetch(API.endpoints.categories + '/' + idcategory, {
+        method: 'get',
+        headers: {
+          'Authorization': 'Bearer ' + this.jwtService.token
+        }
+      })
+      .then(this.httpService.checkStatus)
+      .then(this.httpService.parseJSON)
+  }
 }
