@@ -339,7 +339,7 @@ export class Problems {
     validateTypeCategory(idProblem){
 
         return this.httpService.httpClient
-            .fetch(API.endpoints.problems + '/' + id + '/validateCategory', {
+            .fetch(API.endpoints.problems + '/' + idProblem + '/validateCategory', {
                 method: 'get',
                 headers: {
                     'Authorization': 'Bearer ' + this.jwtService.token
