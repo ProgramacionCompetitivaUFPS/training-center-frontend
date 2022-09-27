@@ -1,7 +1,7 @@
 import { inject, observable } from 'aurelia-framework'
 
 import { MESSAGES } from 'config/config'
-import { Material } from 'models/models'
+import { Material, Enums } from 'models/models'
 import { Alert, Auth, Problems, Rankings } from 'services/services'
 
 /**
@@ -51,6 +51,7 @@ export class Submissions {
     ]
     this.veredict = this.veredictOptions[0]
     this.downloadMesagge = 'Descargar código'
+    this.enums = Enums
     this.getSubmissions()
   }
 

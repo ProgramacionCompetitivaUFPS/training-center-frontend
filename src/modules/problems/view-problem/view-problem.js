@@ -2,7 +2,7 @@ import { inject } from 'aurelia-framework'
 
 import { Router } from 'aurelia-router'
 import { MESSAGES, SETTINGS, API } from 'config/config'
-import { Problem } from 'models/models'
+import { Problem, Enums } from 'models/models'
 import { Alert, Auth, Problems } from 'services/services'
 
 
@@ -27,6 +27,7 @@ export class ViewProblem {
     this.code
     this.sourceValid = false
     this.files = {}
+    this.enums = Enums
   }
 
   /**
@@ -44,7 +45,7 @@ export class ViewProblem {
     this.problemService.validateTypeCategory(this.id)
       .then(dataCategory => {
 
-        if (dataCategory.type == 2 || dataCategory.type == 0){
+        if (dataCategory.type !== this.enums.typeCategory.university) {
            this.routerService.navigate('/');
         }
       })

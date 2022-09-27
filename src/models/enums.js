@@ -1,7 +1,8 @@
 export class Enums {
     static typeCategory = {
         "school" : 2,
-        "university" : 1
+        "university" : 1,
+        "all" : 3
     }
 
     static typeInstitution = {

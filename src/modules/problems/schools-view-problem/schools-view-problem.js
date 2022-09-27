@@ -1,17 +1,15 @@
-import { inject, bindable, bindingMode } from 'aurelia-framework'
+import { inject, bindable, bindingMode } from "aurelia-framework";
 
-import { Router } from 'aurelia-router'
-import { MESSAGES, SETTINGS, API } from 'config/config'
-import { Problem } from 'models/models'
-import { Alert, Auth, Problems } from 'services/services'
+import { Router } from "aurelia-router";
+import { MESSAGES, SETTINGS, API } from "config/config";
+import { Problem, Enums } from "models/models";
+import { Alert, Auth, Problems } from "services/services";
 
-import * as Es from 'blockly/msg/es'
-import * as Blockly from 'blockly/core'
-import 'blockly/blocks'
-import 'blockly/python'
-import 'blockly/javascript'
-import { define_panda_variable_blocks } from './typed_variables.js'
-
+import * as Es from "blockly/msg/es";
+import * as Blockly from "blockly/core";
+import "blockly/blocks";
+import "blockly/python";
+import "blockly/javascript";
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),
 // Servicio de problemas (Problems), servicio de enrutamiento (Router)
@@ -34,6 +32,7 @@ export class SchoolsViewProblem {
     this.code;
     this.files = {};
     this.sourceValid = false;
+    this.enums = Enums;
   }
 
   /**
@@ -46,23 +45,24 @@ export class SchoolsViewProblem {
     this.id = params.id;
     this.lang = params.lang || "en";
 
+    //validar redireccion problemas de categoría diferente
     this.problemService
       .validateTypeCategory(this.id)
       .then((dataCategory) => {
-        if (dataCategory.type == 1 || dataCategory.type == 0) {
+        if (dataCategory.type !== this.enums.typeCategory.school) {
           this.routerService.navigate("/");
         }
       })
       .catch((error) => {
         if (error.status === 401 || error.status === 403) {
-          this.alertService.showMessage(MESSAGES.permissionsError)
+          this.alertService.showMessage(MESSAGES.permissionsError);
         } else if (error.status === 500) {
-          this.alertService.showMessage(MESSAGES.serverError)
+          this.alertService.showMessage(MESSAGES.serverError);
         } else {
-          this.alertService.showMessage(MESSAGES.unknownError)
+          this.alertService.showMessage(MESSAGES.unknownError);
         }
         this.routerService.navigate("");
-      })
+      });
 
     this.problemService
       .getProblem(this.id)
@@ -171,26 +171,23 @@ export class SchoolsViewProblem {
     }
   }
 
+  //extraer fuente de código de Blockly, y prepararlo para evaluar
   processSources() {
     // Extraer xml del código en un tablero
     var xml = Blockly.Xml.workspaceToDom(this.workspace);
-
     //convertir xml a texto plano
     var xml_text = Blockly.Xml.domToText(xml);
-
     // convertir texto plano a xml
-    var xml_return = Blockly.Xml.textToDom(xml_text);
+    var xml_source = Blockly.Xml.textToDom(xml_text);
 
     const pythonCode = Blockly.Python.workspaceToCode(this.workspace);
-    //this.exportSVG();
-    //this.exportPNG();
     const urlSVG = this.generateSVG();
 
     return {
       pythonCode,
       xml,
-      urlSVG
-    }
+      urlSVG,
+    };
   }
 
   /**
@@ -198,7 +195,6 @@ export class SchoolsViewProblem {
    */
   preSubmit() {
     const sources = this.processSources();
-
     this.code = new File([sources.pythonCode], "main.py", {
       type: "text/x-python",
     });
@@ -236,20 +232,37 @@ export class SchoolsViewProblem {
     introJs().start();
   }
 
+  /**
+   * Convertir submmision de blockly a formato SVG para mostrar en mis envíos
+   * @param {*} url
+   * @param {*} filename
+   */
   createFileSvg(url, filename) {
-    fetch(url).then((response) => {
-      response.blob().then((data) => {
-        let metadata = {
-          type: "image/svg+xml",
-        };
-        let file = new File([data], filename, metadata);
-        this.files.svgBlocklyCode = file;
-        this.submit();
+    fetch(url)
+      .then((response) => {
+        response.blob().then((data) => {
+          let metadata = {
+            type: "image/svg+xml",
+          };
+          let file = new File([data], filename, metadata);
+          this.files.svgBlocklyCode = file;
+          this.submit();
+        });
+      })
+      .catch((error) => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError);
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError);
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError);
+        }
+        this.routerService.navigate("");
       });
-    });
   }
 
   attached() {
+    //traducir bloques
     Blockly.setLocale(Es);
 
     var options = {
@@ -317,6 +330,7 @@ export class SchoolsViewProblem {
     if (sessionStorage.getItem("xmlCode")) {
       xml_example_text = sessionStorage.getItem("xmlCode");
     } else {
+      //blockly Hello World
       xml_example_text = `<xml xmlns="https://developers.google.com/blockly/xml"><variables><variable id="XU)j],aCx_e_I540dPH#">count</variable><variable id="3.hwej-DXj0icz|?W?zz">nombre</variable></variables><block type="variables_set" id="7%E0I.MW\`f5W6MNTP@:" x="-486" y="67"><field name="VAR" id="XU)j],aCx_e_I540dPH#">count</field><value name="VALUE"><block type="text_prompt_ext" id=")y/c|+john+o$,^+{z(u"><mutation type="NUMBER"></mutation><field name="TYPE">NUMBER</field><value name="TEXT"><shadow type="text" id="u|OniKM+4Z2H~ZV%ckoF"><field name="TEXT">abc</field></shadow><block type="text" id="-@[e5C!*Zvnjdw3G[0UM"><field name="TEXT"></field></block></value></block></value><next><block type="controls_repeat_ext" id="[}I#LS9,s)XnA3Eb=M]Y"><value name="TIMES"><shadow type="math_number" id="N\`SKYlg3HwRr[,Ob!2UR"><field name="NUM">10</field></shadow><block type="variables_get" id="bY@qGOu1|74ihzKD}!hU"><field name="VAR" id="XU)j],aCx_e_I540dPH#">count</field></block></value><statement name="DO"><block type="variables_set" id="Rm{^L#^}lKztw2?t7YQ|"><field name="VAR" id="3.hwej-DXj0icz|?W?zz">nombre</field><value name="VALUE"><block type="text_prompt_ext" id="pVqk5E@o;Q=T68)ym0c,"><mutation type="TEXT"></mutation><field name="TYPE">TEXT</field><value name="TEXT"><shadow type="text" id=":2KS40/T{+k0;B};A!GC"><field name="TEXT">abc</field></shadow><block type="text" id="/y05rgmIDFLZA}#xxlgv"><field name="TEXT"></field></block></value></block></value><next><block type="text_print" id="J*UC:x]-V)fskW[Zc%+3"><value name="TEXT"><shadow type="text" id="|lJ#M01l)l23rDqofTv+"><field name="TEXT">abc</field></shadow><block type="text_join" id="ZW35WG;*5PB1\`))lg%20"><mutation items="2"></mutation><value name="ADD0"><block type="text" id="Wb}{BeM|4e8E[dn62MdA"><field name="TEXT">Hola </field></block></value><value name="ADD1"><block type="variables_get" id="CCuXuzW.4oOa)an|r)g4"><field name="VAR" id="3.hwej-DXj0icz|?W?zz">nombre</field></block></value></block></value></block></next></block></statement></block></next></block></xml>`;
     }
 
@@ -324,10 +338,8 @@ export class SchoolsViewProblem {
 
     //insertar código base en el workspace
     Blockly.Xml.domToWorkspace(xml_example, this.workspace);
-
     //ejemplo de generador de código
     Blockly.Python.addReservedWords("code");
-
     Blockly.svgResize(this.workspace);
   }
 
@@ -417,20 +429,20 @@ export class SchoolsViewProblem {
 
     var css =
       '<defs><style type="text/css" xmlns="http://www.w3.org/1999/xhtml">' +
-      '<![CDATA[' +
+      "<![CDATA[" +
       `rect {
         height: 0;
       }
       .blocklyDropdownText{
         font-weight: bold;
       }
-      `+
-      'color: blue;' + 
+      ` +
+      "color: blue;" +
       "]]></style></defs>";
     var bbox = document
       .getElementsByClassName("blocklyBlockCanvas")[0]
       .getBBox();
-      //bbox.style.color = 'blue';
+    //bbox.style.color = 'blue';
     var content = new XMLSerializer().serializeToString(canvas);
 
     var xml =
@@ -460,25 +472,24 @@ export class SchoolsViewProblem {
     this.download(DOMURL.createObjectURL(this.svg()), "blocks.svg");
   }
 
-  exportPNG(){
+  exportPNG() {
     var img = new Image();
     var DOMURL = self.URL || self.webkitURL || self;
-    img.onload = function() {
-        var canvas = document.createElement('canvas');
-        canvas.width = 800;
-        canvas.height = 600;
-        canvas.getContext("2d").drawImage(img, 0, 0);
+    img.onload = function () {
+      var canvas = document.createElement("canvas");
+      canvas.width = 800;
+      canvas.height = 600;
+      canvas.getContext("2d").drawImage(img, 0, 0);
 
-        let element = document.createElement("a");
-        element.href = canvas.toDataURL("image/png");
-        element.download = 'blocks.png';
-        element.click();
-        var DOMURL = self.URL || self.webkitURL || self;
-        DOMURL.revokeObjectURL(element.href);
+      let element = document.createElement("a");
+      element.href = canvas.toDataURL("image/png");
+      element.download = "blocks.png";
+      element.click();
+      var DOMURL = self.URL || self.webkitURL || self;
+      DOMURL.revokeObjectURL(element.href);
     };
     img.src = DOMURL.createObjectURL(this.svg());
-}
-
+  }
 
   generateSVG() {
     var DOMURL = self.URL || self.webkitURL || self;
