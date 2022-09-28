@@ -1,7 +1,7 @@
 import { inject, observable } from "aurelia-framework";
 
 import { MESSAGES } from "config/config";
-import { Contest } from "models/models";
+import { Contest, Enums } from "models/models";
 import { Alert, Auth, Contests, Institutions } from "services/services";
 
 /**
@@ -51,9 +51,10 @@ export class HomeContest {
         this.myContests = [];
         this.allContests = [];
         this.institucion = [];
+        this.enums = Enums;
 
         this.getMyContests();
-        this.getContests();
+        this.getContests(null);
     }
 
     /**
@@ -158,13 +159,14 @@ export class HomeContest {
     /**
      * Obtiene todas las maratones de programación próximas.
      */
-    getContests() {
+    getContests(contestType) {
         this.contestService
             .getContests(
                 this.limitAllContests,
                 this.pageAllContests,
                 this.sortAllContests,
-                this.byAllContestsQuery
+                this.byAllContestsQuery, 
+                contestType
             )
             .then((data) => {
                 this.totalPagesAllContests = data.meta.totalPages;

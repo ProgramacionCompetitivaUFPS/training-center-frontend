@@ -14,4 +14,9 @@ export class Enums {
             return null
         }
     }
+
+    static typeContest = {
+        "school" : 1,
+        "university" : 0
+    }
 }

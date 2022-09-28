@@ -126,7 +126,7 @@ export class Contests {
      * @param {Number} userId - Identificador de usuario.
      * , 
      */
-    getMyContests(limit, page, userId, order, by) {
+    getMyContests(limit, page, userId, order, by, ) {
         return this.httpService.httpClient
             .fetch(API.endpoints.contests + '?limit=' + limit + '&page=' + page + "&order=" + order + "&by=" + by + '&user=' + userId, {
                 method: 'get',
@@ -155,9 +155,9 @@ export class Contests {
      * @param {Number} limit - Cantidad de maratones a obtener.
      * @param {Number} page - Página a obtener
      */
-    getContests(limit, page, order, by) {
+    getContests(limit, page, order, by, type) {
         return this.httpService.httpClient
-            .fetch(API.endpoints.contests + '?limit=' + limit + '&page=' + page + "&order=" + order + "&by=" + by, {
+            .fetch(API.endpoints.contests + '?limit=' + limit + '&page=' + page + "&order=" + order + "&by=" + by + "&type=" + type, {
                 method: 'get',
                 headers: {
                     'Authorization': 'Bearer ' + this.jwtService.token
