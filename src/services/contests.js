@@ -48,6 +48,7 @@ export class Contests {
                     end_date: contest.endDate,
                     rules: contest.rules,
                     public: contest.privacy,
+                    type: contest.type,
                     key: key
                 })
             })
@@ -113,6 +114,7 @@ export class Contests {
                     end_date: contest.endDate,
                     rules: contest.rules,
                     public: contest.privacy,
+                    type: contest.privacy,
                     key: key
                 })
             })

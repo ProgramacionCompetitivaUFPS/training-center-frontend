@@ -38,7 +38,7 @@
             <td>${contest.title}</td>
             <td class="text-center" if.bind="contest.privacy">Pública</td>
             <td class="text-center" if.bind="!contest.privacy">Privada</td>
-            <td class="text-center">Universidad</td>
+            <td class="text-center">${enums.typeContest.getName(contest.type)}</td>
             <td class="text-center">${contest.getSemanticStartDate()}</td>  
             
             <td class="text-right">
@@ -79,7 +79,7 @@
     <hr>
 
       <p>
-        Filtrar por instución:
+        Filtrar por institución:
         <select change.delegate="getContests($event.target.value)" name="" id="">
         <option value=" ">Seleccione</option>
         <option value="${enums.typeContest.school}">Colegio</option>
@@ -101,7 +101,7 @@
         <tr>
           <th class="text-center">Id</th>
           <th class="text-center">Nombre</th>
-          <th class="text-center">Tipo</th>
+          <th class="text-center">Visibilidad</th>
           <th class="text-center">Fecha de inicio</th>
           <th class="text-center"></th>
         </tr>

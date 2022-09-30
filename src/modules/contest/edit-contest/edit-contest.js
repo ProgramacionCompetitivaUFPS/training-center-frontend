@@ -1,7 +1,7 @@
 import { inject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
-import { Contest, Problem } from 'models/models'
+import { Contest, Problem, Enums } from 'models/models'
 import { Alert, Contests } from 'services/services'
 
 /**
@@ -22,6 +22,7 @@ export class EditContest {
     this.contest = new Contest()
     this.problems = []
     this.newProblems = ''
+    this.enums = Enums
   }
 
   /**
@@ -48,13 +49,20 @@ export class EditContest {
         this.alertService.showMessage(MESSAGES.contestUpdated)
       })
       .catch(error => {
-        if (error.status === 400) {
-          this.alertService.showMessage(MESSAGES.contestError)
-        } else if (error.status === 401) {
-          this.alertService.showMessage(MESSAGES.permissionsError)
-        } else {
-          this.alertService.showMessage(MESSAGES.unknownError)
-        }
+        error.response.json()
+        .then((json) =>{
+          if(json.error){
+            this.alertService.showMessage(MESSAGES.createMessage(json.error, "error"))
+          }else{
+            if (error.status === 400) {
+              this.alertService.showMessage(MESSAGES.contestError)
+            } else if (error.status === 401) {
+              this.alertService.showMessage(MESSAGES.permissionsError)
+            } else {
+              this.alertService.showMessage(MESSAGES.unknownError)
+            }
+          }
+        })
       })
   }
 
@@ -92,13 +100,23 @@ export class EditContest {
   getContest () {
     this.contestService.getContest(this.id)
       .then(data => {
-        this.contest = new Contest(data.contest.title, data.contest.description, data.contest.init_date, data.contest.end_date, data.contest.rules, data.contest.public, null, this.id)
+        this.contest = new Contest(
+          data.contest.title, 
+          data.contest.description, 
+          data.contest.init_date, 
+          data.contest.end_date, 
+          data.contest.rules, 
+          data.contest.public, 
+          null, 
+          this.id, 
+          (data.contest.type.toString()))
         let tmpStart = new Date(data.contest.init_date)
         let tmpEnd = new Date(data.contest.end_date)
         this.startDate = this.formatDate(tmpStart)
         this.endDate = this.formatDate(tmpEnd)
         this.startTime = this.formatTime(tmpStart)
         this.endTime = this.formatTime(tmpEnd)
+
         this.getProblems()
       })
       .catch(error => {

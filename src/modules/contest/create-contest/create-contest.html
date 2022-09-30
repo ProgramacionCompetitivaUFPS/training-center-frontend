@@ -26,7 +26,7 @@
         <div class="row">
           <label class="col-form-label col-md-2">Descripción:</label>
           <div class="col-md-10 input-group ufps-input-creator">
-            <textarea class="form-control" placeholder="Descripción de la maratón" value.bind="newContest.description"></textarea>
+            <textarea class="form-control" placeholder="Descripción de la maratón" value.bind="newContest.description" required></textarea>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Descripción que se mostrará a los estudiantes al ingresar a la maratón">
               <i class="fas fa-question-circle"></i>
             </span>
@@ -36,8 +36,21 @@
           <label class="col-form-label col-md-2">Reglas:</label>
           <div class="col-md-10 input-group ufps-input-creator">
             <textarea class="form-control" placeholder="En este espacio puede indicar reglas especificas sobre el horario de competencia, premios, información adicional, etc."
-              value.bind="newContest.rules"></textarea>
+              value.bind="newContest.rules" required></textarea>
             <span class="input-group-addon" tooltip data-toggle="tooltip" title="Reglas de la maratón">
+              <i class="fas fa-question-circle"></i>
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-form-label col-md-2">Tipo:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
+            <select class="form-control" value.bind="newContest.type" name="" id="" required>
+              <option value=" ">Seleccione</option>
+              <option value="${enums.typeContest.school}">Colegio</option>
+              <option value="${enums.typeContest.university}">Universidad</option>
+              </select>
+            <span class="input-group-addon" tooltip data-toggle="tooltip" title="Tipos de problemas de la maratón">
               <i class="fas fa-question-circle"></i>
             </span>
           </div>

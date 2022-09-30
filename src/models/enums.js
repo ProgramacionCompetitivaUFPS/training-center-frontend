@@ -17,6 +17,11 @@ export class Enums {
 
     static typeContest = {
         "school" : 1,
-        "university" : 0
+        "university" : 0,
+        "getName": (id) => {
+            if (id == 1) return "Colegio"
+            if (id == 0) return "Universidad"
+            return null
+        }
     }
 }

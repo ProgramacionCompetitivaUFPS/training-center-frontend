@@ -139,7 +139,7 @@ export class HomeContest {
                                 data.data[i].public,
                                 undefined,
                                 data.data[i].id,
-                                data.data[i].institution
+                                data.data[i].type
                             )
                         );
                     }

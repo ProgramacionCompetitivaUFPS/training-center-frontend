@@ -5,6 +5,15 @@
  * @exports MESSAGES - Objeto JSON con todos los mensajes
  */
 export let MESSAGES = {
+
+  createMessage : (text, type) => {
+    const message = {
+      "text": text,
+      "type": type
+    }
+    return message
+  },
+
   // LOGIN
   loginWrongData: {
     text: 'Sus datos no coinciden. Inténtalo de nuevo',

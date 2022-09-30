@@ -38,6 +38,19 @@
               </span>
             </div>
         </div>
+
+        <div class="row">
+          <label class="col-form-label col-md-2">Tipo:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
+            <select class="form-control" value.bind="contest.type" name="" id="" required disabled>
+              <option value=" ">Seleccione</option>
+              <option value="${enums.typeContest.school}" selected>Colegio</option>
+              <option value="${enums.typeContest.university}">Universidad</option>
+              </select>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Tipos de problemas de la maratón">
+              <span class="fas fa-question-circle"></span>
+            </span>
+          </div>
       </div>
     <div class="-assignment">
       <div class="row">
