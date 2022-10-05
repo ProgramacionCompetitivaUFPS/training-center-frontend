@@ -65,11 +65,20 @@ export class Syllabus {
                     roles: ['coach', 'student', 'admin']
                 }
             },
-            {
-                route: [':id/problema/:problemId/:contestProblemId', ':id/problema/:problemId/:contestProblemId/:lang'],
+            {//EN ESTE MOMENTO ESTOY AGREGANDO RESOLVER CON BLOCKLY EN LAS MARATONES
+                route: [':id/colegios/problema/:problemId/:contestProblemId', ':id/colegios/problema/:problemId/:contestProblemId/:lang'],
                 name: 'problem',
                 moduleId: PLATFORM.moduleName('modules/contest/contest-problem/contest-problem'),
                 title: 'Problema',
+                settings: {
+                    roles: ['coach', 'student', 'admin']
+                }
+            },
+            {
+                route: [':id/problema/:problemId/:contestProblemId', ':id/problema/:problemId/:contestProblemId/:lang'],
+                name: 'problem',
+                moduleId: PLATFORM.moduleName('modules/contest/contest-school-problem/contest-school-problem'),
+                title: 'Problema - Colegios',
                 settings: {
                     roles: ['coach', 'student', 'admin']
                 }
