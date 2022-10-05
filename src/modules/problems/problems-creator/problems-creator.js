@@ -1,10 +1,9 @@
 import { inject } from 'aurelia-framework'
 
 import { MESSAGES } from 'config/config'
-import { Problem } from 'models/models'
+import { Problem, Enums } from 'models/models'
 import { Alert, Problems } from 'services/services'
 import SimpleMDE from 'simplemde'
-import { Enums } from 'models/models'
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),
 // y Servicio de obtención y manejo de problemas (Problems)

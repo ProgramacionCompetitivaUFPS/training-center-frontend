@@ -2,13 +2,13 @@ import { inject } from 'aurelia-framework'
 
 import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
-import { Problem } from 'models/models'
-import { Alert, Problems } from 'services/services'
+import { Problem, Enums } from 'models/models'
+import { Alert, Problems, Categories } from 'services/services'
 import SimpleMDE from 'simplemde'
 
 // dependencias a inyectar: Router, Servicio de notificaciones (Alert),
-// y Servicio de obtención y manejo de problemas (Problems)
-@inject(Router, Alert, Problems)
+// Servicio de obtención y manejo de problemas (Problems), y Servicio de categorias (Categories)
+@inject(Router, Alert, Problems, Categories)
 export class ProblemsEditor {
 
     /**
@@ -16,17 +16,21 @@ export class ProblemsEditor {
      * @param {service} routerService - Enrutador de aurelia
      * @param {service} alertService - Servicio de notificaciones
      * @param {service} problemService - Servicio de obtención y manejo de problemas
+     * * @param {service} categoryService - Servicio de categorias
      */
-    constructor(routerService, alertService, problemsService) {
+    constructor(routerService, alertService, problemsService, categoryService) {
         this.routerService = routerService
         this.alertService = alertService
         this.problemsService = problemsService
+        this.categoryService = categoryService
         this.categories = []
         this.inputValid = false
         this.outputValid = false
         this.editMode = true
         this.templateSpanish = '# Descripción\n\nReemplaza este texto con la descripción de tu problema. Recuerda que puedes usar la sintaxis de Markdown.\n\n# Entradas\n\nReemplaza este texto con la especificación de la entrada de tu problema. Si no conoces la sintaxis markdown, puedes hacer uso de las opciones de la barra superior.\n\n# Salidas\n\nReemplaza este texto con la especificación de la salida de tu problema.'
         this.templateEnglish = '# Description\n\nReplace this text with the description of your problem. Remember that you can use the Markdown syntax.\n\n# Inputs\n\nReplace this text with the specification of the input of your problem. If you do not know the markdown syntax, you can use the options in the top bar.\n\n# Outputs\n\nReplace this text with the specification of the output of your problem.'
+        this.enums = Enums
+        this.typeCategory = null
         this.settingsMarkdownEditor = this.loadSettingsMarkdownEditor()
     }
 
@@ -40,7 +44,21 @@ export class ProblemsEditor {
         this.problemsService.getProblem(params.id)
             .then(problem => {
                 problem = problem.problem
-                this.newProblem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category_id), undefined, problem.description_en, problem.description_es, problem.example_input, problem.example_output, parseFloat(problem.time_limit))
+                this.newProblem = new Problem(
+                    parseInt(params.id), 
+                    problem.title_en, 
+                    problem.title_es, 
+                    parseInt(problem.level), 
+                    problem.category_id, 
+                    undefined,
+                    problem.description_en, 
+                    problem.description_es, 
+                    problem.example_input, 
+                    problem.example_output, 
+                    parseFloat(problem.time_limit)
+                    )
+                this.typeCategory = (problem.category.type)
+                this.getCategories(this.typeCategory)
                 if (this.newProblem.titleEN !== undefined && this.newProblem.titleEN != null) {
                     this.originalLanguage = 'en'
                     if (this.newProblem.titleES !== undefined && this.newProblem.titleES != null) {
@@ -117,8 +135,9 @@ export class ProblemsEditor {
      * Obtiene las categorías desde el servidor y las incorpora en el atributo categories,
      * el cual se despliega en un select para la selección del usuario.
      */
-    getCategories() {
-        this.problemsService.getCategories()
+     getCategories(typeCategory) {
+        console.log(typeCategory)
+        this.problemsService.getCategories(typeCategory)
             .then(data => {
                 this.categories = data.categories
             })
