@@ -7,7 +7,6 @@
       <hr>
       
       <div class="row justify-content-between">
-        <div>
           <p>
           Filtrar por institución:
           <select change.delegate="cambiarInstitucion($event.target.value)" name="" id="">
@@ -21,7 +20,6 @@
             <option value=" ">Seleccione</option>
             <option if.bind="institucion" repeat.for="university of universities" value.bind="university.id">${university.name}</option>
           </select></p>
-        </div>
         <div>
           <p>
             Filtrar por año:
