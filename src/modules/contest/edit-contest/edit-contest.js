@@ -138,7 +138,13 @@ export class EditContest {
       .then(data => {
         this.problems = []
         for(let i = 0; i < data.contest.problems.length; i++) {
-          this.problems.push(new Problem(data.contest.problems[i].id, data.contest.problems[i].title_en, data.contest.problems[i].title_es))
+          this.problems.push(
+            new Problem(
+              data.contest.problems[i].id,
+              data.contest.problems[i].title_en,
+              data.contest.problems[i].title_es
+            )
+          );
         }
       })
       .catch(error => {

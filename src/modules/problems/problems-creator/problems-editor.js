@@ -43,6 +43,7 @@ export class ProblemsEditor {
     activate(params, routeConfig) {
         this.problemsService.getProblem(params.id)
             .then(problem => {
+                console.log(problem)
                 problem = problem.problem
                 this.newProblem = new Problem(
                     parseInt(params.id), 
@@ -50,6 +51,7 @@ export class ProblemsEditor {
                     problem.title_es, 
                     parseInt(problem.level), 
                     problem.category_id, 
+                    undefined,
                     undefined,
                     problem.description_en, 
                     problem.description_es, 

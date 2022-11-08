@@ -312,14 +312,16 @@ export class Problems {
      * @param {Number} limit - Cantidad de problemas a obtener
      * @param {string} sort - opcional, por defecto ordena por id, si sort es 'name' ordena por nombre
      * @param {string} by - asc o desc, ordenamiento ascendente o descendente
+     * @param {Number} typeCategory - Colegio o universidad
      * @returns {Promise} Promesa con los problemas.
      */
-    searchProblems(query, page, limit, sort, by, lang) {
+    searchProblems(query, page, limit, sort, by, lang, typeCategory) {
         let q = '?search=' + query + '&page=' + page + '&limit=' + limit
         if (sort !== undefined) q += '&sort=' + sort
         if (by !== undefined) q += '&by=' + by
         if (lang !== undefined) q += '&filter=' + lang
-
+        if (typeCategory !== undefined && typeCategory !== null) q += '&typeCategory=' + typeCategory
+        
         return this.httpService.httpClient
             .fetch(API.endpoints.problems + q, {
                 method: 'get',

@@ -73,8 +73,15 @@ export class ContestProblems {
         this.problemsLoaded = true
         if (!this.contest.privacy && this.authService.getUserId() !== this.creatorId) this.getStatus()
         for(let i = 0; i < data.contest.problems.length; i++) {
-          this.problems.push(new Problem(data.contest.problems[i].id, data.contest.problems[i].title_en, data.contest.problems[i].title_es))
-          this.problems[i].auxiliarId = data.contest.problems[i].contests_problems.id
+          this.problems.push(
+            new Problem(
+              data.contest.problems[i].id,
+              data.contest.problems[i].title_en,
+              data.contest.problems[i].title_es
+            )
+          );
+          this.problems[i].auxiliarId =
+            data.contest.problems[i].contests_problems.id;
         }
       })
       .catch(error => {

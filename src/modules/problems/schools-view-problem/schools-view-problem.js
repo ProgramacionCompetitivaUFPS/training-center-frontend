@@ -1,4 +1,4 @@
-import { inject, bindable, bindingMode } from "aurelia-framework";
+import { inject} from "aurelia-framework";
 
 import { Router } from "aurelia-router";
 import { MESSAGES, SETTINGS, API } from "config/config";
@@ -74,6 +74,7 @@ export class SchoolsViewProblem {
           problem.title_es,
           parseInt(problem.level),
           parseInt(problem.category_id),
+          undefined,
           undefined,
           problem.description_en,
           problem.description_es,
@@ -171,16 +172,25 @@ export class SchoolsViewProblem {
     }
   }
 
-  //extraer fuente de código de Blockly, y prepararlo para evaluar
+  /**
+   * //extraer fuente de código de Blockly, y prepararlo para evaluar
+   * @returns 
+   */
   processSources() {
+
     // Extraer xml del código en un tablero
     var xml = Blockly.Xml.workspaceToDom(this.workspace);
+
     //convertir xml a texto plano
     var xml_text = Blockly.Xml.domToText(xml);
-    // convertir texto plano a xml
-    var xml_source = Blockly.Xml.textToDom(xml_text);
 
+    // convertir texto plano a xml
+    //el xml se puede usar para redibujar el código en caso de recargar página
+    var xml_source = Blockly.Xml.textToDom(xml_text);
+    //convertir fuente de blockly a código ejecutable
     const pythonCode = Blockly.Python.workspaceToCode(this.workspace);
+
+    //generar imagen para nueva submission
     const urlSVG = this.generateSVG();
 
     return {
@@ -262,7 +272,7 @@ export class SchoolsViewProblem {
   }
 
   attached() {
-    //traducir bloques
+    //traducir Blockly a español
     Blockly.setLocale(Es);
 
     var options = {
@@ -419,8 +429,12 @@ export class SchoolsViewProblem {
     };
   }
 
-  //metodos para exportar a svg
+ 
 
+  /**
+   * Crear SVG del código de blockly
+   * @returns 
+   */
   svg() {
     var canvas = Blockly.mainWorkspace.svgBlockCanvas_.cloneNode(true);
     if (canvas.children[0] === undefined) throw "Couldn't find Blockly canvas";
