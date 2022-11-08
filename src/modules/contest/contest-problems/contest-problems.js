@@ -63,7 +63,7 @@ export class ContestProblems {
   /**
    * Obtiene la información de la maratón actual.
    */
-  getContest() {
+  getContest() { 
     this.contestService
       .getProblemsContest(this.id)
       .then((data) => {
