@@ -1,7 +1,7 @@
 import { inject, observable } from 'aurelia-framework'
 
 import { MESSAGES } from 'config/config'
-import { Material } from 'models/models'
+import { Material, Enums } from 'models/models'
 import { Alert, Auth, Problems, Rankings } from 'services/services'
 
 /**
@@ -51,6 +51,7 @@ export class Submissions {
     ]
     this.veredict = this.veredictOptions[0]
     this.downloadMesagge = 'Descargar código'
+    this.enums = Enums
     this.getSubmissions()
   }
 
@@ -154,7 +155,7 @@ export class Submissions {
   viewCode (submission) {
     this.downloadActive = false
     this.submissionLoaded = submission
-    //falta svg
+    console.log(this.submissionLoaded)
     this.submissionLoaded.code = 'Cargando código...'
     window.$('#submission-detail').modal('show')
     this.problemService.getSubmission(this.submissionLoaded.file_name)

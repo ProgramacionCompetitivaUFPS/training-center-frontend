@@ -39,10 +39,12 @@
           <tr repeat.for="submission of submissions">
             <td class="text-center">
               <p if.bind="submission.problem.title_es !== null" class="ufps-name-problem-list ufps-name-problem-list-l">
-                <a href="/problemas/${submission.problem.id}/detalle/es">${submission.problem.title_es}</a>
+                <a if.bind="submission.problem.category.type == enums.typeCategory.school" href="/problemas/colegios/${submission.problem.id}/detalle/es">${submission.problem.title_es}</a>
+                <a if.bind="submission.problem.category.type == enums.typeCategory.university" href="/problemas/${submission.problem.id}/detalle/es">${submission.problem.title_es}</a>
               </p>
               <p if.bind="submission.problem.title_es === null" class="ufps-name-problem-list ufps-name-problem-list-l">
-                <a href="/problemas/${submission.problem.id}/detalle/en">${submission.problem.title_en}</a>
+                <a if.bind="submission.problem.category.type == enums.typeCategory.school" href="/problemas/colegios/${submission.problem.id}/detalle/en">${submission.problem.title_en}</a>
+                <a if.bind="submission.problem.category.type == enums.typeCategory.university" href="/problemas/${submission.problem.id}/detalle/en">${submission.problem.title_en}</a>
               </p>
             </td>
             <td class="text-center">${submission.problem.level}</td>
@@ -94,13 +96,13 @@
                   <td class="text-center">
                     <p if.bind="submissionLoaded.problem.title_es !== null"
                       class="ufps-name-problem-list ufps-name-problem-list-l">
-                      <a
-                        href="/problemas/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
+                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school" href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
+                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.university" href="/problemas/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
                     </p>
                     <p if.bind="submissionLoaded.problem.title_es === null"
                       class="ufps-name-problem-list ufps-name-problem-list-l">
-                      <a
-                        href="/problemas/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
+                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school" href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
+                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.university" href="/problemas/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
                     </p>
                   </td>
                   <td class="text-center">${submissionLoaded.problem.level}</td>
