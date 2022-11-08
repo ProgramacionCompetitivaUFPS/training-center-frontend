@@ -65,8 +65,8 @@ export class Syllabus {
                     roles: ['coach', 'student', 'admin']
                 }
             },
-            {//EN ESTE MOMENTO ESTOY AGREGANDO RESOLVER CON BLOCKLY EN LAS MARATONES
-                route: [':id/colegios/problema/:problemId/:contestProblemId', ':id/colegios/problema/:problemId/:contestProblemId/:lang'],
+            {
+                route: [':id/problema/:problemId/:contestProblemId', ':id/problema/:problemId/:contestProblemId/:lang'],
                 name: 'problem',
                 moduleId: PLATFORM.moduleName('modules/contest/contest-problem/contest-problem'),
                 title: 'Problema',
@@ -75,8 +75,8 @@ export class Syllabus {
                 }
             },
             {
-                route: [':id/problema/:problemId/:contestProblemId', ':id/problema/:problemId/:contestProblemId/:lang'],
-                name: 'problem',
+                route: [':id/colegios/problema/:problemId/:contestProblemId', ':id/colegios/problema/:problemId/:contestProblemId/:lang'],
+                name: 'school-problem',
                 moduleId: PLATFORM.moduleName('modules/contest/contest-school-problem/contest-school-problem'),
                 title: 'Problema - Colegios',
                 settings: {

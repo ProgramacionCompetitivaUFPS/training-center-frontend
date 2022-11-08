@@ -63,6 +63,515 @@
                     </div>
                 </div>
               </div>
+              <!--Tablero de Blockly-->
+              <div data-step="1" data-intro="Aquí puedes ver la descripción de problema y empezar a resolverlo" class="container-fluid">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="ufps-separator-mini"></div>
+                    <div class="card">
+                      <div class="card-body">
+                        <div show.bind="lang === 'es'">
+                          <h2 class="text-center ufps-problem-title">${problem.titleES} 
+                          </h2>
+                          <div class="etiquetas">
+                            <label class="lbl1" for="">+Entradas y salidas</label>
+                            <label class="lbl2" for="">+ciclos</label>
+                            <label class="lbl3" for="">+condicionales</label>
+                          </div>
+                          <p class="ufps-language text-center">
+                            <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
+                            <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
+                          </p>
+                          <ul data-step="2" data-intro="Estas son las secciones en las que te puedes mover" class="nav nav-tabs" id="myTab" role="tablist">
+                            <li data-step="3" data-intro="Descripción del problema"class="nav-item waves-effect waves-light">
+                              <a class="nav-link active" id="problem-description-tab" data-toggle="tab" href="#problem-description" role="tab" aria-controls="problem-description" aria-selected="true">Descripcion</a>
+                            </li>
+                            <li data-step="4" data-intro="Aquí encontrarás los problemas que hayas enviado" class="nav-item waves-effect waves-light">
+                              <a class="nav-link" id="my-submissions-tab" data-toggle="tab" href="#my-submissions" role="tab" aria-controls="my-submissions" aria-selected="false">Mis envíos</a>
+                            </li>
+                            <li data-step="5" data-intro="Aquí puedes interactuar sobre el problema y resolver dudas" class="nav-item waves-effect waves-light">
+                              <a class="nav-link" id="forum-tab" data-toggle="tab" href="#forum" role="tab" aria-controls="forum" aria-selected="false">Foro</a>
+                            </li>
+                          </ul>
+                          <!--Nav tabs-->
+          
+                          <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade active show" id="problem-description" role="tabpanel" aria-labelledby="problem-description-tab">
+                              <p class="ufps-markdown-editor" markdown.bind="problem.descriptionES"></p>
+                              <div data-step="6" data-intro="Aquí puedes visualizar un ejemplo de lo que el problema debe recibir y el resultado que debería mostrar" class="row">
+                                <div class="col-lg-6">
+                                  <h4 class="text-center">Entrada de ejemplo</h4>
+                                  <div class="card bg-light card-body mb-3 example-in-out">
+                                    <pre>${problem.exampleInput}</pre>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <h4 class="text-center">Salida de ejemplo</h4>
+                                  <div class="card bg-light card-body mb-3 example-in-out">
+                                    <pre>${problem.exampleOutput}</pre>
+                                  </div>
+                                </div>
+                              </div>
+                              <h1>Soluciona tu problema</h1>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                      <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-outline-info" id="boton" route-href="route: ayuda" target="_blank" role="button">Ayuda</a>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div ref="blocklyDiv" id="blockly-editor">
+                                                <xml xmlns="https://developers.google.com/blockly/xml" ref="workspaceBlocks" style="display: none">
+                                                    <toolboxlabel name="Custom Toolbox" colour="darkslategrey"></toolboxlabel>
+                                                    <category name="Entradas" colour="#995ba5">
+                                                          <block type="text_prompt_ext">
+                                                            <value name="TEXT">
+                                                              <shadow type="text">
+                                                                <field name="TEXT">abc</field> 
+                                                              </shadow>
+                                                            </value>
+                                                          </block>
+                                                    </category>
+                                                    <category name="Salidas" colour="#995ba5">
+                                                        <block type="text_print">
+                                                            <value name="TEXT">
+                                                              <shadow type="text">
+                                                                <field name="TEXT">abc</field>
+                                                              </shadow>
+                                                            </value>
+                                                        </block>
+                                                    </category>
+                                                    <category name="Lógica" categorystyle="logic_category">
+                                                      <block type="controls_if"></block>
+                                                      <block type="logic_compare"></block>
+                                                      <block type="logic_operation"></block>
+                                                      <block type="logic_negate"></block>
+                                                      <block type="logic_boolean"></block>
+                                                      <block type="logic_null" disabled="true"></block>
+                                                      <block type="logic_ternary"></block>
+                                                    </category>
+                                                    <category name="Ciclos" categorystyle="loop_category">
+                                                      <block type="controls_repeat_ext">
+                                                        <value name="TIMES">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">10</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="controls_repeat" disabled="true"></block>
+                                                      <block type="controls_whileUntil"></block>
+                                                      <block type="controls_for">
+                                                        <value name="FROM">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">1</field>
+                                                          </shadow>
+                                                        </value>
+                                                        <value name="TO">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">10</field>
+                                                          </shadow>
+                                                        </value>
+                                                        <value name="BY">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">1</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="controls_forEach"></block>
+                                                      <block type="controls_flow_statements"></block>
+                                                    </category>
+                                                    <category name="Matemáticas" categorystyle="math_category">
+                                                      <block type="math_number" gap="32">
+                                                        <field name="NUM">123</field>
+                                                      </block>
+                                                      <block type="math_arithmetic">
+                                                        <value name="A">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">1</field>
+                                                          </shadow>
+                                                        </value>
+                                                        <value name="B">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">1</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="math_single">
+                                                        <value name="NUM">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">9</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="math_trig">
+                                                        <value name="NUM">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">45</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="math_constant"></block>
+                                                      <block type="math_number_property">
+                                                        <value name="NUMBER_TO_CHECK">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">0</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="math_round">
+                                                        <value name="NUM">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">3.1</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="math_on_list"></block>
+                                                      <block type="math_modulo">
+                                                        <value name="DIVIDEND">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">64</field>
+                                                          </shadow>
+                                                        </value>
+                                                        <value name="DIVISOR">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">10</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="math_constrain">
+                                                        <value name="VALUE">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">50</field>
+                                                          </shadow>
+                                                        </value>
+                                                        <value name="LOW">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">1</field>
+                                                          </shadow>
+                                                        </value>
+                                                        <value name="HIGH">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">100</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="math_random_int">
+                                                        <value name="FROM">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">1</field>
+                                                          </shadow>
+                                                        </value>
+                                                        <value name="TO">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">100</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="math_random_float"></block>
+                                                      <block type="math_atan2">
+                                                        <value name="X">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">1</field>
+                                                          </shadow>
+                                                        </value>
+                                                        <value name="Y">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">1</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                    </category>
+                                                    <category name="Texto" categorystyle="text_category">
+                                                      <block type="text"></block>
+                                                      <block type="text_multiline"></block>
+                                                      <block type="text_join"></block>
+                                                      <block type="text_append">
+                                                        <value name="TEXT">
+                                                          <shadow type="text"></shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_length">
+                                                        <value name="VALUE">
+                                                          <shadow type="text">
+                                                            <field name="TEXT">abc</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_isEmpty">
+                                                        <value name="VALUE">
+                                                          <shadow type="text">
+                                                            <field name="TEXT"></field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_indexOf">
+                                                        <value name="VALUE">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">text</field>
+                                                          </block>
+                                                        </value>
+                                                        <value name="FIND">
+                                                          <shadow type="text">
+                                                            <field name="TEXT">abc</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_charAt">
+                                                        <value name="VALUE">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">text</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_getSubstring">
+                                                        <value name="STRING">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">text</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_changeCase">
+                                                        <value name="TEXT">
+                                                          <shadow type="text">
+                                                            <field name="TEXT">abc</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_trim">
+                                                        <value name="TEXT">
+                                                          <shadow type="text">
+                                                            <field name="TEXT">abc</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_count">
+                                                        <value name="SUB">
+                                                          <shadow type="text"></shadow>
+                                                        </value>
+                                                        <value name="TEXT">
+                                                          <shadow type="text"></shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_replace">
+                                                        <value name="FROM">
+                                                          <shadow type="text"></shadow>
+                                                        </value>
+                                                        <value name="TO">
+                                                          <shadow type="text"></shadow>
+                                                        </value>
+                                                        <value name="TEXT">
+                                                          <shadow type="text"></shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="text_reverse">
+                                                        <value name="TEXT">
+                                                          <shadow type="text"></shadow>
+                                                        </value>
+                                                      </block>
+                                                    </category>
+                                                    <category name="Listas" categorystyle="list_category">
+                                                      <block type="lists_create_with">
+                                                        <mutation items="0"></mutation>
+                                                      </block>
+                                                      <block type="lists_create_with"></block>
+                                                      <block type="lists_repeat">
+                                                        <value name="NUM">
+                                                          <shadow type="math_number">
+                                                            <field name="NUM">5</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="lists_length"></block>
+                                                      <block type="lists_isEmpty"></block>
+                                                      <block type="lists_indexOf">
+                                                        <value name="VALUE">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">list</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                      <block type="lists_getIndex">
+                                                        <value name="VALUE">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">list</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                      <block type="lists_setIndex">
+                                                        <value name="LIST">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">list</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                      <block type="lists_getSublist">
+                                                        <value name="LIST">
+                                                          <block type="variables_get">
+                                                            <field name="VAR">list</field>
+                                                          </block>
+                                                        </value>
+                                                      </block>
+                                                      <block type="lists_split">
+                                                        <value name="DELIM">
+                                                          <shadow type="text">
+                                                            <field name="TEXT">,</field>
+                                                          </shadow>
+                                                        </value>
+                                                      </block>
+                                                      <block type="lists_sort"></block>
+                                                      <block type="lists_reverse"></block>
+                                                    </category>
+                                                    <sep></sep>
+                                                    <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
+                                                    <category name="Funciones" categorystyle="procedure_category" custom="PROCEDURE"></category>
+                                                  </xml>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="ufps-separator-mini"></div>
+                                <div class="card">
+                                  <div class="card-body">
+                                    <p show.bind="lang === 'en'">
+                                      <strong>Problema:</strong> ${problem.titleEN}</p>
+                                    <p show.bind="lang === 'es'">
+                                      <strong>Problema:</strong> ${problem.titleES}</p>
+                                    <p>
+                                      <strong>Dificultad:</strong> ${problem.level}</p>
+                                    <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
+                                    <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
+                                    <button click.delegate="preSubmit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
+                                  </div>
+                                </div>
+                                <div class="card panel-resolved" if.bind="problem.resolved">
+                                  <div class="card-body">
+                                    <div class="media">
+                                      <div class="media-left">
+                                        <img class="media-object" src="../../../assets/img/logo-transparent-64px.png">
+                                      </div>
+                                      <div class="media-body">
+                                        <h5 class="media-heading">¡Felicitaciones!</h5>
+                                        <p>Ya has resuelto este problema anteriormente.</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="tab-pane fade" id="my-submissions" role="tabpanel" aria-labelledby="my-submissions-tab">
+                              
+                              no hay nada por ahora
+                              
+                            </div>
+                            <div class="tab-pane fade" id="forum" role="tabpanel" aria-labelledby="forum-tab">
+                              <disqus></disqus>
+                            </div>
+                          </div>
+          
+                        </div>
+                        <div show.bind="lang === 'en'">
+                          <h2 class="text-center ufps-problem-title">${problem.titleEN}</h2>
+                          <div class="etiquetas">
+                            <label class="lbl1" for="">+Entradas y salidas</label>
+                            <label class="lbl2" for="">+ciclos</label>
+                            <label class="lbl3" for="">+condicionales</label>
+                          </div>
+                          <p class="ufps-language text-center">
+                            <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
+                            <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
+                          </p>
+                          <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                            <li class="nav-item waves-effect waves-light">
+                              <a class="nav-link active" id="problem-description2-tab" data-toggle="tab" href="#problem-description2" role="tab" aria-controls="problem-description2" aria-selected="true">Description</a>
+                            </li>
+                            <li class="nav-item waves-effect waves-light">
+                              <a class="nav-link" id="my-submissions2-tab" data-toggle="tab" href="#my-submissions2" role="tab" aria-controls="my-submissions2" aria-selected="false">My submissions</a>
+                            </li>
+                            <li class="nav-item waves-effect waves-light">
+                              <a class="nav-link" id="forum2-tab" data-toggle="tab" href="#forum2" role="tab" aria-controls="forum2" aria-selected="false">Forum</a>
+                            </li>
+                          </ul>
+          
+                          <!--Nav tabs-->
+          
+                          <div class="tab-content" id="myTab2Content">
+                            <div class="tab-pane fade active show" id="problem-description2" role="tabpanel" aria-labelledby="problem-description2-tab">
+                              <p class="ufps-markdown-editor" markdown.bind="problem.descriptionEN"></p>
+                              <div class="container">
+                                <div class="row row-cols-2">    
+                                    <div class="col-lg-6">
+                                      <h3 class="text-center">Entrada de ejemplo</h3>
+                                      <div class="well example-in-out">
+                                        <pre>${problem.exampleInput}</pre>
+          
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <h4 class="text-center">Salida de ejemplo</h4>
+                                      <div class="well example-in-out">
+                                        <pre>${problem.exampleOutput}</pre>
+                                      </div>
+                                </div>
+                            </div>
+                          </div>
+                            </div>
+                            <div class="tab-pane fade" id="my-submissions2" role="tabpanel" aria-labelledby="my-submissions2-tab">Etsy mixtape wayfarers,
+                              ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi
+                              farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore
+                              carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred
+                              pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk
+                              vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork
+                              sustainable tofu synth chambray yr.
+                            </div>
+                            <div class="tab-pane fade" id="forum2" role="tabpanel" aria-labelledby="forum-tab2">Etsy mixtape wayfarers,
+                              ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi
+                              farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore
+                              carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred
+                              pitchfork. Williamsburg banh mi whatever gluten-free, carles pitchfork biodiesel fixie etsy retro mlkshk
+                              vice blog. Scenester cred you probably haven't heard of them, vinyl craft beer blog stumptown. Pitchfork
+                              sustainable tofu synth chambray yr.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--div class="col-lg-5">
+                    <div class="row">
+                      <div class="ufps-separator-mini"></div>
+                      <div class="card">
+                        <div class="card-body">
+                          <p show.bind="lang === 'en'">
+                            <strong>Problema:</strong> ${problem.titleEN}</p>
+                          <p show.bind="lang === 'es'">
+                            <strong>Problema:</strong> ${problem.titleES}</p>
+                          <p>
+                            <strong>Dificultad:</strong> ${problem.level}</p>
+                          <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
+                          <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
+                          <button click.delegate="preSubmit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
+                        </div>
+                      </div>
+                      <div class="card panel-resolved" if.bind="problem.resolved">
+                        <div class="card-body">
+                          <div class="media">
+                            <div class="media-left">
+                              <img class="media-object" src="../../../assets/img/logo-transparent-64px.png">
+                            </div>
+                            <div class="media-body">
+                              <h5 class="media-heading">¡Felicitaciones!</h5>
+                              <p>Ya has resuelto este problema anteriormente.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div-->
+                </div>
+              </div>
+              <!--Fin tablero de Blockly-->
             </div>
             <div class="card-body" show.bind="lang === 'en'">
               <h1 class="text-center ufps-problem-title">${problem.titleEN}</h1>

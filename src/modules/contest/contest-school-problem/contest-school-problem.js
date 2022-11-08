@@ -2,7 +2,7 @@ import { inject, observable } from 'aurelia-framework'
 
 import { Router } from 'aurelia-router'
 import { MESSAGES, SETTINGS } from 'config/config'
-import { Contest, Problem } from 'models/models'
+import { Contest, Problem, Enums } from 'models/models'
 import { Alert, Auth, Contests, Problems } from 'services/services'
 
 // dependencias a inyectar: Servicio de notificaciones (Alert),
@@ -33,6 +33,8 @@ export class ContestProblem {
     this.validDate = 0 // 0 => Valid, 1 => Prox, 2 => Pasada
     this.contTime = {}
     this.files = {}
+    this.sourceValid = false;
+    this.enums = Enums;
   }
 
   /**
@@ -48,6 +50,27 @@ export class ContestProblem {
     this.contestProblemId = params.contestProblemId
     this.id = params.problemId
     this.lang = params.lang || 'en'
+
+    //validar redireccion problemas de categoría diferente
+    this.problemService
+      .validateTypeCategory(this.id)
+      .then((dataCategory) => {
+        console.log("dataa ", dataCategory)
+        if (dataCategory.type !== this.enums.typeCategory.school) {
+          this.routerService.navigate("/");
+        }
+      })
+      .catch((error) => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError);
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError);
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError);
+        }
+        this.routerService.navigate("");
+      });
+
     this.validDate = -1 // 0 => Valid, 1 => Prox, 2 => Pasada
     this.getContest()
   }
