@@ -1,6 +1,7 @@
 <template>
   <require from="../../../resources/attributes/markdown"></require>
   <require from="../../../resources/attributes/tooltip"> </require>
+  <require from="../../../resources/elements/disqus"></require>
   <div class="container-fluid">
     <div class="col-12" if.bind="lang === 'en'">
       <ol class="breadcrumb">
@@ -78,6 +79,9 @@
                     </div>
                 </div>
               </div>
+            </div>
+            <div class="col-12 forum-problem">
+              <disqus post="problem.id"></disqus>
             </div>
           </div>
         </div>

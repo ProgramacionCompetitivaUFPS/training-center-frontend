@@ -955,12 +955,20 @@ textarea.form-control {
   margin: 1.25em auto;
 }
 
+.forum-problem{
+  margin-top: 1.2em;
+}
+
 /*EDITOR*/
 
 .editor-toolbar.fullscreen,
 .CodeMirror-fullscreen,
 .editor-preview-side {
   z-index: 10000 !important;
+}
+
+.ufps-btn-submit-school{
+  width: 100%;
 }
 
 .ufps-btn-submit,
