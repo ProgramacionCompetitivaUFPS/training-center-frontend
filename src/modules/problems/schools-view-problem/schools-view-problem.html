@@ -27,10 +27,9 @@
         <li class="breadcrumb-item active">Problema "${problem.titleES}"</li>
       </ol>
     </div>
-    <!--Tablero de blockly-->
     <div data-step="1" data-intro="Aquí puedes ver la descripción de problema y empezar a resolverlo" class="container-fluid">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-9">
           <div class="ufps-separator-mini"></div>
           <div class="card">
             <div class="card-body">
@@ -396,35 +395,6 @@
                           </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="ufps-separator-mini"></div>
-                      <div class="card">
-                        <div class="card-body">
-                          <p show.bind="lang === 'en'">
-                            <strong>Problema:</strong> ${problem.titleEN}</p>
-                          <p show.bind="lang === 'es'">
-                            <strong>Problema:</strong> ${problem.titleES}</p>
-                          <p>
-                            <strong>Dificultad:</strong> ${problem.level}</p>
-                          <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
-                          <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
-                          <button click.delegate="preSubmit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
-                        </div>
-                      </div>
-                      <div class="card panel-resolved" if.bind="problem.resolved">
-                        <div class="card-body">
-                          <div class="media">
-                            <div class="media-left">
-                              <img class="media-object" src="../../../assets/img/logo-transparent-64px.png">
-                            </div>
-                            <div class="media-body">
-                              <h5 class="media-heading">¡Felicitaciones!</h5>
-                              <p>Ya has resuelto este problema anteriormente.</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                   <div class="tab-pane fade" id="my-submissions" role="tabpanel" aria-labelledby="my-submissions-tab">
                     
@@ -504,7 +474,78 @@
             </div>
           </div>
         </div>
-        <!--div class="col-lg-5">
+        <div class="col-lg-3">
+            <div class="ufps-separator-mini"></div>
+            <div class="card">
+              <div class="card-body">
+                <p show.bind="lang === 'en'">
+                  <strong>Problema:</strong> ${problem.titleEN}</p>
+                <p show.bind="lang === 'es'">
+                  <strong>Problema:</strong> ${problem.titleES}</p>
+                <p>
+                  <strong>Dificultad:</strong> ${problem.level}</p>
+                <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
+                <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
+                <button click.delegate="preSubmit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
+              </div>
+            </div>
+            <div class="card panel-resolved" if.bind="problem.resolved">
+              <div class="card-body">
+                <div class="media">
+                  <div class="media-left">
+                    <img class="media-object" src="../../../assets/img/logo-transparent-64px.png">
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading">¡Felicitaciones!</h5>
+                    <p>Ya has resuelto este problema anteriormente.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+          <div class="ufps-separator-mini"></div>
+          <div class="card">
+            <div class="card-body">
+              <p show.bind="lang === 'en'">
+                <strong>Problema:</strong> ${problem.titleEN}</p>
+              <p show.bind="lang === 'es'">
+                <strong>Problema:</strong> ${problem.titleES}</p>
+              <p>
+                <strong>Dificultad:</strong> ${problem.level}</p>
+              <p if.bind="!authService.isAdmin()">Selecciona el archivo con tu código, y el lenguaje a utilizar.</p>
+              <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}" class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
+              <form if.bind="!authService.isAdmin()" class="ufps-submit-form" submit.delegate="submit()" enctype="multipart/form-data">
+                <input type="file" name="input-file" id="input-file" class="inputfile-btn" change.delegate="validateCode()" accept=".py, .java,.cpp, .c, .cc, .cp, .cxx"
+                  files.bind="code">
+                <label for="input-file" tooltip data-toggle="tooltip" title="Archivo con la solución al problema">Seleccionar
+                  <span class="fas fa-check" show.bind="sourceValid"></span>
+                </label>
+                <div class="input-group">
+                  <select class="form-control" value.bind="language">
+                    <option required model.bind="null">Lenguaje...</option>
+                    <option repeat.for="lg of languages" model.bind="lg">${lg}</option>
+                  </select>
+                </div>
+                <input type="submit" value="Enviar" class="btn ufps-btn-submit">
+              </form>
+            </div>
+          </div>
+          <div class="card panel-resolved" if.bind="problem.resolved">
+            <div class="card-body">
+              <div class="media">
+                <div class="media-left">
+                  <img class="media-object" src="../../../assets/img/logo-transparent-64px.png">
+                </div>
+                <div class="media-body">
+                  <h5 class="media-heading">¡Felicitaciones!</h5>
+                  <p>Ya has resuelto este problema anteriormente.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
           <div class="row">
             <div class="ufps-separator-mini"></div>
             <div class="card">
