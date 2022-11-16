@@ -197,10 +197,6 @@ export class Submissions {
     else if(this.submissionLoaded.language === 'C++') filename = 'main.cpp'
     else filename = 'main.py'
 
-    if(this.isABlocklyCode){
-      //this.codeDownload = sessionStorage.getItem('pythonCode')
-      console.log("descarga de submission en blockly", this.codeDownload)
-    }
     if(window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(this.codeDownload, filename)
     }

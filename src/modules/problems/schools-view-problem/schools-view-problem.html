@@ -27,8 +27,7 @@
         <li class="breadcrumb-item active">Problema "${problem.titleES}"</li>
       </ol>
     </div>
-    <div data-step="1" data-intro="Aquí puedes ver la descripción de problema y empezar a resolverlo"
-      class="container-fluid">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-lg-9">
           <div class="ufps-separator-mini"></div>
@@ -46,7 +45,7 @@
                   <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
                   <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
                 </p>
-                <p class="ufps-markdown-editor" markdown.bind="problem.descriptionES"></p>
+                <p data-step="1" data-intro="Aquí puedes ver la descripción de problema y empezar a resolverlo" class="ufps-markdown-editor" markdown.bind="problem.descriptionES"></p>
                 <div data-step="6"
                   data-intro="Aquí puedes visualizar un ejemplo de lo que el problema debe recibir y el resultado que debería mostrar"
                   class="row">
@@ -86,47 +85,25 @@
                   <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
                   <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
                 </p>
-                <ul class="nav nav-tabs" id="myTab2" role="tablist">
-                  <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link active" id="problem-description2-tab" data-toggle="tab"
-                      href="#problem-description2" role="tab" aria-controls="problem-description2"
-                      aria-selected="true">Description</a>
-                  </li>
-                  <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link" id="my-submissions2-tab" data-toggle="tab" href="#my-submissions2" role="tab"
-                      aria-controls="my-submissions2" aria-selected="false">My submissions</a>
-                  </li>
-                  <li class="nav-item waves-effect waves-light">
-                    <a class="nav-link" id="forum2-tab" data-toggle="tab" href="#forum2" role="tab"
-                      aria-controls="forum2" aria-selected="false">Forum</a>
-                  </li>
-                </ul>
+                <p class="ufps-markdown-editor" markdown.bind="problem.descriptionEN"></p>
+                <div class="container">
+                  <div class="row row-cols-2">
+                    <div class="col-lg-6">
+                      <h3 class="text-center">Example input</h3>
+                      <div class="card bg-light card-body mb-3 example-in-out">
+                        <pre>${problem.exampleInput}</pre>
 
-                <!--Nav tabs-->
-
-                <div class="tab-content" id="myTab2Content">
-                  <div class="tab-pane fade active show" id="problem-description2" role="tabpanel"
-                    aria-labelledby="problem-description2-tab">
-                    <p class="ufps-markdown-editor" markdown.bind="problem.descriptionEN"></p>
-                    <div class="container">
-                      <div class="row row-cols-2">
-                        <div class="col-lg-6">
-                          <h3 class="text-center">Entrada de ejemplo</h3>
-                          <div class="well example-in-out">
-                            <pre>${problem.exampleInput}</pre>
-
-                          </div>
-                        </div>
-                        <div class="col-lg-6">
-                          <h4 class="text-center">Salida de ejemplo</h4>
-                          <div class="well example-in-out">
-                            <pre>${problem.exampleOutput}</pre>
-                          </div>
-                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <h4 class="text-center">Example output</h4>
+                      <div class="card bg-light card-body mb-3 example-in-out">
+                        <pre>${problem.exampleOutput}</pre>
                       </div>
                     </div>
                   </div>
                 </div>
+
               </div>
               <div class="row">
                 <div class="col-lg-12">
@@ -298,6 +275,7 @@
                                 </shadow>
                               </value>
                             </block>
+                            <block type="convert_to_int"></block>
                           </category>
                           <category name="Texto" categorystyle="text_category">
                             <block type="text"></block>
@@ -472,7 +450,7 @@
               <p>
                 <strong>Dificultad:</strong> ${problem.level}
               </p>
-              <p if.bind="!authService.isAdmin()">Resuelve el problema con Blockly.</p>
+              <p if.bind="!authService.isAdmin()">Crea tu solución utilizando el tablero de Blockly.</p>
               <a if.bind="authService.isAdmin()" route-href="route: edit-problem; params.bind: {id:problem.id}"
                 class="btn ufps-btn-submit ufps-btn-edit-problem">Editar problema</a>
               <button click.delegate="preSubmit()" value="Enviar"

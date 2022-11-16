@@ -49,10 +49,10 @@ export class ContestProblem {
   }
 
   attached() {
-    console.log("wiiiiii");
     //traducir Blockly a español
     Blockly.setLocale(Es);
 
+    //configuracion general del tablero de blockly
     var options = {
       toolbox: this.contestWorkspaceBlocks,
       collapse: true,
@@ -78,38 +78,9 @@ export class ContestProblem {
 
     this.contestWorkspace = Blockly.inject(this.blocklyDiv, options);
 
-    //this.createBlocksCustomized()
+    //Agregar bloques personalizados
+    this.createBlocksCustomized();
     this.createGeneratorCodes();
-
-    //registrar los bloques personalizados
-    /*
-            const createFlyout = function (this.contestWorkspace) {
-                console.log("createFlyout");
-                let xmlList = [];
-                // Add your button and give it a callback name.
-
-                const button = document.createElement('button');
-                button.setAttribute('text', 'Create Typed Variable');
-                button.setAttribute('callbackKey', 'Panda');
-
-                this.contestWorkspace.registerButtonCallback('Panda', (button) => {
-                    Blockly.Variables.createVariableButtonHandler(button.getTargetWorkspace(), null, 'Panda');
-                });
-
-                xmlList.push(button);
-
-
-                //Creando los bloques de getter y setter
-
-                const blockList = Blockly.VariablesDynamic.flyoutCategoryBlocks(this.contestWorkspace);
-
-                console.log(blockList);
-                xmlList = xmlList.concat(blockList);
-                return xmlList;
-            }
-
-            this.contestWorkspace.registerToolboxCategoryCallback('CREATE_TYPED_VARIABLE', createFlyout)
-            */
 
     Blockly.Xml.domToWorkspace(
       this.contestWorkspaceBlocks,
@@ -138,75 +109,33 @@ export class ContestProblem {
    * Crea los generadores a código fuente personalizados
    */
   createGeneratorCodes() {
-    Blockly.JavaScript["print"] = function (block) {
-      var msg =
-        Blockly.JavaScript.valueToCode(
-          block,
-          "TEXT",
-          Blockly.JavaScript.ORDER_NONE
-        ) || "''";
-      var code = `document.getElementById('output').innerText = document.getElementById('output').innerText + ${msg};\n`;
-      return code;
-    };
+     /*
+      Convertir float a entero (Python)
+    */
+      Blockly.Python['convert_to_int'] = function(block) {
+        var numberConvert = Blockly.Python.valueToCode(block, 'numverConvert', Blockly.Python.ORDER_ATOMIC);
+        // TODO: Assemble Python into code variable.
+        var code = `int(${numberConvert})`;
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.Python.ORDER_NONE];
+      };
   }
 
   /**
    * Inserta los bloques personalizados al workspace de trabajo
    */
   createBlocksCustomized() {
-    Blockly.Blocks["prompt_for"] = {
-      init: function () {
-        this.appendDummyInput()
-          .appendField("Prompt variable of ")
-          .appendField(
-            new Blockly.FieldDropdown([
-              ["Integer", "Integer"],
-              ["Double", "Double"],
-              ["String", "String"],
-              ["Character", "Character"],
-              ["Boolean", "Boolean"],
-            ]),
-            "Data type"
-          )
-          .appendField("type");
+    Blockly.Blocks['convert_to_int'] = {
+      init: function() {
+        this.appendValueInput("numverConvert")
+            .setCheck("Number")
+            .appendField("Convertir a entero");
         this.setInputsInline(false);
-        this.setOutput(true, null);
-        this.setColour(285);
-        this.setTooltip("");
-        this.setHelpUrl("https://www.w3schools.com/jsref/met_win_prompt.asp");
-      },
-    };
-
-    Blockly.Blocks["create_variable"] = {
-      init: function () {
-        this.appendDummyInput()
-          .appendField("Declare")
-          .appendField(
-            new Blockly.FieldDropdown([
-              ["Integer", "Integer"],
-              ["Double", "Double"],
-              ["Text", "Text"],
-              ["Character", "Boolean"],
-              ["Boolean", "Boolean"],
-            ]),
-            "NAME"
-          )
-          .appendField("Variable");
+        this.setOutput(true, "Int");
         this.setColour(230);
-        this.setTooltip("");
-        this.setHelpUrl("");
-      },
-    };
-
-    Blockly.Blocks["print"] = {
-      init: function () {
-        this.appendValueInput("TEXT").setCheck(null).appendField("Imprimir");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(330);
-        this.setTooltip("Imprimir");
-        this.setHelpUrl("");
-      },
+     this.setTooltip("Convertir a número entero");
+     this.setHelpUrl("");
+      }
     };
   }
 
@@ -281,6 +210,10 @@ export class ContestProblem {
     // convertir texto plano a xml
     //el xml se puede usar para redibujar el código en caso de recargar página
     var xml_source = Blockly.Xml.textToDom(xml_text);
+
+    //guardar fuente de blockly para usarlo en proximos envíos
+    sessionStorage.setItem("xmlCode", xml_text);
+
     //convertir fuente de blockly a código ejecutable
     const pythonCode = Blockly.Python.workspaceToCode(this.contestWorkspace);
 
