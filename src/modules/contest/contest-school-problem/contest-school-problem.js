@@ -49,6 +49,10 @@ export class ContestProblem {
   }
 
   attached() {
+    this.configureBlockly();
+  }
+
+  configureBlockly(){
     //traducir Blockly a español
     Blockly.setLocale(Es);
 
@@ -157,7 +161,6 @@ export class ContestProblem {
     this.problemService
       .validateTypeCategory(this.id)
       .then((dataCategory) => {
-        console.log("dataa ", dataCategory);
         if (dataCategory.type !== this.enums.typeCategory.school) {
           this.routerService.navigate("/");
         }
@@ -172,7 +175,6 @@ export class ContestProblem {
         }
         this.routerService.navigate("");
       });
-
     this.validDate = -1; // 0 => Valid, 1 => Prox, 2 => Pasada
     this.getContest();
   }

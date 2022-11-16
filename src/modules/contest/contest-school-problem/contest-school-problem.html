@@ -65,7 +65,7 @@
                       </div>
                   </div>
                 </div>
-                <h1>Ahora, intenta resolver este ejercicio</h1>
+                <h1 if.bind="validDate === 0">Ahora, intenta resolver este ejercicio</h1>
               </div>
               <div show.bind="lang === 'en'">
                 <h1 class="text-center ufps-problem-title">${problem.titleEN}</h1>
@@ -88,11 +88,11 @@
                     </div>
                   </div>
                 </div>
-                <h1>Now, try to solve this exercise</h1>
+                <h1 if.bind="validDate === 0">Now, try to solve this exercise</h1>
               </div>
               <div class="row">
                 <!--Tablero de Blockly-->
-                <div class="col-md-12">
+                <div class="col-md-12" if.bind="validDate === 0 || validDate === -1">
                   <div ref="blocklyDiv" id="blockly-editor">
                     <xml xmlns="https://developers.google.com/blockly/xml" ref="contestWorkspaceBlocks" style="display: none">
                         <toolboxlabel name="Custom Toolbox" colour="darkslategrey"></toolboxlabel>
