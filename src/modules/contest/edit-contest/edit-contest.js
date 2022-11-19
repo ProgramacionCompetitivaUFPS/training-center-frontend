@@ -178,7 +178,7 @@ export class EditContest {
    * Añade nuevos problemas a la maratón.
    */
   addProblems() {
-    console.log("procesando agregar problemas")
+    
     if(this.validateProblemsIds()) {
       this.contestService.addProblems(this.id, this.newProblems)
       .then(data => {

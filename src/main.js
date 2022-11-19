@@ -15,7 +15,7 @@ export function configure(aurelia) {
         .developmentLogging(environment.debug ? 'debug' : 'warn')
         .feature(PLATFORM.moduleName('resources/index'))
         .plugin(PLATFORM.moduleName('aurelia-notify/bs-notification'), settings => {
-            settings.timeout = 40000
+            settings.timeout = 5000
             settings.limit = 1
         })
         //aurelia.use.plugin(PLATFORM.moduleName('aurelia-chart'))

@@ -155,7 +155,6 @@ export class Submissions {
   viewCode (submission) {
     this.downloadActive = false
     this.submissionLoaded = submission
-    console.log(this.submissionLoaded)
     this.submissionLoaded.code = 'Cargando código...'
     window.$('#submission-detail').modal('show')
     this.problemService.getSubmission(this.submissionLoaded.file_name)

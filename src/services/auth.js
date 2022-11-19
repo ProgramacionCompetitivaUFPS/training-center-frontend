@@ -1,10 +1,11 @@
 import { inject } from 'aurelia-framework'
-import { API } from 'config/config'
+import { API, MESSAGES } from 'config/config'
 import { Alert } from 'services/alert'
 import { Http } from 'services/http'
 import { Jwt } from 'services/jwt'
 
 import io from 'socket.io-client'
+import environment from '../../config/environment.json'
 /**
  * Auth (Service)
  * Servicio de autenticación y registro
@@ -48,9 +49,13 @@ export class Auth {
 
     activateSocket() {
         if (this.authenticated && !this.socketActive) {
-            this.socket = io.connect(API.apiUrl + 'normal-mode')
+
+
+            this.socket = io.connect(environment.API_BACKEND_URL + 'normal-mode')
+           
             this.socket.emit('register', this.getUserId())
             this.socket.on('new result', (data) => {
+                
                 if (data.verdict === 'Accepted') {
                     this.alertService.showMessage({
                         text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" es correcta. ¡Muy bien!',
@@ -76,6 +81,8 @@ export class Auth {
                         text: 'Tu solución al problema ' + data.problem_id + ' "' + data.problem_name + '" imprime una respuesta erronea.',
                         type: 'error'
                     })
+                }else{ 
+                    this.alertService.showMessage(MESSAGES.unknownError)
                 }
             })
             this.socketActive = true
@@ -188,13 +195,6 @@ export class Auth {
     }
 
     editProfile(id, email, username, name, code, institution) {
-        console.log(JSON.stringify({
-            email: email,
-            username: username,
-            name: name,
-            code: code,
-            institution: institution
-        }));
 
         return this.httpService.httpClient
             .fetch(API.endpoints.users + '/' + id, {

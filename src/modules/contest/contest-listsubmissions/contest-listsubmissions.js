@@ -44,7 +44,6 @@ export class ContestListsubmissions {
     this.rankingService.getSubmissionsByContest(this.cid, this.usrid)
       .then((data) => {
         this.submissions = data.datos;
-        console.log(this.submissions);
       })
       .catch((error) => {
         if (error.status === 401 || error.status === 403) {

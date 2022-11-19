@@ -95,7 +95,6 @@ export class Rankings {
     }
 
     getSubmissionsByContest(cid, usrid) {
-        console.log(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`);
         return this.httpService.httpClient
           .fetch(`${API.endpoints.users}/${API.endpoints.submissions}/contest?cid=${cid}&usrid=${usrid}`, {
             method: 'get',

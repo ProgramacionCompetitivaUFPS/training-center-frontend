@@ -40,7 +40,6 @@ export class Search {
    */
   activate (params, routeConfig) {
     this.routeConfig = routeConfig
-    console.log("query "+params.query)
     this.query = params.query.replace(/\+/g, ' ')
     this.typeCategory = this.enums.typeCategory.getId(this.query)
     if(this.query ==='colegio' || this.query ==='universidad') this.query= ' ' 
@@ -83,7 +82,6 @@ export class Search {
             data.data[i].title_es, 
             data.data[i].level)
             modelProblem.categoryType = data.data[i].category.type
-            console.log(this.enums.typeCategory.getNameSpanish(modelProblem.categoryType))
           this.problems.push(modelProblem)
           if(data.data[i].submissions.length > 0){
             this.problems[i].resolved = true 

@@ -9,7 +9,7 @@ export let API = {
     /**
      * apiUrl debe reemplazarse por la dirección del backend
      */
-    apiUrl: environment.API_BACKEND_URL,
+    apiUrl: environment.API_BACKEND_URL + environment.API_BACKEND_BASE,
     endpoints: {
         addMaterials: "add-materials",
         addProblemAssignment: "add-problems",

@@ -147,14 +147,11 @@ export class Submissions {
         this.downloadActive = true
         let reader  = new FileReader()
         reader.onload = () => {
-          console.log(submission)
           if(submission.blockly_file_name !== undefined && submission.blockly_file_name !== null){
-            console.log("es blocklyyyy submission")
             this.downloadMesagge = 'Descargar código (Python)' 
             this.isABlocklyCode = true
             this.viewSvgSubmission(submission)
           }else{
-            console.log("NO es blocklyyyy submission")
             this.downloadMesagge = 'Descargar código'
             this.isABlocklyCode = false
             this.submissionLoaded.code = reader.result

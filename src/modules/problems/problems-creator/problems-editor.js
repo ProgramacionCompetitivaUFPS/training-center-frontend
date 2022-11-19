@@ -43,7 +43,7 @@ export class ProblemsEditor {
     activate(params, routeConfig) {
         this.problemsService.getProblem(params.id)
             .then(problem => {
-                console.log(problem)
+                
                 problem = problem.problem
                 this.newProblem = new Problem(
                     parseInt(params.id), 
@@ -138,7 +138,7 @@ export class ProblemsEditor {
      * el cual se despliega en un select para la selección del usuario.
      */
      getCategories(typeCategory) {
-        console.log(typeCategory)
+        
         this.problemsService.getCategories(typeCategory)
             .then(data => {
                 this.categories = data.categories

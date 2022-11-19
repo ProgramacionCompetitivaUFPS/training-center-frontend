@@ -44,10 +44,6 @@ export class HomeSyllabus {
         this.options = [true, false]
         this.type = 0
 
-        console.log(this.authService.isStudent())
-        console.log(this.authService.isCoach())
-        console.log(this.authService.isAdmin())
-
     }
 
     /**

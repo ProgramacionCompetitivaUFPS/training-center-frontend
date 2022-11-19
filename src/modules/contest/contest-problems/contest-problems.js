@@ -67,7 +67,6 @@ export class ContestProblems {
     this.contestService
       .getProblemsContest(this.id)
       .then((data) => {
-        console.log(data)
         this.contest = new Contest(
           data.contest.title,
           data.contest.description,
@@ -102,7 +101,6 @@ export class ContestProblems {
         }
       })
       .catch((error) => {
-        console.log(error);
         if (error.status === 400) {
           this.alertService.showMessage(MESSAGES.contestError);
         } else if (error.status === 401) {

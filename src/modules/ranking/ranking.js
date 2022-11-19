@@ -53,7 +53,7 @@ export class Ranking {
     getRanking() {
         this.rankingService.getRanking(30, this.page)
             .then(data => {
-                console.log(data)
+                
                 this.totalPages = data.meta.totalPages
                 this.users = data.data
                 this.dataLoaded = true
@@ -75,7 +75,6 @@ export class Ranking {
 
         this.rankingService.getRankingInstitution(30, this.page, id)
             .then(data => {
-                console.log(this.totalPages = data.meta.totalPages)
                 this.users = data.data
                 this.dataLoaded = true
             }).catch(error => {
@@ -90,7 +89,6 @@ export class Ranking {
     getRankingAnio(año) {
         this.rankingService.getRankingAnio(30, this.page, año)
             .then(data => {
-                console.log(this.totalPages = data.meta.totalPages)
                 this.users = data.data
                 this.dataLoaded = true
             }).catch(error => {
@@ -105,7 +103,6 @@ export class Ranking {
     getRankingCategory(id) {
         this.rankingService.getRankingCategory(30, this.page, id)
             .then(data => {
-                console.log(this.totalPages = data.meta.totalPages)
                 this.users = data.data
                 this.dataLoaded = true
             }).catch(error => {
