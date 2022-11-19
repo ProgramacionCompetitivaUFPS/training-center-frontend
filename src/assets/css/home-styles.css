@@ -84,6 +84,7 @@
     /*overflow: hidden;*/
     /*clip-path: inset(0px 310px 0px 0px);*/
   }
+
   .text-header h1 {
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
     font-family: "CroxoxoianText", sans-serif;
@@ -603,39 +604,6 @@ nav > a:hover {
       padding: 0;*/
   }
 }
-/*
-header .text-header {
-  /*Para usar flexbox
-  display: flex;
-  height: 430px;
-  width: 60%;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  text-align: left;
-  padding: 0 0 0 90px;
-  font-weight: bold;
-}
-
-.text-header h1 {
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-  font-family: "CroxoxoianText", sans-serif;
-  font-weight: bold;
-  font-size: 90px;
-  color: #ffffff;
-}
-
-.text-header .h12 {
-  padding: 0 0 0 90px;
-}
-
-.text-header h2 {
-  display: none;
-  padding: 0 0 0 90px;
-  font-size: 30px;
-  font-weight: 300;
-  color: #ffffff;
-}*/
 
 .a_logo {
   padding-left: 50px;
@@ -1312,4 +1280,10 @@ header .div_img_craft {
 .alert-warning {
   background-color: #ff9800;
   color: #fff;
+}
+
+.header-home {
+  font-family: "CroxoxoianText", sans-serif;
+  font-weight: bold;
+  color: #ffffff;
 }

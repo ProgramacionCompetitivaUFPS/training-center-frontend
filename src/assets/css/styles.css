@@ -1,6 +1,19 @@
+@font-face {
+  font-family: 'CroxoxoianText';
+  font-style: normal;
+  font-weight: normal;
+  src: local('CroxoxoianText'), url('../fonts/Croxoxoiantext/CroxoxoianText.woff') format('woff');
+  }
+
+@font-face {
+  font-family: "Ubuntu", sans-serif;
+  src: local('Ubuntu'), url('../fonts/Ubuntu/Ubuntu-Regular.ttf') format('ttf');
+}
+
 /*Normalización*/
 
 input[type="number"]::-webkit-outer-spin-button,
+
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
@@ -10,21 +23,8 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-@font-face {
-  font-family: 'CroxoxoianText';
-  font-style: normal;
-  font-weight: normal;
-  src: local('CroxoxoianText'), url('../fonts/Croxoxoiantext/CroxoxoianText.woff') format('woff');
-  }
-
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap");
-@font-face {
-  font-family: "Ubuntu", sans-serif;
-  src: url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap");
-}
-
 body {
-  height: 101%;
+  height: 100%;
   width: 100%;
   font-family: "Ubuntu", sans-serif;
   overflow-x: hidden;
@@ -2176,5 +2176,11 @@ tchs {
     margin-bottom: 70%;
     width: 17%;
   }
+}
+
+.header-home {
+  font-family: "CroxoxoianText", sans-serif;
+  font-weight: bold;
+  color: #ffffff;
 }
 

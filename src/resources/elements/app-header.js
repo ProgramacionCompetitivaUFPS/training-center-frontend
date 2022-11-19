@@ -25,7 +25,6 @@ export class AppHeader {
     }
 
     validateSchools(){
-        console.log("wiiiiiiiiiiiiiiii")
         return this.routerService.currentInstruction.fragment.indexOf('colegios') !== -1
     }
         
@@ -54,8 +53,8 @@ export class AppHeader {
     logOut() {
         this.authService.logout()
         this.messageMain = 'Training Center'
-        this.routerService.navigate('bienvenido')
-
+        this.routerService.navigate('')
+        location.reload()
     }
 
     search() {

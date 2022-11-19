@@ -51,6 +51,7 @@ export class App {
                 route: "bienvenido",
                 moduleId: PLATFORM.moduleName("./modules/home/home"),
                 title: "Bienvenidos a Training Center",
+                //layoutView: PLATFORM.moduleName("layouts/not-logged-home.html"),
                 settings: {
                     roles: ["visitor"]
                 }
