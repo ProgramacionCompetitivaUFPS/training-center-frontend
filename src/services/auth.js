@@ -162,7 +162,7 @@ export class Auth {
     /**
      * Verifica que el token de cambio de contraseña es valido.
      * @param {string} token - token enviado por email
-     * @returns Promise con cuerpo {email: email} en caso de ser exitoso.
+     * @returns {Promise} Promise con cuerpo {email: email} en caso de ser exitoso.
      */
     validateReset(token) {
         return this.httpService.httpClient

@@ -200,7 +200,7 @@ export class ContestProblem {
 
   /**
    * //extraer fuente de código de Blockly, y prepararlo para evaluar
-   * @returns
+   * @returns {void} void
    */
   processSources() {
     // Extraer xml del código en un tablero
@@ -496,7 +496,7 @@ export class ContestProblem {
 
     /**
    * Crear SVG del código de blockly
-   * @returns 
+   * @returns {void} void
    */
      svg() {
       var canvas = Blockly.mainWorkspace.svgBlockCanvas_.cloneNode(true);

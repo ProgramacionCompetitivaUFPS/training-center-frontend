@@ -174,7 +174,7 @@ export class SchoolsViewProblem {
 
   /**
    * extraer fuente de código de Blockly, y prepararlo para evaluar
-   * @returns 
+   * @returns {void} void
    */
   processSources() {
 
@@ -371,7 +371,7 @@ export class SchoolsViewProblem {
 
   /**
    * Crear SVG del código de blockly
-   * @returns 
+   * @returns  {void} void
    */
   svg() {
     var canvas = Blockly.mainWorkspace.svgBlockCanvas_.cloneNode(true);

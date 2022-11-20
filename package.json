@@ -21,6 +21,7 @@
         "bluebird": "^3.4.1",
         "bootstrap": "^4.5.3",
         "bootstrap-tour": "^0.12.0",
+        "clean-jsdoc-theme": "^4.1.8",
         "html-loader": "^1.0.0-alpha.0",
         "intro.js": "^4.2.2",
         "jquery": "^3.5.1",
@@ -31,6 +32,7 @@
         "simplemde": "^1.11.2",
         "socket.io-client": "^2.0.4",
         "swiper": "^7.0.5",
+        "taffydb": "^2.7.3",
         "text": "github:requirejs/text#latest",
         "typings": "^2.1.1",
         "whatwg-fetch": "^2.0.2"
@@ -95,7 +97,8 @@
         "start": "webpack-dev-server --extractCss",
         "build:dev": "webpack --extractCss",
         "analyze": "webpack --env.production --analyze",
-        "test": "au test"
+        "test": "au test",
+        "generate-docs": "jsdoc --configure jsdoc.json --verbose"
     },
     "engines": {
         "node": ">=10.12.0"
