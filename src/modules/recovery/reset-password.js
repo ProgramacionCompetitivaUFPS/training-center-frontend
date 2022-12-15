@@ -61,7 +61,7 @@ export class ResetPassword {
       this.authorizationService.resetPassword(this.user)
         .then(() => {
           this.alertService.showMessage(MESSAGES.recoveryCorrect)
-          this.router.navigate('iniciar-sesion')
+          this.router.navigate('bienvenido')
         }) // Si el cambio es exitoso, se redirige al inicio de sesión
         .catch(error => {
           switch (error.status) {

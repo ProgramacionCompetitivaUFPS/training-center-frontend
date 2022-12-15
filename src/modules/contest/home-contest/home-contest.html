@@ -16,7 +16,8 @@
         <h1 class="text-right">Mis maratones</h1>
         <div class="fix"></div>
       </div>
-      <div class="fix"></div>
+      
+      
       <hr>
       <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChangeMyContests"
         limit.bind="limitMyContests" sort.bind="sortMyContests" by.bind="byMyContests" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
@@ -25,9 +26,10 @@
           <tr>
             <th class="text-center">Id</th>
             <th class="text-center">Nombre</th>
+            <th class="text-center">Visibilidad</th>
             <th class="text-center">Tipo</th>
             <th class="text-center">Fecha de inicio</th>
-            <th class="text-center"></th>
+            <th class="text-center">Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -36,11 +38,22 @@
             <td>${contest.title}</td>
             <td class="text-center" if.bind="contest.privacy">Pública</td>
             <td class="text-center" if.bind="!contest.privacy">Privada</td>
-            <td class="text-center">${contest.getSemanticStartDate()}</td>
+            <td class="text-center">${enums.typeContest.getName(contest.type)}</td>
+            <td class="text-center">${contest.getSemanticStartDate()}</td>  
+            
             <td class="text-right">
-              <a route-href="route: edit; params.bind: {id:contest.id}" class="btn btn-secondary ufps-btn-secondary">Editar y añadir problemas</a>
+              <a route-href="route: edit; params.bind: {id:contest.id}" class="btn btn-secondary ufps-btn-secondary">Editar</a>
               <a route-href="route: detail; params.bind: {id:contest.id}" class="btn btn-secondary ufps-btn-secondary">Ver</a>
             </td>
+          </tr>
+
+          <tr if.bind="myContests.length===0">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>No hay maratones disponibles</td>
+            <td></td>
+            <td></td>
           </tr>
         </tbody>
       </table>
@@ -64,15 +77,31 @@
     </div>
     <div class="fix"></div>
     <hr>
+
+      <p>
+        Filtrar por institución:
+        <select change.delegate="getContests($event.target.value)" name="" id="">
+        <option value=" ">Seleccione</option>
+        <option value="${enums.typeContest.school}">Colegio</option>
+        <option value="${enums.typeContest.university}">Universidad</option>
+        </select>
+
+      <!--p>
+        Elegir ${institucion} :
+        <select change.delegate="filterByInstitution($event.target.value)" name="" id="elegirInst">
+        <option value=" ">Seleccione</option>
+        <option if.bind="institucion" repeat.for="university of universities" value.bind="university.id">${university.name}</option>
+      </select>
+    </p-->
     <br>
     <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChangeAllContests"
-      limit.bind="limitAllContests" sort.bind="sortAllContests" by.bind="byAllContests" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
+    limit.bind="limitAllContests" sort.bind="sortAllContests" by.bind="byAllContests" text-to-show.bind="'maratones'" language-flag.bind="false"></filter>
     <table>
       <thead>
         <tr>
           <th class="text-center">Id</th>
           <th class="text-center">Nombre</th>
-          <th class="text-center">Tipo</th>
+          <th class="text-center">Visibilidad</th>
           <th class="text-center">Fecha de inicio</th>
           <th class="text-center"></th>
         </tr>
@@ -88,12 +117,8 @@
             <a route-href="route: detail; params.bind: {id:contest.id}" class="btn btn-secondary ufps-btn-secondary">Abrir</a>
           </td>
         </tr>
-        <tr if.bind="totalPagesAllContest === 0">
-          <td></td>
-          <td>No hay competencias disponibles</td>
-          <td></td>
-          <td></td>
-          <td></td>
+        <tr if.bind="allContests.length=== 0">
+          <td colspan="9" style="text-align: center;">No hay competencias disponibles</td>
         </tr>
       </tbody>
     </table>

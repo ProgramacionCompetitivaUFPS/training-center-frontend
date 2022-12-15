@@ -190,30 +190,41 @@
   </div>
 
   <!--MODAL PARA REGISTRARSE EN UN SYLLABUS-->
-  <div if.bind="authService.isStudent()" class="modal fade" id="enroll-syllabus" tabindex="-1" role="dialog" aria-labelledby="enroll-syllabus">
+  <div if.bind="authService.isStudent()" class="modal fade" id="enroll-syllabus" tabindex="-1" role="dialog"
+    aria-labelledby="enroll-syllabus">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header text-center">
-          <h4 class="modal-title">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <br>
-        <div class="modal-body">
-          <form submit.delegate="enrollSyllabus()">
+      <form submit.delegate="enrollSyllabus()">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title">¿Quieres registrarte en ${syllabusToEnroll.title}?</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <br>
+          </div>
+          <div class="modal-body">
             <div if.bind="!syllabusToEnroll.privacy">
               <p>Ingresa la clave de esta clase (si no la tienes, comunicate con el profesor/coach a cargo)</p>
               <div class="form-group">
                 <input type="text" class="form-control" value.bind="syllabusToEnroll.key">
               </div>
             </div>
-        </div>
-        <div class="modal-footer">
+          </div>
+          <div class="modal-footer">
             <input type="submit" class="btn btn-secondary ufps-btn-secondary" value="Si">
-            <input type="submit" class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close" value="No">
-          </form>
-        </div>
-      </div>
+            <input type="submit" class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close"
+              value="No">
+          </div>
+      </form>
     </div>
   </div>
+
+
+
+
+
+
+
+    
+     
 </template>

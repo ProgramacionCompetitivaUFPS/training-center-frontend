@@ -13,6 +13,7 @@ export class Problem {
    * @param {number} level - Nivel del problema
    * @param {number} category - Identificador de la categoría
    * @param {string} categoryName - Nombre de la categoría
+   * @param {Number} categoryType - Tipo de categoría
    * @param {string} descriptionEN - Enunciado del problema en inglés
    * @param {string} descriptionES - Enunciado del problema en español
    * @param {string} exampleIput - Entradas de ejemplo
@@ -20,13 +21,14 @@ export class Problem {
    * @param {Number} auxiliarId - Si el problema está en una maratón o syllabus, tiene un id axuxiliar
    * @param {boolean} resolved - True si el problema ha sido previamente solucionado, false en caso contrario 
    */
-  constructor (id = undefined, titleEN = undefined, titleES = undefined, level = undefined, category = undefined, categoryName = undefined, descriptionEN = undefined, descriptionES = undefined, exampleInput = undefined, exampleOutput = undefined, timeLimit = undefined, input = undefined, output = undefined, author = undefined, authorName = undefined, auxiliarId = undefined, resolved = false) {
+  constructor (id = undefined, titleEN = undefined, titleES = undefined, level = undefined, category = undefined, categoryName = undefined, categoryType = undefined, descriptionEN = undefined, descriptionES = undefined, exampleInput = undefined, exampleOutput = undefined, timeLimit = undefined, input = undefined, output = undefined, author = undefined, authorName = undefined, auxiliarId = undefined, resolved = false) {
     this.id = id
     this.titleEN = titleEN
     this.titleES = titleES
     this.level = level
     this.category = category
     this.categoryName = categoryName
+    this.categoryType = categoryType
     this.descriptionEN = descriptionEN
     this.descriptionES = descriptionES
     this.exampleInput = exampleInput

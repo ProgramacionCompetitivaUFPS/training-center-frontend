@@ -37,12 +37,24 @@ export class Problems {
             .then(this.httpService.parseJSON)
     }
 
+    getCategories2() {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.categories, {
+                method: 'get',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseJSON)
+    }
+
     /**
      * Crea una nueva categoría en la plataforma.
      * @param {string} name - Nombre de la categoría
      * @returns {Promise} Promesa sin body, para validar según el status.
      */
-    createCategory(name) {
+    createCategory(name, typeCategory) {
         return this.httpService.httpClient
             .fetch(API.endpoints.categories, {
                 method: 'post',
@@ -51,7 +63,8 @@ export class Problems {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: name
+                    name: name,
+                    type_category: typeCategory
                 })
             })
             .then(this.httpService.checkStatus)
@@ -274,10 +287,6 @@ export class Problems {
 
         let blocklySubmission = 0;
         
-        /*if (files.xmlBlocklyFile !== undefined){
-            data.append('XMLCode', files.xmlBlocklyFile)
-            blocklySubmission = 1
-        }*/
         if (files.svgBlocklyCode !== undefined){
             data.append('svgBlocklyCode', files.svgBlocklyCode)
             blocklySubmission = 1
@@ -303,14 +312,16 @@ export class Problems {
      * @param {Number} limit - Cantidad de problemas a obtener
      * @param {string} sort - opcional, por defecto ordena por id, si sort es 'name' ordena por nombre
      * @param {string} by - asc o desc, ordenamiento ascendente o descendente
+     * @param {Number} typeCategory - Colegio o universidad
      * @returns {Promise} Promesa con los problemas.
      */
-    searchProblems(query, page, limit, sort, by, lang) {
+    searchProblems(query, page, limit, sort, by, lang, typeCategory) {
         let q = '?search=' + query + '&page=' + page + '&limit=' + limit
         if (sort !== undefined) q += '&sort=' + sort
         if (by !== undefined) q += '&by=' + by
         if (lang !== undefined) q += '&filter=' + lang
-
+        if (typeCategory !== undefined && typeCategory !== null) q += '&typeCategory=' + typeCategory
+        
         return this.httpService.httpClient
             .fetch(API.endpoints.problems + q, {
                 method: 'get',
@@ -327,10 +338,10 @@ export class Problems {
      * @param {number} problemId - Identificador del problema
      * @returns {Promise} promesa con la id de la categoría. 
      * */
-    validateTypeCategory(id){
+    validateTypeCategory(idProblem){
 
         return this.httpService.httpClient
-            .fetch(API.endpoints.problems + '/' + id + '/validateCategory', {
+            .fetch(API.endpoints.problems + '/' + idProblem + '/validateCategory', {
                 method: 'get',
                 headers: {
                     'Authorization': 'Bearer ' + this.jwtService.token

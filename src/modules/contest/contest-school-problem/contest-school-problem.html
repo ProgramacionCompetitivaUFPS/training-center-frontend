@@ -1,0 +1,437 @@
+<template>
+  <require from="../../../resources/attributes/markdown"></require>
+  <require from="../../../resources/attributes/tooltip"> </require>
+  <require from="../../../resources/elements/clock"></require>
+  <require from="../../../resources/elements/disqus"></require>
+  <require from="../../../assets/css/blockly-element.css"></require>
+  <div class="container-fluid">
+    <div class="ufps-separator-mini"></div>
+    <div class="container  container-contest">
+      <ol class="breadcrumb bread-mini">
+        <li class="breadcrumb-item">
+          <a route-href="route: contest;">Maratones</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a route-href="route: problems; params.bind: {id:contestId}">${contest.title}</a>
+        </li>
+        <li class="breadcrumb-item active" if.bind="lang === 'es'">${problem.titleES}</li>
+        <li class="active" if.bind="lang === 'en'">${problem.titleEN}</li>
+      </ol>
+
+      <h2 class="text-right">${contest.title}</h2>
+      <clock date.bind = "now" date-loaded.bind="dateLoaded" show-timer.bind="true" start-date.bind="startDate" end-date.bind="endDate"></clock>
+      <hr>
+      <ul class="nav nav-pills nav-justified nav-maraton">
+        <li class="breadcrumb-item" role="presentation">
+          <a route-href="route: detail; params.bind: {id:contestId}">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" role="presentation">
+          <a route-href="route: problems; params.bind: {id:contestId}">Problemas</a>
+        </li>
+        <li class="breadcrumb-item" role="presentation" if.bind="(contest.privacy || status === 'registered' || authService.getUserId() === creatorId)">
+          <a route-href="route: board; params.bind: {id:contestId}">Resultados</a>
+        </li>
+        <li role="presentation" class="disabled" if.bind="!contest.privacy && status !== 'registered'">
+          <a>Resultados</a>
+        </li>
+      </ul>
+    </div>
+    <div class="container-fluis">
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="ufps-separator-mini"></div>
+          <div class="card">
+            <div class="card-body">
+              <div show.bind="lang === 'es'">
+                <h1 class="text-center ufps-problem-title">${problem.titleES}</h1>
+                <p class="ufps-language text-center">
+                  <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
+                  <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
+                </p>
+                <p class="ufps-markdown-editor" markdown.bind="problem.descriptionES"></p>
+                <div class="container">
+                  <div class="row row-cols-2">    
+                      <div class="col-lg-6">
+                        <h3 class="text-center">Entrada de ejemplo</h3>
+                        <div class="card bg-light card-body mb-3 example-in-out">
+                          <pre>${problem.exampleInput}</pre>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <h4 class="text-center">Salida de ejemplo</h4>
+                        <div class="card bg-light card-body mb-3 example-in-out">
+                          <pre>${problem.exampleOutput}</pre>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <h1 if.bind="validDate === 0">Ahora, intenta resolver este ejercicio</h1>
+              </div>
+              <div show.bind="lang === 'en'">
+                <h1 class="text-center ufps-problem-title">${problem.titleEN}</h1>
+                <p class="ufps-language text-center">
+                  <span class="${problem.isInSpanish() ? 'active' : 'inactive'}" click.delegate="showES()">ES</span> |
+                  <span class="${problem.isInEnglish() ? 'active' : 'inactive'}" click.delegate="showEN()">EN</span>
+                </p>
+                <p class="ufps-markdown-editor" markdown.bind="problem.descriptionEN"></p>
+                <div class="row row-cols-2">
+                  <div class="col-lg-6">
+                    <h3 class="text-center">Input example</h3>
+                    <div class="card bg-light card-body mb-3 example-in-out">
+                      <pre>${problem.exampleInput}</pre>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <h3 class="text-center">Output example</h3>
+                    <div class="card bg-light card-body mb-3 example-in-out">
+                      <pre>${problem.exampleOutput}</pre>
+                    </div>
+                  </div>
+                </div>
+                <h1 if.bind="validDate === 0">Now, try to solve this exercise</h1>
+              </div>
+              <div class="row">
+                <!--Tablero de Blockly-->
+                <div class="col-md-12" if.bind="validDate === 0 || validDate === -1">
+                  <div ref="blocklyDiv" id="blockly-editor">
+                    <xml xmlns="https://developers.google.com/blockly/xml" ref="contestWorkspaceBlocks" style="display: none">
+                        <toolboxlabel name="Custom Toolbox" colour="darkslategrey"></toolboxlabel>
+                        <category name="Entradas" colour="#995ba5">
+                              <block type="text_prompt_ext">
+                                <value name="TEXT">
+                                  <shadow type="text">
+                                    <field name="TEXT">abc</field> 
+                                  </shadow>
+                                </value>
+                              </block>
+                        </category>
+                        <category name="Salidas" colour="#995ba5">
+                            <block type="text_print">
+                                <value name="TEXT">
+                                  <shadow type="text">
+                                    <field name="TEXT">abc</field>
+                                  </shadow>
+                                </value>
+                            </block>
+                        </category>
+                        <category name="Lógica" categorystyle="logic_category">
+                          <block type="controls_if"></block>
+                          <block type="logic_compare"></block>
+                          <block type="logic_operation"></block>
+                          <block type="logic_negate"></block>
+                          <block type="logic_boolean"></block>
+                          <block type="logic_null" disabled="true"></block>
+                          <block type="logic_ternary"></block>
+                        </category>
+                        <category name="Ciclos" categorystyle="loop_category">
+                          <block type="controls_repeat_ext">
+                            <value name="TIMES">
+                              <shadow type="math_number">
+                                <field name="NUM">10</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="controls_repeat" disabled="true"></block>
+                          <block type="controls_whileUntil"></block>
+                          <block type="controls_for">
+                            <value name="FROM">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                            <value name="TO">
+                              <shadow type="math_number">
+                                <field name="NUM">10</field>
+                              </shadow>
+                            </value>
+                            <value name="BY">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="controls_forEach"></block>
+                          <block type="controls_flow_statements"></block>
+                        </category>
+                        <category name="Matemáticas" categorystyle="math_category">
+                          <block type="math_number" gap="32">
+                            <field name="NUM">123</field>
+                          </block>
+                          <block type="math_arithmetic">
+                            <value name="A">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                            <value name="B">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="math_single">
+                            <value name="NUM">
+                              <shadow type="math_number">
+                                <field name="NUM">9</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="math_trig">
+                            <value name="NUM">
+                              <shadow type="math_number">
+                                <field name="NUM">45</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="math_constant"></block>
+                          <block type="math_number_property">
+                            <value name="NUMBER_TO_CHECK">
+                              <shadow type="math_number">
+                                <field name="NUM">0</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="math_round">
+                            <value name="NUM">
+                              <shadow type="math_number">
+                                <field name="NUM">3.1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="math_on_list"></block>
+                          <block type="math_modulo">
+                            <value name="DIVIDEND">
+                              <shadow type="math_number">
+                                <field name="NUM">64</field>
+                              </shadow>
+                            </value>
+                            <value name="DIVISOR">
+                              <shadow type="math_number">
+                                <field name="NUM">10</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="math_constrain">
+                            <value name="VALUE">
+                              <shadow type="math_number">
+                                <field name="NUM">50</field>
+                              </shadow>
+                            </value>
+                            <value name="LOW">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                            <value name="HIGH">
+                              <shadow type="math_number">
+                                <field name="NUM">100</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="math_random_int">
+                            <value name="FROM">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                            <value name="TO">
+                              <shadow type="math_number">
+                                <field name="NUM">100</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="math_random_float"></block>
+                          <block type="math_atan2">
+                            <value name="X">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                            <value name="Y">
+                              <shadow type="math_number">
+                                <field name="NUM">1</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="convert_to_int"></block>
+                        </category>
+                        <category name="Texto" categorystyle="text_category">
+                          <block type="text"></block>
+                          <block type="text_multiline"></block>
+                          <block type="text_join"></block>
+                          <block type="text_append">
+                            <value name="TEXT">
+                              <shadow type="text"></shadow>
+                            </value>
+                          </block>
+                          <block type="text_length">
+                            <value name="VALUE">
+                              <shadow type="text">
+                                <field name="TEXT">abc</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="text_isEmpty">
+                            <value name="VALUE">
+                              <shadow type="text">
+                                <field name="TEXT"></field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="text_indexOf">
+                            <value name="VALUE">
+                              <block type="variables_get">
+                                <field name="VAR">text</field>
+                              </block>
+                            </value>
+                            <value name="FIND">
+                              <shadow type="text">
+                                <field name="TEXT">abc</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="text_charAt">
+                            <value name="VALUE">
+                              <block type="variables_get">
+                                <field name="VAR">text</field>
+                              </block>
+                            </value>
+                          </block>
+                          <block type="text_getSubstring">
+                            <value name="STRING">
+                              <block type="variables_get">
+                                <field name="VAR">text</field>
+                              </block>
+                            </value>
+                          </block>
+                          <block type="text_changeCase">
+                            <value name="TEXT">
+                              <shadow type="text">
+                                <field name="TEXT">abc</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="text_trim">
+                            <value name="TEXT">
+                              <shadow type="text">
+                                <field name="TEXT">abc</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="text_count">
+                            <value name="SUB">
+                              <shadow type="text"></shadow>
+                            </value>
+                            <value name="TEXT">
+                              <shadow type="text"></shadow>
+                            </value>
+                          </block>
+                          <block type="text_replace">
+                            <value name="FROM">
+                              <shadow type="text"></shadow>
+                            </value>
+                            <value name="TO">
+                              <shadow type="text"></shadow>
+                            </value>
+                            <value name="TEXT">
+                              <shadow type="text"></shadow>
+                            </value>
+                          </block>
+                          <block type="text_reverse">
+                            <value name="TEXT">
+                              <shadow type="text"></shadow>
+                            </value>
+                          </block>
+                        </category>
+                        <category name="Listas" categorystyle="list_category">
+                          <block type="lists_create_with">
+                            <mutation items="0"></mutation>
+                          </block>
+                          <block type="lists_create_with"></block>
+                          <block type="lists_repeat">
+                            <value name="NUM">
+                              <shadow type="math_number">
+                                <field name="NUM">5</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="lists_length"></block>
+                          <block type="lists_isEmpty"></block>
+                          <block type="lists_indexOf">
+                            <value name="VALUE">
+                              <block type="variables_get">
+                                <field name="VAR">list</field>
+                              </block>
+                            </value>
+                          </block>
+                          <block type="lists_getIndex">
+                            <value name="VALUE">
+                              <block type="variables_get">
+                                <field name="VAR">list</field>
+                              </block>
+                            </value>
+                          </block>
+                          <block type="lists_setIndex">
+                            <value name="LIST">
+                              <block type="variables_get">
+                                <field name="VAR">list</field>
+                              </block>
+                            </value>
+                          </block>
+                          <block type="lists_getSublist">
+                            <value name="LIST">
+                              <block type="variables_get">
+                                <field name="VAR">list</field>
+                              </block>
+                            </value>
+                          </block>
+                          <block type="lists_split">
+                            <value name="DELIM">
+                              <shadow type="text">
+                                <field name="TEXT">,</field>
+                              </shadow>
+                            </value>
+                          </block>
+                          <block type="lists_sort"></block>
+                          <block type="lists_reverse"></block>
+                        </category>
+                        <sep></sep>
+                        <category name="Variables" categorystyle="variable_category" custom="VARIABLE"></category>
+                        <category name="Funciones" categorystyle="procedure_category" custom="PROCEDURE"></category>
+                      </xml>
+                  </div>
+                </div>
+              <!--Fin Tablero de Blockly-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="ufps-separator-mini"></div>
+          <div class="card">
+            <div class="card-body">
+              <p show.bind="lang === 'en'">
+                <strong>Problema:</strong> ${problem.titleEN}</p>
+              <p show.bind="lang === 'es'">
+                <strong>Problema:</strong> ${problem.titleES}</p>
+              <p>
+                <strong>Dificultad:</strong> ${problem.level}</p>
+              <p if.bind="validDate === 1">
+                <strong>Este ejercicio aún no puede ser enviado. Espera a que la maratón inicie.</strong>
+              </p>
+              <p if.bind="validDate === 2">
+                <strong>Este ejercicio ya no puede ser enviado. La maratón ha terminado.</strong>
+              </p>
+              <p if.bind="status !== 'registered' && validDate === 0">
+                <strong>Debes estar registrado para enviar este problema.</strong></p>
+              <p if.bind="status === 'registered' && validDate === 0" >Crea tu solución utilizando el tablero de Blockly.</p>
+              <button if.bind="status === 'registered' && validDate === 0" click.delegate="preSubmit()" value="Enviar" class="btn ufps-btn-submit">Enviar</button>
+              <p if.bind="validDate === 2">Si lo deseas, puedes enviar tu solución en modo práctica. No afectará el tablero, pero calificará tu solución.</p>
+              <a if.bind="validDate === 2" href="/problemas/${id}/detalle" class="btn btn-submit ufps-btn-submit  ufps-btn-edit-problem btn-disabled">Enviar en modo práctica</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

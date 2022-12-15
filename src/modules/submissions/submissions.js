@@ -1,7 +1,7 @@
 import { inject, observable } from 'aurelia-framework'
 
 import { MESSAGES } from 'config/config'
-import { Material } from 'models/models'
+import { Material, Enums } from 'models/models'
 import { Alert, Auth, Problems, Rankings } from 'services/services'
 
 /**
@@ -50,6 +50,8 @@ export class Submissions {
       {value : 'CE', text : 'Error de compilación'}
     ]
     this.veredict = this.veredictOptions[0]
+    this.downloadMesagge = 'Descargar código'
+    this.enums = Enums
     this.getSubmissions()
   }
 
@@ -137,7 +139,6 @@ export class Submissions {
   viewCode (submission) {
     this.downloadActive = false
     this.submissionLoaded = submission
-    //falta svg
     this.submissionLoaded.code = 'Cargando código...'
     window.$('#submission-detail').modal('show')
     this.problemService.getSubmission(this.submissionLoaded.file_name)
@@ -147,13 +148,13 @@ export class Submissions {
         let reader  = new FileReader()
         reader.onload = () => {
           if(submission.blockly_file_name !== undefined && submission.blockly_file_name !== null){
+            this.downloadMesagge = 'Descargar código (Python)' 
             this.isABlocklyCode = true
             this.viewSvgSubmission(submission)
-            console.log("SI ES BLOCKLY SUBMISSION")
           }else{
+            this.downloadMesagge = 'Descargar código'
             this.isABlocklyCode = false
             this.submissionLoaded.code = reader.result
-            console.log("NO ES BLOCKLY SUBMISSION")
           }
           
         }
@@ -188,16 +189,11 @@ export class Submissions {
 
   downloadCode () {
     let filename
-    //if(this.isABlocklyCode) filename = 'Blocks.svg'
-    //else 
+
     if(this.submissionLoaded.language === 'Java') filename = 'Main.java'
     else if(this.submissionLoaded.language === 'C++') filename = 'main.cpp'
-    else if(this.submissionLoaded.language === 'Python') filename = 'main.py'
+    else filename = 'main.py'
 
-    if(this.isABlocklyCode){
-      //this.codeDownload = sessionStorage.getItem('pythonCode')
-      console.log("descarga de submission en blockly", this.codeDownload)
-    }
     if(window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(this.codeDownload, filename)
     }

@@ -172,4 +172,5 @@ export class Materials {
         })
         .then(this.httpService.checkStatus)
   }
+  
 }

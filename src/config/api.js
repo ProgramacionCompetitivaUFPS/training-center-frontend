@@ -3,12 +3,13 @@
  * Archivo con todos los datos para la conexión al backend
  * @exports API - Objeto JSON con datos de conexión a Backend
  */
-import environment from './../environment';
+
+import environment from '../../config/environment.json'
 export let API = {
     /**
      * apiUrl debe reemplazarse por la dirección del backend
      */
-    apiUrl: environment.API_BACKEND_URL_DEVELOPMENT,
+    apiUrl: environment.API_BACKEND_URL + environment.API_BACKEND_BASE,
     endpoints: {
         addMaterials: "add-materials",
         addProblemAssignment: "add-problems",
@@ -24,6 +25,9 @@ export let API = {
         problems: "problems",
         principal: "principal",
         ranking: "ranking",
+        ranking2: "ranking2",
+        ranking3: "ranking3",
+        rankingCategory: "rankingCategory",
         recovery: "recovery",
         removeMaterialSyllabus: "remove-materials",
         removeProblemAssignment: "remove-problems",
@@ -32,7 +36,9 @@ export let API = {
         superUser: "super-user",
         syllabus: "syllabus",
         user: "user",
-        users: "users"
+        users: "users",
+        universities: "institutions/universities",
+        colleges: "institutions/colleges"
     },
 
     // SESSION

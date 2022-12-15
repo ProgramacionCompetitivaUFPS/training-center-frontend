@@ -3,7 +3,7 @@ import { Problem } from './problem'
  * Assignment (Model)
  * Modelo de tareas.
  * @export
- * @class Assignment
+ * @class Assignment 
  */
 export class Assignment {
   /**
@@ -33,7 +33,27 @@ export class Assignment {
   adjuntProblems (problems) {
     this.problemsLoaded = []
     for (let i = 0; i < problems.length; i++) {
-      this.problemsLoaded.push(new Problem(problems[i].id, problems[i].title_en, problems[i].title_es, problems[i].level, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, problems[i].assignment_problems.id))
+      this.problemsLoaded.push(
+        new Problem(
+          problems[i].id,
+          problems[i].title_en,
+          problems[i].title_es,
+          problems[i].level,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          problems[i].assignment_problems.id
+        )
+      );
     }
   }
 

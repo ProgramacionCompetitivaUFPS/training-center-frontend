@@ -38,7 +38,21 @@
               </span>
             </div>
         </div>
+
+        <div class="row">
+          <label class="col-form-label col-md-2">Tipo:</label>
+          <div class="col-md-10 input-group ufps-input-creator">
+            <select class="form-control" value.bind="contest.type" name="" id="" required disabled>
+              <option value=" ">Seleccione</option>
+              <option value="${enums.typeContest.school}">Colegio</option>
+              <option value="${enums.typeContest.university}">Universidad</option>
+              </select>
+              <span class="input-group-addon" tooltip data-toggle="tooltip" title="Tipos de problemas de la maratón">
+              <span class="fas fa-question-circle"></span>
+            </span>
+          </div>
       </div>
+    </div>
     <div class="-assignment">
       <div class="row">
         <div class=" col-lg-6">
@@ -114,6 +128,8 @@
         <input type="submit" value="Editar Maratón" class="btn btn-secondary ufps-btn-secondary">
       </div>
     </form>
+
+    <!--Formulario Agregar problemas a la maratón-->
     <h2 class="text-right">Problemas</h2>
     <hr>
     <div class="form-horizontal">
@@ -156,7 +172,9 @@
             <td class="text-center">${problem.id}</td>
             <td class="text-left ufps-td-problem">
               <p if.bind="problem.isInSpanish() && language !== 'Inglés'" class="ufps-name-problem-list">
-                <a href="/problemas/${problem.id}/detalle/es">${problem.titleES}</a>
+                
+                <a if.bind="contest.type == enums.typeContest.university" href="/problemas/${problem.id}/detalle/es">${problem.titleES}</a>
+                <a if.bind="contest.type == enums.typeContest.school" href="/problemas/colegios/${problem.id}/detalle/es">${problem.titleES}</a>
               </p>
               <p if.bind="!problem.isInSpanish() || (problem.isInEnglish() && language === 'Inglés')" class="ufps-name-problem-list">
                 <a href="/problemas/${problem.id}/detalle/en">${problem.titleEN}</a>

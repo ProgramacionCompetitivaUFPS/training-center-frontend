@@ -1,7 +1,7 @@
 import { inject, observable } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
-import { Contest } from 'models/models'
+import { Contest, Enums } from 'models/models'
 import { Alert, Contests } from 'services/services'
 
 /**
@@ -21,6 +21,7 @@ export class CreateContest {
     this.alertService = alertService
     this.contestService = contestService
     this.router = router
+    this.enums = Enums
     this.newContest = new Contest()
   }
 

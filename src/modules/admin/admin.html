@@ -85,6 +85,22 @@
           <input type="submit" class="btn ufps-btn-submit" value="Crear usuario">
         </div>
       </form>
+
+      <p>
+        Filtrar por institución:
+        <select change.delegate="cambiarInstitucion($event.target.value)" name="" id="">
+        <option value=" ">Seleccione</option>
+        <option value="Colegio">Colegio</option>
+        <option value="Universidad">Universidad</option>
+        </select>
+
+      <p>
+        Elegir ${institucion} :
+        <select change.delegate="filterByInstitution($event.target.value)" name="" id="elegirInst">
+        <option value=" ">Seleccione</option>
+        <option if.bind="institucion" repeat.for="university of universities" value.bind="university.id">${university.name}</option>
+      </select></p>
+      
       <filter number-of-items.bind="numberOfUsersToShow" sort-options.bind="sortOptions" filter-change.bind="filterChangeUser"
         limit.bind="limitUsers" sort.bind="sortUsers" by.bind="byUsers" text-to-show.bind="'usuarios'" language-flag.bind="false"></filter>
         <table>
@@ -96,6 +112,8 @@
             <th>Código</th>
             <th>Tipo</th>
             <th>Email</th>
+            <th>Institución</th>
+            <th>Inst. Tipo</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -109,23 +127,21 @@
             <td if.bind="user.type === 1">Coach</td>
             <td if.bind="user.type === 2">Administrador</td>
             <td>${user.email}</td>
+            <td>
+              <p if.bind = "user.institution.shortName!==null"> ${user.institution.shortName}</p>
+              <p if.bind = "user.institution.shortName===null"> ${user.institution.name}</p>
+            </td>
+            
+            <td>
+              <p if.bind="user.institution.institution===0">Universidad</p>
+              <p if.bind="user.institution.institution===1">Colegio</p>
+            </td>
             <td class="text-right">
               <button class="ufps-btn btn ufps-btn-secondary" click.delegate="showRemoveUser(user.id)">Revocar</button>
             </td>
           </tr>
-          <tr if.bind="users.length === 0">
-            <td></td>
-            <td>No hay usuarios en la plataforma.</td>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td>
-            </td>
-            <td>
-            </td>
+          <tr if.bind="users.length === 0 || users === null || users ===undefined">
+            <td colspan="9" style="text-align: center;">No hay usuarios en la plataforma.</td>
           </tr>
         </tbody>
       </table>

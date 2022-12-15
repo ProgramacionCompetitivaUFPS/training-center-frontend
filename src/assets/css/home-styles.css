@@ -1,13 +1,13 @@
-@import url("http://fonts.cdnfonts.com/css/croxoxoiantext");
+@font-face {
+  font-family: 'CroxoxoianText';
+  font-style: normal;
+  font-weight: normal;
+  src: local('CroxoxoianText'), url('../fonts/Croxoxoiantext/CroxoxoianText.woff') format('woff');
+  }
 
 @font-face {
-  font-family: "CroxoxoianText", sans-serif;
-  src: url("http://fonts.cdnfonts.com/css/croxoxoiantext");
-}
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap");
-@font-face {
   font-family: "Ubuntu", sans-serif;
-  src: url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap");
+  src: local('Ubuntu'), url('../fonts/Ubuntu/Ubuntu-Regular.ttf') format('ttf');
 }
 
 * {
@@ -17,15 +17,17 @@
   box-sizing: border-box;
 }
 
-body {
+
+  body {
   font-family: "CroxoxoianText", sans-serif;
-  overflow-x: hidden;
-  width: 100%;
+  /*overflow-x: hidden;
+  width: 100%;*/
 }
+
 
 .container-icons {
   position: absolute;
-  min-width: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
@@ -36,20 +38,139 @@ body {
   text-align: center;
   margin-bottom: 60px;
 }
-
 /* Header */
+@media screen and (min-width: 1920px) {
+  header {
+    max-height: 50em;
+    background: url("../img/Recurso_7.png");
+    background-position: center;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    z-index: 0;
+    
+  }
+  header .text-header {
+    /*Para usar flexbox*/
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    padding: 100px 0 0 120px;
+    font-weight: bold;
+  }
+  header .div_img_craft {
+    /*Para usar flexbox*/
+    display: block;
+    height: 100%;
+    width: 100%;
+    /*para que un texto se ponga debajo del otro*/
+    flex-direction: column;
+    font-weight: bold;
+  }
+  .img_craft {
+    width: 60%;
+    /*padding-right: 310px;*/
+    margin-left: 10px;
+    position: relative;
+    z-index: 2;
+    float: right;
+    bottom: 250px;
+    left: 7%;
+    transform: rotate(30deg);
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.7));
+    /*overflow: hidden;*/
+    /*clip-path: inset(0px 310px 0px 0px);*/
+  }
 
-header {
-  width: 100%;
-  height: 700px;
-  background: url("../img/Recurso_7.png");
-  background-position: center;
-  background-size: auto;
-  background-attachment: fixed;
-  position: relative;
-  z-index: 0;
+  .text-header h1 {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    font-family: "CroxoxoianText", sans-serif;
+    font-weight: bold;
+    font-size: 120px;
+    color: #ffffff;
+  }
+  .text-header .h12 {
+    padding: 0 0 0 90px;
+  }
+
+  .text-header h2 {
+    display: none;
+    padding: 0 0 0 90px;
+    font-size: 30px;
+    font-weight: 300;
+    color: #ffffff;
+  }
+  
+
+  .img_planet {
+    width: 35%;
+    padding-right: 20px;
+    margin-left: 20%;
+    position: relative;
+    z-index: 0;
+    float: right;
+    bottom: 1170px;
+    left: 10%;
+    /*overflow: hidden;*/
+    /*clip-path: inset(0px 310px 0px 0px);*/
+  }
+
+  .img_separator {
+    width: 3000px;
+    /*padding-right: 310px;*/
+    position: relative;
+    z-index: 1;
+    bottom: 1730px;
+    right: 750px;
+  }
+  .cards-section {
+    position: absolute;
+    margin-top: 1000px;
+    justify-content: center;
+    height: 970px;
+    background: url("../img/footer_background_home.png");
+    background-size: 2000px;
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+    background-position-x: center;
+    z-index: -1;
+    /*background-position-x: -1px;*/
+  }
+  .card-section {
+    width: 18rem;
+    min-height: 350px;
+    margin-left: 15%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+  .novedades {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 100vw;
+    background-color: black;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  .row-slides {
+    position: relative;
+    height: 100%;
+    /*background: #642a73;*/
+    font-size: 14px;
+    color: #000;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /*margin: 0;
+      padding: 0;*/
+  }
+
 }
-
 .custom-shape-divider-bottom-1623101527 {
   position: absolute;
   bottom: 0;
@@ -88,38 +209,400 @@ nav > a:hover {
   color: rgb(64, 0, 0);
   text-shadow: none;
 }
+@media screen and (max-width: 1919px) {
+  header {
+    max-height: 50em;
+    background: url("../img/Recurso_7.png");
+    background-position: center;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    z-index: 0;
+    
+  }
+  header .text-header {
+    /*Para usar flexbox*/
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    padding: 100px 0 0 120px;
+    font-weight: bold;
+  }
+  header .div_img_craft {
+    /*Para usar flexbox*/
+    display: block;
+    height: 100%;
+    width: 100%;
+    /*para que un texto se ponga debajo del otro*/
+    flex-direction: column;
+    font-weight: bold;
+  }
+  .img_craft {
+    width: 53%;
+    /*padding-right: 310px;*/
+    margin-left: 10px;
+    position: relative;
+    z-index: 2;
+    float: right;
+    bottom: 150px;
+    left: 7%;
+    transform: rotate(30deg);
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.7));
+    /*overflow: hidden;*/
+    /*clip-path: inset(0px 310px 0px 0px);*/
+  }
+  .text-header h1 {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    font-family: "CroxoxoianText", sans-serif;
+    font-weight: bold;
+    font-size: 80px;
+    color: #ffffff;
+  }
+  .text-header .h12 {
+    padding: 0 0 0 90px;
+  }
 
-header .text-header {
-  /*Para usar flexbox*/
-  display: flex;
-  height: 430px;
-  width: 60%;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  text-align: left;
-  padding: 0 0 0 90px;
-  font-weight: bold;
+  .text-header h2 {
+    display: none;
+    padding: 0 0 0 90px;
+    font-size: 30px;
+    font-weight: 300;
+    color: #ffffff;
+  }
+  
+
+  .img_planet {
+    width: 35%;
+    padding-right: 20px;
+    margin-left: 20%;
+    position: relative;
+    z-index: 0;
+    float: right;
+    bottom: 850px;
+    left: 10%;
+    /*overflow: hidden;*/
+    /*clip-path: inset(0px 310px 0px 0px);*/
+  }
+
+  .img_separator {
+    width: 3000px;
+    /*padding-right: 310px;*/
+    position: relative;
+    z-index: 1;
+    bottom: 1330px;
+    right: 750px;
+  }
+  .cards-section {
+    position: absolute;
+    margin-top: 1000px;
+    justify-content: center;
+    height: 970px;
+    background: url("../img/footer_background_home.png");
+    background-size: 2000px;
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+    background-position-x: center;
+    z-index: -1;
+    
+    /*background-position-x: -1px;*/
+  }
+  .card-section {
+    width: 18rem;
+    min-height: 350px;
+    margin-left: 10%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+  .novedades {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 102.3%;
+    background-color: black;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  .row-slides {
+    position: relative;
+    height: 100%;
+    /*background: #642a73;*/
+    font-size: 14px;
+    color: #000;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /*margin: 0;
+      padding: 0;*/
+  }
+
 }
+@media screen and (max-width: 1024px) {
+  header {
+    max-height: 50em;
+    background: url("../img/Recurso_7.png");
+    background-position: center;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    z-index: 0;
+    
+  }
+  header .text-header {
+    /*Para usar flexbox*/
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    padding: 100px 0 0 120px;
+    font-weight: bold;
+  }
+  header .div_img_craft {
+    /*Para usar flexbox*/
+    display: block;
+    height: 100%;
+    width: 100%;
+    /*para que un texto se ponga debajo del otro*/
+    flex-direction: column;
+    font-weight: bold;
+  }
+  .img_craft {
+    width: 50%;
+    /*padding-right: 310px;*/
+    margin-left: 10px;
+    position: relative;
+    z-index: 2;
+    float: right;
+    bottom: 150px;
+    left: 7%;
+    transform: rotate(30deg);
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.7));
+    /*overflow: hidden;*/
+    /*clip-path: inset(0px 310px 0px 0px);*/
+  }
+  .text-header h1 {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    font-family: "CroxoxoianText", sans-serif;
+    font-weight: bold;
+    font-size: 60px;
+    color: #ffffff;
+  }
+  .text-header .h12 {
+    padding: 0 0 0 90px;
+  }
 
-.text-header h1 {
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-  font-family: "CroxoxoianText", sans-serif;
-  font-weight: bold;
-  font-size: 90px;
-  color: #ffffff;
+  .text-header h2 {
+    display: none;
+    padding: 0 0 0 90px;
+    font-size: 30px;
+    font-weight: 300;
+    color: #ffffff;
+  }
+  
+
+  .img_planet {
+    width: 35%;
+    padding-right: 20px;
+    margin-left: 20%;
+    position: relative;
+    z-index: 0;
+    float: right;
+    bottom: 750px;
+    left: 10%;
+    /*overflow: hidden;*/
+    /*clip-path: inset(0px 310px 0px 0px);*/
+  }
+
+  .img_separator {
+    width: 2500px;
+    /*padding-right: 310px;*/
+    position: relative;
+    z-index: 1;
+    bottom: 1000px;
+    right: 750px;
+  }
+  .cards-section {
+    position: absolute;
+    margin-top: 1000px;
+    justify-content: center;
+    height: 970px;
+    background: url("../img/footer_background_home.png");
+    background-size: 2000px;
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+    background-position-x: center;
+    z-index: -1;
+    
+    /*background-position-x: -1px;*/
+  }
+  .card-section {
+    width: 16rem;
+    min-height: 350px;
+    margin-left: 7%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+  .novedades {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 103.1%;
+    background-color: black;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  .row-slides {
+    position: relative;
+    height: 100%;
+    /*background: #642a73;*/
+    font-size: 14px;
+    color: #000;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /*margin: 0;
+      padding: 0;*/
+  }
+
 }
+@media screen and (max-width: 920px) {
+  header {
+    max-height: 30em;
+    background: url("../img/Recurso_7.png");
+    background-position: center;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    z-index: 0;
+    
+  }
+  header .text-header {
+    /*Para usar flexbox*/
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    padding: 100px 0 0 120px;
+    font-weight: bold;
+  }
+  header .div_img_craft {
+    /*Para usar flexbox*/
+    display: block;
+    height: 100%;
+    width: 100%;
+    /*para que un texto se ponga debajo del otro*/
+    flex-direction: column;
+    font-weight: bold;
+  }
+  .img_craft {
+    width: 53%;
+    /*padding-right: 310px;*/
+    margin-left: 10px;
+    position: relative;
+    z-index: 2;
+    float: right;
+    bottom: 150px;
+    left: 7%;
+    transform: rotate(30deg);
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.7));
+    /*overflow: hidden;*/
+    /*clip-path: inset(0px 310px 0px 0px);*/
+  }
+  .text-header h1 {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    font-family: "CroxoxoianText", sans-serif;
+    font-weight: bold;
+    font-size: 80px;
+    color: #ffffff;
+  }
+  .text-header .h12 {
+    padding: 0 0 0 90px;
+  }
 
-.text-header .h12 {
-  padding: 0 0 0 90px;
-}
+  .text-header h2 {
+    display: none;
+    padding: 0 0 0 90px;
+    font-size: 30px;
+    font-weight: 300;
+    color: #ffffff;
+  }
 
-.text-header h2 {
-  display: none;
-  padding: 0 0 0 90px;
-  font-size: 30px;
-  font-weight: 300;
-  color: #ffffff;
+
+  .img_planet {
+    width: 35%;
+    padding-right: 20px;
+    margin-left: 20%;
+    position: relative;
+    z-index: 0;
+    float: right;
+    bottom: 850px;
+    left: 10%;
+    /*overflow: hidden;*/
+    /*clip-path: inset(0px 310px 0px 0px);*/
+  }
+
+  .img_separator {
+    width: 3000px;
+    /*padding-right: 310px;*/
+    position: relative;
+    z-index: 1;
+    bottom: 1330px;
+    right: 750px;
+  }
+  .cards-section {
+    position: absolute;
+    margin-top: 1000px;
+    justify-content: center;
+    height: 970px;
+    background: url("../img/footer_background_home.png");
+    background-size: 2000px;
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+    background-position-x: center;
+    z-index: -1;
+    
+    /*background-position-x: -1px;*/
+  }
+  .card-section {
+    width: 18rem;
+    min-height: 350px;
+    margin-left: 25%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+  .novedades {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 102.3%;
+    background-color: black;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  .row-slides {
+    position: relative;
+    height: 100%;
+    /*background: #642a73;*/
+    font-size: 14px;
+    color: #000;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /*margin: 0;
+      padding: 0;*/
+  }
 }
 
 .a_logo {
@@ -132,53 +615,53 @@ header .text-header {
   position: absolute;
   max-width: 60px;
 }
-
+/*
 header .div_img_craft {
-  /*Para usar flexbox*/
+  /*Para usar flexbox
   display: block;
   height: 430px;
-  width: 100%;
-  /*para que un texto se ponga debajo del otro*/
+  width: 80%;
+  /*para que un texto se ponga debajo del otro
   flex-direction: column;
   font-weight: bold;
 }
 
 .img_craft {
-  width: 1000px;
-  /*padding-right: 310px;*/
-  margin-left: 300px;
+  width: 76%;
+  /*padding-right: 310px;
+  margin-left: 30%;
   position: relative;
   z-index: 1;
   float: right;
-  bottom: 380px;
-  left: 380px;
+  bottom: 80%;
+  left: 25%;
   transform: rotate(28deg);
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.7));
   /*overflow: hidden;*/
-  /*clip-path: inset(0px 310px 0px 0px);*/
+  /*clip-path: inset(0px 310px 0px 0px);
 }
 
 .img_planet {
-  width: 500px;
-  /*padding-right: 310px;*/
-  margin-left: 300px;
+  width: 30%;
+  /*padding-right: 310px;
+  margin-left: 20%;
   position: relative;
   z-index: 0;
   float: right;
-  bottom: 1120px;
-  left: 100px;
+  bottom: 270%;
+  left: 10%;
   /*overflow: hidden;*/
-  /*clip-path: inset(0px 310px 0px 0px);*/
+  /*clip-path: inset(0px 310px 0px 0px);
 }
 
 .img_separator {
   width: 2200px;
-  /*padding-right: 310px;*/
+  /*padding-right: 310px;
   position: relative;
   z-index: 0;
   bottom: 1500px;
   right: 555px;
-}
+}*/
 
 .iconosEstad {
   /*width: 150px;
@@ -246,7 +729,7 @@ header .div_img_craft {
   position: absolute;
   margin-top: 300px;
 }
-
+/*
 .cards-section {
   position: absolute;
   margin-top: 1000px;
@@ -257,18 +740,10 @@ header .div_img_craft {
   background-repeat: no-repeat;
   background-position-y: bottom;
   background-position-x: center;
-  /*background-position-x: -1px;*/
-}
+  /*background-position-x: -1px;
+}*/
 
-.row-slides {
-  position: relative;
-  height: 100%;
-  /*background: #642a73;*/
-  font-size: 14px;
-  color: #000;
-  /*margin: 0;
-    padding: 0;*/
-}
+
 
 .row-cards {
   margin-top: 300px;
@@ -283,12 +758,12 @@ header .div_img_craft {
   width: 100%;
 }
 
-.card-section {
+/*.card-section {
   width: 18rem;
   min-height: 350px;
   margin-left: 15%;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
+}*/
 
 .img-card {
   min-height: 170px;
@@ -443,19 +918,10 @@ header .div_img_craft {
 
 .section-slide {
   padding: 0;
+  width: 100vw;
 }
 
-.novedades {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  width: 100vw;
-  background-color: black;
-  color: #fff;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  font-weight: bold;
-}
+
 
 .footer-container {
   position: absolute;
@@ -814,4 +1280,10 @@ header .div_img_craft {
 .alert-warning {
   background-color: #ff9800;
   color: #fff;
+}
+
+.header-home {
+  font-family: "CroxoxoianText", sans-serif;
+  font-weight: bold;
+  color: #ffffff;
 }

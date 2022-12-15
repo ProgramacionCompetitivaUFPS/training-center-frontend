@@ -73,6 +73,24 @@ export class Syllabus {
                 settings: {
                     roles: ['coach', 'student', 'admin']
                 }
+            },
+            {
+                route: [':id/colegios/problema/:problemId/:contestProblemId', ':id/colegios/problema/:problemId/:contestProblemId/:lang'],
+                name: 'school-problem',
+                moduleId: PLATFORM.moduleName('modules/contest/contest-school-problem/contest-school-problem'),
+                title: 'Problema - Colegios',
+                settings: {
+                    roles: ['coach', 'student', 'admin']
+                }
+            },
+            {
+                route: ['listaenvios/:cid/:usrid'],
+                name: 'listaenvios',
+                moduleId: PLATFORM.moduleName('modules/contest/contest-listsubmissions/contest-listsubmissions'),
+                title: 'Problemas Enviados',
+                settings: {
+                    roles: ['coach', 'admin']
+                }
             }
         ])
         this.router = router

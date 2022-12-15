@@ -73,7 +73,26 @@ export class ViewProblem {
     this.problemService.getProblem(this.problemId)
       .then(problem => {
         problem = problem.problem
-        this.problem = new Problem(parseInt(params.problemId), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, problem.example_input !== 'undefined' ? problem.example_input.replace(/\r\n/g, '\n') : '', problem.example_output !== 'undefined' ? problem.example_output.replace(/\r\n/g, '\n') : '', parseFloat(problem.time_limit), problem.user_id, problem.user.username)
+        this.problem = new Problem(
+          parseInt(params.problemId),
+          problem.title_en,
+          problem.title_es,
+          parseInt(problem.level),
+          parseInt(problem.category),
+          undefined,
+          undefined,
+          problem.description_en,
+          problem.description_es,
+          problem.example_input !== "undefined"
+            ? problem.example_input.replace(/\r\n/g, "\n")
+            : "",
+          problem.example_output !== "undefined"
+            ? problem.example_output.replace(/\r\n/g, "\n")
+            : "",
+          parseFloat(problem.time_limit),
+          problem.user_id,
+          problem.user.username
+        );
         if (this.lang === 'en' && !this.problem.isInEnglish()) {
           this.lang = 'es'
         } else if (this.lang === 'es' && !this.problem.isInSpanish()) {

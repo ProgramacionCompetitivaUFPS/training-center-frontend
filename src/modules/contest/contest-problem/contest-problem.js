@@ -32,6 +32,7 @@ export class ContestProblem {
     this.status = 'registered'
     this.validDate = 0 // 0 => Valid, 1 => Prox, 2 => Pasada
     this.contTime = {}
+    this.files = {}
   }
 
   /**
@@ -142,7 +143,8 @@ export class ContestProblem {
     } else if (this.now > endDate) {
       this.alertService.showMessage(MESSAGES.contestFinished)
     } else {
-      this.problemService.submitSolution(this.id, this.language, undefined, this.contestProblemId, this.code[0])
+      this.files.codeFile = this.code[0]
+      this.problemService.submitSolution(this.id, this.language, undefined, this.contestProblemId, this.files)
         .then(() => {
           this.alertService.showMessage(MESSAGES.submittedSolution)
           this.language = null
@@ -213,7 +215,26 @@ export class ContestProblem {
     this.problemService.getProblem(this.id)
       .then(problem => {
         problem = problem.problem
-        this.problem = new Problem(parseInt(this.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category), undefined, problem.description_en, problem.description_es, (problem.example_input !== 'undefined' ? problem.example_input.replace(/\r\n/g, '\n') : ''), (problem.example_output !== 'undefined' ? problem.example_output.replace(/\r\n/g, '\n') : ''), parseFloat(problem.time_limit), problem.user_id, problem.user.username)
+        this.problem = new Problem(
+          parseInt(this.id),
+          problem.title_en,
+          problem.title_es,
+          parseInt(problem.level),
+          parseInt(problem.category),
+          undefined,
+          undefined,
+          problem.description_en,
+          problem.description_es,
+          problem.example_input !== "undefined"
+            ? problem.example_input.replace(/\r\n/g, "\n")
+            : "",
+          problem.example_output !== "undefined"
+            ? problem.example_output.replace(/\r\n/g, "\n")
+            : "",
+          parseFloat(problem.time_limit),
+          problem.user_id,
+          problem.user.username
+        );
         if (this.lang === 'en' && !this.problem.isInEnglish()) {
           this.lang = 'es'
         } else if (this.lang === 'es' && !this.problem.isInSpanish()) {

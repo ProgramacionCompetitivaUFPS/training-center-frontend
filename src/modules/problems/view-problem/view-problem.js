@@ -2,7 +2,7 @@ import { inject } from 'aurelia-framework'
 
 import { Router } from 'aurelia-router'
 import { MESSAGES, SETTINGS, API } from 'config/config'
-import { Problem } from 'models/models'
+import { Problem, Enums } from 'models/models'
 import { Alert, Auth, Problems } from 'services/services'
 
 
@@ -27,6 +27,7 @@ export class ViewProblem {
     this.code
     this.sourceValid = false
     this.files = {}
+    this.enums = Enums
   }
 
   /**
@@ -44,7 +45,7 @@ export class ViewProblem {
     this.problemService.validateTypeCategory(this.id)
       .then(dataCategory => {
 
-        if (dataCategory.type == 2 || dataCategory.type == 0){
+        if (dataCategory.type !== this.enums.typeCategory.university) {
            this.routerService.navigate('/');
         }
       })
@@ -62,7 +63,26 @@ export class ViewProblem {
     this.problemService.getProblem(this.id)
       .then(problem => {
         problem = problem.problem
-        this.problem = new Problem(parseInt(params.id), problem.title_en, problem.title_es, parseInt(problem.level), parseInt(problem.category_id), undefined, problem.description_en, problem.description_es, problem.example_input !== 'undefined' ? problem.example_input.replace(/\r\n/g, '\n') : '', problem.example_output !== 'undefined' ? problem.example_output.replace(/\r\n/g, '\n') : '', parseFloat(problem.time_limit), problem.user_id, problem.user.username)
+        this.problem = new Problem(
+          parseInt(params.id),
+          problem.title_en,
+          problem.title_es,
+          parseInt(problem.level),
+          parseInt(problem.category_id),
+          undefined,
+          undefined,
+          problem.description_en,
+          problem.description_es,
+          problem.example_input !== "undefined"
+            ? problem.example_input.replace(/\r\n/g, "\n")
+            : "",
+          problem.example_output !== "undefined"
+            ? problem.example_output.replace(/\r\n/g, "\n")
+            : "",
+          parseFloat(problem.time_limit),
+          problem.user_id,
+          problem.user.username
+        );
         if (problem.submissions.length > 0) this.problem.resolved = true
         if (this.lang === 'en' && !this.problem.isInEnglish()) {
           this.lang = 'es'

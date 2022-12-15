@@ -2,18 +2,19 @@ import { inject, observable } from 'aurelia-framework'
 
 import { MESSAGES } from 'config/config'
 import { UserSignIn } from 'models/models'
-import { Alert, Auth, Rankings } from 'services/services'
+import { Alert, Auth, Rankings, Institutions } from 'services/services'
 
-@inject(Alert, Auth, Rankings)
+@inject(Alert, Auth, Rankings, Institutions)
 export class Profile {
 
     /**
      * Inicializa el ranking
      */
-    constructor(alertService, authService, rankingService) {
+    constructor(alertService, authService, rankingService, institutionService) {
         this.alertService = alertService
         this.rankingService = rankingService
         this.authService = authService
+        this.institutionService = institutionService;
         this.user = new UserSignIn()
         this.newUser = new UserSignIn()
         this.date = new Date()
@@ -58,8 +59,15 @@ export class Profile {
     getProfile() {
         this.rankingService.loadProfile(this.authService.getUserId())
             .then(data => {
-                this.user = new UserSignIn(data.email, null, null, data.name, data.username, data.code, null, data.id)
-                this.newUser = new UserSignIn(data.email, null, null, data.name, data.username, data.code, null, data.id)
+
+                if(!data.institution){
+                    this.newUser = new UserSignIn(data.email, null, null, data.name, data.username, data.code, null, data.id, data.institution);
+                    this.showEditProfile();
+                }
+                this.user = new UserSignIn(data.email, null, null, data.name, data.username, data.code, null, data.id, data.institution);
+
+                this.newUser = new UserSignIn(data.email, null, null, data.name, data.username, data.code, null, data.id, data.institution);
+
                 this.date = new Date(data.created_at)
                 if (this.user.code === null) this.user.code = 'No registrado'
             })
@@ -121,6 +129,8 @@ export class Profile {
     }
 
     showEditProfile() {
+        this.getColleges();
+        this.getUniversities();
         window.$('#edit-profile').modal('show')
     }
     showEditPassword() {
@@ -158,8 +168,14 @@ export class Profile {
         } else if (/^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(this.newUser.email) === false) {
             this.alertService.showMessage(MESSAGES.emailInvalid)
             window.$('#edit-profile').modal('hide')
+        } else if (!this.newUser.email.endsWith(".edu.co")){
+            this.alertService.showMessage(MESSAGES.emailNoInstitu); 
+            window.$('#edit-profile').modal('hide');
+        } else if (this.newUser.institution.id === null){
+            this.alertService.showMessage(MESSAGES.noInstitution)
+            window.$('#edit-profile').modal('hide')
         } else {
-            this.authService.editProfile(this.authService.getUserId(), this.newUser.email, this.newUser.username, this.newUser.name, this.newUser.code)
+            this.authService.editProfile(this.authService.getUserId(), this.newUser.email, this.newUser.username, this.newUser.name, this.newUser.code, this.newUser.institution)
                 .then(data => {
                     window.$('#edit-profile').modal('hide')
                     this.alertService.showMessage(MESSAGES.profileUpdated)
@@ -167,6 +183,7 @@ export class Profile {
                     this.user.username = data.username
                     this.user.name = data.name
                     this.user.code = data.code
+                    this.user.institution = data.institution;
                 })
                 .catch(error => {
                     if (error.status === 401) {
@@ -178,4 +195,42 @@ export class Profile {
                 })
         }
     }
+
+    cambiarInstitucion(institucion) {
+        this.institucion = institucion;
+
+        if (institucion === "Universidad") {
+            this.getUniversities();
+        } else if (institucion === "Colegio") {
+            this.getColleges();
+
+        }
+    }
+
+    getUniversities() {
+        this.institutionService.getUniversities()
+            .then(data => {
+                this.universities = data.universities;
+            }).catch(error => {
+                if (error.status === 404) {
+                    this.alertService.showMessage(MESSAGES.unknownError)
+                } else {
+                    this.alertService.showMessage(MESSAGES.serverError)
+                }
+            })
+    }
+
+    getColleges() {
+        this.institutionService.getColleges()
+            .then(data => {
+                this.universities = data.universities;
+            }).catch(error => {
+                if (error.status === 404) {
+                    this.alertService.showMessage(MESSAGES.unknownError)
+                } else {
+                    this.alertService.showMessage(MESSAGES.serverError)
+                }
+            })
+    }
+
 }

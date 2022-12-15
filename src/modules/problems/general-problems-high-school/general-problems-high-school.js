@@ -4,6 +4,7 @@ import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
 import introJs from 'intro.js'
 import { Alert, Auth, Problems } from 'services/services'
+import { Enums } from 'models/models'
 
 /**
  * GeneralProblemsHighSchool(Module)
@@ -31,12 +32,9 @@ export class GeneralProblemsHighSchool {
         this.problemsService = problemsService
         this.routerService = routerService
         this.categories = []
-        this.newCategory = ''
-        this.categoryEditId = null
-        this.categoryEditName = ''
-        this.categoryRemoveId = null
-        this.categoryRemoveName = ''
-        this.typeCategory = 2
+
+        this.enums = Enums
+    
     }
 
     /**
@@ -59,26 +57,10 @@ export class GeneralProblemsHighSchool {
     }
 
     /**
-     * Crea una nueva categoría a nivel de colegios en la plataforma
-     */
-    createCategory() {
-        this.problemsService.createCategory(this.newCategory)
-            .then(() => {
-                this.getCategories()
-                this.alertService.showMessage(MESSAGES.categoryCreated)
-                window.$('#new-category').modal('hide')
-            })
-            .catch(() => {
-                this.alertService.showMessage(MESSAGES.unknownError)
-                window.$('#new-category').modal('hide')
-            })
-    }
-
-    /**
      * Lee la lista de categorías a nivel de colegios, disponibles en la plataforma.
      */
     getCategories() {
-        this.problemsService.getCategories(this.typeCategory)
+        this.problemsService.getCategories(this.enums.typeCategory.school)
             .then(data => {
                 this.categories = data.categories
                 if (this.categories.length === 0) {
@@ -94,71 +76,7 @@ export class GeneralProblemsHighSchool {
             })
     }
 
-    /**
-     * Muestra en pantalla el popup para editar el nombre de una categoría.
-     * @param {number} id - Identificador de la categoría a editar.
-     * @param {string} name - Nombre actual de la categoría.
-     */
-    showEditCategory(id, name) {
-        this.categoryEditId = id
-        this.categoryEditName = name
-        window.$('#edit-category').modal('show')
-    }
 
-    /**
-     * Muestra en pantalla el popup para eliminar una categoría.
-     * @param {number} id - Identificador de la categoría a eliminar.
-     * @param {string} name - Nombre de la categoría.
-     */
-    showRemoveCategory(id, name) {
-        this.categoryRemoveId = id
-        this.categoryRemoveName = name
-        window.$('#remove-category').modal('show')
-    }
-
-    /**
-     * Envia al servidor el nuevo nombre de una categoría para ser editado.
-     */
-    editCategory() {
-        this.problemsService.editCategory(this.categoryEditId, this.categoryEditName)
-            .then(() => {
-                this.categories.find(i => i.id === this.categoryEditId).name = this.categoryEditName
-                this.alertService.showMessage(MESSAGES.categoryEdited)
-                window.$('#edit-category').modal('hide')
-            })
-            .catch(error => {
-                if (error.status === 401 || error.status === 403) {
-                    this.alertService.showMessage(MESSAGES.permissionsError)
-                } else if (error.status === 500) {
-                    this.alertService.showMessage(MESSAGES.serverError)
-                } else {
-                    this.alertService.showMessage(MESSAGES.unknownError)
-                }
-                window.$('#edit-category').modal('hide')
-            })
-    }
-
-    /**
-     * Envia al servidor la categoría que debe ser eliminada.
-     */
-    removeCategory() {
-        this.problemsService.removeCategory(this.categoryRemoveId)
-            .then(() => {
-                this.categories.splice(this.categories.findIndex(i => i.id === this.categoryRemoveId), 1)
-                this.alertService.showMessage(MESSAGES.categoryRemoved)
-                window.$('#remove-category').modal('hide')
-            })
-            .catch(error => {
-                if (error.status === 401 || error.status === 403) {
-                    this.alertService.showMessage(MESSAGES.permissionsError)
-                } else if (error.status === 500) {
-                    this.alertService.showMessage(MESSAGES.serverError)
-                } else {
-                    this.alertService.showMessage(MESSAGES.unknownError)
-                }
-                window.$('#remove-category').modal('hide')
-            })
-    }
     tour(){
         introJs().start();
         introJs().addHints();

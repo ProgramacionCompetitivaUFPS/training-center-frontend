@@ -19,39 +19,35 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${(schools.isActive) ? 'active' : ''}" if.bind="(authService.isStudent() || authService.isCoach() || authService.isAdmin())">
-              <a href="#" id="paso2" data-toggle="dropdown" role="button">Colegios
+
+            <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${(schools.isActive) ? 'active' : ''}" if.bind="authService.isCoach() || authService.isAdmin()">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Colegios
               </a>
               <div class="dropdown-menu ufps-dropdown-menu" aria-labelledby="dropdownMenu2">
-                
                 <button class="dropdown-item" type="button">
-                  <a href="principal/colegios" >Ir a Training Center High School</a>
-                </button>
-                <button class="dropdown-item" type="button">
-                  <a href="materiales/colegios" >Estudiar una lección</a>
-                </button>
-                <button class="dropdown-item" type="button">
-                  <a href="problemas/colegios" >Resolver ejercicios</a>
-                </button>
-                <button class="dropdown-item" type="button">
-                  <a href="clases/colegios" >Ir a las clases</a>
+                  <a href="principal/colegios">Administrar categorías</a>
                 </button>
               </div>
             </li>
 
-            <li class="ufps-btn-nav ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isStudent()">
-              <a href="problemas">Problemas</a>
+            <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${(schools.isActive) ? 'active' : ''}" if.bind="(authService.isStudent())">
+              <a href="principal/colegios" id="paso2" data-toggle="dropdown" role="button">Colegios
+              </a>
             </li>
-            <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${problems.isActive ? 'active' : ''}" if.bind="authService.isCoach() || authService.isAdmin()">
+
+            <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="(authService.isStudent())">
+              <a href="problemas" id="paso2" data-toggle="dropdown" role="button">Universidades
+              </a>
+            </li>
+
+            <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${(problems.isActive || searchB.isActive) ? 'active' : ''}" if.bind="authService.isCoach() || authService.isAdmin()">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                Problemas
+                Universidades
               </a>
               <div class="dropdown-menu ufps-dropdown-menu" aria-labelledby="dropdownMenu2">
                 <button class="dropdown-item" type="button">
-                  <a route-href="route: problems">Administrar Categorías</a>
-                </button>
-                <button class="dropdown-item" type="button">
-                  <a href="/problemas/nuevo">Añadir problemas</a>
+                  <a href="problemas">Administrar categorías</a>
                 </button>
               </div>
             </li>
@@ -63,10 +59,20 @@
               <a route-href="route: ranking">Ranking</a>
             </li>
             <li class="ufps-btn-nav ${contest.isActive ? 'active' : ''}" if.bind="authService.isAuthenticated()">
-              <a route-href="route: contest">|  Maratones</a>
+              <a route-href="route: contest">  Maratones</a>
             </li>
-            <li class="ufps-btn-nav ${admin.isActive ? 'active' : ''}" if.bind="authService.isAdmin()">
-              <a route-href="route: admin">Administración</a>
+            <li class="dropdown ufps-btn-nav ufps-dropdown-menu ${admin.isActive ? 'active' : ''}" if.bind="authService.isCoach() || authService.isAdmin()">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Admin
+              </a>
+              <div class="dropdown-menu ufps-dropdown-menu" aria-labelledby="dropdownMenu2">
+                <button if.bind="authService.isAdmin()" class="dropdown-item" type="button">
+                  <a route-href="route: admin">Gestionar administración</a>
+                </button>
+                <button class="dropdown-item" type="button">
+                  <a href="/problemas/nuevo">Añadir problemas</a>
+                </button>
+              </div>
             </li>
           </ul>
         <div class="nav ml-auto">

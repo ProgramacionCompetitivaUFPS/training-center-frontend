@@ -36,6 +36,7 @@
             <th class="text-center" style="width:15%">Usuario</th>
             <th repeat.for="i of totalProblems" class="text-center">${letterValue(i)}</th>
             <th class="text-center">Total</th>
+            <th class="text-center" if.bind="(authService.getUserId() === creatorId || authService.isAdmin())">Envios Realizados</th>
           </tr>
         </thead>
         <tbody>
@@ -54,6 +55,10 @@
               <td class="text-center">${user.total}
                 <span class="username-gray">(${user.penalization})</span>
                 </span>
+              </td>
+              <td class="text-center" if.bind="(authService.getUserId() === creatorId || authService.isAdmin())">
+                <a if.bind="(result.first !== -1 || result.first === 1) && (authService.getUserId() === creatorId || authService.isAdmin())" href="/maraton/listaenvios/${contest.id}/${user.id}">Ver Envios</a>
+              </td>
           </tr>
         </tbody>
       </table>

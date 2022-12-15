@@ -1,4 +1,6 @@
 {
   "debug": false,
-  "testing": false
+  "testing": false,
+  "API_BACKEND_URL":"https://trainingcenter.cloud.ufps.edu.co/",
+  "API_BACKEND_BASE":"api/"
 }

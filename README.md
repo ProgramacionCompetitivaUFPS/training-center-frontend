@@ -22,6 +22,14 @@ To change dev server host, do `npm start -- --host 127.0.0.1`
 
 For long time aurelia-cli user, you can still use `au run` with those arguments like `au run --env prod --open --hmr`. But `au run` now simply executes `npm start` command.
 
+## Configurar variables de entorno
+Con aurelia cli, al ejecutar la app o el build, automaticamente redirigirá al config correscondiente en para cada entorno.
+Para importar environment:
+import environment from '../config/environment.json' //no es necesario ajustar el archivo de produccion
+
+Development: config/environment.json
+Production:  config/environment.production.json
+
 ## Build for production
 
 Run `npm run build`, or the old way `au build --env prod`.
