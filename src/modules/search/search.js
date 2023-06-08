@@ -4,7 +4,6 @@ import { Router } from 'aurelia-router'
 import { MESSAGES } from 'config/config'
 import { Problem, Enums } from 'models/models'
 import { Alert, Problems } from 'services/services'
-import { tsUndefinedKeyword } from '../../../../../../AppData/Local/Microsoft/TypeScript/4.8/node_modules/@babel/types/lib/index'
 
 @inject(Alert, Router, Problems)
 export class Search {
