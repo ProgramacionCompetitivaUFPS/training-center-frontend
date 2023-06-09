@@ -11,6 +11,7 @@
       <li class="breadcrumb-item active">Problemas de "${category.name}"</li>
     </ol>
     <h1 class="text-right">${category.name}</h1>
+
     <hr>
 
     <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
@@ -20,10 +21,12 @@
         <tr>
           <th class="text-center" style="width:5%">Id</th>
           <th class="text-center" style="width:70%">Problema</th>
-          <th class="text-center" style="width:5%">Dificultad</th>
-          <th class="text-center" style="width:10%">Idioma</th>
-          <th if.bind="authService.isAdmin()" class="text-center" style="width:5%">Inputs</th>
-          <th if.bind="authService.isAdmin()" class="text-center" style="width:5%">Outputs</th>
+          <th class="text-center" style="width:10%">Dificultad</th>
+          <th class="text-center" style="width:15%">Idioma</th>
+          <th class="text-center" style="width:15%">Total envíos</th>
+          <th class="text-center" style="width:15%">Tasa de aprobacion</th>
+          <th class="text-center" style="width:15%">Autor</th>
+
         </tr>
       </thead>
       <tbody>
@@ -54,14 +57,11 @@
               <a route-href="route: view-problem; params.bind: {id:problem.id, lang: 'en'}">EN</a>
             </span>
           </td>
-          <td if.bind="authService.isAdmin()" class="text-center ufps-input">
-            <span class="ufps-edit-problem-list fas fa-file-download fa-lg" data-toggle="tooltip" 
-            title="Descargar inputs" tooltip click.delegate="download(problem, 0)"></span>            
-          </td>
-          <td if.bind="authService.isAdmin()" class="text-center ufps-input">
-            <span class="ufps-edit-problem-list fas fa-file-download fa-lg" data-toggle="tooltip" 
-            title="Descargar outputs" tooltip click.delegate="download(problem, 1)"></span>            
-          </td>
+          <td class="text-center"> <a if.bind="authService.isAdmin() || authService.isCoach()" route-href="route: submissions-problems; params.bind: {id:problem.id}">${problem.submission_count}</a>
+            <p if.bind="!authService.isAdmin() && !authService.isCoach()">${problem.submission_count}</p></span></td>
+          <td class="text-center">${roundToTwoDecimals(problem.approval_rate)}%</td>
+
+          <td class="text-center">${problem.author} <span class="username-gray">(${problem.authorName})</span></td>
         </tr>
       </tbody>
     </table>

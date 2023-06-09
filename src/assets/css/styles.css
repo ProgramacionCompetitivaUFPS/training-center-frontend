@@ -144,11 +144,14 @@ pre {
   min-height: 100%;
   background-color: #9e0c24;
   padding-top: 1em;
+  border-radius: 9px 9px 0px 0px;
 }
 
 .ufps-container-sign .ufps-logo-sign {
   margin-top: 1em;
   height: 5em;
+  border-radius: 20px;
+
 }
 
 .ufps-logo-sign-in {
@@ -159,6 +162,8 @@ pre {
 .ufps-form-sign {
   margin-top: 1.6em;
   padding-bottom: 1em;
+  border-radius: 20px;
+
 }
 .container-sign {
   background-color: #9e0c24;
@@ -223,7 +228,7 @@ pre {
   border: 0.0625em solid #ecf0f1;
   color: #fff;
   font-size: 1em;
-  border-radius: 0.125em;
+  border-radius: 8px;
   background-color: #9e0c24;
   margin-top: 1.25em;
   transition: all 0.3s ease;
@@ -830,7 +835,7 @@ th {
 }
 
 .modal-content {
-  border-radius: 0em;
+  border-radius: 10px;
 }
 
 .form-control,
@@ -1311,18 +1316,26 @@ tchs {
 
 /*css home*/
 
-.navbar {
-  background-color: #9e0c24 !important;
-  padding: 0;
-  height: 4em;
+.fade-in {
+  animation: fadeIn 0.5s;
+  opacity: 1;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 
 .navbar a {
   text-decoration: none;
 }
 
 #navbar:hover {
-  background-color: #a91b0d;
   margin: none;
   padding-bottom: 1.3em;
   padding-top: 1.3em;
@@ -1486,7 +1499,7 @@ tchs {
 }
 
 #footer {
-  height: 10em;
+  height: 7em;
   position: relative;
   bottom: 0;
   margin: 0;
@@ -2182,5 +2195,71 @@ tchs {
   font-family: "CroxoxoianText", sans-serif;
   font-weight: bold;
   color: #ffffff;
+}
+
+#header.header-scrolled {
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1) !important;
+  padding: 12px 0 !important;
+}
+
+.login-form-two{
+  border-radius: 20px;
+}
+
+.flash {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  top:60px; right: 150px;
+  background-color: rgba(220, 220, 220, 0.556);
+  border-radius: 50%;
+  animation: parpadeo 2s infinite;
+  z-index: 0;
+}
+
+.star {
+  content: '';
+  position: absolute;
+  top: -12px;
+  right: 3px;
+  width: 28px;
+  height: 30px;
+  margin: 27px;
+  background-image: url('../../assets/img/star.png');
+  background-size: cover;
+  -webkit-filter: drop-shadow(5px 5px 5px rgba(238, 167, 3, 0.844));
+  filter: drop-shadow(2px 2px 5px rgba(238, 167, 3, 0.371));
+  z-index: 2;
+
+}
+
+@keyframes parpadeo {
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(20px);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(30px);
+  }
+}
+.password-toggle{
+  position: absolute;
+  top:142px; right: 60px;
+  cursor: pointer;
+}	
+/* Cambiar el color de fondo de las notificaciones de error */
+.notification-danger {
+  background-color: rgb(172, 190, 10);
+}
+
+/* Cambiar el color de texto de las notificaciones de éxito */
+.notification-success {
+  color: green;
 }
 

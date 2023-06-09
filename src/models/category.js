@@ -30,15 +30,21 @@ export class Category {
   setProblemsLoaded (problems) {
     this.problemsLoaded = []
     for (let i = 0; i < problems.length; i++) {
-      var problem = new Problem(
-        problems[i].id,
-        problems[i].title_en,
-        problems[i].title_es,
-        problems[i].level
-      )
-      problem.input = problems[i].input
-      problem.output = problems[i].output
-      this.problemsLoaded.push(problem)
+
+      this.problemsLoaded.push(
+        new Problem(
+          problems[i].id,
+          problems[i].title_en,
+          problems[i].title_es,
+          problems[i].level,
+          null,null,null,null,null,null,null,null,null,null,
+          problems[i].user.name,
+          problems[i].user.username,null,false,
+          problems[i].submissions.length,
+          problems[i].approval_rate,
+          problems[i].submission_count
+        )
+      );
       if (problems[i].submissions.length > 0)
         this.problemsLoaded[i].resolved = true;
     }

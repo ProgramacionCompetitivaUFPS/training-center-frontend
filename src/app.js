@@ -158,10 +158,11 @@ export class App {
                     roles: ["coach", "student"]
                 }
             },
+            
             {
                 name: "submissionsStudents",
                 route: "enviosEstudiante/:id",
-                moduleId: PLATFORM.moduleName("./modules/SubmissionsStudents/submissionsStudents"),
+                moduleId: PLATFORM.moduleName("./modules/SubmissionsStudents/SubmissionsStudents.js"),
                 layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 title: "Envios",
                 settings: {

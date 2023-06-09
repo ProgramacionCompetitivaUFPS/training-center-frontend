@@ -10,6 +10,5 @@ export class Partners {
 
     getJson() {
         this.col = importedData;
-        
     }
 }
