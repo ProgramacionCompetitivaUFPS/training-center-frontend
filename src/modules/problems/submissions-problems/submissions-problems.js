@@ -46,6 +46,58 @@ export class SubmissionsProblems {
        this.title=""
    }
 
+   viewCode(submission) {
+    this.downloadActive = false
+    this.submissionLoaded = submission
+    console.log(submission,"XXXX")
+    this.submissionLoaded.code = 'Cargando código...'
+    window.$('#submission-detail').modal('show')
+    this.problemService.getSubmission(this.submissionLoaded.file_name)
+      .then(data => {
+        this.codeDownload = data
+        this.downloadActive = true
+        let reader  = new FileReader()
+        reader.onload = () => {
+          if(submission.blockly_file_name !== undefined && submission.blockly_file_name !== null){
+            this.downloadMesagge = 'Descargar código (Python)' 
+            this.isABlocklyCode = true
+            this.viewSvgSubmission(submission)
+          }else{
+            this.downloadMesagge = 'Descargar código'
+            this.isABlocklyCode = false
+            this.submissionLoaded.code = reader.result
+          }
+          
+        }
+        reader.readAsText(data)
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+      }) 
+  }
+
+  viewSvgSubmission(submission){
+    this.problemService.getSvgSubmission(this.submissionLoaded.blockly_file_name)
+      .then(data => {
+        this.submissionLoaded.svgUrl = URL.createObjectURL(data)
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403) {
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        } else if (error.status === 500) {
+          this.alertService.showMessage(MESSAGES.serverError)
+        } else {
+          this.alertService.showMessage(MESSAGES.unknownError)
+        }
+      }) 
+  }
+
    /**
     * Método que toma los parametros enviados en el link y configura la página para adaptarse
     * al contenido solicitado. Este método hace parte del ciclo de vida de la aplicación y se
@@ -107,7 +159,6 @@ export class SubmissionsProblems {
        this.problemsService.getSubmissions(this.id, this.page, this.limit, stringSort, (this.by === 'Ascendente' ? 'asc' : 'desc'), stringLang)
             .then(data => {
                 this.title=data.meta.title
-                console.log(this.title,"XXXXX")
                 this.totalPages = data.meta.totalPages
                 if (this.totalPages !== 0) {
                     this.submissions = data.data
