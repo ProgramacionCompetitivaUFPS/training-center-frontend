@@ -15,6 +15,15 @@ export class Problem {
                 }
             },
             {
+                name: "submissions-problems",
+                route: ":id/envios",
+                moduleId: PLATFORM.moduleName("modules/problems/submissions-problems/submissions-problems"),
+                title: "Envios de un problema",
+                settings: {
+                    roles: ["coach", "admin"]
+                }
+            },
+            {
                 route: '',
                 name: 'problems-universities',
                 moduleId: PLATFORM.moduleName('modules/problems/general-problems-universities/general-problems-universities'),
