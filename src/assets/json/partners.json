@@ -1,25 +1,67 @@
 [{
-    "nombre": "Gerson Lázaro",
-    "foto": "https://media-exp1.licdn.com/dms/image/C5603AQF2F-tBfj-wcA/profile-displayphoto-shrink_200_200/0/1516444289730?e=1657152000&v=beta&t=cJd4SUXp5Ulx6z38BnZDSlbg_8Ef2jBFF4E98NTGZ78",
-    "linkedin": "https://www.linkedin.com/in/gersonlazaro/",
-    "github": "https://github.com/GersonLazaro"
-},
-{
-    "nombre": "Angie Melissa Delgado León",
-    "foto": "https://media-exp1.licdn.com/dms/image/C4D03AQGCKNGbEfZqBA/profile-displayphoto-shrink_200_200/0/1633704755651?e=1657152000&v=beta&t=ZXpLIO1qnJaVlhSl7ONQILhY-tLDM06FtfFItpzoNHc",
-    "linkedin": "https://www.linkedin.com/in/angie-melissa-delgado-le%C3%B3n-680a81ab/",
-    "github": "https://github.com/Meyito"
-},
-{
-    "nombre": "Crisel Jazmín Ayala Llanes",
-    "foto": "https://media-exp1.licdn.com/dms/image/C4D03AQHlvQGx00A3fA/profile-displayphoto-shrink_200_200/0/1641524117833?e=1657152000&v=beta&t=xhIYfQ9UYGAOlK7WN1dq2NTDbYKyPYP9fMWAf1BR1VQ",
-    "linkedin": "https://www.linkedin.com/in/cryselayala98/",
-    "github": "https://github.com/cryselayala98"
-},
-{
-    "nombre": "Angie Gonzàlez",
-    "foto": "https://media-exp1.licdn.com/dms/image/C4D03AQGHceLynXuyDw/profile-displayphoto-shrink_200_200/0/1554395513249?e=1657152000&v=beta&t=-JNWK2EbGePplH4FUZKjbONmQEKSOT9_o8Md_J_4w30",
-    "linkedin": "https://www.linkedin.com/in/angie-gonz%C3%A0lez-393b29182/",
-    "github": "link de github"
-}
+        "nombre": "Gerson Lázaro",
+        "foto": "https://media.licdn.com/dms/image/C5603AQF2F-tBfj-wcA/profile-displayphoto-shrink_100_100/0/1516444289730?e=1691625600&v=beta&t=ohxs9avhDdGl4zInmoFPSiS-70Eqd6KdaPProNrorNw",
+        "linkedin": "https://www.linkedin.com/in/gersonlazaro/",
+        "github": "https://github.com/GersonLazaro",
+        "star_member":true
+    },
+    {
+        "nombre": "Angie Delgado",
+        "foto": "https://media.licdn.com/dms/image/D4E03AQEtRnGtkaBOtQ/profile-displayphoto-shrink_100_100/0/1672603596788?e=1691625600&v=beta&t=W-dstlgeXtombgtgISv3uK1XQzlkjubOcHhAsb0wmJA",
+        "linkedin": "https://www.linkedin.com/in/angie-melissa-delgado-le%C3%B3n-680a81ab/",
+        "github": "https://github.com/Meyito",
+        "star_member":true
+    },
+    {
+        "nombre": "Crisel Ayala",
+        "foto": "https://media.licdn.com/dms/image/C4D03AQHlvQGx00A3fA/profile-displayphoto-shrink_800_800/0/1641524117833?e=1691625600&v=beta&t=cGoJVnyxWq1PqHpUSpzbTkygmHReQTnZ8dXQHXY8Ax8",
+        "linkedin": "https://www.linkedin.com/in/cryselayala98/",
+        "github": "https://github.com/cryselayala98",
+        "star_member":true
+    },
+    {
+        "nombre": "Angie González",
+        "foto": "https://media.licdn.com/dms/image/C4D03AQGHceLynXuyDw/profile-displayphoto-shrink_100_100/0/1554395513249?e=1691625600&v=beta&t=bzGHHZTpt8HaoL8xgEGYXNjzxoXaiSaPwGJqFwn0sGw",
+        "linkedin": "https://www.linkedin.com/in/angie-gonz%C3%A0lez-393b29182/",
+        "github": "link de github",
+        "star_member":true
+    },
+    {
+        "nombre": "Génesis Vargas",
+        "foto": "https://media.licdn.com/dms/image/C4E03AQGksvKGW2Kx0w/profile-displayphoto-shrink_800_800/0/1656558888674?e=1691625600&v=beta&t=9kc0QBEWd-x9gtXCBZkhH4SnaxiNChTafFrM1GZkaCY",
+        "linkedin": "https://www.linkedin.com/in/genesis-vargas-9a3b12230/",
+        "github": "https://github.com/GenesisDaniela",
+        "star_member":false
+    },
+    {
+        "nombre": "Julian Navarro",
+        "foto": "https://media.licdn.com/dms/image/C4E03AQEHhENEh6oT-A/profile-displayphoto-shrink_800_800/0/1656168364462?e=1691625600&v=beta&t=C5Dciod394IBL6xD4wNFWqTGllSHeS8N3mfFnOdTO5M",
+        "linkedin": "https://www.linkedin.com/in/julian-n-51a449124",
+        "github": "https://github.com/najiluc",
+        "star_member":false
+
+    },
+    {
+        "nombre": "Cristian Duarte",
+        "foto": "https://media.licdn.com/dms/image/C5603AQHDN2l5VqEEJQ/profile-displayphoto-shrink_800_800/0/1635263996519?e=2147483647&v=beta&t=Mb2BX1pkFvq1V0VwGuSzKIoJpOylvFsgU6o-3Vvtb4U",
+        "linkedin": "https://www.linkedin.com/in/cristian-duarte-ba4379b5",
+        "github": "https://github.com/CristianDuarteM",
+        "star_member":false
+
+    },
+    {
+        "nombre": "Johan Pineda",
+        "foto": "https://media.licdn.com/dms/image/C5603AQG0bN-pEoZBeg/profile-displayphoto-shrink_100_100/0/1650495845861?e=1691625600&v=beta&t=OgY1Tjc7Q21uNmPPelDm3UE5nSuEnp6jN2h2wP6gMps",
+        "linkedin": "https://www.linkedin.com/in/angie-gonz%C3%A0lez-393b29182/",
+        "star_member":false,
+        "github": "link de github"
+    },
+    {
+        "nombre": "Santiago Serrano",
+        "foto":"https://media.licdn.com/dms/image/D4E03AQGiBIUDLO-26Q/profile-displayphoto-shrink_800_800/0/1668271094144?e=1691625600&v=beta&t=PnqmUEVEed-QONEYZgGyE3XslSFkMnY6mLWdeZUvhKk",
+        "star_member":false,
+        "linkedin": "https://www.linkedin.com/in/santiago-andres-serrano-pico-016156208",
+        "github": "https://github.com/Sanandres2001"
+    }
+
 ]
