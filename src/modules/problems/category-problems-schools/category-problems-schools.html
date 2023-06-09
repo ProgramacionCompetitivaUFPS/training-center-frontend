@@ -23,6 +23,8 @@
           <th class="text-center" style="width:70%">Problema</th>
           <th data-step="2" data-intro="Los problemas estan calificados por dificultad donde 1 es la más facil y 5 la más difícil" class="text-center" style="width:10%">Dificultad</th>
           <th class="text-center" style="width:15%">Idioma</th>
+          <th if.bind="authService.isAdmin()" class="text-center" style="width:5%">Inputs</th>
+          <th if.bind="authService.isAdmin()" class="text-center" style="width:5%">Outputs</th>
         </tr>
       </thead>
       <tbody>
@@ -52,6 +54,14 @@
             <span class="${problem.isInEnglish() ? 'active' : 'inactive'}">
               <a route-href="route: schools-view-problem; params.bind: {id:problem.id, lang: 'en'}">EN</a>
             </span>
+          </td>
+          <td if.bind="authService.isAdmin()" class="text-center ufps-input">
+            <span class="ufps-edit-problem-list fas fa-file-download fa-lg" data-toggle="tooltip" 
+            title="Descargar inputs" tooltip click.delegate="download(problem, 0)"></span>            
+          </td>
+          <td if.bind="authService.isAdmin()" class="text-center ufps-input">
+            <span class="ufps-edit-problem-list fas fa-file-download fa-lg" data-toggle="tooltip" 
+            title="Descargar outputs" tooltip click.delegate="download(problem, 1)"></span>            
           </td>
         </tr>
       </tbody>

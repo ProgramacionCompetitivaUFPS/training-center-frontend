@@ -265,6 +265,18 @@ export class Problems {
             .then(this.httpService.parseJSON)
     }
 
+    getDataFile(id, folder, filename) {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.problems + '/' + id + '/' + folder + '/' + filename, {
+                method: 'get',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseBlob)
+    }
+
     getSubmission(name) {
         return this.httpService.httpClient
             .fetch(API.endpoints.submissions + '/' + name, {
@@ -276,6 +288,19 @@ export class Problems {
             .then(this.httpService.checkStatus)
             .then(this.httpService.parseBlob)
     }
+
+    getSubmissionLog(name) {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.submissions + '/' + name + '/log', {
+                method: 'get',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseBlob)
+    }
+
 
     getSvgSubmission(name) {
         return this.httpService.httpClient

@@ -26,6 +26,8 @@
           <th class="text-center" style="width:15%">Total envíos</th>
           <th class="text-center" style="width:15%">Tasa de aprobacion</th>
           <th class="text-center" style="width:15%">Autor</th>
+          <th if.bind="authService.isAdmin()" class="text-center" style="width:5%">Inputs</th>
+          <th if.bind="authService.isAdmin()" class="text-center" style="width:5%">Outputs</th>
 
         </tr>
       </thead>
@@ -62,6 +64,14 @@
           <td class="text-center">${roundToTwoDecimals(problem.approval_rate)}%</td>
 
           <td class="text-center">${problem.author} <span class="username-gray">(${problem.authorName})</span></td>
+          <td if.bind="authService.isAdmin()" class="text-center ufps-input">
+            <span class="ufps-edit-problem-list fas fa-file-download fa-lg" data-toggle="tooltip" 
+            title="Descargar inputs" tooltip click.delegate="download(problem, 0)"></span>            
+          </td>
+          <td if.bind="authService.isAdmin()" class="text-center ufps-input">
+            <span class="ufps-edit-problem-list fas fa-file-download fa-lg" data-toggle="tooltip" 
+            title="Descargar outputs" tooltip click.delegate="download(problem, 1)"></span>            
+          </td>
         </tr>
       </tbody>
     </table>
