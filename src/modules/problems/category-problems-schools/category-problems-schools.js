@@ -104,38 +104,6 @@ export class CategoryProblemsSchools {
             })
     }
 
-    download(problem, type) {
-        let fileName, fileFolder, filePath, extension
-        if (type == 0) {
-            fileName = 'input';
-            filePath = problem.input.split('/')[6];
-            fileFolder = 'inputs';
-            extension = '.in'
-        } else {
-            fileName = 'output';
-            filePath = problem.output.split('/')[6];
-            fileFolder = 'outputs';
-            extension = '.out'
-        }
-        this.problemsService.getDataFile(problem.id, fileFolder, filePath).then(data => {
-            var fileReader = new FileReader();
-            fileReader.onload = function (event) {
-                var txtBlob = new Blob([event.target.result], {
-                    type: 'text/plain'
-                });
-
-                var link = document.createElement('a');
-                link.href = URL.createObjectURL(txtBlob);
-                link.download = fileName + extension;
-
-                link.click();
-                URL.revokeObjectURL(link.href);
-                link.remove();
-            };
-            fileReader.readAsText(data);
-        })
-    }
-
     /**
      * Muestra un popup para confirmar la eliminación del problema indicado por id.
      * @param {number} id - Identificador del problema a eliminar.

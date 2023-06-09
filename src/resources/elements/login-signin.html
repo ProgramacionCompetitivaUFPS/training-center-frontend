@@ -4,10 +4,11 @@
   <require from="../elements/paginator"></require>
   <require from="../../assets/css/home-styles.css"></require>
 
-  <div show.bind="isLoginModalVisible">
+  <div show.bind="isLoginModalVisible" class="login-form-two">
     <div class="col-12 text-center ufps-container-sign">
       <img class="ufps-logo-sign" src="../../assets/img/logo-transparent.png" alt="" />
       <h3 class="login-titulo">Iniciar Sesión</h3>
+      <div class="flash"></div>
     </div>
     <div class="col-10 offset-1 text-center">
 
@@ -18,8 +19,14 @@
         </div>
         <div class="form-group text-left">
           <label for="password">Contraseña</label>
-          <input type="password" class="form-control ufps-sign-input" id="password" placeholder="Contraseña" value.bind="userLogin.password" required />
+          <div class="password-wrapper">
+            <input type.bind="showPassword ? 'text' : 'password'" class="form-control ufps-sign-input" id="password" placeholder="Contraseña" value.bind="userLogin.password" required />
+            <span class="password-toggle" click.delegate="togglePassword()">
+              <i class.bind="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+            </span>
+          </div>
         </div>
+        
         <div class="text-center" data-backdrop="false">
           <input type="submit" class="btn ufps-btn-sign form-group" value="Iniciar Sesión"/>
         </div>
