@@ -105,14 +105,14 @@ export class CategoryProblemsSchools {
     }
 
     download(problem, type) {
-        let fileName, fileFolder, filePath, extension
+        let fileFolder, filePath, extension, fileName = problem.titleES == null? problem.titleEN : problem.titleES
         if (type == 0) {
-            fileName = 'input';
+            fileName += ' – input';
             filePath = problem.input.split('/')[6];
             fileFolder = 'inputs';
             extension = '.in'
         } else {
-            fileName = 'output';
+            fileName += ' – output';
             filePath = problem.output.split('/')[6];
             fileFolder = 'outputs';
             extension = '.out'

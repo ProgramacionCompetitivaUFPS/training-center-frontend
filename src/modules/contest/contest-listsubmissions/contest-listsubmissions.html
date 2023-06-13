@@ -49,74 +49,100 @@
       </div>
 
       <!---Modal para detalle del envío-->
-      <div class="modal fade" id="submission-detail" ref="submissionDetail" tabindex="-1" role="dialog"
-        aria-labelledby="submission-detail">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <table>
-                <thead>
-                  <tr>
-                    <th class="text-center">Problema</th>
-                    <th class="text-center">Dificultad</th>
-                    <th class="text-center">Fecha de envio</th>
-                    <th class="text-center">Veredicto</th>
-                    <th class="text-center">Tiempo de ejecución</th>
-                    <th class="text-center">Lenguaje</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="text-center">
-                      <p if.bind="submissionLoaded.problem.title_es !== null"
-                        class="ufps-name-problem-list ufps-name-problem-list-l">
-                        <a href="/problemas/${submissionLoaded.pid}/detalle/es">${submissionLoaded.title_es}</a>
-                      </p>
-                      <p if.bind="submissionLoaded.problem.title_es === null"
-                        class="ufps-name-problem-list ufps-name-problem-list-l">
-                        <a href="/problemas/${submissionLoaded.pid}/detalle/en">${submissionLoaded.title_en}</a>
-                      </p>
-                    </td>
-                    <td class="text-center">${submissionLoaded.level}</td>
-                    <td class="text-center">${showDate(submissionLoaded.created_at)}</td>
-                    <td class="text-center" if.bind="submissionLoaded.status !== 'executed'">
-                      ${mapVeredict(submissionLoaded.status)}</td>
-                    <td class="text-center" if.bind="submissionLoaded.status === 'executed'">
-                      ${mapVeredict(submissionLoaded.verdict)}</td>
-                    <td class="text-center">${toFixed(submissionLoaded.execution_time)}s</td>
-                    <td class="text-center">${submissionLoaded.language}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="6">
-                      <div class="col-12 text-center">
-                        <a click.delegate="downloadCode()"
-                          class="btn btn-secondary ufps-btn ufps-btn-secondary text-center"
-                          if.bind="downloadActive">Descargar código</a>
-                        <div class="ufps-separator-mini"></div>
-                      </div>
-                      <div class="col-12">
-                        <div show.bind="!isABlocklyCode">
-                          <pre>
-                            <code>
-                              ${submissionLoaded.code}
-                            </code>
-                          </pre>
-                        </div>
-                        <div show.bind="isABlocklyCode">
-                          <img src="${submissionLoaded.svgUrl}">
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+    <div class="modal fade" id="submission-detail" ref="submissionDetail" tabindex="-1" role="dialog"
+    aria-labelledby="submission-detail">
+    <div class="modal-dialog modal-lg" role="document">
+
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <table>
+            <thead>
+              <tr>
+                <th class="text-center">Problema</th>
+                <th class="text-center">Dificultad</th>
+                <th class="text-center">Fecha de envio</th>
+                <th class="text-center">Veredicto</th>
+                <th class="text-center">Tiempo de ejecución</th>
+                <th class="text-center">Lenguaje</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="text-center">
+                  <p if.bind="submissionLoaded.problem.title_es !== null"
+                    class="ufps-name-problem-list ufps-name-problem-list-l">
+                    <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school"
+                      href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
+                    <a if.bind="submissionLoaded.problem.category.type != enums.typeCategory.school"
+                      href="/problemas/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
+                  </p>
+                  <p if.bind="submissionLoaded.problem.title_es === null"
+                    class="ufps-name-problem-list ufps-name-problem-list-l">
+                    <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school"
+                      href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_es}</a>
+                    <a if.bind="submissionLoaded.problem.category.type != enums.typeCategory.school"
+                      href="/problemas/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
+                  </p>
+                </td>
+                <td class="text-center">${submissionLoaded.problem.level}</td>
+                <td class="text-center">${showDate(submissionLoaded.created_at)}</td>
+                <td class="text-center" if.bind="submissionLoaded.status !== 'executed'">
+                  ${mapVeredict(submissionLoaded.status)}</td>
+                <td class="text-center" if.bind="submissionLoaded.status === 'executed'">
+                  ${mapVeredict(submissionLoaded.verdict)}</td>
+                <td class="text-center">${toFixed(submissionLoaded.execution_time)}s</td>
+                <td class="text-center">${submissionLoaded.language}</td>
+              </tr>
+              <tr>
+                <td colspan="6">
+                  <div class="col-12 text-center" id="code-download-btn">
+                    <a click.delegate="downloadCode()"
+                      class="btn btn-secondary ufps-btn ufps-btn-secondary text-center"
+                      if.bind="downloadActive">${downloadMesagge}</a>
+                    <div class="ufps-separator-mini"></div>
+                  </div>
+                  <div id="code-detail" class="col-12">
+                    <div show.bind="!isABlocklyCode">
+                      <pre>
+                          <code> ${submissionLoaded.code} </code>
+                      </pre>
+                    </div>
+                    <div show.bind="isABlocklyCode">
+                      <img src="${submissionLoaded.svgUrl}">
+                    </div>
+                  </div>
+                  <div class="col-12" id="log-detail">
+                    <pre>
+                      <code id="logs-detail">${logsMessage}</code>
+                    </pre>
+                  </div>
+                  <div class="col-12 text-center" id="view-logs-btn">
+                    <a click.delegate="showLogs(1)" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center">
+                      Ver Errores
+                    </a>
+                    <div class="ufps-separator-mini"></div>
+                  </div>
+                  <div class="col-12 text-center" id="view-code-btn" style="display: none;">
+                    <a click.delegate="showLogs(0)" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center">
+                      Ver Codigo
+                    </a>
+                    <div class="ufps-separator-mini"></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
+  </div>
     </div>
   </div>
 </template>
