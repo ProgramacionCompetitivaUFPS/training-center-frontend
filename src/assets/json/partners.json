@@ -34,6 +34,13 @@
         "star_member":false
     },
     {
+        "nombre": "Paula Rico",
+        "foto": "https://raw.githubusercontent.com/GenesisDaniela/resources/main/member-10.jpg",
+        "linkedin": "https://www.linkedin.com/in/paula-rico-453a93247/",
+        "github": "https://github.com/GenesisDaniela",
+        "star_member":false
+    },
+    {
         "nombre": "Julian Navarro",
         "foto": "https://raw.githubusercontent.com/GenesisDaniela/resources/main/member-7.jpg",
         "linkedin": "https://www.linkedin.com/in/julian-n-51a449124",
