@@ -91,6 +91,7 @@ export class ContestListsubmissions {
   }
 
   viewCode (submission) {
+    console.log(submission);
     this.downloadActive = false
     this.submissionLoaded = submission
     this.submissionLoaded.code = 'Cargando código...'

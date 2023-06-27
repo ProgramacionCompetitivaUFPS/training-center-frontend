@@ -76,22 +76,10 @@
             <tbody>
               <tr>
                 <td class="text-center">
-                  <p if.bind="submissionLoaded.problem.title_es !== null"
-                    class="ufps-name-problem-list ufps-name-problem-list-l">
-                    <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school"
-                      href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
-                    <a if.bind="submissionLoaded.problem.category.type != enums.typeCategory.school"
-                      href="/problemas/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
-                  </p>
-                  <p if.bind="submissionLoaded.problem.title_es === null"
-                    class="ufps-name-problem-list ufps-name-problem-list-l">
-                    <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school"
-                      href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_es}</a>
-                    <a if.bind="submissionLoaded.problem.category.type != enums.typeCategory.school"
-                      href="/problemas/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
-                  </p>
+                  <p if.bind="submissionLoaded.title_es != null" class="ufps-name-problem-list ufps-name-problem-list-l">${submissionLoaded.title_es}</p>
+                  <p if.bind="submissionLoaded.title_es == null" class="ufps-name-problem-list ufps-name-problem-list-l">${submissionLoaded.title_en}</p>
                 </td>
-                <td class="text-center">${submissionLoaded.problem.level}</td>
+                <td class="text-center">${submissionLoaded.level}</td>
                 <td class="text-center">${showDate(submissionLoaded.created_at)}</td>
                 <td class="text-center" if.bind="submissionLoaded.status !== 'executed'">
                   ${mapVeredict(submissionLoaded.status)}</td>
@@ -105,7 +93,7 @@
                   <div class="col-12 text-center" id="code-download-btn">
                     <a click.delegate="downloadCode()"
                       class="btn btn-secondary ufps-btn ufps-btn-secondary text-center"
-                      if.bind="downloadActive">${Descargar Código}</a>
+                      if.bind="downloadActive">Descargar Código</a>
                     <div class="ufps-separator-mini"></div>
                   </div>
                   <div id="code-detail" class="col-12">

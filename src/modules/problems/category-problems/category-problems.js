@@ -93,6 +93,7 @@ export class CategoryProblems {
         else stringLang = null
         this.problemsService.getCategoryProblems(this.id, this.page, this.limit, stringSort, (this.by === 'Ascendente' ? 'asc' : 'desc'), stringLang)
             .then(data => {
+                console.log(data);
                 this.category = new Category(data.meta.categoryName)
                 this.category.setTotalProblems(data.meta.totalItems)
                 this.totalPages = data.meta.totalPages
@@ -114,6 +115,7 @@ export class CategoryProblems {
      */
 
     download(problem, type) {
+        console.log(problem,type);
         let fileFolder, filePath, extension, fileName = problem.titleES == null? problem.titleEN : problem.titleES
         if (type == 0) {
             fileName += ' – input';
