@@ -37,7 +37,7 @@
             <span class="username-gray">(${submission.user.username !== null ? submission.user.username : '-'})</span></td>
           <td class="text-center">${submission.language !== null ? submission.language : '-'}</td>
           <td class="text-center">${submission.execution_time !== null ? submission.execution_time : '-'}</td>
-          <td class="text-center">${submission.verdict !== null ? submission.verdict : '-'}</td>
+          <td class="text-center">${submission.verdict !== null ? mapVeredict(submission.verdict) : '-'}</td>
           <td class="text-center">${submission.created_at !== null ? getSemanticDate(submission.created_at) : '-'}</td>
           <td class="text-center">
             <p class="ufps-name-problem-list ufps-name-problem-list-l">
@@ -71,28 +71,10 @@
               </thead>
               <tbody>
                 <tr>
-                  <td class="text-center">
-                    <p if.bind="submissionLoaded.problem.title_es !== null"
-                      class="ufps-name-problem-list ufps-name-problem-list-l">
-                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school"
-                        href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
-                      <a if.bind="submissionLoaded.problem.category.type != enums.typeCategory.school"
-                        href="/problemas/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
-                    </p>
-                    <p if.bind="submissionLoaded.problem.title_es === null"
-                      class="ufps-name-problem-list ufps-name-problem-list-l">
-                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school"
-                        href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_es}</a>
-                      <a if.bind="submissionLoaded.problem.category.type != enums.typeCategory.school"
-                        href="/problemas/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
-                    </p>
-                  </td>
-                  <td class="text-center">${submissionLoaded.problem.level}</td>
+                  <td class="text-center">${title}</td>
+                  <td class="text-center">${level}</td>
                   <td class="text-center">${showDate(submissionLoaded.created_at)}</td>
-                  <td class="text-center" if.bind="submissionLoaded.status !== 'executed'">
-                    ${mapVeredict(submissionLoaded.status)}</td>
-                  <td class="text-center" if.bind="submissionLoaded.status === 'executed'">
-                    ${mapVeredict(submissionLoaded.verdict)}</td>
+                  <td class="text-center">${mapVeredict(submissionLoaded.verdict)}</td>
                   <td class="text-center">${toFixed(submissionLoaded.execution_time)}s</td>
                   <td class="text-center">${submissionLoaded.language}</td>
                 </tr>
