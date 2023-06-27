@@ -1355,15 +1355,13 @@ tchs {
 }
 
 .title {
-  color: white;
-  font-family: "Anton", sans-serif;
+  color:#566167;
+  font-family: "Ubuntu", sans-serif;
   font-size: 1.3em;
-  padding-top: 3em;
-  padding-right: 0.3em;
 }
 
 .title:hover {
-  color: lavender;
+  color:#566167b5;
 }
 
 #logo {
