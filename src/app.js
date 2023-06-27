@@ -162,7 +162,7 @@ export class App {
             {
                 name: "submissionsStudents",
                 route: "enviosEstudiante/:id",
-                moduleId: PLATFORM.moduleName("./modules/SubmissionsStudents/SubmissionsStudents.js"),
+                moduleId: PLATFORM.moduleName("./modules/SubmissionsStudents/SubmissionsStudents"),
                 layoutView: PLATFORM.moduleName("layouts/logged.html"),
                 title: "Envios",
                 settings: {
