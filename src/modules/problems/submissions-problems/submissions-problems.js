@@ -46,6 +46,7 @@ export class SubmissionsProblems {
        this.pagination = []
        this.language = 'Cualquier idioma'
        this.title=""
+       this.level=0
        
     this.isABlocklyCode = false
     this.veredictOptions = [{
@@ -80,6 +81,7 @@ export class SubmissionsProblems {
    }
 
    viewCode(submission) {
+    console.log(submission);
     this.downloadActive = false
     this.submissionLoaded = submission
     this.submissionLoaded.code = 'Cargando código...'
@@ -115,6 +117,26 @@ export class SubmissionsProblems {
       this.viewLogs()
       this.showLogs(0)
   }
+
+  downloadCode() {
+    let filename
+
+    if (this.submissionLoaded.language === 'Java') filename = 'Main.java'
+    else if (this.submissionLoaded.language === 'C++') filename = 'main.cpp'
+    else filename = 'main.py'
+
+    if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveBlob(this.codeDownload, filename)
+    } else {
+      let elem = window.document.createElement('a')
+      elem.href = window.URL.createObjectURL(this.codeDownload)
+      elem.download = filename
+      document.body.appendChild(elem)
+      elem.click()
+      document.body.removeChild(elem)
+    }
+  }
+
   viewLogs() {
     this.logsMessagge = 'No hay mensajes para mostrar'
     let errorExtension = ''
@@ -162,6 +184,40 @@ export class SubmissionsProblems {
           this.alertService.showMessage(MESSAGES.unknownError)
         }
       }) 
+  }
+
+  showDate(date) {
+    let d = new Date(date)
+    return this.getDate(d) + ' - ' + this.getTime(d)
+  }
+
+  getDate(date) {
+    let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+    return date.getDate() + ' de ' + months[date.getMonth()] + ' del ' + date.getFullYear()
+  }
+
+  getTime(date) {
+    let tmp = ''
+    if (date.getHours() <= 12) tmp += (date.getHours() + ':')
+    else if (date.getHours() > 12) tmp += (date.getHours() - 12) + ':'
+    tmp += (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+    if (date.getHours() < 12) tmp += 'AM'
+    else tmp += 'PM'
+    return tmp
+  }
+
+  mapVeredict(veredict) {
+    if (veredict === 'in queue') return 'En espera'
+    else if (veredict === 'running') return 'Ejecutando'
+    else if (veredict === 'Accepted') return 'Correcto'
+    else if (veredict === 'Compilation Error') return 'Error de compilación'
+    else if (veredict === 'Time Limit Exceeded') return 'Tiempo limite excedido'
+    else if (veredict === 'Runtime Error') return 'Error en tiempo de ejecución'
+    else if (veredict === 'Wrong Answer') return 'Respuesta equivocada'
+  }
+
+  toFixed(value) {
+    return parseFloat(value).toFixed(3)
   }
 
    /**
@@ -224,8 +280,9 @@ export class SubmissionsProblems {
        else if (this.language === 'Inglés') stringLang = 'en'
        this.problemService.getSubmissions(this.id, this.page, this.limit, stringSort, (this.by === 'Ascendente' ? 'asc' : 'desc'), stringLang)
             .then(data => {
-                console.log(data,"XXXXXXXx")
+                //console.log(data,"XXXXXXXx")
                 this.title=data.meta.title
+                this.level=data.meta.level
                 this.totalPages = data.meta.totalPages
                 if (this.totalPages !== 0) {
                     this.submissions = data.data
