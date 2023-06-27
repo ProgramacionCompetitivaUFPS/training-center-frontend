@@ -74,7 +74,19 @@ export class CategoryProblemsSchools {
     pageChanged(act, prev) {
         if (prev !== undefined) this.getProblems()
     }
-
+    /**
+     * Redondea un numero a dos cifras
+     * @param {number} number - numero
+     */
+    roundToTwoDecimals(number) {
+        if (number ==null){return 0}
+        number = parseFloat(number);
+        if (Number.isInteger(number)) {
+            return number;
+        } else {
+            return number.toFixed(2);
+        }
+      }
     /**
      * Obtiene la lista de problemas según los parametros indicados.
      */
