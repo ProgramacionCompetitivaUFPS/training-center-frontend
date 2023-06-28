@@ -818,6 +818,11 @@ th {
   border: none;
 }
 
+.modal-header table{
+  text-align: center;
+  table-layout: fixed;
+}
+
 .modal-body {
   text-align: center;
   padding-bottom: 1em;
