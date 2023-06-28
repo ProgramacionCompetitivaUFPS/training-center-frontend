@@ -36,7 +36,9 @@ export class CategoryProblems {
         this.totalPages = 1
         this.page = 1
         this.numberOfItems = [10, 20, 30, 50]
-        this.sortOptions = ['Id', 'Nombre', 'Dificultad']
+        this.dummyTotals = [0, 0, 4, 12,47]
+        this.dummyPercentage = [0, 0, 50, 75,23]
+        this.sortOptions = ['Id', 'Nombre', 'Aprobados','Envios']
         this.filterChange = false
         this.limit = 10
         this.sort = 'Id'
@@ -84,12 +86,14 @@ export class CategoryProblems {
         let stringSort, stringLang
         if (this.sort === 'Id') stringSort = null
         else if (this.sort === 'Nombre') stringSort = 'name'
-        else if (this.sort === 'Dificultad') stringSort = 'level'
+        else if (this.sort === 'Aprobados') stringSort = 'approval_rate'
+        else if (this.sort === 'Envios') stringSort = 'submissions'
         if (this.language === 'Español') stringLang = 'es'
         else if (this.language === 'Inglés') stringLang = 'en'
         else stringLang = null
         this.problemsService.getCategoryProblems(this.id, this.page, this.limit, stringSort, (this.by === 'Ascendente' ? 'asc' : 'desc'), stringLang)
             .then(data => {
+                console.log(data);
                 this.category = new Category(data.meta.categoryName)
                 this.category.setTotalProblems(data.meta.totalItems)
                 this.totalPages = data.meta.totalPages
@@ -105,6 +109,57 @@ export class CategoryProblems {
                 }
             })
     }
+
+    /**
+     * Descarga el archivo de inputs o outpus¿ts
+     */
+
+    download(problem, type) {
+        console.log(problem,type);
+        let fileFolder, filePath, extension, fileName = problem.titleES == null? problem.titleEN : problem.titleES
+        if (type == 0) {
+            fileName += ' – input';
+            filePath = problem.input.split('/')[6];
+            fileFolder = 'inputs';
+            extension = '.in'
+        } else {
+            fileName += ' – output';
+            filePath = problem.output.split('/')[6];
+            fileFolder = 'outputs';
+            extension = '.out'
+        }
+        this.problemsService.getDataFile(problem.id, fileFolder, filePath).then(data => {
+            var fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                var txtBlob = new Blob([event.target.result], {
+                    type: 'text/plain'
+                });
+
+                var link = document.createElement('a');
+                link.href = URL.createObjectURL(txtBlob);
+                link.download = fileName + extension;
+
+                link.click();
+                URL.revokeObjectURL(link.href);
+                link.remove();
+            };
+            fileReader.readAsText(data);
+        })
+    }
+    
+    /**
+     * Redondea un numero a dos cifras
+     * @param {number} number - numero
+     */
+    roundToTwoDecimals(number) {
+        if (number ==null){return 0}
+        number = parseFloat(number);
+        if (Number.isInteger(number)) {
+            return number;
+        } else {
+            return number.toFixed(2);
+        }
+      }
 
     /**
      * Muestra un popup para confirmar la eliminación del problema indicado por id.

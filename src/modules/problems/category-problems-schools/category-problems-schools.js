@@ -74,7 +74,19 @@ export class CategoryProblemsSchools {
     pageChanged(act, prev) {
         if (prev !== undefined) this.getProblems()
     }
-
+    /**
+     * Redondea un numero a dos cifras
+     * @param {number} number - numero
+     */
+    roundToTwoDecimals(number) {
+        if (number ==null){return 0}
+        number = parseFloat(number);
+        if (Number.isInteger(number)) {
+            return number;
+        } else {
+            return number.toFixed(2);
+        }
+      }
     /**
      * Obtiene la lista de problemas según los parametros indicados.
      */
@@ -102,6 +114,38 @@ export class CategoryProblemsSchools {
                     this.routerService.navigate('')
                 }
             })
+    }
+
+    download(problem, type) {
+        let fileFolder, filePath, extension, fileName = problem.titleES == null? problem.titleEN : problem.titleES
+        if (type == 0) {
+            fileName += ' – input';
+            filePath = problem.input.split('/')[6];
+            fileFolder = 'inputs';
+            extension = '.in'
+        } else {
+            fileName += ' – output';
+            filePath = problem.output.split('/')[6];
+            fileFolder = 'outputs';
+            extension = '.out'
+        }
+        this.problemsService.getDataFile(problem.id, fileFolder, filePath).then(data => {
+            var fileReader = new FileReader();
+            fileReader.onload = function (event) {
+                var txtBlob = new Blob([event.target.result], {
+                    type: 'text/plain'
+                });
+
+                var link = document.createElement('a');
+                link.href = URL.createObjectURL(txtBlob);
+                link.download = fileName + extension;
+
+                link.click();
+                URL.revokeObjectURL(link.href);
+                link.remove();
+            };
+            fileReader.readAsText(data);
+        })
     }
 
     /**

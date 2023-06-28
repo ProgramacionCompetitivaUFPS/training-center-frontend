@@ -150,6 +150,106 @@ export class Problems {
     }
 
     /**
+     * Crea una nueva categoría en la plataforma.
+     * @param {string} name - Nombre de la categoría
+     * @returns {Promise} Promesa sin body, para validar según el status.
+     */
+    createCategory(name, typeCategory) {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.categories, {
+                method: 'post',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    type_category: typeCategory
+                })
+            })
+            .then(this.httpService.checkStatus)
+    }
+
+    /**
+     * Edita el nombre de una categoría en la plataforma.
+     * @param {number} id - Identificador de la categoría a editar.
+     * @param {string} name - Nuevo nombre de la categoría.
+     * @return {Promise} Promesa indicando el exito o fracaso de la operación.
+     */
+    editCategory(id, name) {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.categories + '/' + id, {
+                method: 'put',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name
+                })
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseJSON)
+    }
+
+    /**
+     * Elimina una categoría de la plataforma.
+     * @param {number} id - Identificador de la categoría a eliminar.
+     */
+    removeCategory(id) {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.categories + '/' + id, {
+                method: 'delete',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseJSON)
+    }
+
+    /**
+     * Obtiene la lista de envios de un problema específica. Como pueden ser muchos problemas,
+     * el método realiza "paginación" permitiendo traer así solo un número determinado de problemas
+     * según los parámetros establecidos.
+     * @param {any} id - Identificador de la categoría a obtener
+     * @param {number} [page=1] - Página de resultados a obtener
+     * @param {number} [limit=10] - Cantidad de resultados a obtener
+     * @param {string} [sort='id'] - Modo de ordenamiento (id o level)
+     * @param {string} [by='asc'] - Ordenamiento ascendente o descendente (asc o desc)
+     * @param {string} [filter=null] - Selecciona por un lenguaje (null, es o en)
+     * @returns {Promise} Promesa con los problemas obtenidos
+     */
+    getSubmissions(id, page = null, limit = null, sort = null, by = null, filter = null) {
+        let data = '?'
+        if (page !== null) {
+            data += '&page=' + page
+        }
+        if (limit !== null) {
+            data += '&limit=' + limit
+        }
+        if (sort !== null) {
+            data += '&sort=' + sort
+        }
+        if (by !== null) {
+            data += '&by=' + by
+        }
+        if (filter !== null) {
+            data += '&filter=' + filter
+        }
+        return this.httpService.httpClient
+            .fetch(API.endpoints.submissionsProblems.replace('{1}', id) + data, {
+                method: 'get',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseJSON)
+    }
+
+    /**
      * Lee un problema desde la plataforma.
      * @param {number} id - Identificador del problema.
      */
@@ -165,6 +265,18 @@ export class Problems {
             .then(this.httpService.parseJSON)
     }
 
+    getDataFile(id, folder, filename) {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.problems + '/' + id + '/' + folder + '/' + filename, {
+                method: 'get',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseBlob)
+    }
+
     getSubmission(name) {
         return this.httpService.httpClient
             .fetch(API.endpoints.submissions + '/' + name, {
@@ -176,6 +288,19 @@ export class Problems {
             .then(this.httpService.checkStatus)
             .then(this.httpService.parseBlob)
     }
+
+    getSubmissionLog(name) {
+        return this.httpService.httpClient
+            .fetch(API.endpoints.submissions + '/' + name + '/log', {
+                method: 'get',
+                headers: {
+                    'Authorization': 'Bearer ' + this.jwtService.token
+                }
+            })
+            .then(this.httpService.checkStatus)
+            .then(this.httpService.parseBlob)
+    }
+
 
     getSvgSubmission(name) {
         return this.httpService.httpClient

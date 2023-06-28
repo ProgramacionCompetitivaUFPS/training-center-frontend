@@ -91,6 +91,7 @@ export class ContestListsubmissions {
   }
 
   viewCode (submission) {
+    console.log(submission);
     this.downloadActive = false
     this.submissionLoaded = submission
     this.submissionLoaded.code = 'Cargando código...'
@@ -114,6 +115,9 @@ export class ContestListsubmissions {
           this.alertService.showMessage(MESSAGES.unknownError)
         }
       }) 
+
+    this.viewLogs()
+    this.showLogs(0)
   }
   
   downloadCode () {
@@ -132,5 +136,39 @@ export class ContestListsubmissions {
         elem.click()
         document.body.removeChild(elem)
     }
+  }
+
+  viewLogs() {
+    this.logsMessagge = 'No hay mensajes para mostrar'
+    let errorExtension = ''
+    if (this.submissionLoaded.verdict == 'Compilation Error') errorExtension = '.out'
+    else if (this.submissionLoaded.verdict == 'Runtime Error') errorExtension = '.err'
+    if (errorExtension == '') return
+
+    this.problemService.getSubmissionLog(this.submissionLoaded.file_name.split('.')[0] + errorExtension)
+      .then(data => {
+        let reader = new FileReader()
+        reader.onload = () => {
+          if (reader.result != undefined)
+            this.logsMessagge = reader.result
+        }
+        reader.readAsText(data)
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403)
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        else if (error.status === 500)
+          this.alertService.showMessage(MESSAGES.serverError)
+        else
+          this.alertService.showMessage(MESSAGES.unknownError)
+      })
+  }
+  showLogs(bit) {
+    document.getElementById("logs-detail").textContent = this.logsMessagge;
+    document.getElementById("code-detail").style.display = bit ? "none" : "block"
+    document.getElementById("view-logs-btn").style.display = bit ? "none" : "block"
+    document.getElementById("view-code-btn").style.display = bit ? "block" : "none"
+    document.getElementById("code-download-btn").style.display = bit ? "none" : "block"
+    document.getElementById("log-detail").style.display = bit ? "block" : "none"
   }
 }

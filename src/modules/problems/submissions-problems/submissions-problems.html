@@ -1,0 +1,147 @@
+<template>
+  <require from="../../../resources/attributes/tooltip"></require>
+  <require from="../../../resources/elements/filter"></require>
+  <require from="../../../resources/elements/paginator"></require>
+  <div class="container ufps-container-logged">
+
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/problemas">Envios</a>
+
+      </li>
+      <li class="breadcrumb-item active">Envios del problema "${title}" </li>
+    </ol>
+    <h1 class="text-right">${title}</h1>
+
+    <hr>
+
+    <filter number-of-items.bind="numberOfItems" sort-options.bind="sortOptions" filter-change.bind="filterChange" limit.bind="limit"
+      sort.bind="sort" by.bind="by" text-to-show.bind="'problemas'" language-flag.bind="true" language.bind="language"></filter>
+    <table>
+      <thead>
+        <tr>
+          <th class="text-center" style="width:5%">Id</th>
+          <th class="text-center" style="width:10%">Usuario</th>
+          <th class="text-center" style="width:15%">Lenguaje</th>
+          <th class="text-center" style="width:15%">Tiempo de ejecucion</th>
+          <th class="text-center" style="width:15%">Veredicto</th>
+          <th class="text-center" style="width:15%">Fecha del envio</th>
+          <th class="text-center" style="width:15%">Ver código</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="submission of submissions">
+          <td class="text-center">${submission.id !== null ? submission.id : '-'}</td>
+          <td class="text-center">${submission.user.name !== null ? submission.user.name : '-'}
+            <span class="username-gray">(${submission.user.username !== null ? submission.user.username : '-'})</span></td>
+          <td class="text-center">${submission.language !== null ? submission.language : '-'}</td>
+          <td class="text-center">${submission.execution_time !== null ? submission.execution_time : '-'}</td>
+          <td class="text-center">${submission.verdict !== null ? mapVeredict(submission.verdict) : '-'}</td>
+          <td class="text-center">${submission.created_at !== null ? getSemanticDate(submission.created_at) : '-'}</td>
+          <td class="text-center">
+            <p class="ufps-name-problem-list ufps-name-problem-list-l">
+              <a click.delegate="viewCode(submission)">Ver código</a>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <paginator page.bind="page" total-pages.bind="totalPages"></paginator>
+  </div>
+  <div class="modal fade" id="submission-detail" ref="submissionDetail" tabindex="-1" role="dialog"
+      aria-labelledby="submission-detail">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <table>
+              <thead>
+                <tr>
+                  <th class="text-center">Problema</th>
+                  <th class="text-center">Dificultad</th>
+                  <th class="text-center">Fecha de envio</th>
+                  <th class="text-center">Veredicto</th>
+                  <th class="text-center">Tiempo de ejecución</th>
+                  <th class="text-center">Lenguaje</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center">${title}</td>
+                  <td class="text-center">${level}</td>
+                  <td class="text-center">${showDate(submissionLoaded.created_at)}</td>
+                  <td class="text-center">${mapVeredict(submissionLoaded.verdict)}</td>
+                  <td class="text-center">${toFixed(submissionLoaded.execution_time)}s</td>
+                  <td class="text-center">${submissionLoaded.language}</td>
+                </tr>
+                <tr>
+                  <td colspan="6">
+                    <div class="col-12 text-center" id="code-download-btn">
+                      <a click.delegate="downloadCode()"
+                        class="btn btn-secondary ufps-btn ufps-btn-secondary text-center"
+                        if.bind="downloadActive">${downloadMesagge}</a>
+                      <div class="ufps-separator-mini"></div>
+                    </div>               
+                    <div id="code-detail" class="col-12">
+                      <div show.bind="!isABlocklyCode">
+                        <pre>
+                            <code> ${submissionLoaded.code} </code>
+                        </pre>
+                      </div>
+                      <div show.bind="isABlocklyCode">
+                        <img src="${submissionLoaded.svgUrl}">
+                      </div>
+                    </div>
+                    <div class="col-12" id="log-detail">
+                      <pre>
+                        <code id="logs-detail">${logsMessage}</code>
+                      </pre>                      
+                    </div>
+                    <div class="col-12 text-center" id="view-logs-btn">
+                      <a click.delegate="showLogs(1)" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center">
+                        Ver Errores
+                      </a>
+                      <div class="ufps-separator-mini"></div>
+                    </div> 
+                    <div class="col-12 text-center" id="view-code-btn" style="display: none;">
+                      <a click.delegate="showLogs(0)" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center">
+                        Ver Codigo
+                      </a>
+                      <div class="ufps-separator-mini"></div>
+                    </div> 
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!--MODAL PARA ELIMINAR PROBLEMA-->
+  <div if.bind="authService.isAdmin()" class="modal fade" id="remove-problem" tabindex="-1" role="dialog" aria-labelledby="remove-problem">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4 class="modal-title">¿Estás seguro de eliminar este problema?</h4>
+          <br>
+          <p>Esta acción no puede ser revertida</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary ufps-btn-secondary" click.delegate=removeProblem()>Si</button>
+          <button class="btn btn-secondary ufps-btn-secondary" data-dismiss="modal" aria-label="Close">No</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+</template>

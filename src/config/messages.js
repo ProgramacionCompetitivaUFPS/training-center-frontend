@@ -158,6 +158,10 @@ export let MESSAGES = {
     text: 'Actualmente no hay problemas almacenados en la plataforma',
     type: 'warning'
   },
+  problemsSubmissionsEmpty: {
+    text: 'Actualmente no hay envios relacionados al problema en la plataforma',
+    type: 'warning'
+  },
   submittedSolution: {
     text: 'Su solución se ha enviado para ser calificada. En breve recibirá una notificación con la calificación',
     type: 'success'

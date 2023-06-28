@@ -152,7 +152,7 @@ export class Submissions {
    * Ver código del envío de solucion
    * @param {*} submission 
    */
-  viewCode (submission) {
+  viewCode(submission) {
     this.downloadActive = false
     this.submissionLoaded = submission
     this.submissionLoaded.code = 'Cargando código...'
@@ -161,18 +161,17 @@ export class Submissions {
       .then(data => {
         this.codeDownload = data
         this.downloadActive = true
-        let reader  = new FileReader()
+        let reader = new FileReader()
         reader.onload = () => {
-          if(submission.blockly_file_name !== undefined && submission.blockly_file_name !== null){
+          if (submission.blockly_file_name !== undefined && submission.blockly_file_name !== null) {
             this.downloadMesagge = 'Descargar código (Python)'
-            this.isABlocklyCode = true 
+            this.isABlocklyCode = true
             this.viewSvgSubmission(submission)
-          }else{
+          } else {
             this.downloadMesagge = 'Descargar código'
             this.isABlocklyCode = false
             this.submissionLoaded.code = reader.result
           }
-          
         }
         reader.readAsText(data)
       })
@@ -184,14 +183,13 @@ export class Submissions {
         } else {
           this.alertService.showMessage(MESSAGES.unknownError)
         }
-      }) 
+      })
+
+    this.viewLogs()
+    this.showLogs(0)
   }
 
-  /**
-   * Ver imagen svg de código de blockly
-   * @param {*} submission 
-   */
-  viewSvgSubmission(submission){
+  viewSvgSubmission(submission) {
     this.problemService.getSvgSubmission(this.submissionLoaded.blockly_file_name)
       .then(data => {
         this.submissionLoaded.svgUrl = URL.createObjectURL(data)
@@ -204,27 +202,59 @@ export class Submissions {
         } else {
           this.alertService.showMessage(MESSAGES.unknownError)
         }
-      }) 
+      })
   }
 
-  /**
-   * Descargar código fuente del envío
-   */
-  downloadCode () {
+  downloadCode() {
     let filename
-    if(this.submissionLoaded.language === 'Java') filename = 'Main.java'
-    else if(this.submissionLoaded.language === 'C++') filename = 'main.cpp'
+
+    if (this.submissionLoaded.language === 'Java') filename = 'Main.java'
+    else if (this.submissionLoaded.language === 'C++') filename = 'main.cpp'
     else filename = 'main.py'
 
-    if(window.navigator.msSaveOrOpenBlob) {
+    if (window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(this.codeDownload, filename)
     } else {
-        let elem = window.document.createElement('a')
-        elem.href = window.URL.createObjectURL(this.codeDownload)
-        elem.download = filename  
-        document.body.appendChild(elem)
-        elem.click()
-        document.body.removeChild(elem)
+      let elem = window.document.createElement('a')
+      elem.href = window.URL.createObjectURL(this.codeDownload)
+      elem.download = filename
+      document.body.appendChild(elem)
+      elem.click()
+      document.body.removeChild(elem)
     }
+  }
+
+  viewLogs() {
+    this.logsMessagge = 'No hay mensajes para mostrar'
+    let errorExtension = ''
+    if (this.submissionLoaded.verdict == 'Compilation Error') errorExtension = '.out'
+    else if (this.submissionLoaded.verdict == 'Runtime Error') errorExtension = '.err'
+    if (errorExtension == '') return
+
+    this.problemService.getSubmissionLog(this.submissionLoaded.file_name.split('.')[0] + errorExtension)
+      .then(data => {
+        let reader = new FileReader()
+        reader.onload = () => {
+          if (reader.result != undefined)
+            this.logsMessagge = reader.result
+        }
+        reader.readAsText(data)
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403)
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        else if (error.status === 500)
+          this.alertService.showMessage(MESSAGES.serverError)
+        else
+          this.alertService.showMessage(MESSAGES.unknownError)
+      })
+  }
+  showLogs(bit) {
+    document.getElementById("logs-detail").textContent = this.logsMessagge;
+    document.getElementById("code-detail").style.display = bit ? "none" : "block"
+    document.getElementById("view-logs-btn").style.display = bit ? "none" : "block"
+    document.getElementById("view-code-btn").style.display = bit ? "block" : "none"
+    document.getElementById("code-download-btn").style.display = bit ? "none" : "block"
+    document.getElementById("log-detail").style.display = bit ? "block" : "none"
   }
 }

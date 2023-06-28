@@ -23,6 +23,7 @@ export let API = {
         enrolledSyllabus: "users/{1}/syllabus",
         materials: "materials",
         problems: "problems",
+        submissionsProblems: "problems/{1}/submissions",
         principal: "principal",
         ranking: "ranking",
         ranking2: "ranking2",
