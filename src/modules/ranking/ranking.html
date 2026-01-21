@@ -7,36 +7,48 @@
       <hr>
       
       <div class="row justify-content-between">
+        <div class="col-md col-lg-auto mt-4 mt-lg-0">
           <p>
-          Filtrar por institución:
-          <select change.delegate="cambiarInstitucion($event.target.value)" name="" id="">
-          <option value=" ">Seleccione</option>
-          <option value="Colegio">Colegio</option>
-          <option value="Universidad">Universidad</option>
-          </select></p>
+            Filtrar por institución:
+            <select change.delegate="cambiarInstitucion($event.target.value)" name="" id="">
+              <option value=" ">Seleccione</option>
+              <option value="Colegio">Colegio</option>
+              <option value="Universidad">Universidad</option>
+            </select>
+          </p>
+        </div>
+        
+        <div class="col-md col-lg-auto mt-4 mt-lg-0">
           <p>
             Elegir ${institucion} :
             <select change.delegate="getRankingInstitution($event.target.value)" name="" id="elegirInst">
-            <option value=" ">Seleccione</option>
-            <option if.bind="institucion" repeat.for="university of universities" value.bind="university.id">${university.name}</option>
-          </select></p>
-        <div>
+              <option value=" ">Seleccione</option>
+              <option if.bind="institucion" repeat.for="university of universities" value.bind="university.id">${university.name}</option>
+            </select>
+          </p>
+        </div>
+        
+        <div class="col-md col-lg-auto mt-4 mt-lg-0">
           <p>
             Filtrar por año:
             <select change.delegate="getRankingAnio($event.target.value)" name="" id="">
-            <option value= " ">Seleccione</option>
-            <option repeat.for="year of años" value.bind="year">${year}</option>
-          </select></p>
+              <option value=" ">Seleccione</option>
+              <option repeat.for="year of años" value.bind="year">${year}</option>
+            </select>
+          </p>
         </div>
-        <div>
+        
+        <div class="col-md col-lg-auto mt-4 mt-lg-0">
           <p>
             Filtrar por categoría:
             <select change.delegate="getRankingCategory($event.target.value)" name="" id="">
-            <option value=" ">Seleccione</option>
-            <option repeat.for="categorie of categories" value.bind="categorie.id">${categorie.name}</option>
-          </select></p>
+              <option value=" ">Seleccione</option>
+              <option repeat.for="categorie of categories" value.bind="categorie.id">${categorie.name}</option>
+            </select>
+          </p>
         </div>
       </div>
+      
 
       <table>
         <thead>

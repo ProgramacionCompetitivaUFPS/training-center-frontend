@@ -25,6 +25,8 @@ export class LoginSignin {
   isLoginModalVisible = true
   isSignInModalVisible = false
   isRecoveryModalVisible= false
+  showPassword = false;
+
 
   /**
    * Crea una instancia de Signin.
@@ -57,7 +59,10 @@ export class LoginSignin {
     this.enums = Enums
     this.institutions = []
   }
-
+  
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
   /**
     * Valida los datos e intenta iniciar sesión
     */

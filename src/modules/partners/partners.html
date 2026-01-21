@@ -1,4 +1,39 @@
 <template>
+  <require from="../../assets/assets-second-version/vendor/animate.css/animate.min.css" ></require>
+  <require from="../../assets/assets-second-version/vendor/bootstrap/css/bootstrap.min.css" ></require>
+  <require from="../../assets/assets-second-version/vendor/bootstrap-icons/bootstrap-icons.css" ></require>
+  <require from="../../assets/assets-second-version/vendor/boxicons/css/boxicons.min.css" ></require>
+  <require from="../../assets/assets-second-version/vendor/glightbox/css/glightbox.min.css" rel="stylesheet"></require>
+
+  <require from="../../assets/assets-second-version/vendor/remixicon/remixicon.css" ></require>
+  <require from="../../assets/assets-second-version/vendor/swiper/swiper-bundle.min.css" ></require>
+  <require from="../../assets/assets-second-version/css/style.css"></require>
+  <require from="../../assets/css/styles.css"></require>
+  <div slot="content" class="body-slot">
+    <app-header></app-header>
+    <section id="team" class="team">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4" repeat.for="c of col">
+            <div class="star" if.bind="c.star_member == true"></div>
+            <div class="member d-flex align-items-start">
+              <div class="pic"><img src="${c.foto}" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>${c.nombre}</h4>
+                <span>${c.cargo}</span>
+                <div class="social">
+                  <a href="${c.linkedin}"><i class="ri-github-fill"></i></a>
+                  <a href="${c.github}"> <i class="ri-linkedin-box-fill"></i> </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </section>
+  </div>
+</template>
+
+<template>
   <div slot="content" class="body-slot">
     <app-header></app-header>
     <div class="row row-cols-1 row-cols-md-4 g-4 mt-5 m-5">
@@ -6,7 +41,7 @@
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src=${c.foto} alt="img-perfil">
           <div class="card-body">
-            <h5>${c.nombre}</h5> 
+            <h5>${c.nombre}</h5>
             <a href=${c.linkedin} target = _blank class="btn ufps-btn-sign">Linkedin</a>
             <a href=${c.github} target = _blank class="btn ufps-btn-sign">Github</a>
           </div>

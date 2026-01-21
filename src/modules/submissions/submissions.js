@@ -1,8 +1,21 @@
-import { inject, observable } from 'aurelia-framework'
+import {
+  inject,
+  observable
+} from 'aurelia-framework'
 
-import { MESSAGES } from 'config/config'
-import { Material, Enums } from 'models/models'
-import { Alert, Auth, Problems, Rankings } from 'services/services'
+import {
+  MESSAGES
+} from 'config/config'
+import {
+  Material,
+  Enums
+} from 'models/models'
+import {
+  Alert,
+  Auth,
+  Problems,
+  Rankings
+} from 'services/services'
 
 /**
  * Submissions (Module)
@@ -25,7 +38,7 @@ export class Submissions {
    * @param {service} authService - Servicio de autenticación y validación
    * @param {material} materialService - Servicio de material
    */
-  constructor (alertService, authService, problemService, rankingService) {
+  constructor(alertService, authService, problemService, rankingService) {
     this.alertService = alertService
     this.problemService = problemService
     this.authService = authService
@@ -41,18 +54,37 @@ export class Submissions {
     this.downloadActive = false
     this.totalPages = 1
     this.isABlocklyCode = false
-    this.veredictOptions = [
-      {value : 'ALL', text : 'Cualquier veredicto'},
-      {value : 'ACC', text : 'Correcto'},
-      {value : 'TL', text : 'Tiempo límite excedido'},
-      {value : 'WA', text : 'Respuesta incorrecta'},
-      {value : 'RT', text : 'Error en tiempo de ejecución'},
-      {value : 'CE', text : 'Error de compilación'}
+    this.veredictOptions = [{
+        value: 'ALL',
+        text: 'Cualquier veredicto'
+      },
+      {
+        value: 'ACC',
+        text: 'Correcto'
+      },
+      {
+        value: 'TL',
+        text: 'Tiempo límite excedido'
+      },
+      {
+        value: 'WA',
+        text: 'Respuesta incorrecta'
+      },
+      {
+        value: 'RT',
+        text: 'Error en tiempo de ejecución'
+      },
+      {
+        value: 'CE',
+        text: 'Error de compilación'
+      }
     ]
     this.veredict = this.veredictOptions[0]
     this.downloadMesagge = 'Descargar código'
     this.enums = Enums
     this.getSubmissions()
+
+    this.logsMessagge = 'No hay mensajes para mostrar'
   }
 
   setVeredict(veredict) {
@@ -65,8 +97,8 @@ export class Submissions {
    * @param {bool} act - Nuevo estado 
    * @param {bool} prev - Antiguo estado
    */
-  filterChangeChanged (act, prev) {
-    if(prev !== undefined) this.getSubmissions()
+  filterChangeChanged(act, prev) {
+    if (prev !== undefined) this.getSubmissions()
   }
 
   /**
@@ -74,22 +106,22 @@ export class Submissions {
    * @param {Number} act - Número de página nuevo.
    * @param {Number} prev - Número de página antes del cambio
    */
-  pageChanged (act, prev) {
-    if(prev !== undefined) this.getSubmissions()
+  pageChanged(act, prev) {
+    if (prev !== undefined) this.getSubmissions()
   }
 
   getSubmissions() {
     let sortValue
-    if(this.sort === 'Tiempo de ejecución') sortValue = 'time'
-    else if(this.sort === 'Dificultad') sortValue = 'level'
+    if (this.sort === 'Tiempo de ejecución') sortValue = 'time'
+    else if (this.sort === 'Dificultad') sortValue = 'level'
     else sortValue = 'date'
     let veredictValue = this.veredict.value
-    if(veredictValue === 'ALL') veredictValue = null
+    if (veredictValue === 'ALL') veredictValue = null
     this.rankingService.getSubmissions(this.authService.getUserId(), this.limit, this.page, (this.by === 'Ascendente' ? 'ASC' : 'DESC'), sortValue, veredictValue)
       .then(data => {
         this.totalPages = data.meta.totalPages
         this.submissions = []
-        if(data.meta.totalItems > 0) this.submissions = data.data
+        if (data.meta.totalItems > 0) this.submissions = data.data
       })
       .catch(error => {
         if (error.status === 401 || error.status === 403) {
@@ -99,27 +131,27 @@ export class Submissions {
         } else {
           this.alertService.showMessage(MESSAGES.unknownError)
         }
-      }) 
+      })
   }
- 
+
   showDate(date) {
     let d = new Date(date)
     return this.getDate(d) + ' - ' + this.getTime(d)
   }
 
-  getDate (date) {
+  getDate(date) {
     let months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     return date.getDate() + ' de ' + months[date.getMonth()] + ' del ' + date.getFullYear()
   }
 
-  getTime (date) {
+  getTime(date) {
     let tmp = ''
-    if (date.getHours() <= 12) tmp += (date.getHours() + ':') 
+    if (date.getHours() <= 12) tmp += (date.getHours() + ':')
     else if (date.getHours() > 12) tmp += (date.getHours() - 12) + ':'
     tmp += (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
-    if(date.getHours() < 12) tmp += 'AM'
+    if (date.getHours() < 12) tmp += 'AM'
     else tmp += 'PM'
-    return tmp 
+    return tmp
   }
 
   mapVeredict(veredict) {
@@ -133,10 +165,10 @@ export class Submissions {
   }
 
   toFixed(value) {
-    return parseFloat(value).toFixed(3)  
+    return parseFloat(value).toFixed(3)
   }
 
-  viewCode (submission) {
+  viewCode(submission) {
     this.downloadActive = false
     this.submissionLoaded = submission
     this.submissionLoaded.code = 'Cargando código...'
@@ -145,18 +177,17 @@ export class Submissions {
       .then(data => {
         this.codeDownload = data
         this.downloadActive = true
-        let reader  = new FileReader()
+        let reader = new FileReader()
         reader.onload = () => {
-          if(submission.blockly_file_name !== undefined && submission.blockly_file_name !== null){
-            this.downloadMesagge = 'Descargar código (Python)' 
+          if (submission.blockly_file_name !== undefined && submission.blockly_file_name !== null) {
+            this.downloadMesagge = 'Descargar código (Python)'
             this.isABlocklyCode = true
             this.viewSvgSubmission(submission)
-          }else{
+          } else {
             this.downloadMesagge = 'Descargar código'
             this.isABlocklyCode = false
             this.submissionLoaded.code = reader.result
           }
-          
         }
         reader.readAsText(data)
       })
@@ -168,10 +199,13 @@ export class Submissions {
         } else {
           this.alertService.showMessage(MESSAGES.unknownError)
         }
-      }) 
+      })
+
+    this.viewLogs()
+    this.showLogs(0)
   }
 
-  viewSvgSubmission(submission){
+  viewSvgSubmission(submission) {
     this.problemService.getSvgSubmission(this.submissionLoaded.blockly_file_name)
       .then(data => {
         this.submissionLoaded.svgUrl = URL.createObjectURL(data)
@@ -184,26 +218,59 @@ export class Submissions {
         } else {
           this.alertService.showMessage(MESSAGES.unknownError)
         }
-      }) 
+      })
   }
 
-  downloadCode () {
+  downloadCode() {
     let filename
 
-    if(this.submissionLoaded.language === 'Java') filename = 'Main.java'
-    else if(this.submissionLoaded.language === 'C++') filename = 'main.cpp'
+    if (this.submissionLoaded.language === 'Java') filename = 'Main.java'
+    else if (this.submissionLoaded.language === 'C++') filename = 'main.cpp'
     else filename = 'main.py'
 
-    if(window.navigator.msSaveOrOpenBlob) {
+    if (window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(this.codeDownload, filename)
+    } else {
+      let elem = window.document.createElement('a')
+      elem.href = window.URL.createObjectURL(this.codeDownload)
+      elem.download = filename
+      document.body.appendChild(elem)
+      elem.click()
+      document.body.removeChild(elem)
     }
-    else{
-        let elem = window.document.createElement('a')
-        elem.href = window.URL.createObjectURL(this.codeDownload)
-        elem.download = filename  
-        document.body.appendChild(elem)
-        elem.click()
-        document.body.removeChild(elem)
-    }
+  }
+
+  viewLogs() {
+    this.logsMessagge = 'No hay mensajes para mostrar'
+    let errorExtension = ''
+    if (this.submissionLoaded.verdict == 'Compilation Error') errorExtension = '.out'
+    else if (this.submissionLoaded.verdict == 'Runtime Error') errorExtension = '.err'
+    if (errorExtension == '') return
+
+    this.problemService.getSubmissionLog(this.submissionLoaded.file_name.split('.')[0] + errorExtension)
+      .then(data => {
+        let reader = new FileReader()
+        reader.onload = () => {
+          if (reader.result != undefined)
+            this.logsMessagge = reader.result
+        }
+        reader.readAsText(data)
+      })
+      .catch(error => {
+        if (error.status === 401 || error.status === 403)
+          this.alertService.showMessage(MESSAGES.permissionsError)
+        else if (error.status === 500)
+          this.alertService.showMessage(MESSAGES.serverError)
+        else
+          this.alertService.showMessage(MESSAGES.unknownError)
+      })
+  }
+  showLogs(bit) {
+    document.getElementById("logs-detail").textContent = this.logsMessagge;
+    document.getElementById("code-detail").style.display = bit ? "none" : "block"
+    document.getElementById("view-logs-btn").style.display = bit ? "none" : "block"
+    document.getElementById("view-code-btn").style.display = bit ? "block" : "none"
+    document.getElementById("code-download-btn").style.display = bit ? "none" : "block"
+    document.getElementById("log-detail").style.display = bit ? "block" : "none"
   }
 }

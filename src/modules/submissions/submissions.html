@@ -125,24 +125,39 @@
                 </tr>
                 <tr>
                   <td colspan="6">
-                    <div class="col-12 text-center">
+                    <div class="col-12 text-center" id="code-download-btn">
                       <a click.delegate="downloadCode()"
                         class="btn btn-secondary ufps-btn ufps-btn-secondary text-center"
                         if.bind="downloadActive">${downloadMesagge}</a>
                       <div class="ufps-separator-mini"></div>
-                    </div>
-                    <div class="col-12">
+                    </div>                   
+                    <div id="code-detail" class="col-12">
                       <div show.bind="!isABlocklyCode">
                         <pre>
-                              <code>
-                                ${submissionLoaded.code}
-                              </code>
-                      </pre>
+                            <code> ${submissionLoaded.code} </code>
+                        </pre>
                       </div>
                       <div show.bind="isABlocklyCode">
                         <img src="${submissionLoaded.svgUrl}">
                       </div>
                     </div>
+                    <div class="col-12" id="log-detail">
+                      <pre>
+                        <code id="logs-detail">${logsMessage}</code>
+                      </pre>                      
+                    </div>
+                    <div class="col-12 text-center" id="view-logs-btn">
+                      <a click.delegate="showLogs(1)" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center">
+                        Ver Errores
+                      </a>
+                      <div class="ufps-separator-mini"></div>
+                    </div> 
+                    <div class="col-12 text-center" id="view-code-btn" style="display: none;">
+                      <a click.delegate="showLogs(0)" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center">
+                        Ver Codigo
+                      </a>
+                      <div class="ufps-separator-mini"></div>
+                    </div> 
                   </td>
                 </tr>
               </tbody>

@@ -91,18 +91,23 @@
                   <th class="text-center">Lenguaje</th>
                 </tr>
               </thead>
+
               <tbody>
                 <tr>
                   <td class="text-center">
                     <p if.bind="submissionLoaded.problem.title_es !== null"
                       class="ufps-name-problem-list ufps-name-problem-list-l">
-                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school" href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
-                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.university" href="/problemas/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
+                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school"
+                        href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
+                      <a if.bind="submissionLoaded.problem.category.type != enums.typeCategory.school"
+                        href="/problemas/${submissionLoaded.problem.id}/detalle/es">${submissionLoaded.problem.title_es}</a>
                     </p>
                     <p if.bind="submissionLoaded.problem.title_es === null"
                       class="ufps-name-problem-list ufps-name-problem-list-l">
-                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school" href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
-                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.university" href="/problemas/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
+                      <a if.bind="submissionLoaded.problem.category.type == enums.typeCategory.school"
+                        href="/problemas/colegios/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_es}</a>
+                      <a if.bind="submissionLoaded.problem.category.type != enums.typeCategory.school"
+                        href="/problemas/${submissionLoaded.problem.id}/detalle/en">${submissionLoaded.problem.title_en}</a>
                     </p>
                   </td>
                   <td class="text-center">${submissionLoaded.problem.level}</td>
@@ -116,24 +121,39 @@
                 </tr>
                 <tr>
                   <td colspan="6">
-                    <div class="col-12 text-center">
+                    <div class="col-12 text-center" id="code-download-btn">
                       <a click.delegate="downloadCode()"
                         class="btn btn-secondary ufps-btn ufps-btn-secondary text-center"
                         if.bind="downloadActive">${downloadMesagge}</a>
                       <div class="ufps-separator-mini"></div>
-                    </div>
-                    <div class="col-12">
+                    </div>                   
+                    <div id="code-detail" class="col-12">
                       <div show.bind="!isABlocklyCode">
                         <pre>
-                              <code>
-                                ${submissionLoaded.code}
-                              </code>
-                      </pre>
+                            <code> ${submissionLoaded.code} </code>
+                        </pre>
                       </div>
                       <div show.bind="isABlocklyCode">
                         <img src="${submissionLoaded.svgUrl}">
                       </div>
                     </div>
+                    <div class="col-12" id="log-detail">
+                      <pre>
+                        <code id="logs-detail">${logsMessage}</code>
+                      </pre>                      
+                    </div>
+                    <div class="col-12 text-center" id="view-logs-btn">
+                      <a click.delegate="showLogs(1)" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center">
+                        Ver Errores
+                      </a>
+                      <div class="ufps-separator-mini"></div>
+                    </div> 
+                    <div class="col-12 text-center" id="view-code-btn" style="display: none;">
+                      <a click.delegate="showLogs(0)" class="btn btn-secondary ufps-btn ufps-btn-secondary text-center">
+                        Ver Codigo
+                      </a>
+                      <div class="ufps-separator-mini"></div>
+                    </div> 
                   </td>
                 </tr>
               </tbody>
